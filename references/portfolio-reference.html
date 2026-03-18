@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jhonnatan Barbosa — Game Designer</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #161619;
+    --surface: #1d1d21;
+    --surface-hover: #232328;
+    --border: #2c2c32;
+    --border-soft: #232327;
+    --text: #dddbd6;
+    --text-mid: #a09e97;
+    --text-dim: #6e6d68;
+    --accent: #a8b87a;
+    --accent-dim: #7a8a55;
+    --note-bg: rgba(168,184,122,0.06);
+    --note-border: rgba(168,184,122,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Geist', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-size: 13.5px;
+  }
+
+  ::selection { background: var(--accent); color: var(--bg); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .page { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(22,22,25,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  nav .nav-inner {
+    max-width: 960px; margin: 0 auto;
+    padding: 0.6rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  nav .name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.05rem; color: var(--text);
+  }
+
+  nav .nav-links { display: flex; gap: 1.4rem; list-style: none; }
+
+  nav .nav-links a {
+    color: var(--text-dim); font-size: 0.8rem; font-weight: 500;
+    text-decoration: none; transition: color 0.15s;
+  }
+  nav .nav-links a:hover { color: var(--text); }
+
+  /* ── INTRO ── */
+  .intro {
+    padding: 2.5rem 0 1.75rem;
+    border-bottom: 1px solid var(--border-soft);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: end;
+  }
+
+  .intro h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.7rem; font-weight: 400;
+    line-height: 1.2; letter-spacing: -0.015em;
+  }
+
+  .intro p {
+    color: var(--text-mid); font-size: 0.88rem;
+    max-width: 520px; margin-top: 0.5rem;
+  }
+
+  .intro-links {
+    display: flex; gap: 0.6rem; flex-shrink: 0;
+  }
+
+  .intro-links a {
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--text-dim); padding: 0.35rem 0.8rem;
+    border: 1px solid var(--border); border-radius: 4px;
+    transition: border-color 0.15s;
+  }
+  .intro-links a:hover { border-color: var(--accent-dim); color: var(--text); text-decoration: none; }
+
+  /* ── TIP ── */
+  .tip {
+    background: var(--note-bg);
+    border-left: 2px solid var(--note-border);
+    padding: 0.55rem 0.85rem;
+    margin: 0.85rem 0;
+    font-size: 0.78rem;
+    color: var(--accent);
+    line-height: 1.55;
+  }
+  .tip strong {
+    font-weight: 600; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-right: 0.3rem;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 1.75rem 0; }
+  section + section { border-top: 1px solid var(--border-soft); }
+
+  .section-header {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 1.1rem;
+  }
+
+  .section-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.15rem; font-weight: 400;
+  }
+
+  .section-aside { font-size: 0.75rem; color: var(--text-dim); }
+
+  /* ── PROJECT CARDS — compact ── */
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    transition: border-color 0.2s;
+  }
+  .project-card:hover { border-color: var(--accent-dim); }
+
+  .project-thumb {
+    background: var(--surface-hover);
+    display: flex; align-items: center; justify-content: center;
+    border-right: 1px solid var(--border);
+    color: var(--text-dim); font-size: 0.75rem; font-weight: 500;
+    min-height: 160px;
+  }
+
+  .project-card:nth-child(1) .project-thumb {
+    background: radial-gradient(ellipse at 30% 50%, rgba(168,184,122,0.08) 0%, transparent 65%), var(--surface-hover);
+  }
+  .project-card:nth-child(2) .project-thumb {
+    background: radial-gradient(ellipse at 70% 40%, rgba(140,160,210,0.07) 0%, transparent 65%), var(--surface-hover);
+  }
+  .project-card:nth-child(3) .project-thumb {
+    background: radial-gradient(ellipse at 50% 60%, rgba(210,170,120,0.07) 0%, transparent 65%), var(--surface-hover);
+  }
+  .project-card:nth-child(4) .project-thumb {
+    background: radial-gradient(ellipse at 40% 35%, rgba(190,130,160,0.07) 0%, transparent 65%), var(--surface-hover);
+  }
+  .project-card:nth-child(5) .project-thumb {
+    background: radial-gradient(ellipse at 60% 55%, rgba(120,180,170,0.07) 0%, transparent 65%), var(--surface-hover);
+  }
+
+  .project-body { padding: 1rem 1.25rem; display: flex; flex-direction: column; justify-content: center; }
+
+  .project-top-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 0.2rem;
+    flex-wrap: wrap; gap: 0.4rem;
+  }
+
+  .project-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.02rem; font-weight: 400;
+  }
+
+  .project-badge {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.62rem; color: var(--text-dim);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    padding: 0.1rem 0.45rem; border-radius: 3px;
+  }
+
+  .project-desc {
+    color: var(--text-mid); font-size: 0.84rem;
+    margin-bottom: 0.65rem; line-height: 1.55;
+  }
+
+  .meta-row {
+    display: flex; flex-wrap: wrap;
+    gap: 0.2rem 1.1rem; font-size: 0.78rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .meta-pair { display: flex; gap: 0.3rem; }
+  .meta-pair .ml { color: var(--text-dim); }
+  .meta-pair .mv { color: var(--text); font-weight: 500; }
+
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+
+  .ptag {
+    font-size: 0.66rem; font-weight: 500;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    padding: 0.12rem 0.5rem; border-radius: 3px;
+  }
+
+  .project-actions {
+    margin-top: 0.6rem; padding-top: 0.55rem;
+    border-top: 1px solid var(--border-soft);
+    display: flex; gap: 1.2rem;
+    font-size: 0.78rem; font-weight: 500;
+  }
+
+  /* ── CASE STUDY ── */
+  .cs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+    margin-top: 0.85rem;
+  }
+
+  .cs-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.9rem 1rem;
+  }
+
+  .cs-card .cs-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.62rem; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 0.35rem;
+  }
+
+  .cs-card h4 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 0.9rem; font-weight: 400;
+    margin-bottom: 0.3rem; line-height: 1.25;
+  }
+
+  .cs-card p {
+    font-size: 0.78rem; color: var(--text-mid); line-height: 1.5;
+  }
+
+  .media-placeholder {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    margin-top: 0.6rem;
+  }
+
+  /* ── ABOUT ── */
+  .about-layout {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 1.5rem; align-items: start;
+  }
+
+  .about-photo {
+    width: 110px; height: 135px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; color: var(--text-dim);
+  }
+
+  .about-body p {
+    color: var(--text-mid); font-size: 0.88rem;
+    margin-bottom: 0.6rem; max-width: 540px; line-height: 1.6;
+  }
+
+  .tools-row {
+    margin-top: 0.75rem;
+    display: flex; flex-wrap: wrap;
+    gap: 0.3rem 1.8rem;
+    font-size: 0.8rem;
+  }
+
+  .tools-row .tr-item { display: flex; gap: 0.3rem; }
+  .tools-row dt { color: var(--text-dim); font-weight: 500; }
+  .tools-row dd { color: var(--text); margin: 0; }
+
+  /* ── CONTACT ── */
+  .contact-row {
+    display: flex; flex-wrap: wrap;
+    gap: 0.5rem; margin-top: 0.75rem;
+  }
+
+  .contact-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem; color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.15s;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .contact-item:hover { border-color: var(--accent-dim); text-decoration: none; }
+  .contact-item .ci-label { color: var(--text-dim); font-size: 0.72rem; }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 1.25rem 0; border-top: 1px solid var(--border-soft);
+    font-size: 0.72rem; color: var(--text-dim);
+    display: flex; justify-content: space-between;
+  }
+
+  @media (max-width: 720px) {
+    .page { padding: 0 1.25rem; }
+    nav .nav-inner { padding: 0.6rem 1.25rem; }
+    .intro { grid-template-columns: 1fr; }
+    .intro-links { margin-top: 0.5rem; }
+    .project-card { grid-template-columns: 1fr; }
+    .project-thumb { min-height: 120px; border-right: none; border-bottom: 1px solid var(--border); }
+    .cs-grid { grid-template-columns: 1fr 1fr; }
+    .about-layout { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.2rem; }
+  }
+
+  @media (max-width: 480px) {
+    .cs-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <span class="name">Jhonnatan Barbosa</span>
+    <ul class="nav-links">
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#case-study">Case Study</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<div class="page">
+
+  <!-- INTRO -->
+  <div class="intro">
+    <div>
+      <h1>Game Designer — Economy & Systems Design</h1>
+      <p>
+        I design economies players can't put down and systems that scale.
+        5+ years shipping 12+ titles across mobile, PC, and web.
+        Statistics background — I balance with spreadsheets, not gut feel.
+      </p>
+    </div>
+    <div class="intro-links">
+      <a href="#">Resume (PDF)</a>
+      <a href="mailto:jhocbarbosa@gmail.com">Email</a>
+      <a href="https://linkedin.com/in/jhonnatanbarbosa">LinkedIn</a>
+    </div>
+  </div>
+
+  <div class="tip">
+    <strong>Layout note —</strong>
+    Specialty in the headline, one-liner bio, and contact links all visible without scrolling.
+    Recruiters know who you are and how to reach you in under 3 seconds.
+    The statistics angle is front and center — it's your differentiator.
+  </div>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <div class="section-header">
+      <h2 class="section-title">Selected Projects</h2>
+      <span class="section-aside">5 curated pieces · 3 case studies + 2 showcase cards</span>
+    </div>
+
+    <!-- Project 1: Idle Cyberpunk City Clicker -->
+    <div class="project-card">
+      <div class="project-thumb">Screenshot / GIF / Video</div>
+      <div class="project-body">
+        <div class="project-top-row">
+          <span class="project-name">Idle Cyberpunk City Clicker — Economy & Progression</span>
+          <span class="project-badge">Shipped · 2025</span>
+        </div>
+        <p class="project-desc">
+          Built on lessons from Idle Kingdom Builder. Expanded the core loop with deep
+          progression tiers, used Unity Analytics to identify drop-off points, and iteratively
+          rebalanced the economy and store to optimize session length and conversion.
+          8,700+ organic downloads, 4.6/5 rating on Google Play.
+        </p>
+        <div class="meta-row">
+          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer & Developer (Solo)</span></div>
+          <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity 6</span></div>
+          <div class="meta-pair"><span class="ml">Platform</span><span class="mv">Android</span></div>
+        </div>
+        <div class="project-tags">
+          <span class="ptag">Economy Design</span>
+          <span class="ptag">Progression Tuning</span>
+          <span class="ptag">Unity Analytics</span>
+          <span class="ptag">AdMob / IAP</span>
+          <span class="ptag">Data-Driven Iteration</span>
+        </div>
+        <div class="project-actions">
+          <a href="#case-study">Case study →</a>
+          <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker">Play on Google Play →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 2: Idle Kingdom Builder -->
+    <div class="project-card">
+      <div class="project-thumb">Screenshot / GIF / Video</div>
+      <div class="project-body">
+        <div class="project-top-row">
+          <span class="project-name">Idle Kingdom Builder — Resource Economy System</span>
+          <span class="project-badge">Shipped · 2024</span>
+        </div>
+        <p class="project-desc">
+          Designed the core loop, economy system, and progression curves for a medieval
+          idle clicker. Integrated analytics to track player behavior and fine-tuned
+          resource flows post-launch. 800+ downloads with 30% D30 retention —
+          3–6× the casual mobile average of 5–10%.
+        </p>
+        <div class="meta-row">
+          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer & Developer (Solo)</span></div>
+          <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity</span></div>
+          <div class="meta-pair"><span class="ml">Platform</span><span class="mv">Android</span></div>
+        </div>
+        <div class="project-tags">
+          <span class="ptag">Economy Design</span>
+          <span class="ptag">Balancing</span>
+          <span class="ptag">Player Analytics</span>
+          <span class="ptag">Retention</span>
+          <span class="ptag">Monetization</span>
+        </div>
+        <div class="project-actions">
+          <a href="#">Case study →</a>
+          <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder&pcampaignid=web_share">Play on Google Play →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 3: Guardian's Falls -->
+    <div class="project-card">
+      <div class="project-thumb">Gameplay GIF / Blockout</div>
+      <div class="project-body">
+        <div class="project-top-row">
+          <span class="project-name">Guardian's Falls — Wounds</span>
+          <span class="project-badge">Graduation Project · 2023</span>
+        </div>
+        <p class="project-desc">
+          Led design, programming, and production for a 2.5D metroidvania as my graduation
+          project at PUC-SP. Designed core systems and parkour mechanics, coordinated the
+          team through weekly meetings with our academic advisor, and managed the full
+          asset pipeline. Well received by the examining committee.
+        </p>
+        <div class="meta-row">
+          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Game Designer, Programmer & Producer</span></div>
+          <div class="meta-pair"><span class="ml">Team</span><span class="mv">Multi-disciplinary</span></div>
+          <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity</span></div>
+          <div class="meta-pair"><span class="ml">Platform</span><span class="mv">PC</span></div>
+        </div>
+        <div class="project-tags">
+          <span class="ptag">Systems Design</span>
+          <span class="ptag">Level Design</span>
+          <span class="ptag">Production</span>
+          <span class="ptag">C#</span>
+          <span class="ptag">Team Leadership</span>
+        </div>
+        <div class="project-actions">
+          <a href="#">Case study →</a>
+          <a href="https://www.jhorro.com/guardiansfalls">Play demo on itch.io →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 4: Beasts of Agony (Showcase card) -->
+    <div class="project-card">
+      <div class="project-thumb">Gameplay GIF</div>
+      <div class="project-body">
+        <div class="project-top-row">
+          <span class="project-name">Beasts of Agony</span>
+          <span class="project-badge">Jam · 9 days · 2023</span>
+        </div>
+        <p class="project-desc">
+          Souls-like game built in 9 days for PUCJam (theme: "Sacred"). Designed levels,
+          balanced combat, programmed core systems and UI/UX, and coordinated the team
+          as producer. Won Best Art at PUCJam 2023.
+        </p>
+        <div class="meta-row">
+          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer, Programmer & Producer</span></div>
+          <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity</span></div>
+          <div class="meta-pair"><span class="ml">Award</span><span class="mv">🏆 Best Art — PUCJam 2023</span></div>
+        </div>
+        <div class="project-tags">
+          <span class="ptag">Level Design</span>
+          <span class="ptag">Combat Balancing</span>
+          <span class="ptag">Rapid Prototyping</span>
+          <span class="ptag">Game Jam</span>
+        </div>
+        <div class="project-actions">
+          <a href="https://www.jhorro.com/beastsofagony">Play on itch.io →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Project 5: Operação Bagre Noturno (Showcase card) -->
+    <div class="project-card">
+      <div class="project-thumb">Gameplay GIF</div>
+      <div class="project-body">
+        <div class="project-top-row">
+          <span class="project-name">Operação Bagre Noturno: Lux in Tenebris</span>
+          <span class="project-badge">Jam · 3 weeks · 2024</span>
+        </div>
+        <p class="project-desc">
+          Stealth action comedy set in an alternate 2031 Brazil. Designed gameplay systems
+          blending stealth and action, created 3D assets, and wrote narrative for a
+          geopolitical satire. Praised for its unique espionage-meets-comedy tone.
+        </p>
+        <div class="meta-row">
+          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer, Producer & 3D Artist</span></div>
+          <div class="meta-pair"><span class="ml">Team</span><span class="mv">4</span></div>
+          <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity</span></div>
+          <div class="meta-pair"><span class="ml">Event</span><span class="mv">CtrlAltJam#3</span></div>
+        </div>
+        <div class="project-tags">
+          <span class="ptag">Stealth Systems</span>
+          <span class="ptag">Narrative Design</span>
+          <span class="ptag">3D Art</span>
+          <span class="ptag">Game Jam</span>
+        </div>
+        <div class="project-actions">
+          <a href="https://jhorro.itch.io/operacao-bagre-noturno">Play on itch.io →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <strong>Card format —</strong>
+      Top 3 projects get case studies (deep dives). Bottom 2 are showcase cards — shorter,
+      but still framed as problems solved. The idle games tell a connected learning arc:
+      Kingdom Builder → Cyberpunk City shows growth.
+    </div>
+  </section>
+
+  <!-- CASE STUDY -->
+  <section id="case-study">
+    <div class="section-header">
+      <h2 class="section-title">Case Study — Idle Kingdom Builder</h2>
+      <span class="section-aside">Economy design · Data-driven iteration · 30% D30 retention</span>
+    </div>
+
+    <div class="cs-grid">
+      <div class="cs-card">
+        <div class="cs-label">01 · Problem</div>
+        <h4>Players churning at mid-game</h4>
+        <p>Early progression felt satisfying, but analytics showed a drop-off once resource generation plateaued. Players weren't reaching the ascension system.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-label">02 · Process</div>
+        <h4>Spreadsheet modeling + analytics</h4>
+        <p>Built economy simulation spreadsheets to map resource faucets and sinks. Used Unity Analytics to pinpoint exact drop-off points in the progression funnel.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-label">03 · Solution</div>
+        <h4>Rebalanced curves + new sinks</h4>
+        <p>Adjusted progression curves to maintain a sense of growth through mid-game. Added meaningful resource sinks and tuned the ascension unlock timing.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-label">04 · Outcome</div>
+        <h4>30% D30 retention</h4>
+        <p>3–6× the casual mobile average (5–10%). 800+ organic downloads. Lessons directly shaped the expanded economy in Idle Cyberpunk City Clicker.</p>
+      </div>
+    </div>
+
+    <div class="media-placeholder">
+      Process artifacts: economy flow spreadsheets, progression curve charts, Unity Analytics
+      dashboards, before/after balancing data, player funnel screenshots — this is where
+      your statistics background shines.
+    </div>
+
+    <div class="tip">
+      <strong>Your edge —</strong>
+      Most game designers show screenshots. You can show spreadsheets, economy flow diagrams,
+      retention curves, and before/after data. The statistics background is rare — lean into it.
+      Connect this case study to Idle Cyberpunk City as a learning arc.
+    </div>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about">
+    <div class="section-header">
+      <h2 class="section-title">About</h2>
+    </div>
+
+    <div class="about-layout">
+      <div class="about-photo">Photo</div>
+      <div class="about-body">
+        <p>
+          Game designer with a statistics background — I model economies in spreadsheets
+          before they ever hit an engine. 5+ years shipping 12+ titles across mobile, PC,
+          and web. I've solo-shipped two idle games on Google Play with real retention
+          metrics, led a team through a graduation metroidvania at PUC-SP, and won
+          Best Art at PUCJam 2023. I also teach game dev and robotics to students,
+          and volunteer as a STEM instructor.
+        </p>
+
+        <div class="tools-row">
+          <dl class="tr-item"><dt>Engines&nbsp;</dt><dd>Unity 6 (Expert), UE5, Godot</dd></dl>
+          <dl class="tr-item"><dt>Design&nbsp;</dt><dd>Economy balancing, GDDs, playtesting, progression tuning</dd></dl>
+          <dl class="tr-item"><dt>Data&nbsp;</dt><dd>Unity Analytics, Python, R, SQL</dd></dl>
+          <dl class="tr-item"><dt>Code&nbsp;</dt><dd>C# (Advanced), C++, Blueprints</dd></dl>
+          <dl class="tr-item"><dt>Tools&nbsp;</dt><dd>Git, Jira, Trello, Blender, Maya</dd></dl>
+          <dl class="tr-item"><dt>Languages&nbsp;</dt><dd>English (Fluent), Portuguese (Native), Spanish (Basic)</dd></dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <h2 class="section-title">Contact</h2>
+    </div>
+    <div class="contact-row">
+      <a href="mailto:jhocbarbosa@gmail.com" class="contact-item"><span class="ci-label">Email</span> jhocbarbosa@gmail.com</a>
+      <a href="https://linkedin.com/in/jhonnatanbarbosa" class="contact-item"><span class="ci-label">LinkedIn</span> /in/jhonnatanbarbosa</a>
+      <a href="https://www.jhorro.com" class="contact-item"><span class="ci-label">Portfolio</span> jhorro.com</a>
+      <a href="https://jhorro.itch.io" class="contact-item"><span class="ci-label">itch.io</span> jhorro.itch.io</a>
+      <a href="#" class="contact-item"><span class="ci-label">Resume</span> PDF</a>
+    </div>
+  </section>
+
+  <footer>
+    <span>Jhonnatan Barbosa · Game Designer</span>
+    <span>2026</span>
+  </footer>
+
+</div>
+</body>
+</html>

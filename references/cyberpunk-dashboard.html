@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Idle Cyberpunk City Clicker — Analytics Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #0c0f14; font-family: 'Geist', system-ui, -apple-system, sans-serif; }
+    #root { min-height: 100vh; }
+  </style>
+
+  <!-- React 18 -->
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+
+  <!-- Recharts (includes its own deps) -->
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.8.1/prop-types.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
+
+  <!-- Babel standalone for in-browser JSX -->
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+    const {
+      BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+      ResponsiveContainer, AreaChart, Area, LineChart, Line,
+      ComposedChart, Cell, LabelList, ReferenceLine
+    } = Recharts;
+
+    // ─── DATA ────────────────────────────────────────────────────────────
+    const milestones = ["1K", "1M", "1B", "1T"];
+
+    const funnelData = [
+      { name: "1K Credits", players: 220, fill: "#4ade80" },
+      { name: "1M Credits", players: 93, fill: "#22c55e" },
+      { name: "1B Credits", players: 25, fill: "#16a34a" },
+      { name: "1T Credits", players: 9, fill: "#15803d" },
+    ];
+
+    const clickVsPassive = [
+      { milestone: "1K", click: 76, passive: 24 },
+      { milestone: "1M", click: 64, passive: 36 },
+      { milestone: "1B", click: 43, passive: 57 },
+      { milestone: "1T", click: 23, passive: 77 },
+    ];
+
+    const buildingBreakdown = [
+      { milestone: "1K", clicker: 5.0, passive: 8.2, total: 13.0 },
+      { milestone: "1M", clicker: 35.9, passive: 52.7, total: 84.0 },
+      { milestone: "1B", clicker: 102.0, passive: 155.4, total: 236.1 },
+      { milestone: "1T", clicker: 147.0, passive: 263.2, total: 377.2 },
+    ];
+
+    const upgradeData = [
+      { milestone: "1K", passiveUpg: 0.6, totalUpg: 0.9 },
+      { milestone: "1M", passiveUpg: 6.3, totalUpg: 10.9 },
+      { milestone: "1B", passiveUpg: 23.4, totalUpg: 44.7 },
+      { milestone: "1T", passiveUpg: 34.3, totalUpg: 67.3 },
+    ];
+
+    const timeData = [
+      { milestone: "1K", avg: 277, min: 1, max: 7344, label: "~4.6 min" },
+      { milestone: "1M", avg: 2489, min: 0, max: 53270, label: "~41 min" },
+      { milestone: "1B", avg: 2349, min: 1, max: 19691, label: "~39 min" },
+      { milestone: "1T", avg: 19517, min: 1, max: 169296, label: "~5.4 hrs" },
+    ];
+
+    const clicksData = [
+      { milestone: "1K", avg: 356, max: 1000 },
+      { milestone: "1M", avg: 3130, max: 48112 },
+      { milestone: "1B", avg: 41117, max: 470744 },
+      { milestone: "1T", avg: 318402, max: 2400065 },
+    ];
+
+    const affordableTiers = [
+      { milestone: "1K", clicker: 3, passive: 2, total: 5 },
+      { milestone: "1M", clicker: 6, passive: 5, total: 11 },
+      { milestone: "1B", clicker: 8, passive: 8, total: 16 },
+      { milestone: "1T", clicker: 10, passive: 10, total: 20 },
+    ];
+
+    const boxPlotData = {
+      buildingsBought: [
+        { milestone: "1K", q1: 9, med: 13, q3: 16, min: 0, max: 84, iqrMean: 11.9, n: 220, kept: 214 },
+        { milestone: "1M", q1: 64, med: 85, q3: 100, min: 31, max: 257, iqrMean: 82.1, n: 93, kept: 92 },
+        { milestone: "1B", q1: 187, med: 269, q3: 299, min: 62, max: 383, iqrMean: 236.1, n: 25, kept: 25 },
+        { milestone: "1T", q1: 224, med: 490, q3: 502, min: 87, max: 541, iqrMean: 377.2, n: 9, kept: 9 },
+      ],
+      clickerBuildings: [
+        { milestone: "1K", q1: 2, med: 5, q3: 7, min: 0, max: 100, iqrMean: 4.6, n: 220, kept: 219 },
+        { milestone: "1M", q1: 27, med: 37, q3: 46, min: 0, max: 118, iqrMean: 34.3, n: 93, kept: 91 },
+        { milestone: "1B", q1: 89, med: 105, q3: 123, min: 0, max: 205, iqrMean: 108.8, n: 25, kept: 21 },
+        { milestone: "1T", q1: 116, med: 168, q3: 192, min: 12, max: 243, iqrMean: 147.0, n: 9, kept: 9 },
+      ],
+      passiveBuildings: [
+        { milestone: "1K", q1: 4, med: 8, q3: 11, min: 0, max: 79, iqrMean: 7.2, n: 220, kept: 214 },
+        { milestone: "1M", q1: 41, med: 53, q3: 68, min: 0, max: 139, iqrMean: 51.7, n: 93, kept: 90 },
+        { milestone: "1B", q1: 106, med: 180, q3: 198, min: 50, max: 228, iqrMean: 155.4, n: 25, kept: 25 },
+        { milestone: "1T", q1: 169, med: 302, q3: 363, min: 67, max: 367, iqrMean: 263.2, n: 9, kept: 9 },
+      ],
+      upgrades: [
+        { milestone: "1K", q1: 0, med: 0, q3: 1, min: 0, max: 64, iqrMean: 0.5, n: 220, kept: 216 },
+        { milestone: "1M", q1: 8, med: 10, q3: 13, min: 0, max: 81, iqrMean: 10.7, n: 93, kept: 85 },
+        { milestone: "1B", q1: 40, med: 42, q3: 51, min: 5, max: 101, iqrMean: 44.0, n: 25, kept: 23 },
+        { milestone: "1T", q1: 55, med: 76, q3: 91, min: 7, max: 104, iqrMean: 67.3, n: 9, kept: 9 },
+      ],
+      passiveUpgrades: [
+        { milestone: "1K", q1: 0, med: 0, q3: 1, min: 0, max: 14, iqrMean: 0.4, n: 220, kept: 216 },
+        { milestone: "1M", q1: 4, med: 6, q3: 8, min: 0, max: 31, iqrMean: 5.7, n: 93, kept: 91 },
+        { milestone: "1B", q1: 20, med: 24, q3: 26, min: 1, max: 51, iqrMean: 23.0, n: 25, kept: 21 },
+        { milestone: "1T", q1: 24, med: 40, q3: 40, min: 3, max: 58, iqrMean: 34.3, n: 9, kept: 9 },
+      ],
+      totalClicks: [
+        { milestone: "1K", q1: 196, med: 302, q3: 467, min: 0, max: 1000, iqrMean: 320.1, n: 220, kept: 208 },
+        { milestone: "1M", q1: 1918, med: 2441, q3: 3372, min: 0, max: 48112, iqrMean: 2348.9, n: 93, kept: 86 },
+        { milestone: "1B", q1: 1901, med: 15642, q3: 31402, min: 0, max: 470744, iqrMean: 15620.5, n: 25, kept: 23 },
+        { milestone: "1T", q1: 167, med: 1652, q3: 125396, min: 46, max: 2400065, iqrMean: 19822.1, n: 9, kept: 7 },
+      ],
+      timeElapsed: [
+        { milestone: "1K", q1: 126, med: 195, q3: 276, min: 1, max: 7344, iqrMean: 193.6, n: 220, kept: 208 },
+        { milestone: "1M", q1: 366, med: 824, q3: 1717, min: 0, max: 53270, iqrMean: 892.5, n: 93, kept: 83 },
+        { milestone: "1B", q1: 3, med: 408, q3: 3012, min: 1, max: 19691, iqrMean: 1357.3, n: 25, kept: 23 },
+        { milestone: "1T", q1: 1, med: 2, q3: 525, min: 1, max: 169296, iqrMean: 90.0, n: 9, kept: 7, broken: true },
+      ],
+    };
+
+    const buildingPrices = {
+      clicker: [
+        { tier: 1, base: 5, upgrade: 500 },
+        { tier: 2, base: 50, upgrade: 2500 },
+        { tier: 3, base: 750, upgrade: 12500 },
+        { tier: 4, base: 7500, upgrade: 35000 },
+        { tier: 5, base: 75000, upgrade: 69000 },
+        { tier: 6, base: 750000, upgrade: 175000 },
+        { tier: 7, base: 1e7, upgrade: 325000 },
+        { tier: 8, base: 1.75e8, upgrade: 1125000 },
+        { tier: 9, base: 2.5e9, upgrade: 2750000 },
+        { tier: 10, base: 4e10, upgrade: 5895000 },
+      ],
+      passive: [
+        { tier: 1, base: 10, upgrade: 150 },
+        { tier: 2, base: 100, upgrade: 1500 },
+        { tier: 3, base: 1600, upgrade: 20500 },
+        { tier: 4, base: 14500, upgrade: 215000 },
+        { tier: 5, base: 130000, upgrade: 2300000 },
+        { tier: 6, base: 1675000, upgrade: 2.25e7 },
+        { tier: 7, base: 2e7, upgrade: 3e8 },
+        { tier: 8, base: 3.5e8, upgrade: 5.25e9 },
+        { tier: 9, base: 5e9, upgrade: 7.5e10 },
+        { tier: 10, base: 8e10, upgrade: 1.2e12 },
+      ],
+      clickerMult: 1.65,
+      passiveMult: 1.25,
+      clickerUpgMult: 10,
+      passiveUpgMult: 5,
+    };
+
+    const costScaling = [];
+    const clickerBase = 5, clickerMult = 1.65;
+    const passiveBase = 10, passiveMult = 1.25;
+    let cCum = 0, pCum = 0, cPrice = clickerBase, pPrice = passiveBase;
+    for (let i = 1; i <= 30; i++) {
+      cCum += cPrice; pCum += pPrice;
+      costScaling.push({ n: i, clickerCost: Math.round(cCum), passiveCost: Math.round(pCum) });
+      cPrice *= clickerMult; pPrice *= passiveMult;
+    }
+
+    const buildingDist1K = [
+      {val:0,count:7},{val:2,count:1},{val:3,count:5},{val:4,count:6},{val:5,count:7},
+      {val:6,count:7},{val:7,count:9},{val:8,count:4},{val:9,count:16},{val:10,count:15},
+      {val:11,count:11},{val:12,count:13},{val:13,count:22},{val:14,count:22},{val:15,count:10},
+      {val:16,count:19},{val:17,count:21},{val:18,count:14},{val:19,count:1},{val:20,count:2},
+      {val:21,count:1},{val:23,count:1},{val:27,count:1},{val:40,count:1},{val:44,count:1},
+      {val:49,count:1},{val:65,count:1},{val:84,count:1}
+    ];
+
+    const buildingDist1M = [
+      {val:31,count:1},{val:35,count:1},{val:42,count:1},{val:43,count:1},{val:47,count:1},
+      {val:50,count:1},{val:54,count:1},{val:55,count:1},{val:56,count:2},{val:57,count:2},
+      {val:58,count:1},{val:59,count:1},{val:60,count:2},{val:61,count:1},{val:62,count:1},
+      {val:63,count:1},{val:64,count:1},{val:65,count:2},{val:66,count:1},{val:67,count:1},
+      {val:68,count:2},{val:69,count:2},{val:70,count:2},{val:71,count:2},{val:72,count:2},
+      {val:73,count:2},{val:74,count:2},{val:75,count:2},{val:76,count:1},{val:77,count:2},
+      {val:78,count:3},{val:79,count:1},{val:80,count:1},{val:81,count:2},{val:82,count:1},
+      {val:83,count:1},{val:84,count:1},{val:85,count:3},{val:86,count:2},{val:87,count:2},
+      {val:88,count:2},{val:89,count:3},{val:90,count:2},{val:91,count:1},{val:92,count:1},
+      {val:93,count:1},{val:94,count:2},{val:95,count:2},{val:96,count:2},{val:97,count:1},
+      {val:98,count:1},{val:99,count:1},{val:100,count:1},{val:101,count:2},{val:102,count:1},
+      {val:103,count:1},{val:108,count:1},{val:115,count:1},{val:121,count:1},{val:132,count:1},
+      {val:168,count:1},{val:257,count:1}
+    ];
+
+    // ─── THEME ───────────────────────────────────────────────────────────
+    const theme = {
+      bg: "#0c0f14",
+      surface: "#13161d",
+      surfaceHover: "#1a1e28",
+      border: "#1f2430",
+      text: "#e2e4e9",
+      textMuted: "#7a7f8e",
+      accent: "#4ade80",
+      accentDim: "#22643a",
+      cyan: "#22d3ee",
+      amber: "#fbbf24",
+      red: "#f87171",
+      purple: "#a78bfa",
+    };
+
+    const chartColors = {
+      click: "#22d3ee",
+      passive: "#4ade80",
+      total: "#a78bfa",
+      bar: "#4ade80",
+      line: "#22d3ee",
+    };
+
+    // ─── HELPERS ────────────────────────────────────────────────────────
+    const fmt = (v) => {
+      if (v >= 1e12) return `${(v/1e12).toFixed(1)}T`;
+      if (v >= 1e9) return `${(v/1e9).toFixed(1)}B`;
+      if (v >= 1e6) return `${(v/1e6).toFixed(1)}M`;
+      if (v >= 1e3) return `${(v/1e3).toFixed(1)}K`;
+      return v.toString();
+    };
+
+    // ─── COMPONENTS ──────────────────────────────────────────────────────
+
+    const CustomTooltip = ({ active, payload, label }) => {
+      if (!active || !payload?.length) return null;
+      return (
+        <div style={{
+          background: theme.surface,
+          border: `1px solid ${theme.border}`,
+          borderRadius: 6,
+          padding: "10px 14px",
+          fontFamily: "'Geist', system-ui, sans-serif",
+          fontSize: 13,
+        }}>
+          <div style={{ color: theme.textMuted, marginBottom: 6, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 }}>{label}</div>
+          {payload.map((p, i) => (
+            <div key={i} style={{ color: p.color || theme.text, marginBottom: 2 }}>
+              {p.name}: <strong>{typeof p.value === "number" ? p.value.toLocaleString() : p.value}</strong>
+              {p.payload?.unit || ""}
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    const tabs = [
+      { id: "funnel", label: "Player Funnel" },
+      { id: "economy", label: "Click vs Passive" },
+      { id: "buildings", label: "Building Mix" },
+      { id: "upgrades", label: "Upgrades" },
+      { id: "time", label: "Time & Clicks" },
+      { id: "pricing", label: "Price Curves" },
+      { id: "dataQuality", label: "Data Integrity" },
+    ];
+
+    const InsightBox = ({ children }) => (
+      <div style={{
+        background: `${theme.accent}08`,
+        border: `1px solid ${theme.accentDim}`,
+        borderRadius: 8,
+        padding: "12px 16px",
+        marginTop: 16,
+        fontSize: 13,
+        lineHeight: 1.6,
+        color: theme.textMuted,
+      }}>
+        <span style={{ color: theme.accent, fontWeight: 600, marginRight: 6 }}>Insight</span>
+        {children}
+      </div>
+    );
+
+    const WarningBox = ({ children }) => (
+      <div style={{
+        background: `${theme.amber}08`,
+        border: `1px solid ${theme.amber}40`,
+        borderRadius: 8,
+        padding: "12px 16px",
+        marginTop: 16,
+        fontSize: 13,
+        lineHeight: 1.6,
+        color: theme.textMuted,
+      }}>
+        <span style={{ color: theme.amber, fontWeight: 600, marginRight: 6 }}>Note</span>
+        {children}
+      </div>
+    );
+
+    const StatCard = ({ label, value, sub }) => (
+      <div style={{
+        background: theme.surface,
+        border: `1px solid ${theme.border}`,
+        borderRadius: 8,
+        padding: "14px 18px",
+        flex: 1,
+        minWidth: 140,
+      }}>
+        <div style={{ fontSize: 11, color: theme.textMuted, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4 }}>{label}</div>
+        <div style={{ fontSize: 24, fontWeight: 700, color: theme.text, fontFamily: "'Geist', system-ui" }}>{value}</div>
+        {sub && <div style={{ fontSize: 12, color: theme.textMuted, marginTop: 2 }}>{sub}</div>}
+      </div>
+    );
+
+    // ─── BOX PLOT COMPONENT ─────────────────────────────────────────────
+    function BoxPlotChart({ data, title, yLabel, color }) {
+      color = color || theme.cyan;
+      const chartData = data.map(d => ({
+        milestone: d.milestone,
+        q1: d.q1,
+        iqrRange: d.q3 - d.q1,
+        med: d.med,
+        iqrMean: d.iqrMean,
+        whiskerLow: d.q1,
+        whiskerHigh: d.q3,
+        n: d.n,
+        kept: d.kept,
+      }));
+
+      return (
+        <div style={{ marginTop: 16 }}>
+          <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 4, fontWeight: 600 }}>{title}</div>
+          <div style={{ fontSize: 11, color: theme.textMuted, marginBottom: 12, display: "flex", gap: 16 }}>
+            <span><span style={{ display: "inline-block", width: 12, height: 12, background: `${color}30`, border: `1px solid ${color}`, borderRadius: 2, verticalAlign: "middle", marginRight: 4 }} />Q1–Q3 range</span>
+            <span><span style={{ display: "inline-block", width: 8, height: 8, background: theme.amber, borderRadius: "50%", verticalAlign: "middle", marginRight: 4 }} />Median</span>
+            <span><span style={{ display: "inline-block", width: 8, height: 8, background: theme.purple, borderRadius: 2, verticalAlign: "middle", marginRight: 4 }} />IQR Mean</span>
+          </div>
+          <ResponsiveContainer width="100%" height={220}>
+            <ComposedChart data={chartData} margin={{ top: 10, right: 20, bottom: 10, left: 10 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+              <XAxis dataKey="milestone" tick={{ fill: theme.text, fontSize: 13 }} />
+              <YAxis tick={{ fill: theme.textMuted, fontSize: 12 }} tickFormatter={v => {
+                if (v >= 1e6) return `${(v/1e6).toFixed(0)}M`;
+                if (v >= 1e3) return `${(v/1e3).toFixed(0)}K`;
+                return v;
+              }} />
+              <Tooltip content={({ active, payload, label }) => {
+                if (!active || !payload?.length) return null;
+                const d = data.find(x => x.milestone === label);
+                if (!d) return null;
+                return (
+                  <div style={{
+                    background: theme.surface, border: `1px solid ${theme.border}`,
+                    borderRadius: 6, padding: "10px 14px", fontSize: 12,
+                  }}>
+                    <div style={{ color: theme.textMuted, marginBottom: 6, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 }}>{label} Milestone</div>
+                    <div style={{ color: theme.textMuted }}>Q1: <strong style={{ color: theme.text }}>{d.q1.toLocaleString()}</strong></div>
+                    <div style={{ color: theme.amber }}>Median: <strong>{d.med.toLocaleString()}</strong></div>
+                    <div style={{ color: theme.textMuted }}>Q3: <strong style={{ color: theme.text }}>{d.q3.toLocaleString()}</strong></div>
+                    <div style={{ color: theme.purple, marginTop: 4 }}>IQR Mean: <strong>{d.iqrMean.toLocaleString()}</strong></div>
+                    <div style={{ color: theme.textMuted, marginTop: 4, fontSize: 11 }}>n={d.n} (kept {d.kept} after IQR filter)</div>
+                  </div>
+                );
+              }} />
+              <Bar dataKey="q1" stackId="box" fill="transparent" barSize={50} />
+              <Bar dataKey="iqrRange" stackId="box" fill={`${color}30`} stroke={color} strokeWidth={1} barSize={50} radius={[2,2,2,2]} />
+              <Line type="monotone" dataKey="med" stroke={theme.amber} strokeWidth={0} dot={{ r: 5, fill: theme.amber, strokeWidth: 0 }} name="Median" />
+              <Line type="monotone" dataKey="iqrMean" stroke={theme.purple} strokeWidth={0} dot={{ r: 4, fill: theme.purple, strokeWidth: 0 }} name="IQR Mean" />
+            </ComposedChart>
+          </ResponsiveContainer>
+        </div>
+      );
+    }
+
+    // ─── PANELS ──────────────────────────────────────────────────────────
+
+    function FunnelPanel() {
+      const conversionRates = [
+        { from: "1K", to: "1M", rate: ((93/220)*100).toFixed(1) },
+        { from: "1M", to: "1B", rate: ((25/93)*100).toFixed(1) },
+        { from: "1B", to: "1T", rate: ((9/25)*100).toFixed(1) },
+      ];
+      return (
+        <div>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
+            {funnelData.map(d => (
+              <StatCard key={d.name} label={d.name} value={d.players} sub="players" />
+            ))}
+          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <BarChart data={funnelData} layout="vertical" margin={{ left: 20, right: 40 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.border} horizontal={false} />
+              <XAxis type="number" tick={{ fill: theme.textMuted, fontSize: 12 }} />
+              <YAxis dataKey="name" type="category" width={100} tick={{ fill: theme.text, fontSize: 13 }} />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="players" radius={[0, 4, 4, 0]} barSize={36}>
+                {funnelData.map((d, i) => (
+                  <Cell key={i} fill={d.fill} />
+                ))}
+                <LabelList dataKey="players" position="right" fill={theme.text} fontSize={14} fontWeight={600} />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+          <div style={{ display: "flex", gap: 12, marginTop: 16, flexWrap: "wrap" }}>
+            {conversionRates.map(c => (
+              <div key={c.from} style={{
+                background: theme.surface, border: `1px solid ${theme.border}`,
+                borderRadius: 6, padding: "8px 14px", fontSize: 13,
+              }}>
+                <span style={{ color: theme.textMuted }}>{c.from} → {c.to}:</span>{" "}
+                <span style={{ color: theme.accent, fontWeight: 600 }}>{c.rate}%</span>
+              </div>
+            ))}
+            <div style={{
+              background: theme.surface, border: `1px solid ${theme.border}`,
+              borderRadius: 6, padding: "8px 14px", fontSize: 13,
+            }}>
+              <span style={{ color: theme.textMuted }}>Overall 1K → 1T:</span>{" "}
+              <span style={{ color: theme.amber, fontWeight: 600 }}>{((9/220)*100).toFixed(1)}%</span>
+            </div>
+          </div>
+          <InsightBox>
+            42% of players who reach 1K credits go on to hit 1M — strong early-game retention. The steepest drop is 1M → 1B (27%), indicating the mid-game progression wall typical of idle games. The 9 players who reached 1T represent the highly engaged core.
+          </InsightBox>
+        </div>
+      );
+    }
+
+    function EconomyPanel() {
+      return (
+        <div>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
+            <StatCard label="Click % at 1K" value="76%" sub="active-dominant early" />
+            <StatCard label="Click % at 1T" value="23%" sub="passive takes over" />
+            <StatCard label="Crossover Point" value="~1B" sub="passive exceeds click" />
+          </div>
+          <ResponsiveContainer width="100%" height={320}>
+            <AreaChart data={clickVsPassive} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+              <XAxis dataKey="milestone" tick={{ fill: theme.text, fontSize: 13 }} />
+              <YAxis tick={{ fill: theme.textMuted, fontSize: 12 }} domain={[0, 100]} unit="%" />
+              <Tooltip content={<CustomTooltip />} />
+              <Area type="monotone" dataKey="passive" stackId="1" stroke={chartColors.passive} fill={chartColors.passive} fillOpacity={0.3} name="Passive %" />
+              <Area type="monotone" dataKey="click" stackId="1" stroke={chartColors.click} fill={chartColors.click} fillOpacity={0.3} name="Click %" />
+              <Legend />
+            </AreaChart>
+          </ResponsiveContainer>
+          <InsightBox>
+            The economy transitions from click-dominant (76%) to passive-dominant (77%) exactly as designed. The crossover happens around the 1B milestone, confirming the idle loop kicks in at mid-game. This is the signature curve of a well-tuned idle economy — active engagement hooks players early, then passive systems sustain long-term retention.
+          </InsightBox>
+        </div>
+      );
+    }
+
+    function BuildingsPanel() {
+      const [showDist, setShowDist] = useState(false);
+      const [showBoxPlots, setShowBoxPlots] = useState(false);
+      return (
+        <div>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
+            <StatCard label="IQR Avg at 1K" value="11.9" sub="5 clicker · 7 passive" />
+            <StatCard label="IQR Avg at 1T" value="377" sub="147 clicker · 263 passive" />
+            <StatCard label="Passive Ratio" value="60→70%" sub="grows with progression" />
+          </div>
+          <ResponsiveContainer width="100%" height={320}>
+            <BarChart data={buildingBreakdown} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+              <XAxis dataKey="milestone" tick={{ fill: theme.text, fontSize: 13 }} />
+              <YAxis tick={{ fill: theme.textMuted, fontSize: 12 }} />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="clicker" stackId="a" fill={chartColors.click} name="Clicker Buildings" radius={[0,0,0,0]} />
+              <Bar dataKey="passive" stackId="a" fill={chartColors.passive} name="Passive Buildings" radius={[4,4,0,0]} />
+              <Legend />
+            </BarChart>
+          </ResponsiveContainer>
+
+          <div style={{ display: "flex", gap: 8, marginTop: 16 }}>
+            <button onClick={() => setShowBoxPlots(!showBoxPlots)} style={{
+              background: showBoxPlots ? theme.surfaceHover : theme.surface,
+              border: `1px solid ${showBoxPlots ? theme.accent : theme.border}`,
+              borderRadius: 6, padding: "8px 16px",
+              color: theme.accent, cursor: "pointer", fontSize: 13,
+            }}>
+              {showBoxPlots ? "Hide" : "Show"} IQR box plots
+            </button>
+            <button onClick={() => setShowDist(!showDist)} style={{
+              background: showDist ? theme.surfaceHover : theme.surface,
+              border: `1px solid ${showDist ? theme.cyan : theme.border}`,
+              borderRadius: 6, padding: "8px 16px",
+              color: theme.cyan, cursor: "pointer", fontSize: 13,
+            }}>
+              {showDist ? "Hide" : "Show"} 1K distribution
+            </button>
+          </div>
+
+          {showBoxPlots && (
+            <div>
+              <BoxPlotChart data={boxPlotData.buildingsBought} title="Total Buildings Owned — IQR Range" color={theme.accent} />
+              <BoxPlotChart data={boxPlotData.clickerBuildings} title="Clicker Buildings — IQR Range" color={theme.cyan} />
+              <BoxPlotChart data={boxPlotData.passiveBuildings} title="Passive Buildings — IQR Range" color={theme.accent} />
+              <div style={{ marginTop: 12, fontSize: 12, color: theme.textMuted, lineHeight: 1.7 }}>
+                <strong style={{ color: theme.text }}>IQR filtering notes:</strong> Outliers beyond 1.5×IQR from Q1/Q3 are excluded.
+                At 1K, 6 of 220 players were filtered out for total buildings (values like 40, 44, 49, 65, 84).
+                IQR Mean represents the "typical" player at each milestone without skew from extreme grinders or idle players.
+              </div>
+            </div>
+          )}
+
+          {showDist && (
+            <div style={{ marginTop: 12 }}>
+              <div style={{ fontSize: 12, color: theme.textMuted, marginBottom: 8 }}>
+                Buildings owned when players first hit 1,000 credits (220 players)
+              </div>
+              <ResponsiveContainer width="100%" height={200}>
+                <BarChart data={buildingDist1K} margin={{ top: 5, right: 10, bottom: 5, left: 0 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                  <XAxis dataKey="val" tick={{ fill: theme.textMuted, fontSize: 10 }} label={{ value: "buildings owned", position: "bottom", fill: theme.textMuted, fontSize: 11 }} />
+                  <YAxis tick={{ fill: theme.textMuted, fontSize: 10 }} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar dataKey="count" fill={chartColors.passive} name="Players" radius={[2,2,0,0]} barSize={12} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          )}
+
+          <InsightBox>
+            Players consistently acquire more passive buildings than clicker buildings at every milestone. The ratio shifts from ~60% passive at 1K to 70% at 1T — passive buildings have gentler price scaling (1.25× vs 1.65×), making them a more efficient spend per credit. IQR-filtered averages remove extreme outliers (e.g. the 84-building player at 1K) for a cleaner picture of typical behavior.
+          </InsightBox>
+        </div>
+      );
+    }
+
+    function UpgradesPanel() {
+      const [showBoxPlots, setShowBoxPlots] = useState(false);
+      const estimatedClickerUpg = upgradeData.map(d => ({
+        ...d,
+        estClickerUpg: Math.round(d.totalUpg - d.passiveUpg),
+      }));
+      return (
+        <div>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
+            <StatCard label="Avg Upgrades at 1K" value="0.5" sub="IQR mean (0.9 raw)" />
+            <StatCard label="Avg Upgrades at 1T" value="67.3" sub="~34 passive + ~33 est. clicker" />
+            <StatCard label="1K Players w/ 0 Upgrades" value="52%" sub="114 of 220" />
+          </div>
+          <ResponsiveContainer width="100%" height={320}>
+            <ComposedChart data={estimatedClickerUpg} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+              <XAxis dataKey="milestone" tick={{ fill: theme.text, fontSize: 13 }} />
+              <YAxis tick={{ fill: theme.textMuted, fontSize: 12 }} />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="passiveUpg" fill={chartColors.passive} name="Passive Upgrades" barSize={30} radius={[0,0,0,0]} />
+              <Bar dataKey="estClickerUpg" fill={chartColors.click} name="Est. Clicker Upgrades" barSize={30} radius={[4,4,0,0]} />
+              <Line type="monotone" dataKey="totalUpg" stroke={chartColors.total} name="Total Upgrades" strokeWidth={2} dot={{ r: 4, fill: chartColors.total }} />
+              <Legend />
+            </ComposedChart>
+          </ResponsiveContainer>
+
+          <WarningBox>
+            <strong>Note (pre-1.40):</strong> The <code style={{ background: theme.bg, padding: "2px 6px", borderRadius: 3, fontSize: 12 }}>clickerUpgradesBought</code> event was not incrementing due to a copy-paste error in the purchase handler — all clicker and offline upgrade purchases were incorrectly incrementing <code style={{ background: theme.bg, padding: "2px 6px", borderRadius: 3, fontSize: 12 }}>clickerBuildingsBought</code> instead. Clicker upgrade counts shown here are estimated as <em>totalUpgrades − passiveUpgrades</em>. This has been resolved for the next build.
+          </WarningBox>
+
+          <button onClick={() => setShowBoxPlots(!showBoxPlots)} style={{
+            marginTop: 12,
+            background: showBoxPlots ? theme.surfaceHover : theme.surface,
+            border: `1px solid ${showBoxPlots ? theme.accent : theme.border}`,
+            borderRadius: 6, padding: "8px 16px",
+            color: theme.accent, cursor: "pointer", fontSize: 13,
+          }}>
+            {showBoxPlots ? "Hide" : "Show"} IQR box plots
+          </button>
+
+          {showBoxPlots && (
+            <div>
+              <BoxPlotChart data={boxPlotData.upgrades} title="Total Upgrades — IQR Range" color={theme.purple} />
+              <BoxPlotChart data={boxPlotData.passiveUpgrades} title="Passive Upgrades — IQR Range" color={theme.accent} />
+              <div style={{ marginTop: 12, fontSize: 12, color: theme.textMuted, lineHeight: 1.7 }}>
+                At 1M, 8 of 93 players are filtered as outliers for total upgrades. The IQR mean of 10.7 is close to the raw 10.9 — most data is well-behaved at this milestone. At 1K, the median is 0 and Q3 is just 1, confirming most players skip early upgrades entirely.
+              </div>
+            </div>
+          )}
+
+          <InsightBox>
+            52% of players had zero upgrades at the 1K milestone — the first upgrade costs 150–500 credits, which competes directly with buying the next building. Players rationally prioritize new buildings over upgrades early on. By 1B, the IQR mean jumps to 44.0 upgrades, showing that upgrades become the main progression lever in mid-to-late game once building costs outpace their returns.
+          </InsightBox>
+        </div>
+      );
+    }
+
+    function TimePanel() {
+      const [showBoxPlots, setShowBoxPlots] = useState(false);
+      return (
+        <div>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
+            <StatCard label="IQR Avg to 1K" value="3.2 min" sub="194s (raw avg 277s)" />
+            <StatCard label="IQR Avg to 1M" value="14.9 min" sub="893s (raw avg 2,489s)" />
+            <StatCard label="Avg to 1T" value="N/A" sub="tracking defect — fixed in next build" />
+          </div>
+          <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 8, fontWeight: 600 }}>
+            Average Total Clicks per Milestone
+          </div>
+          <ResponsiveContainer width="100%" height={280}>
+            <BarChart data={clicksData} margin={{ top: 10, right: 20, bottom: 10, left: 10 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+              <XAxis dataKey="milestone" tick={{ fill: theme.text, fontSize: 13 }} />
+              <YAxis tick={{ fill: theme.textMuted, fontSize: 12 }} tickFormatter={v => v >= 1000 ? `${(v/1000).toFixed(0)}K` : v} />
+              <Tooltip content={<CustomTooltip />} />
+              <Bar dataKey="avg" fill={chartColors.click} name="Avg Clicks" radius={[4,4,0,0]} barSize={40}>
+                <LabelList dataKey="avg" position="top" fill={theme.text} fontSize={12} formatter={v => v >= 1000 ? `${(v/1000).toFixed(1)}K` : v} />
+              </Bar>
+            </BarChart>
+          </ResponsiveContainer>
+
+          <div style={{ marginTop: 20, fontSize: 13, color: theme.textMuted, marginBottom: 8, fontWeight: 600 }}>
+            Click Engagement Intensity (Clicks per Second of Play)
+          </div>
+          <div style={{ fontSize: 11, color: theme.amber, marginBottom: 8 }}>
+            Note: 1B and 1T intensity values are excluded due to a timeElapsed tracking defect identified in this build — see Data Quality tab for details
+          </div>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+            {[
+              { m: "1K", cps: (356/277).toFixed(1), reliable: true },
+              { m: "1M", cps: (3130/2489).toFixed(1), reliable: true },
+              { m: "1B", cps: "?", reliable: false },
+              { m: "1T", cps: "?", reliable: false },
+            ].map(d => (
+              <div key={d.m} style={{
+                background: theme.surface,
+                border: `1px solid ${d.reliable ? theme.border : `${theme.amber}40`}`,
+                borderRadius: 6, padding: "8px 14px", fontSize: 13,
+                flex: 1, minWidth: 100, textAlign: "center",
+                opacity: d.reliable ? 1 : 0.5,
+              }}>
+                <div style={{ color: theme.textMuted, fontSize: 11 }}>{d.m}</div>
+                <div style={{ color: d.reliable ? theme.cyan : theme.amber, fontWeight: 700, fontSize: 18 }}>{d.cps}</div>
+                <div style={{ color: theme.textMuted, fontSize: 11 }}>{d.reliable ? "clicks/sec" : "unreliable"}</div>
+              </div>
+            ))}
+          </div>
+
+          <button onClick={() => setShowBoxPlots(!showBoxPlots)} style={{
+            marginTop: 16,
+            background: showBoxPlots ? theme.surfaceHover : theme.surface,
+            border: `1px solid ${showBoxPlots ? theme.accent : theme.border}`,
+            borderRadius: 6, padding: "8px 16px",
+            color: theme.accent, cursor: "pointer", fontSize: 13,
+          }}>
+            {showBoxPlots ? "Hide" : "Show"} IQR box plots
+          </button>
+
+          {showBoxPlots && (
+            <div>
+              <BoxPlotChart data={boxPlotData.totalClicks} title="Total Clicks — IQR Range" color={theme.cyan} />
+              <BoxPlotChart data={boxPlotData.timeElapsed.filter(d => !d.broken)} title="Time Elapsed (seconds) — IQR Range (1T excluded)" color={theme.amber} />
+              <WarningBox>
+                <strong>timeElapsed at 1B/1T (pre-1.40):</strong> A PlayerPrefs key mismatch caused the first-open timestamp to be overwritten on every session launch, resulting in near-zero elapsed time values at later milestones. The root cause — a string literal used in place of a variable reference during the save call — has been corrected for the next build.
+              </WarningBox>
+            </div>
+          )}
+
+          <InsightBox>
+            IQR-filtered time to 1K is approximately 3.2 minutes (vs 4.6 raw) and to 1M is approximately 14.9 minutes (vs 41 raw), indicating significant outlier influence on the raw averages. Click intensity is consistent at 1K and 1M (~1.3 clicks/sec). The 1B and 1T time data is excluded from analysis due to a timestamp persistence defect that has been resolved for the next build.
+          </InsightBox>
+        </div>
+      );
+    }
+
+    function PricingPanel() {
+      const [showPriceTable, setShowPriceTable] = useState(false);
+
+      const tierData = affordableTiers.map(d => ({
+        ...d,
+        actualBuildings: buildingBreakdown.find(b => b.milestone === d.milestone)?.total || 0,
+      }));
+
+      const cellStyle = { padding: "6px 10px", fontSize: 12, borderBottom: `1px solid ${theme.border}` };
+      const headerStyle = { ...cellStyle, color: theme.textMuted, fontWeight: 600, fontSize: 11, textTransform: "uppercase", letterSpacing: 0.5 };
+
+      return (
+        <div>
+          <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 8, fontWeight: 600 }}>
+            Building Tiers Affordable at Each Milestone
+          </div>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
+            {tierData.map(d => (
+              <div key={d.milestone} style={{
+                background: theme.surface, border: `1px solid ${theme.border}`,
+                borderRadius: 8, padding: "12px 16px", flex: 1, minWidth: 120,
+              }}>
+                <div style={{ fontSize: 11, color: theme.textMuted, textTransform: "uppercase", letterSpacing: 1 }}>At {d.milestone}</div>
+                <div style={{ fontSize: 20, fontWeight: 700, color: theme.accent, marginTop: 4 }}>{d.total} tiers</div>
+                <div style={{ fontSize: 12, color: theme.textMuted }}>{d.clicker}C + {d.passive}P unlocked</div>
+                <div style={{ fontSize: 12, color: theme.cyan, marginTop: 4 }}>Actual avg: {d.actualBuildings} owned</div>
+              </div>
+            ))}
+          </div>
+
+          <button onClick={() => setShowPriceTable(!showPriceTable)} style={{
+            marginBottom: 16,
+            background: showPriceTable ? theme.surfaceHover : theme.surface,
+            border: `1px solid ${showPriceTable ? theme.accent : theme.border}`,
+            borderRadius: 6, padding: "8px 16px",
+            color: theme.accent, cursor: "pointer", fontSize: 13,
+          }}>
+            {showPriceTable ? "Hide" : "Show"} full building price table
+          </button>
+
+          {showPriceTable && (
+            <div style={{ marginBottom: 20 }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+                <div>
+                  <div style={{ color: theme.cyan, fontWeight: 600, fontSize: 13, marginBottom: 8 }}>
+                    Clicker Buildings <span style={{ color: theme.textMuted, fontWeight: 400, fontSize: 11 }}>· {buildingPrices.clickerMult}× per copy · {buildingPrices.clickerUpgMult}× upgrade price</span>
+                  </div>
+                  <table style={{ width: "100%", borderCollapse: "collapse", background: theme.surface, borderRadius: 6, overflow: "hidden" }}>
+                    <thead>
+                      <tr style={{ background: theme.surfaceHover }}>
+                        <th style={headerStyle}>Tier</th>
+                        <th style={{ ...headerStyle, textAlign: "right" }}>Base Price</th>
+                        <th style={{ ...headerStyle, textAlign: "right" }}>Upgrade</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {buildingPrices.clicker.map(b => (
+                        <tr key={b.tier}>
+                          <td style={{ ...cellStyle, color: theme.text }}>{b.tier}</td>
+                          <td style={{ ...cellStyle, color: theme.cyan, textAlign: "right", fontFamily: "monospace" }}>{fmt(b.base)}</td>
+                          <td style={{ ...cellStyle, color: theme.textMuted, textAlign: "right", fontFamily: "monospace" }}>{fmt(b.upgrade)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+                <div>
+                  <div style={{ color: theme.accent, fontWeight: 600, fontSize: 13, marginBottom: 8 }}>
+                    Passive Buildings <span style={{ color: theme.textMuted, fontWeight: 400, fontSize: 11 }}>· {buildingPrices.passiveMult}× per copy · {buildingPrices.passiveUpgMult}× upgrade price</span>
+                  </div>
+                  <table style={{ width: "100%", borderCollapse: "collapse", background: theme.surface, borderRadius: 6, overflow: "hidden" }}>
+                    <thead>
+                      <tr style={{ background: theme.surfaceHover }}>
+                        <th style={headerStyle}>Tier</th>
+                        <th style={{ ...headerStyle, textAlign: "right" }}>Base Price</th>
+                        <th style={{ ...headerStyle, textAlign: "right" }}>Upgrade</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {buildingPrices.passive.map(b => (
+                        <tr key={b.tier}>
+                          <td style={{ ...cellStyle, color: theme.text }}>{b.tier}</td>
+                          <td style={{ ...cellStyle, color: theme.accent, textAlign: "right", fontFamily: "monospace" }}>{fmt(b.base)}</td>
+                          <td style={{ ...cellStyle, color: theme.textMuted, textAlign: "right", fontFamily: "monospace" }}>{fmt(b.upgrade)}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+              <div style={{ marginTop: 12, fontSize: 12, color: theme.textMuted, lineHeight: 1.7 }}>
+                <strong style={{ color: theme.text }}>Mechanics:</strong> Building price multiplies after purchase (e.g. base 100 with 1.3× → next costs 130).
+                Upgrades double the building's production each time (1→2→4→8 pts/sec).
+                Upgrade price scales by its own multiplier (10× for clicker, 5× for passive).
+              </div>
+            </div>
+          )}
+
+          <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 8, fontWeight: 600 }}>
+            Cumulative Cost: Tier 1 Building × N Copies
+          </div>
+          <div style={{ fontSize: 12, color: theme.textMuted, marginBottom: 12 }}>
+            Shows how the 1.65× clicker multiplier outpaces the 1.25× passive multiplier
+          </div>
+          <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={costScaling.slice(0, 25)} margin={{ top: 10, right: 20, bottom: 10, left: 10 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+              <XAxis dataKey="n" tick={{ fill: theme.textMuted, fontSize: 12 }} label={{ value: "copies owned", position: "bottom", fill: theme.textMuted, fontSize: 11 }} />
+              <YAxis tick={{ fill: theme.textMuted, fontSize: 12 }} tickFormatter={v => {
+                if (v >= 1e6) return `${(v/1e6).toFixed(0)}M`;
+                if (v >= 1e3) return `${(v/1e3).toFixed(0)}K`;
+                return v;
+              }} scale="log" domain={['auto', 'auto']} />
+              <Tooltip content={<CustomTooltip />} />
+              <Line type="monotone" dataKey="clickerCost" stroke={chartColors.click} name="Clicker Tier 1 (1.65×)" strokeWidth={2} dot={false} />
+              <Line type="monotone" dataKey="passiveCost" stroke={chartColors.passive} name="Passive Tier 1 (1.25×)" strokeWidth={2} dot={false} />
+              <Legend />
+            </LineChart>
+          </ResponsiveContainer>
+
+          <div style={{ marginTop: 20, fontSize: 13, color: theme.textMuted, marginBottom: 8, fontWeight: 600 }}>
+            Price Scaling Comparison
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: 12 }}>
+            <div style={{ background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 8, padding: 16 }}>
+              <div style={{ color: theme.cyan, fontWeight: 600, fontSize: 14, marginBottom: 8 }}>Clicker Economy</div>
+              <div style={{ fontSize: 12, color: theme.textMuted, lineHeight: 1.8 }}>
+                Building multiplier: <strong style={{ color: theme.text }}>1.65×</strong><br/>
+                Upgrade multiplier: <strong style={{ color: theme.text }}>10×</strong><br/>
+                Base range: <strong style={{ color: theme.text }}>5 → 40B</strong><br/>
+                10 copies of tier 1: <strong style={{ color: theme.text }}>1,143 credits</strong><br/>
+                20 copies of tier 1: <strong style={{ color: theme.text }}>172K credits</strong>
+              </div>
+            </div>
+            <div style={{ background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 8, padding: 16 }}>
+              <div style={{ color: theme.accent, fontWeight: 600, fontSize: 14, marginBottom: 8 }}>Passive Economy</div>
+              <div style={{ fontSize: 12, color: theme.textMuted, lineHeight: 1.8 }}>
+                Building multiplier: <strong style={{ color: theme.text }}>1.25×</strong><br/>
+                Upgrade multiplier: <strong style={{ color: theme.text }}>5×</strong><br/>
+                Base range: <strong style={{ color: theme.text }}>10 → 80B</strong><br/>
+                10 copies of tier 1: <strong style={{ color: theme.text }}>333 credits</strong><br/>
+                20 copies of tier 1: <strong style={{ color: theme.text }}>3,429 credits</strong>
+              </div>
+            </div>
+          </div>
+
+          <InsightBox>
+            The 1.65× clicker multiplier makes stacking clicker buildings exponentially more expensive than passive (1.25×). By the 20th copy, a clicker tier-1 building costs 50× more cumulatively than a passive one. This price asymmetry is what mechanically drives the click-to-passive transition seen in the economy data — it's not just player preference, it's the economy nudging them toward idle play.
+          </InsightBox>
+        </div>
+      );
+    }
+
+    function DataQualityPanel() {
+      return (
+        <div>
+          <div style={{ fontSize: 15, color: theme.text, fontWeight: 600, marginBottom: 6 }}>
+            Data Integrity Review — pre-1.40 Build
+          </div>
+          <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 20, lineHeight: 1.6 }}>
+            During analysis, two instrumentation defects and one precision limitation were identified in the pre-1.40 build. All issues have been root-caused and resolved for the upcoming release. The findings below document their impact on the current dataset.
+          </div>
+
+          <div style={{ fontSize: 13, color: theme.text, fontWeight: 600, marginBottom: 10 }}>
+            Identified Issues
+          </div>
+
+          <div style={{
+            background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 8,
+            padding: "16px 18px", marginBottom: 12,
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: theme.text }}>1. Clicker Upgrade Counter Misassignment</div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: theme.accent, background: `${theme.accent}15`, padding: "2px 8px", borderRadius: 4 }}>RESOLVED</div>
+            </div>
+            <div style={{ fontSize: 12, color: theme.textMuted, lineHeight: 1.7 }}>
+              <strong style={{ color: theme.textMuted }}>Cause:</strong> A copy-paste error in the purchase handler caused all clicker upgrade and offline upgrade transactions to increment <code style={{ background: theme.bg, padding: "2px 5px", borderRadius: 3, fontSize: 11 }}>clickerBuildingsBought</code> rather than <code style={{ background: theme.bg, padding: "2px 5px", borderRadius: 3, fontSize: 11 }}>clickerUpgradesBought</code>.<br/>
+              <strong style={{ color: theme.textMuted }}>Impact:</strong> <code style={{ background: theme.bg, padding: "2px 5px", borderRadius: 3, fontSize: 11 }}>clickerUpgradesBought</code> reports 0 across all milestones. The <code style={{ background: theme.bg, padding: "2px 5px", borderRadius: 3, fontSize: 11 }}>clickerBuildingsBought</code> counter is inflated by the number of clicker and offline upgrades purchased. Clicker upgrade counts in this dashboard are estimated as totalUpgrades − passiveUpgrades.<br/>
+              <strong style={{ color: theme.textMuted }}>Resolution:</strong> Corrected increment targets across all affected purchase functions (upgrades 11–24).
+            </div>
+          </div>
+
+          <div style={{
+            background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 8,
+            padding: "16px 18px", marginBottom: 12,
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: theme.text }}>2. Time Elapsed Timestamp Persistence Failure</div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: theme.accent, background: `${theme.accent}15`, padding: "2px 8px", borderRadius: 4 }}>RESOLVED</div>
+            </div>
+            <div style={{ fontSize: 12, color: theme.textMuted, lineHeight: 1.7 }}>
+              <strong style={{ color: theme.textMuted }}>Cause:</strong> A PlayerPrefs key mismatch — the save call used the string literal <code style={{ background: theme.bg, padding: "2px 5px", borderRadius: 3, fontSize: 11 }}>"FirstOpenDateKey"</code> instead of the variable value <code style={{ background: theme.bg, padding: "2px 5px", borderRadius: 3, fontSize: 11 }}>"FirstOpenDate"</code>. This caused the existence check to always fail, overwriting the timestamp on every launch.<br/>
+              <strong style={{ color: theme.textMuted }}>Impact:</strong> The timeElapsed metric is unreliable at later milestones (1T median = 2 seconds, Q1 = 1 second). Only 1K and 1M time data should be considered valid in this dataset. Click-intensity metrics derived from timeElapsed are excluded for 1B and 1T.<br/>
+              <strong style={{ color: theme.textMuted }}>Resolution:</strong> Corrected the save call to reference the variable rather than the literal string.
+            </div>
+          </div>
+
+          <div style={{
+            background: theme.surface, border: `1px solid ${theme.border}`, borderRadius: 8,
+            padding: "16px 18px", marginBottom: 20,
+          }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+              <div style={{ fontSize: 13, fontWeight: 600, color: theme.text }}>3. Float Precision Degradation at High Values</div>
+              <div style={{ fontSize: 11, fontWeight: 600, color: theme.accent, background: `${theme.accent}15`, padding: "2px 8px", borderRadius: 4 }}>RESOLVED</div>
+            </div>
+            <div style={{ fontSize: 12, color: theme.textMuted, lineHeight: 1.7 }}>
+              <strong style={{ color: theme.textMuted }}>Cause:</strong> Core score accumulators (mainScore, totalScore, scorePerSecond) were stored as 32-bit floats, which provide only ~7 significant digits of precision.<br/>
+              <strong style={{ color: theme.textMuted }}>Impact:</strong> At values exceeding ~10⁷, small per-frame increments are lost to floating-point truncation. Late-game players (1B+ range) may experience score stalling or irregular accumulation. This does not affect the milestone event data directly, but may influence the rate at which milestones are reached.<br/>
+              <strong style={{ color: theme.textMuted }}>Resolution:</strong> Migrated all accumulating score variables to 64-bit doubles, replaced Mathf calls with System.Math equivalents, and implemented string-based PlayerPrefs serialization with round-trip formatting.
+            </div>
+          </div>
+
+          <div style={{ fontSize: 13, color: theme.text, fontWeight: 600, marginBottom: 10 }}>
+            Outlier Handling Methodology
+          </div>
+          <div style={{ fontSize: 12, color: theme.textMuted, lineHeight: 1.8, marginBottom: 16 }}>
+            All "IQR Mean" values throughout this dashboard apply the interquartile range method: observations beyond 1.5× IQR from Q1 or Q3 are excluded before computing the mean. This standard approach removes extreme values on both ends — under-engaged sessions (too low) and atypical grinder behavior (too high) — to produce a more representative measure of typical player progression.
+          </div>
+
+          <div style={{ fontSize: 13, color: theme.text, fontWeight: 600, marginBottom: 10 }}>
+            Outlier Impact by Metric
+          </div>
+          <table style={{ width: "100%", borderCollapse: "collapse", background: theme.surface, borderRadius: 6, overflow: "hidden" }}>
+            <thead>
+              <tr style={{ background: theme.surfaceHover }}>
+                <th style={{ padding: "8px 12px", fontSize: 11, color: theme.textMuted, textAlign: "left", textTransform: "uppercase", letterSpacing: 0.5 }}>Metric</th>
+                <th style={{ padding: "8px 12px", fontSize: 11, color: theme.textMuted, textAlign: "left", textTransform: "uppercase", letterSpacing: 0.5 }}>Milestone</th>
+                <th style={{ padding: "8px 12px", fontSize: 11, color: theme.textMuted, textAlign: "right", textTransform: "uppercase", letterSpacing: 0.5 }}>Raw Avg</th>
+                <th style={{ padding: "8px 12px", fontSize: 11, color: theme.textMuted, textAlign: "right", textTransform: "uppercase", letterSpacing: 0.5 }}>IQR Mean</th>
+                <th style={{ padding: "8px 12px", fontSize: 11, color: theme.textMuted, textAlign: "right", textTransform: "uppercase", letterSpacing: 0.5 }}>Diff</th>
+                <th style={{ padding: "8px 12px", fontSize: 11, color: theme.textMuted, textAlign: "right", textTransform: "uppercase", letterSpacing: 0.5 }}>Filtered</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { metric: "Buildings (total)", ms: "1K", raw: 13.0, iqr: 11.9, n: 220, kept: 214 },
+                { metric: "Buildings (total)", ms: "1M", raw: 84.0, iqr: 82.1, n: 93, kept: 92 },
+                { metric: "Time Elapsed", ms: "1K", raw: 277, iqr: 193.6, n: 220, kept: 208 },
+                { metric: "Time Elapsed", ms: "1M", raw: 2489, iqr: 892.5, n: 93, kept: 83 },
+                { metric: "Total Clicks", ms: "1K", raw: 356, iqr: 320.1, n: 220, kept: 208 },
+                { metric: "Total Clicks", ms: "1M", raw: 3130, iqr: 2348.9, n: 93, kept: 86 },
+                { metric: "Upgrades", ms: "1K", raw: 0.9, iqr: 0.5, n: 220, kept: 216 },
+                { metric: "Upgrades", ms: "1M", raw: 10.9, iqr: 10.7, n: 93, kept: 85 },
+              ].map((r, i) => {
+                const diff = (((r.raw - r.iqr) / r.raw) * 100).toFixed(0);
+                return (
+                  <tr key={i} style={{ borderBottom: `1px solid ${theme.border}` }}>
+                    <td style={{ padding: "6px 12px", fontSize: 12, color: theme.text }}>{r.metric}</td>
+                    <td style={{ padding: "6px 12px", fontSize: 12, color: theme.textMuted }}>{r.ms}</td>
+                    <td style={{ padding: "6px 12px", fontSize: 12, color: theme.textMuted, textAlign: "right", fontFamily: "monospace" }}>{r.raw.toLocaleString()}</td>
+                    <td style={{ padding: "6px 12px", fontSize: 12, color: theme.accent, textAlign: "right", fontFamily: "monospace" }}>{r.iqr.toLocaleString()}</td>
+                    <td style={{ padding: "6px 12px", fontSize: 12, color: Math.abs(diff) > 20 ? theme.amber : theme.textMuted, textAlign: "right" }}>-{diff}%</td>
+                    <td style={{ padding: "6px 12px", fontSize: 12, color: theme.textMuted, textAlign: "right" }}>{r.n - r.kept}/{r.n}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+
+          <InsightBox>
+            Time elapsed is the metric most affected by outlier filtering — the IQR mean at 1M is 893s compared to a raw average of 2,489s, a 64% reduction, indicating a small number of extreme sessions significantly skewed the distribution. Building and upgrade metrics are well-distributed, with IQR filtering producing only a 2–10% adjustment. The most impactful finding was the timeElapsed persistence defect at 1B/1T, which produced fundamentally invalid data rather than merely skewed distributions. All three identified issues have been addressed and will be reflected in the post-1.40 dataset.
+          </InsightBox>
+        </div>
+      );
+    }
+
+    // ─── MAIN ────────────────────────────────────────────────────────────
+
+    function Dashboard() {
+      const [activeTab, setActiveTab] = useState("funnel");
+
+      const panels = {
+        funnel: <FunnelPanel />,
+        economy: <EconomyPanel />,
+        buildings: <BuildingsPanel />,
+        upgrades: <UpgradesPanel />,
+        time: <TimePanel />,
+        pricing: <PricingPanel />,
+        dataQuality: <DataQualityPanel />,
+      };
+
+      return (
+        <div style={{
+          background: theme.bg,
+          minHeight: "100vh",
+          fontFamily: "'Geist', system-ui, -apple-system, sans-serif",
+          color: theme.text,
+          padding: "24px 20px",
+        }}>
+          {/* Header */}
+          <div style={{ marginBottom: 28 }}>
+            <div style={{ fontSize: 11, color: theme.accent, textTransform: "uppercase", letterSpacing: 2, marginBottom: 4 }}>
+              Case Study · Analytics
+            </div>
+            <h1 style={{
+              fontFamily: "'Instrument Serif', Georgia, serif",
+              fontSize: 28,
+              fontWeight: 400,
+              margin: 0,
+              lineHeight: 1.2,
+            }}>
+              Idle Cyberpunk City Clicker
+            </h1>
+            <div style={{ fontSize: 13, color: theme.textMuted, marginTop: 6 }}>
+              Behavioral analytics from 220 tracked players · pre-1.40 build · Milestone snapshots at 1K / 1M / 1B / 1T credits produced
+            </div>
+          </div>
+
+          {/* Tabs */}
+          <div style={{
+            display: "flex",
+            gap: 4,
+            marginBottom: 24,
+            flexWrap: "wrap",
+            borderBottom: `1px solid ${theme.border}`,
+            paddingBottom: 1,
+          }}>
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  background: activeTab === tab.id ? theme.surfaceHover : "transparent",
+                  border: "none",
+                  borderBottom: activeTab === tab.id ? `2px solid ${theme.accent}` : "2px solid transparent",
+                  padding: "8px 16px",
+                  color: activeTab === tab.id ? theme.text : theme.textMuted,
+                  fontSize: 13,
+                  fontWeight: activeTab === tab.id ? 600 : 400,
+                  cursor: "pointer",
+                  borderRadius: "6px 6px 0 0",
+                  transition: "all 0.15s",
+                }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Active Panel */}
+          <div style={{
+            background: theme.surface,
+            border: `1px solid ${theme.border}`,
+            borderRadius: 10,
+            padding: "24px 20px",
+          }}>
+            {panels[activeTab]}
+          </div>
+
+          {/* Footer */}
+          <div style={{
+            marginTop: 20,
+            fontSize: 11,
+            color: theme.textMuted,
+            textAlign: "center",
+          }}>
+            Jhorro Productions · Analytics Dashboard · Data: Unity Analytics (pre-1.40)
+          </div>
+        </div>
+      );
+    }
+
+    // ─── RENDER ──────────────────────────────────────────────────────────
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<Dashboard />);
+  </script>
+</body>
+</html>

@@ -304,6 +304,10 @@
     border-radius: 6px;
     display: flex; align-items: center; justify-content: center;
     font-size: 0.72rem; color: var(--text-dim);
+    overflow: hidden;
+  }
+  .about-photo img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
   }
 
   .about-body p {
@@ -555,7 +559,11 @@
     display: flex; align-items: center; justify-content: center;
     color: var(--text-dim); font-size: 0.72rem;
     margin: -0.9rem 0 -0.9rem -1.1rem;
-    padding: 0.75rem; text-align: center; line-height: 1.45;
+    padding: 0; text-align: center; line-height: 1.45;
+    overflow: hidden;
+  }
+  .mechanic-spotlight .ms-visual img {
+    width: 100%; height: 100%; object-fit: cover; display: block;
   }
   .mechanic-spotlight .ms-body { padding-left: 1rem; }
   .mechanic-spotlight .ms-tag {
@@ -897,8 +905,8 @@
         </div>
         <div class="ai-body">
           <div class="ai-name">Coal</div>
-          <div class="ai-genre">Dark Fantasy Metroidvania · Unity · 2020</div>
-          <div class="ai-role">World design, interconnected levels, enemy encounters, puzzles, lore.</div>
+          <div class="ai-genre">Metroidvania · Unity · 2020</div>
+          <div class="ai-role">Dark Fantasy World Design, interconnected levels, lore.</div>
           <a class="ai-link" href="#">Play →</a>
         </div>
       </div>
@@ -908,7 +916,7 @@
         </div>
         <div class="ai-body">
           <div class="ai-name">Maldição de Netuno</div>
-          <div class="ai-genre">Action Rounds Shooter · Unity · 2021</div>
+          <div class="ai-genre">Action Rounds Shooter · Unity · 2022</div>
           <div class="ai-role">Level layout, wave economy balancing, weapon tuning, 3D props.</div>
           <a class="ai-link" href="#">Play →</a>
         </div>
@@ -1143,7 +1151,9 @@
     <h3 class="gf-subtitle">Mechanic Spotlight — Dash-Strike Combat</h3>
 
     <div class="mechanic-spotlight">
-      <div class="ms-visual">GIF / Video<br>Dash-strike into enemy</div>
+      <div class="ms-visual">
+                   <img src="media/thumb-guardians2.gif" alt="Idle Cyberpunk City Clicker gameplay">
+      </div>
       <div class="ms-body">
         <div class="ms-tag">
           <span>Core · Combat</span>
@@ -1275,7 +1285,9 @@
     </div>
 
     <div class="about-layout">
-      <div class="about-photo">Photo</div>
+      <div class="about-photo">
+          <img src="media/thumb-jhonnatan.png" alt="Idle Cyberpunk City Clicker gameplay">
+      </div>
       <div class="about-body">
         <p>
           Game designer with a statistics background and a build-first, iterate-always approach.

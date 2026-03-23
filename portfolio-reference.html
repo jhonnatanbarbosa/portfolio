@@ -5,7 +5,535 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jhonnatan Barbosa — Game Designer</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
+<style>
+  :root {
+    --bg: #161619;
+    --surface: #1d1d21;
+    --surface-hover: #232328;
+    --border: #2c2c32;
+    --border-soft: #232327;
+    --text: #dddbd6;
+    --text-mid: #a09e97;
+    --text-dim: #6e6d68;
+    --accent: #a8b87a;
+    --accent-dim: #7a8a55;
+    --note-bg: rgba(168,184,122,0.06);
+    --note-border: rgba(168,184,122,0.25);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Geist', -apple-system, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+    font-size: 13.5px;
+  }
+
+  ::selection { background: var(--accent); color: var(--bg); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .page { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(22,22,25,0.88);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-soft);
+  }
+
+  nav .nav-inner {
+    max-width: 960px; margin: 0 auto;
+    padding: 0.6rem 2rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  nav .name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.05rem; color: var(--text);
+  }
+
+  nav .nav-links { display: flex; gap: 1.4rem; list-style: none; }
+
+  nav .nav-links a {
+    color: var(--text-dim); font-size: 0.8rem; font-weight: 500;
+    text-decoration: none; transition: color 0.15s;
+  }
+  nav .nav-links a:hover { color: var(--text); }
+
+  /* ── INTRO ── */
+  .intro {
+    padding: 2.5rem 0 1.75rem;
+    border-bottom: 1px solid var(--border-soft);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: end;
+  }
+
+  .intro h1 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.7rem; font-weight: 400;
+    line-height: 1.2; letter-spacing: -0.015em;
+  }
+
+  .intro p {
+    color: var(--text-mid); font-size: 0.88rem;
+    max-width: 520px; margin-top: 0.5rem;
+  }
+
+  .intro-links {
+    display: flex; gap: 0.6rem; flex-shrink: 0;
+  }
+
+  .intro-links a {
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--text-dim); padding: 0.35rem 0.8rem;
+    border: 1px solid var(--border); border-radius: 4px;
+    transition: border-color 0.15s;
+  }
+  .intro-links a:hover { border-color: var(--accent-dim); color: var(--text); text-decoration: none; }
+
+  /* ── TIP ── */
+  .tip {
+    background: var(--note-bg);
+    border-left: 2px solid var(--note-border);
+    padding: 0.55rem 0.85rem;
+    margin: 0.85rem 0;
+    font-size: 0.78rem;
+    color: var(--accent);
+    line-height: 1.55;
+  }
+  .tip strong {
+    font-weight: 600; font-size: 0.7rem;
+    text-transform: uppercase; letter-spacing: 0.06em;
+    margin-right: 0.3rem;
+  }
+
+  /* ── SECTIONS ── */
+  section { padding: 1.75rem 0; }
+  section + section { border-top: 1px solid var(--border-soft); }
+
+  .section-header {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 1.1rem;
+  }
+
+  .section-title {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.15rem; font-weight: 400;
+  }
+
+  .section-aside { font-size: 0.75rem; color: var(--text-dim); }
+
+  /* ── PROJECT CARDS — compact ── */
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    transition: border-color 0.2s;
+  }
+  .project-card:hover { border-color: var(--accent-dim); }
+
+  .project-thumb {
+    background: var(--surface-hover);
+    display: flex; align-items: center; justify-content: center;
+    border-right: 1px solid var(--border);
+    color: var(--text-dim); font-size: 0.75rem; font-weight: 500;
+    min-height: 160px;
+  }
+  .project-thumb img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  .project-card:nth-child(1) .project-thumb {
+    background: radial-gradient(ellipse at 30% 50%, rgba(168,184,122,0.08) 0%, transparent 65%), var(--surface-hover);
+  }
+  .project-card:nth-child(2) .project-thumb {
+    background: radial-gradient(ellipse at 70% 40%, rgba(140,160,210,0.07) 0%, transparent 65%), var(--surface-hover);
+  }
+  .project-card:nth-child(3) .project-thumb {
+    background: radial-gradient(ellipse at 50% 60%, rgba(210,170,120,0.07) 0%, transparent 65%), var(--surface-hover);
+  }
+
+  .project-body { padding: 1rem 1.25rem; display: flex; flex-direction: column; justify-content: center; }
+
+  .project-top-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 0.2rem;
+    flex-wrap: wrap; gap: 0.4rem;
+  }
+
+  .project-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1.02rem; font-weight: 400;
+  }
+
+  .project-badge {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.62rem; color: var(--text-dim);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid var(--border);
+    padding: 0.1rem 0.45rem; border-radius: 3px;
+  }
+
+  .project-desc {
+    color: var(--text-mid); font-size: 0.84rem;
+    margin-bottom: 0.65rem; line-height: 1.55;
+  }
+
+  .meta-row {
+    display: flex; flex-wrap: wrap;
+    gap: 0.2rem 1.1rem; font-size: 0.78rem;
+    margin-bottom: 0.6rem;
+  }
+
+  .meta-pair { display: flex; gap: 0.3rem; }
+  .meta-pair .ml { color: var(--text-dim); }
+  .meta-pair .mv { color: var(--text); font-weight: 500; }
+
+  .project-tags { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+
+  .ptag {
+    font-size: 0.66rem; font-weight: 500;
+    color: var(--text-dim);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    padding: 0.12rem 0.5rem; border-radius: 3px;
+  }
+
+  .project-actions {
+    margin-top: 0.6rem; padding-top: 0.55rem;
+    border-top: 1px solid var(--border-soft);
+    display: flex; gap: 1.2rem;
+    font-size: 0.78rem; font-weight: 500;
+  }
+
+  /* ── CASE STUDY ── */
+  .cs-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.6rem;
+    margin-top: 0.85rem;
+  }
+
+  .cs-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.9rem 1rem;
+  }
+
+  .cs-card .cs-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.62rem; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 0.35rem;
+  }
+
+  .cs-card h4 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 0.9rem; font-weight: 400;
+    margin-bottom: 0.3rem; line-height: 1.25;
+  }
+
+  .cs-card p {
+    font-size: 0.78rem; color: var(--text-mid); line-height: 1.5;
+  }
+
+  .media-placeholder {
+    background: var(--surface);
+    border: 1px dashed var(--border);
+    border-radius: 6px;
+    padding: 1.25rem 1rem;
+    text-align: center;
+    color: var(--text-dim);
+    font-size: 0.78rem;
+    margin-top: 0.6rem;
+  }
+
+  /* ── DASHBOARD EMBED ── */
+  .dashboard-embed {
+    margin-top: 0.85rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .dashboard-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    font-size: 0.75rem;
+    color: var(--text-dim);
+  }
+  .dashboard-label a {
+    font-size: 0.72rem;
+  }
+
+  .dashboard-embed iframe {
+    width: 100%;
+    height: 600px;
+    border: none;
+    background: var(--bg);
+  }
+
+  /* ── ABOUT ── */
+  .about-layout {
+    display: grid;
+    grid-template-columns: 110px 1fr;
+    gap: 1.5rem; align-items: start;
+  }
+
+  .about-photo {
+    width: 110px; height: 135px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.72rem; color: var(--text-dim);
+  }
+
+  .about-body p {
+    color: var(--text-mid); font-size: 0.88rem;
+    margin-bottom: 0.6rem; max-width: 580px; line-height: 1.6;
+  }
+
+  .about-body .design-philosophy {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    margin: 0.85rem 0;
+    font-size: 0.82rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+  .about-body .design-philosophy strong {
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    display: block;
+    margin-bottom: 0.3rem;
+  }
+
+  .tools-row {
+    margin-top: 0.75rem;
+    display: flex; flex-wrap: wrap;
+    gap: 0.3rem 1.8rem;
+    font-size: 0.8rem;
+  }
+
+  .tools-row .tr-item { display: flex; gap: 0.3rem; }
+  .tools-row dt { color: var(--text-dim); font-weight: 500; }
+  .tools-row dd { color: var(--text); margin: 0; }
+
+  /* ── CONTACT ── */
+  .contact-row {
+    display: flex; flex-wrap: wrap;
+    gap: 0.5rem; margin-top: 0.75rem;
+  }
+
+  .contact-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 0.45rem 0.85rem;
+    font-size: 0.8rem; color: var(--text);
+    text-decoration: none;
+    transition: border-color 0.15s;
+    display: flex; align-items: center; gap: 0.4rem;
+  }
+  .contact-item:hover { border-color: var(--accent-dim); text-decoration: none; }
+  .contact-item .ci-label { color: var(--text-dim); font-size: 0.72rem; }
+
+  /* ── ADDITIONAL WORK GRID ── */
+  .additional-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+  }
+
+  .additional-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    overflow: hidden;
+    display: grid;
+    grid-template-columns: 68px 1fr;
+    transition: border-color 0.2s;
+  }
+  .additional-item:hover { border-color: var(--accent-dim); }
+
+  .additional-item .ai-thumb {
+    background: var(--surface-hover);
+    display: flex; align-items: center; justify-content: center;
+    border-right: 1px solid var(--border);
+    color: var(--text-dim);
+    font-size: 0.58rem;
+    font-weight: 500;
+    min-height: 90px;
+  }
+  .additional-item .ai-thumb img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+
+  .additional-item .ai-body {
+    padding: 0.5rem 0.7rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .additional-item .ai-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 0.85rem;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  .additional-item .ai-genre {
+    font-size: 0.68rem;
+    color: var(--text-dim);
+    margin-top: 0.1rem;
+  }
+
+  .additional-item .ai-role {
+    font-size: 0.72rem;
+    color: var(--text-mid);
+    margin-top: 0.25rem;
+    line-height: 1.4;
+  }
+
+  .additional-item .ai-link {
+    margin-top: 0.3rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+  }
+
+  /* ── DOCUMENT GRID ── */
+  .doc-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+  }
+
+  .doc-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.7rem 0.9rem;
+    display: flex;
+    gap: 0.7rem;
+    align-items: flex-start;
+    transition: border-color 0.2s;
+  }
+  .doc-item:hover { border-color: var(--accent-dim); }
+
+  .doc-item .doc-type {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.58rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--bg);
+    background: var(--accent-dim);
+    padding: 0.15rem 0.4rem;
+    border-radius: 3px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+
+  .doc-item .doc-type.doc-qdd { background: #8a7abf; }
+  .doc-item .doc-type.doc-ldd { background: #7aabb8; }
+  .doc-item .doc-type.doc-test { background: #b8967a; }
+
+  .doc-item .doc-body { flex: 1; min-width: 0; }
+
+  .doc-item .doc-name {
+    font-family: 'Instrument Serif', serif;
+    font-size: 0.88rem;
+    font-weight: 400;
+    line-height: 1.25;
+  }
+
+  .doc-item .doc-desc {
+    font-size: 0.72rem;
+    color: var(--text-mid);
+    margin-top: 0.15rem;
+    line-height: 1.45;
+  }
+
+  .doc-item .doc-link {
+    margin-top: 0.25rem;
+    font-size: 0.68rem;
+    font-weight: 500;
+    display: inline-block;
+  }
+
+  /* ── LOOKING FOR ── */
+  .looking-for {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.6rem 1rem;
+    margin-top: 0.85rem;
+    font-size: 0.82rem;
+    color: var(--text-mid);
+    line-height: 1.55;
+  }
+  .looking-for strong {
+    color: var(--text);
+    font-weight: 600;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-right: 0.3rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    padding: 1.25rem 0; border-top: 1px solid var(--border-soft);
+    font-size: 0.72rem; color: var(--text-dim);
+    display: flex; justify-content: space-between;
+  }
+
+  @media (max-width: 720px) {
+    .page { padding: 0 1.25rem; }
+    nav .nav-inner { padding: 0.6rem 1.25rem; }
+    .intro { grid-template-columns: 1fr; }
+    .intro-links { margin-top: 0.5rem; }
+    .project-card { grid-template-columns: 1fr; }
+    .project-thumb { min-height: 120px; border-right: none; border-bottom: 1px solid var(--border); }
+    .cs-grid { grid-template-columns: 1fr 1fr; }
+    .about-layout { grid-template-columns: 1fr; }
+    .additional-grid { grid-template-columns: 1fr 1fr; }
+    .doc-grid { grid-template-columns: 1fr; }
+    footer { flex-direction: column; gap: 0.2rem; }
+  }
+
+  @media (max-width: 480px) {
+    .cs-grid { grid-template-columns: 1fr; }
+    .additional-grid { grid-template-columns: 1fr; }
+  }
+</style>
 </head>
 <body>
 
@@ -14,7 +542,8 @@
     <span class="name">Jhonnatan Barbosa</span>
     <ul class="nav-links">
       <li><a href="#projects">Projects</a></li>
-      <li><a href="#case-study">Case Study</a></li>
+      <li><a href="#cyberpunk-analytics">Case Study</a></li>
+      <li><a href="#documents">Documents</a></li>
       <li><a href="#about">About</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
@@ -26,11 +555,11 @@
   <!-- INTRO -->
   <div class="intro">
     <div>
-      <h1>Game Designer — Economy & Systems Design</h1>
+      <h1>Game Designer — Data-Driven Systems & Gameplay</h1>
       <p>
-        I design economies players can't put down and systems that scale.
+        I design systems players discover on their own terms, then use data to make them better.
         5+ years shipping 12+ titles across mobile, PC, and web.
-        Statistics background — I balance with spreadsheets, not gut feel.
+        Statistics background — I iterate with spreadsheets, analytics, and evidence, not gut feel.
       </p>
     </div>
     <div class="intro-links">
@@ -42,16 +571,16 @@
 
   <div class="tip">
     <strong>Layout note —</strong>
-    Specialty in the headline, one-liner bio, and contact links all visible without scrolling.
-    Recruiters know who you are and how to reach you in under 3 seconds.
-    The statistics angle is front and center — it's your differentiator.
+    Headline shifted from "Economy & Systems Design" to "Data-Driven Systems & Gameplay" —
+    reflecting that the analytical approach applies to mechanics, levels, narrative, and economy alike.
+    The statistics angle is still front and center as the differentiator.
   </div>
 
   <!-- PROJECTS -->
   <section id="projects">
     <div class="section-header">
       <h2 class="section-title">Selected Projects</h2>
-      <span class="section-aside">5 curated pieces · 3 case studies + 2 showcase cards</span>
+      <span class="section-aside">5 curated pieces · 2 case studies + 3 showcase cards</span>
     </div>
 
     <!-- Project 1: Idle Cyberpunk City Clicker -->
@@ -61,19 +590,21 @@
       </div>
       <div class="project-body">
         <div class="project-top-row">
-          <span class="project-name">Idle Cyberpunk City Clicker — Economy & Progression</span>
+          <span class="project-name">Idle Cyberpunk City Clicker — Economy & Analytics</span>
           <span class="project-badge">Shipped · 2025</span>
         </div>
         <p class="project-desc">
           Built on lessons from Idle Kingdom Builder. Expanded the core loop with deep
-          progression tiers, used Unity Analytics to identify drop-off points, and iteratively
-          rebalanced the economy and store to optimize session length and conversion.
-          8,700+ organic downloads, 4.6/5 rating on Google Play.
+          progression tiers and a reward-ad/IAP monetization layer. Instrumented Unity Analytics
+          to snapshot player state at 4 milestones, identified economy bugs and a timer
+          persistence defect, and shipped 3 targeted fixes in v1.40.
+          8,700+ organic downloads, 4.6/5 rating. Median session ~6 min, top 10% of players averaging 15+ min — strong for a niche idle genre with zero marketing spend.
         </p>
         <div class="meta-row">
           <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer & Developer (Solo)</span></div>
           <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity 6</span></div>
           <div class="meta-pair"><span class="ml">Platform</span><span class="mv">Android</span></div>
+          <div class="meta-pair"><span class="ml">Duration</span><span class="mv">6 months</span></div>
         </div>
         <div class="project-tags">
           <span class="ptag">Economy Design</span>
@@ -83,7 +614,7 @@
           <span class="ptag">Data-Driven Iteration</span>
         </div>
         <div class="project-actions">
-          <a href="#cyberpunk-analytics">Analytics dashboard →</a>
+          <a href="#cyberpunk-analytics">Analytics case study →</a>
           <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker">Play on Google Play →</a>
         </div>
       </div>
@@ -94,14 +625,16 @@
       <div class="project-thumb">Screenshot / GIF / Video</div>
       <div class="project-body">
         <div class="project-top-row">
-          <span class="project-name">Idle Kingdom Builder — Resource Economy System</span>
+          <span class="project-name">Idle Kingdom Builder — First Shipped Economy</span>
           <span class="project-badge">Shipped · 2024</span>
         </div>
         <p class="project-desc">
-          Designed the core loop, economy system, and progression curves for a medieval
-          idle clicker. Integrated analytics to track player behavior and fine-tuned
-          resource flows post-launch. 800+ downloads with 30% D30 retention —
-          3–6× the casual mobile average of 5–10%.
+          My first published idle game. Designed the core loop and economy system
+          from scratch, taking inspiration from Cookie Clicker's formulas and tuning
+          them toward a slower, more deliberate pace. Shipped to Google Play with
+          800+ organic downloads. Strong early engagement, but without a proper analytics
+          pipeline I couldn't identify where players dropped off —
+          that gap directly motivated the analytics system I built for Cyberpunk City.
         </p>
         <div class="meta-row">
           <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer & Developer (Solo)</span></div>
@@ -111,11 +644,10 @@
         <div class="project-tags">
           <span class="ptag">Economy Design</span>
           <span class="ptag">Progression Curves</span>
-          <span class="ptag">Unity Analytics</span>
-          <span class="ptag">Retention</span>
+          <span class="ptag">Monetization</span>
+          <span class="ptag">First Ship</span>
         </div>
         <div class="project-actions">
-          <a href="#case-study">Case study →</a>
           <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder&pcampaignid=web_share">Play on Google Play →</a>
         </div>
       </div>
@@ -130,54 +662,56 @@
           <span class="project-badge">Graduation · 2023</span>
         </div>
         <p class="project-desc">
-          2.5D Metroidvania built as a graduation thesis at PUC-SP.
-          Designed core systems and parkour mechanics, coordinated the
-          team through weekly meetings with our academic advisor, and managed the full
-          asset pipeline. Well received by the examining committee.
+          2.5D Metroidvania built as a graduation project at PUC-SP.
+          Started as game designer, but the role shifted to developer/producer
+          as I took over programming core systems, parkour mechanics, and managing
+          the art/sound pipeline. Led scope cuts to ship a playable vertical slice
+          with a team of 6 under academic deadlines. Well received by the examining committee.
         </p>
         <div class="meta-row">
-          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Game Designer, Programmer & Producer</span></div>
-          <div class="meta-pair"><span class="ml">Team</span><span class="mv">Multi-disciplinary</span></div>
+          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer → Developer / Producer</span></div>
+          <div class="meta-pair"><span class="ml">Team</span><span class="mv">6</span></div>
           <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity</span></div>
-          <div class="meta-pair"><span class="ml">Platform</span><span class="mv">PC</span></div>
+          <div class="meta-pair"><span class="ml">Platform</span><span class="mv">PC (itch.io)</span></div>
         </div>
         <div class="project-tags">
-          <span class="ptag">Systems Design</span>
-          <span class="ptag">Level Design</span>
           <span class="ptag">Production</span>
-          <span class="ptag">C#</span>
+          <span class="ptag">Scope Management</span>
+          <span class="ptag">Systems Programming</span>
+          <span class="ptag">Parkour Mechanics</span>
           <span class="ptag">Team Leadership</span>
         </div>
         <div class="project-actions">
-          <a href="#">Case study →</a>
+          <a href="#guardians-case-study">Case study →</a>
           <a href="https://www.jhorro.com/guardiansfalls">Play demo on itch.io →</a>
         </div>
       </div>
     </div>
 
-    <!-- Project 4: Beasts of Agony -->
+    <!-- Project 4: Beasts of Agony (Showcase Card) -->
     <div class="project-card">
-      <div class="project-thumb">Gameplay GIF</div>
+      <div class="project-thumb">Screenshot / GIF / Video</div>
       <div class="project-body">
         <div class="project-top-row">
-          <span class="project-name">Beasts of Agony</span>
-          <span class="project-badge">Jam · 9 days · 2023</span>
+          <span class="project-name">Beasts of Agony — Souls-like Boss Fight</span>
+          <span class="project-badge">Game Jam · 9 days · 2023</span>
         </div>
         <p class="project-desc">
-          Souls-like game built in 9 days for PUCJam (theme: "Sacred"). Designed levels,
-          balanced combat, programmed core systems and UI/UX, and coordinated the team
-          as producer. Won Best Art at PUCJam 2023.
+          Souls-like combat demo built for PUCJam 2023 (theme: "Sacred"). Designed and
+          programmed the core fighting system — hitboxes, animation trees, life/death state,
+          combat balancing. Won Best Art at PUCJam 2023 across all participating teams
+          (seniors through newcomers) at PUC-SP.
         </p>
         <div class="meta-row">
           <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer, Programmer & Producer</span></div>
+          <div class="meta-pair"><span class="ml">Team</span><span class="mv">Team project</span></div>
           <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity</span></div>
-          <div class="meta-pair"><span class="ml">Award</span><span class="mv">Best Art — PUCJam 2023</span></div>
         </div>
         <div class="project-tags">
-          <span class="ptag">Level Design</span>
-          <span class="ptag">Combat Balancing</span>
-          <span class="ptag">Rapid Prototyping</span>
+          <span class="ptag">Combat Systems</span>
           <span class="ptag">Game Jam</span>
+          <span class="ptag">Rapid Prototyping</span>
+          <span class="ptag">Award Winner</span>
         </div>
         <div class="project-actions">
           <a href="https://www.jhorro.com/beastsofagony">Play on itch.io →</a>
@@ -185,30 +719,30 @@
       </div>
     </div>
 
-    <!-- Project 5: Operação Bagre Noturno -->
+    <!-- Project 5: Operação Bagre Noturno (Showcase Card) -->
     <div class="project-card">
-      <div class="project-thumb">Gameplay GIF</div>
+      <div class="project-thumb">Screenshot / GIF / Video</div>
       <div class="project-body">
         <div class="project-top-row">
-          <span class="project-name">Operação Bagre Noturno: Lux in Tenebris</span>
-          <span class="project-badge">Jam · 3 weeks · 2024</span>
+          <span class="project-name">Operação Bagre Noturno — Stealth Action Comedy</span>
+          <span class="project-badge">Game Jam · 3 weeks · 2024</span>
         </div>
         <p class="project-desc">
-          Stealth action comedy set in an alternate 2031 Brazil. Designed gameplay systems
-          blending stealth and action, created 3D assets, and wrote narrative for a
-          geopolitical satire. Praised for its unique espionage-meets-comedy tone.
+          Stealth-action game set in an alternate 2031 Brazil, inspired by Metal Gear Solid
+          and Splinter Cell. Designed the level layout, core stealth/shooting mechanics, and
+          the narrative — blending espionage with absurd comedy in a Brazilian geopolitical
+          setting. Built for CtrlAltJam#3 with a team of 4.
         </p>
         <div class="meta-row">
-          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer, Producer & 3D Artist</span></div>
+          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Game Designer, Producer & 3D Artist</span></div>
           <div class="meta-pair"><span class="ml">Team</span><span class="mv">4</span></div>
           <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity</span></div>
-          <div class="meta-pair"><span class="ml">Event</span><span class="mv">CtrlAltJam#3</span></div>
         </div>
         <div class="project-tags">
-          <span class="ptag">Stealth Systems</span>
+          <span class="ptag">Level Design</span>
+          <span class="ptag">Stealth Mechanics</span>
           <span class="ptag">Narrative Design</span>
           <span class="ptag">3D Art</span>
-          <span class="ptag">Game Jam</span>
         </div>
         <div class="project-actions">
           <a href="https://jhorro.itch.io/operacao-bagre-noturno">Play on itch.io →</a>
@@ -218,90 +752,140 @@
 
     <div class="tip">
       <strong>Card format —</strong>
-      Top 3 projects get case studies (deep dives). Bottom 2 are showcase cards — shorter,
-      but still framed as problems solved. The idle games tell a connected learning arc:
-      Kingdom Builder → Cyberpunk City shows growth.
-    </div>
-  </section>
-
-  <!-- CASE STUDY: Idle Kingdom Builder -->
-  <section id="case-study">
-    <div class="section-header">
-      <h2 class="section-title">Case Study — Idle Kingdom Builder</h2>
-      <span class="section-aside">Economy design · Data-driven iteration · 30% D30 retention</span>
+      Top 2 are case studies (Cyberpunk analytics deep dive, Guardian's Falls production story).
+      Bottom 3 are showcase cards — shorter, but still framed as problems solved.
+      The IKB → Cyberpunk learning arc now lives inside the Cyberpunk case study's Problem card,
+      where it has more impact. Beasts + Bagre Noturno show range (combat, stealth, level design, narrative).
     </div>
 
-    <div class="cs-grid">
-      <div class="cs-card">
-        <div class="cs-label">01 · Problem</div>
-        <h4>Players churning at mid-game</h4>
-        <p>Early progression felt satisfying, but analytics showed a drop-off once resource generation plateaued. Players weren't reaching the ascension system.</p>
-      </div>
-      <div class="cs-card">
-        <div class="cs-label">02 · Process</div>
-        <h4>Spreadsheet modeling + analytics</h4>
-        <p>Built economy simulation spreadsheets to map resource faucets and sinks. Used Unity Analytics to pinpoint exact drop-off points in the progression funnel.</p>
-      </div>
-      <div class="cs-card">
-        <div class="cs-label">03 · Solution</div>
-        <h4>Rebalanced curves + new sinks</h4>
-        <p>Adjusted progression curves to maintain a sense of growth through mid-game. Added meaningful resource sinks and tuned the ascension unlock timing.</p>
-      </div>
-      <div class="cs-card">
-        <div class="cs-label">04 · Outcome</div>
-        <h4>30% D30 retention</h4>
-        <p>3–6× the casual mobile average (5–10%). 800+ organic downloads. Lessons directly shaped the expanded economy in Idle Cyberpunk City Clicker.</p>
-      </div>
+    <!-- Additional Work: FoxTales Studios -->
+    <div class="section-header" style="margin-top: 1.5rem;">
+      <h2 class="section-title">Additional Work — FoxTales Studios</h2>
+      <span class="section-aside">Student studio · PUC-SP · 2020–2023 · Game Designer & 3D Artist</span>
     </div>
 
-    <div class="media-placeholder">
-      Process artifacts: economy flow spreadsheets, progression curve charts, Unity Analytics
-      dashboards, before/after balancing data, player funnel screenshots — this is where
-      your statistics background shines.
+    <div class="additional-grid">
+      <div class="additional-item">
+        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-body">
+          <div class="ai-name">Coal</div>
+          <div class="ai-genre">Dark Fantasy Metroidvania · Unity · 2020</div>
+          <div class="ai-role">World design, interconnected levels, enemy encounters, puzzles, lore.</div>
+          <a class="ai-link" href="#">Play →</a>
+        </div>
+      </div>
+      <div class="additional-item">
+        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-body">
+          <div class="ai-name">Maldição de Netuno</div>
+          <div class="ai-genre">Action Rounds Shooter · Unity · 2021</div>
+          <div class="ai-role">Level layout, wave economy balancing, weapon tuning, 3D props.</div>
+          <a class="ai-link" href="#">Play →</a>
+        </div>
+      </div>
+      <div class="additional-item">
+        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-body">
+          <div class="ai-name">Nárkissos</div>
+          <div class="ai-genre">First-Person Horror · Unity · 2021</div>
+          <div class="ai-role">Level design, puzzle design, 3D scenario modeling and textures.</div>
+        </div>
+      </div>
+      <div class="additional-item">
+        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-body">
+          <div class="ai-name">Wings of Hope</div>
+          <div class="ai-genre">Open-World Survival · Unreal · 2021</div>
+          <div class="ai-role">Island terrain design, challenge balancing, documentation.</div>
+        </div>
+      </div>
+      <div class="additional-item">
+        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-body">
+          <div class="ai-name">Riddles of the Sands</div>
+          <div class="ai-genre">Open World Puzzle · Unity · 2021</div>
+          <div class="ai-role">Open world layout, puzzle progression system, documentation.</div>
+        </div>
+      </div>
+      <div class="additional-item">
+        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-body">
+          <div class="ai-name">Echoes of the Underground</div>
+          <div class="ai-genre">Puzzle Horror · Unreal · 2021</div>
+          <div class="ai-role">Loop puzzle mechanics, gameplay pacing.</div>
+        </div>
+      </div>
+      <div class="additional-item">
+        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-body">
+          <div class="ai-name">Mega-Racing</div>
+          <div class="ai-genre">Platform Racing · Unity · 2021</div>
+          <div class="ai-role">Track layouts, obstacles and power-ups, playtesting, 3D props.</div>
+        </div>
+      </div>
+      <div class="additional-item">
+        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-body">
+          <div class="ai-name">Technical Difficulties</div>
+          <div class="ai-genre">Multiplayer Party Game · Unity · 2020</div>
+          <div class="ai-role">Core mechanics, social deduction balancing, loop refinement.</div>
+          <a class="ai-link" href="#">Play →</a>
+        </div>
+      </div>
+      <div class="additional-item">
+        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-body">
+          <div class="ai-name">Donkey Sonic</div>
+          <div class="ai-genre">Retro Platformer · Unity · 2020</div>
+          <div class="ai-role">Level layouts, enemy placement, gameplay balancing.</div>
+        </div>
+      </div>
     </div>
 
     <div class="tip">
-      <strong>Your edge —</strong>
-      Most game designers show screenshots. You can show spreadsheets, economy flow diagrams,
-      retention curves, and before/after data. The statistics background is rare — lean into it.
-      Connect this case study to Idle Cyberpunk City as a learning arc.
+      <strong>Additional work note —</strong>
+      Thumbnails make this scannable at a glance — a recruiter can tell a horror game from a
+      platformer without reading. "Play →" links on Coal, Maldição de Netuno, and Technical
+      Difficulties turn claims into proof. Replace the "Screenshot" placeholders with actual
+      screenshots (68px square, so quality matters — pick the best frame from each).
+      The grid backs up "12+ titles" without competing with the top 5 for attention.
     </div>
   </section>
 
-  <!-- ANALYTICS DASHBOARD: Idle Cyberpunk City Clicker -->
+  <!-- ANALYTICS CASE STUDY: Idle Cyberpunk City Clicker -->
   <section id="cyberpunk-analytics">
     <div class="section-header">
-      <h2 class="section-title">Analytics — Idle Cyberpunk City Clicker</h2>
+      <h2 class="section-title">Case Study — Idle Cyberpunk City Clicker</h2>
       <span class="section-aside">220 tracked players · pre-1.40 build · 4 milestone snapshots</span>
     </div>
 
     <div class="cs-grid">
       <div class="cs-card">
         <div class="cs-label">01 · Problem</div>
-        <h4>Where do players drop off?</h4>
-        <p>With 8,700+ downloads but no clear picture of player progression, I needed data to understand where the economy lost players and why.</p>
+        <h4>Flying blind after the first game</h4>
+        <p>Idle Kingdom Builder shipped with 800+ downloads and solid reviews, but no analytics pipeline — I had no idea where players dropped off or why. Cyberpunk City had 8,700+ downloads and the same blind spot. I needed a system to see inside the player journey without breaking the budget.</p>
       </div>
       <div class="cs-card">
         <div class="cs-label">02 · Process</div>
-        <h4>Milestone-based analytics</h4>
-        <p>Instrumented Unity Analytics to snapshot player state at 1K, 1M, 1B, and 1T credits — capturing buildings, upgrades, click/passive ratio, and time elapsed.</p>
+        <h4>Milestone-based analytics on a budget</h4>
+        <p>Needed maximum data with minimum event sends (free Unity Analytics tier). Designed 4 snapshot events at 1K, 1M, 1B, and 1T credits — capturing buildings, upgrades, click/passive ratio, and time elapsed per player.</p>
       </div>
       <div class="cs-card">
         <div class="cs-label">03 · Findings</div>
         <h4>Economy validates, bugs surface</h4>
-        <p>Click-to-passive transition confirmed as designed. Found a tracking bug inflating clicker counts and a timer persistence defect at higher milestones.</p>
+        <p>Click-to-passive transition confirmed as designed. Found a tracking bug inflating clicker counts (variable naming mistake) and a timer persistence defect at higher milestones producing invalid data.</p>
       </div>
       <div class="cs-card">
         <div class="cs-label">04 · Outcome</div>
         <h4>3 fixes shipped for v1.40</h4>
-        <p>Corrected analytics instrumentation, adjusted passive upgrade multiplier from 5× to 3.5×, and added session persistence. Clean data incoming for next analysis cycle.</p>
+        <p>Corrected analytics instrumentation, adjusted passive upgrade multiplier from 5× to 3.5×, and added session persistence. Clean data incoming for before/after comparison in the next analysis cycle.</p>
       </div>
     </div>
-<br>
+
     <!-- Embedded Dashboard -->
     <div class="dashboard-embed">
       <div class="dashboard-label">
-        <span>Interactive Analytics Dashboard</span>
+        <span>Interactive Analytics Dashboard · Built from real Unity Analytics data</span>
         <a href="cyberpunk-dashboard.html" target="_blank">Open full screen →</a>
       </div>
       <iframe src="cyberpunk-dashboard.html" title="Idle Cyberpunk City Clicker Analytics Dashboard"></iframe>
@@ -311,7 +895,135 @@
       <strong>Process artifact —</strong>
       This interactive dashboard is built from real Unity Analytics data (220 players, pre-1.40).
       It demonstrates data-driven design thinking: identifying issues, validating the economy
-      model, and shipping concrete fixes based on evidence, not intuition.
+      model, and shipping concrete fixes based on evidence.
+      The learning arc from IKB (no analytics) → Cyberpunk (instrumented) is the real story here.
+    </div>
+  </section>
+
+  <!-- CASE STUDY: Guardian's Falls -->
+  <section id="guardians-case-study">
+    <div class="section-header">
+      <h2 class="section-title">Case Study — Guardian's Falls</h2>
+      <span class="section-aside">Team of 6 · Scope management · Graduation project</span>
+    </div>
+
+    <div class="cs-grid">
+      <div class="cs-card">
+        <div class="cs-label">01 · Problem</div>
+        <h4>Ambitious scope vs. reality</h4>
+        <p>The original design was far larger than what a team of 6 could ship under academic deadlines. Art and sound deliverables created pipeline bottlenecks that blocked programming work.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-label">02 · Process</div>
+        <h4>Role shifted to fill gaps</h4>
+        <p>Started as game designer, but pivoted to developer/producer as the project needed someone building systems and unblocking the pipeline. Designed systems I couldn't test until assets arrived, built modular to adapt.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-label">03 · Solution</div>
+        <h4>Scope cuts to ship</h4>
+        <p>Identified what was feasible to cut without breaking the core experience. Presented options to the team and made collective decisions on scope. The final product was a focused vertical slice of the original vision.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-label">04 · Outcome</div>
+        <h4>Shipped a playable demo</h4>
+        <p>Delivered a working 2.5D Metroidvania demo with parkour mechanics. Well received by the examining committee and new audiences. Those who knew the original scope were less impressed — a lesson in expectation management.</p>
+      </div>
+    </div>
+
+    <div class="media-placeholder">
+      Process artifacts: original vs. final scope comparison, production timeline,
+      pipeline bottleneck analysis, parkour mechanic iteration, team coordination docs.
+    </div>
+
+    <div class="tip">
+      <strong>Production story —</strong>
+      This isn't framed as a design showcase — it's a production and scope management story.
+      "Led scope cuts to ship a playable vertical slice with 6 people under academic deadlines"
+      is more valuable to a hiring manager than pretending everything went smoothly.
+    </div>
+  </section>
+
+  <!-- DESIGN DOCUMENTS -->
+  <section id="documents">
+    <div class="section-header">
+      <h2 class="section-title">Design Documents</h2>
+      <span class="section-aside">GDDs, QDDs, LDDs, and design tests — how I think on paper</span>
+    </div>
+
+    <div class="doc-grid">
+      <div class="doc-item">
+        <span class="doc-type doc-qdd">QDD</span>
+        <div class="doc-body">
+          <div class="doc-name">Secrets Submerged — Genshin Impact Quest</div>
+          <div class="doc-desc">Fan-made world quest for Fontaine. Full quest flow, NPC interactions, item design, progression steps, and reward balancing. Demonstrates narrative design and quest structure thinking.</div>
+          <a class="doc-link" href="#">View PDF →</a>
+        </div>
+      </div>
+      <div class="doc-item">
+        <span class="doc-type doc-ldd">LDD</span>
+        <div class="doc-body">
+          <div class="doc-name">Fire Dungeon — Level Design Document</div>
+          <div class="doc-desc">Top-down dungeon level with hand-drawn room maps, enemy placement, boss encounters, objective flow, and challenge pacing.</div>
+          <a class="doc-link" href="#">View PDF →</a>
+        </div>
+      </div>
+      <div class="doc-item">
+        <span class="doc-type">GDD</span>
+        <div class="doc-body">
+          <div class="doc-name">Idle Cyberpunk City Clicker — Full GDD</div>
+          <div class="doc-desc">Complete design document: core loop, economy system, progression tiers, monetization model, world-building lore, and analytics plan.</div>
+          <a class="doc-link" href="#">View PDF →</a>
+        </div>
+      </div>
+      <div class="doc-item">
+        <span class="doc-type">GDD</span>
+        <div class="doc-body">
+          <div class="doc-name">Idle Kingdom Builder — Full GDD</div>
+          <div class="doc-desc">Economy system design, resource faucets/sinks, progression curves, ascension system, UI flow, and monetization strategy.</div>
+          <a class="doc-link" href="#">View PDF →</a>
+        </div>
+      </div>
+      <div class="doc-item">
+        <span class="doc-type">GDD</span>
+        <div class="doc-body">
+          <div class="doc-name">Operação Bagre Noturno — Full GDD</div>
+          <div class="doc-desc">Stealth-action design: level layout, mechanics, narrative structure, scoring system, and world-building for an alternate-reality Brazil.</div>
+          <a class="doc-link" href="#">View PDF →</a>
+        </div>
+      </div>
+      <div class="doc-item">
+        <span class="doc-type doc-test">TEST</span>
+        <div class="doc-body">
+          <div class="doc-name">Quantum Cafe — Interview Design Test</div>
+          <div class="doc-desc">Management sim GDD created for a studio interview. Budget breakdown, milestone timeline, career progression system, and economy design within scope constraints.</div>
+          <a class="doc-link" href="#">View PDF →</a>
+        </div>
+      </div>
+      <div class="doc-item">
+        <span class="doc-type doc-test">TEST</span>
+        <div class="doc-body">
+          <div class="doc-name">Jump Mechanic Level — Design Test GDD</div>
+          <div class="doc-desc">Level design test: designed a new mechanic pushing the core jump to its limit, with progressive room-by-room difficulty and camera constraint solutions.</div>
+          <a class="doc-link" href="#">View PDF →</a>
+        </div>
+      </div>
+      <div class="doc-item">
+        <span class="doc-type doc-test">TEST</span>
+        <div class="doc-body">
+          <div class="doc-name">Jelly Morph: Shifty Speedway — Design Test GDD</div>
+          <div class="doc-desc">Hypercasual mobile game design: core mechanics, competitive analysis, monetization strategy (ads/IAP), and UI wireframes.</div>
+          <a class="doc-link" href="#">View PDF →</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="tip">
+      <strong>Documents note —</strong>
+      Most game design portfolios don't show documentation at all. This section proves you can
+      structure design thinking on paper — a daily requirement at any studio. The QDD and LDD are
+      color-coded to stand out: the Genshin quest doc is your strongest narrative artifact, and
+      the Fire Dungeon LDD shows spatial thinking with hand-drawn maps. Design tests show you
+      can work within constraints and deliver under interview conditions.
     </div>
   </section>
 
@@ -325,23 +1037,69 @@
       <div class="about-photo">Photo</div>
       <div class="about-body">
         <p>
-          Game designer with a statistics background — I model economies in spreadsheets
-          before they ever hit an engine. 5+ years shipping 12+ titles across mobile, PC,
-          and web. I've solo-shipped two idle games on Google Play with real retention
-          metrics, led a team through a graduation metroidvania at PUC-SP, and won
-          Best Art at PUCJam 2023. I also teach game dev and robotics to students,
-          and volunteer as a STEM instructor.
+          Game designer with a statistics background and a build-first, iterate-always approach.
+          I bring a structured, evidence-based methodology to whatever design problem I'm
+          facing — whether that's economy tuning, mechanics, levels, or narrative.
+          5+ years shipping 12+ titles across mobile, PC, and web. Currently based in
+          São Carlos, Brazil.
         </p>
 
+        <div class="design-philosophy">
+          <strong>Design philosophy</strong>
+          I design systems players feel they discovered on their own — then use data to make
+          sure they actually can. When players feel lost, that's not a badge of honor, it's
+          data showing where the invisible guidance failed. Every design is a hypothesis.
+          Build, ship, measure, improve.
+        </div>
+
+        <p>
+          That approach comes from studying how Valve teaches Portal's mechanics through play
+          and guides Half-Life players with lighting and architecture instead of waypoints —
+          invisible design validated by obsessive playtesting. Kojima's influence shows up in
+          the ambition: trusting players with complex systems and meaningful choices, not
+          dumbing things down, but making depth accessible through careful iteration.
+        </p>
+
+        <p>
+          Outside of shipping games, I teach game development and design to kids and teens —
+          200+ students across three schools. It's taught me to break down complex systems
+          into clear, communicable concepts, which directly improves how I write documentation
+          and present design intent to teams.
+        </p>
+
+        <p>
+          I'm also drawn to narrative and quest design — building worlds players want to
+          inhabit and writing quests that feel like natural parts of that world. It shows up in
+          the Genshin Impact quest doc I wrote, in Bagre Noturno's alternate-reality story,
+          and in the atmospheric lore behind Cyberpunk City. It's a growing area for me, not
+          a primary specialty yet, but one I actively pursue.
+        </p>
+
+        <div class="looking-for">
+          <strong>Looking for</strong>
+          A systems or gameplay design role where I can combine hands-on design work with
+          data analysis to shape player behavior — ideally at a mid-size to AAA studio
+          working on PC/console titles. Open to remote or relocation.
+        </div>
+
         <div class="tools-row">
-          <dl class="tr-item"><dt>Engines&nbsp;</dt><dd>Unity 6 (Expert), UE5, Godot</dd></dl>
-          <dl class="tr-item"><dt>Design&nbsp;</dt><dd>Economy balancing, GDDs, playtesting, progression tuning</dd></dl>
-          <dl class="tr-item"><dt>Data&nbsp;</dt><dd>Unity Analytics, Python, R, SQL</dd></dl>
-          <dl class="tr-item"><dt>Code&nbsp;</dt><dd>C# (Advanced), C++, Blueprints</dd></dl>
-          <dl class="tr-item"><dt>Tools&nbsp;</dt><dd>Git, Jira, Trello, Blender, Maya</dd></dl>
-          <dl class="tr-item"><dt>Languages&nbsp;</dt><dd>English (Fluent), Portuguese (Native), Spanish (Basic)</dd></dl>
+          <dl class="tr-item"><dt>Engines&nbsp;</dt><dd>Unity 6 (Expert), UE5 (Blueprints/C++), Godot</dd></dl>
+          <dl class="tr-item"><dt>Design&nbsp;</dt><dd>GDDs, economy modeling, level design, quest design, playtesting</dd></dl>
+          <dl class="tr-item"><dt>Data&nbsp;</dt><dd>Unity Analytics, spreadsheet simulation, Python, R</dd></dl>
+          <dl class="tr-item"><dt>Code&nbsp;</dt><dd>C# (Advanced), C++, Python, SQL</dd></dl>
+          <dl class="tr-item"><dt>Art&nbsp;</dt><dd>Blender, Maya, ZBrush, Adobe Creative Suite</dd></dl>
+          <dl class="tr-item"><dt>Languages&nbsp;</dt><dd>Fluent English, Native Portuguese, Basic Spanish</dd></dl>
         </div>
       </div>
+    </div>
+
+    <div class="tip">
+      <strong>About page notes —</strong>
+      "Looking for" box helps recruiters instantly assess fit. The narrative paragraph is honest
+      — "growing area, not a primary specialty yet" avoids overclaiming while showing genuine
+      range. Valve and Kojima references are accurate. A recruiter reads the full About as:
+      "data-driven systems designer who can also write, document, teach, and is actively developing
+      narrative skills." Tools listed plainly — no skill bars.
     </div>
   </section>
 
@@ -353,8 +1111,8 @@
     <div class="contact-row">
       <a href="mailto:jhocbarbosa@gmail.com" class="contact-item"><span class="ci-label">Email</span> jhocbarbosa@gmail.com</a>
       <a href="https://linkedin.com/in/jhonnatanbarbosa" class="contact-item"><span class="ci-label">LinkedIn</span> /in/jhonnatanbarbosa</a>
-      <a href="https://www.jhorro.com" class="contact-item"><span class="ci-label">Portfolio</span> jhorro.com</a>
       <a href="https://jhorro.itch.io" class="contact-item"><span class="ci-label">itch.io</span> jhorro.itch.io</a>
+      <a href="https://www.jhorro.com" class="contact-item"><span class="ci-label">Portfolio</span> jhorro.com</a>
       <a href="#" class="contact-item"><span class="ci-label">Resume</span> PDF</a>
     </div>
   </section>

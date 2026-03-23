@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — Guardian's Falls: Wounds</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #161619;
+  --surface: #1d1d21;
+  --surface-hover: #232328;
+  --border: #2c2c32;
+  --border-soft: #232327;
+  --text: #dddbd6;
+  --text-mid: #a09e97;
+  --text-dim: #6e6d68;
+  --accent: #a8b87a;
+  --accent-dim: #7a8a55;
+  --note-bg: rgba(168,184,122,0.06);
+  --note-border: rgba(168,184,122,0.25);
+  --cut: #c4736e;
+  --cut-bg: rgba(196,115,110,0.06);
+  --cut-border: rgba(196,115,110,0.25);
+  --shipped: #7aab8b;
+  --shipped-bg: rgba(122,171,139,0.06);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+body {
+  font-family: 'Geist', -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height: 1.55; -webkit-font-smoothing: antialiased;
+  font-size: 13.5px;
+}
+
+::selection { background: var(--accent); color: var(--bg); }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.page { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+
+/* ── BACK LINK ─────────────────────────────────────────── */
+.back-link {
+  display: inline-flex; align-items: center; gap: 0.3rem;
+  font-size: 0.78rem; color: var(--text-dim); font-weight: 500;
+  padding: 1.25rem 0 0; transition: color 0.15s;
+}
+.back-link:hover { color: var(--accent); text-decoration: none; }
+
+/* ── CASE HEADER ───────────────────────────────────────── */
+.case-header {
+  padding: 1.5rem 0 1.75rem;
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.case-header .label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 0.45rem;
+}
+
+.case-header h1 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.65rem; font-weight: 400;
+  line-height: 1.2; margin-bottom: 0.55rem;
+  letter-spacing: -0.01em;
+}
+
+.case-header .subtitle {
+  color: var(--text-mid); font-size: 0.88rem;
+  max-width: 620px; line-height: 1.6;
+}
+
+.meta-strip {
+  display: flex; flex-wrap: wrap;
+  gap: 0.25rem 1.4rem; font-size: 0.78rem;
+  margin-top: 1rem; padding-top: 0.85rem;
+  border-top: 1px solid var(--border-soft);
+}
+.meta-strip .ml { color: var(--text-dim); }
+.meta-strip .mv { color: var(--text); font-weight: 500; }
+
+/* ── SECTIONS ──────────────────────────────────────────── */
+section { padding: 1.75rem 0; }
+section + section { border-top: 1px solid var(--border-soft); }
+
+.section-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 0.25rem;
+}
+
+.section-title {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.15rem; font-weight: 400;
+  margin-bottom: 0.35rem;
+}
+
+.section-desc {
+  color: var(--text-mid); font-size: 0.84rem;
+  max-width: 620px; line-height: 1.6;
+  margin-bottom: 0.85rem;
+}
+
+/* ── 4-CARD GRID ───────────────────────────────────────── */
+.cs-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.6rem; margin-top: 1rem;
+}
+
+.cs-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.9rem 1rem;
+}
+
+.cs-card .cs-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  margin-bottom: 0.35rem;
+}
+
+.cs-card h4 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.9rem; font-weight: 400;
+  margin-bottom: 0.3rem; line-height: 1.25;
+}
+
+.cs-card p {
+  font-size: 0.78rem; color: var(--text-mid); line-height: 1.5;
+}
+
+/* ── SCOPE TABLE ───────────────────────────────────────── */
+.scope-table {
+  width: 100%; border-collapse: collapse;
+  margin: 0.85rem 0; font-size: 0.8rem;
+}
+
+.scope-table th {
+  text-align: left; font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.scope-table td {
+  padding: 0.6rem 0.75rem;
+  border-bottom: 1px solid var(--border-soft);
+  vertical-align: top; line-height: 1.5;
+}
+
+.scope-table .feature { color: var(--text); font-weight: 500; }
+.scope-table .vision { color: var(--text-dim); font-size: 0.78rem; }
+.scope-table .final { color: var(--text-mid); font-size: 0.78rem; }
+
+.badge {
+  display: inline-block; font-family: 'Geist Mono', monospace;
+  font-size: 0.56rem; padding: 0.1rem 0.4rem; border-radius: 3px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.badge-shipped { background: var(--shipped-bg); border: 1px solid rgba(122,171,139,0.3); color: var(--shipped); }
+.badge-evolved { background: rgba(140,160,210,0.06); border: 1px solid rgba(140,160,210,0.3); color: #8ca0d2; }
+.badge-simplified { background: rgba(201,179,106,0.06); border: 1px solid rgba(201,179,106,0.3); color: #c9b36a; }
+.badge-cut { background: var(--cut-bg); border: 1px solid var(--cut-border); color: var(--cut); }
+
+/* ── MECHANIC CARDS ────────────────────────────────────── */
+.mechanic-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px; overflow: hidden;
+  margin-bottom: 0.6rem;
+  display: grid; grid-template-columns: 220px 1fr;
+  transition: border-color 0.2s;
+}
+.mechanic-card:hover { border-color: var(--accent-dim); }
+
+.mechanic-visual {
+  background: var(--surface-hover);
+  border-right: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--text-dim); font-size: 0.72rem;
+  min-height: 150px; padding: 0.75rem; text-align: center;
+  line-height: 1.45;
+}
+
+.mechanic-body { padding: 0.9rem 1.1rem; }
+
+.mechanic-body .mech-tag {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.58rem; text-transform: uppercase;
+  letter-spacing: 0.06em; margin-bottom: 0.3rem;
+  display: flex; align-items: center; gap: 0.5rem;
+}
+.mechanic-body .mech-tag .tag-cat { color: var(--accent); }
+
+.mechanic-body h4 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.95rem; font-weight: 400;
+  margin-bottom: 0.35rem; line-height: 1.25;
+}
+
+.mechanic-body p {
+  font-size: 0.78rem; color: var(--text-mid);
+  line-height: 1.55; margin-bottom: 0.3rem;
+}
+
+.mechanic-body .iter-note {
+  font-size: 0.75rem; color: var(--text-dim);
+  padding-top: 0.4rem; border-top: 1px solid var(--border-soft);
+  margin-top: 0.4rem; line-height: 1.5;
+}
+.mechanic-body .iter-note strong { color: var(--text-mid); font-weight: 500; }
+
+/* ── REFERENCE GRID ────────────────────────────────────── */
+.ref-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem; margin: 0.85rem 0;
+}
+
+.ref-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.75rem 0.9rem;
+}
+
+.ref-card .ref-tag {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.56rem; color: var(--accent-dim);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin-bottom: 0.2rem;
+}
+
+.ref-card h4 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.85rem; font-weight: 400;
+  margin-bottom: 0.2rem; line-height: 1.25;
+}
+
+.ref-card p {
+  font-size: 0.75rem; color: var(--text-mid); line-height: 1.5;
+}
+
+/* ── TEAM GRID ─────────────────────────────────────────── */
+.team-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem; margin: 0.85rem 0;
+}
+
+.team-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.7rem 0.85rem;
+}
+
+.team-card .role-title {
+  font-size: 0.82rem; color: var(--text); font-weight: 500;
+  margin-bottom: 0.15rem;
+}
+
+.team-card .role-desc {
+  font-size: 0.72rem; color: var(--text-dim); line-height: 1.45;
+}
+
+.team-card.me {
+  border-color: var(--accent-dim);
+  background: var(--note-bg);
+}
+
+/* ── MEDIA PLACEHOLDER ─────────────────────────────────── */
+.media-placeholder {
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: 6px; padding: 1.1rem 1rem;
+  text-align: center; color: var(--text-dim);
+  font-size: 0.78rem; margin: 0.65rem 0;
+  line-height: 1.55;
+}
+
+/* ── TIP ───────────────────────────────────────────────── */
+.tip {
+  background: var(--note-bg);
+  border-left: 2px solid var(--note-border);
+  padding: 0.55rem 0.85rem;
+  margin: 0.85rem 0;
+  font-size: 0.78rem;
+  color: var(--accent);
+  line-height: 1.55;
+}
+.tip strong {
+  font-weight: 600; font-size: 0.68rem;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin-right: 0.3rem;
+}
+
+/* ── TAKEAWAY GRID ─────────────────────────────────────── */
+.takeaway-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem; margin: 0.85rem 0;
+}
+
+.takeaway-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px; padding: 0.85rem 1rem;
+}
+
+.takeaway-card h4 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 0.88rem; font-weight: 400;
+  margin-bottom: 0.25rem; line-height: 1.25;
+}
+
+.takeaway-card p {
+  font-size: 0.78rem; color: var(--text-mid); line-height: 1.55;
+}
+
+/* ── FOOTER ────────────────────────────────────────────── */
+.case-footer {
+  padding: 1.25rem 0; border-top: 1px solid var(--border-soft);
+  font-size: 0.72rem; color: var(--text-dim);
+  display: flex; justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────── */
+@media (max-width: 720px) {
+  .page { padding: 0 1.25rem; }
+  .cs-grid { grid-template-columns: 1fr 1fr; }
+  .mechanic-card { grid-template-columns: 1fr; }
+  .mechanic-visual { min-height: 90px; border-right: none; border-bottom: 1px solid var(--border); }
+  .ref-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr 1fr; }
+  .takeaway-grid { grid-template-columns: 1fr; }
+  .case-footer { flex-direction: column; gap: 0.2rem; }
+}
+
+@media (max-width: 480px) {
+  .cs-grid { grid-template-columns: 1fr; }
+  .team-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="page">
+  <a href="#" class="back-link">← Back to projects</a>
+
+  <!-- ════════════════════════════════════════════════════════
+       HEADER
+       ════════════════════════════════════════════════════════ -->
+  <div class="case-header">
+    <div class="label">Case Study</div>
+    <h1>Guardian's Falls — Wounds</h1>
+    <p class="subtitle">
+      A 2.5D metroidvania built as a graduation thesis over 12 months with a
+      team of 6. Started as an ambitious vision document with 8+ movement mechanics,
+      4 zones, and a deep narrative layer — shipped as a focused demo with a
+      tighter core loop and hard-earned lessons in scope management.
+    </p>
+
+    <div class="meta-strip">
+      <div><span class="ml">Role </span><span class="mv">Game Designer, Programmer & Producer</span></div>
+      <div><span class="ml">Team </span><span class="mv">6 people</span></div>
+      <div><span class="ml">Engine </span><span class="mv">Unity 2021 · C#</span></div>
+      <div><span class="ml">Duration </span><span class="mv">12 months</span></div>
+      <div><span class="ml">Platform </span><span class="mv">PC</span></div>
+      <div><span class="ml">Status </span><span class="mv">Demo on itch.io</span></div>
+    </div>
+  </div>
+
+  <!-- ════════════════════════════════════════════════════════
+       01 — SUMMARY (4-CARD)
+       ════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="cs-grid">
+      <div class="cs-card">
+        <div class="cs-label">01 · Problem</div>
+        <h4>Ambition outpaced capacity</h4>
+        <p>The early design document — written in month 1 — envisioned 4+ zones, 8 parkour mechanics, a full combo-based combat system, skill trees, and layered narrative. The team had 6 people, no dedicated programmer, and 12 months.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-label">02 · Process</div>
+        <h4>Prototype fast, cut decisively</h4>
+        <p>Built early prototypes with the full mechanic set. Tested which mechanics actually supported the core loop. Ran a structured beta test. Cut features that weren't pulling their weight — even ones the team loved.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-label">03 · Solution</div>
+        <h4>Ship what works, not everything</h4>
+        <p>Delivered a focused demo across 3 zones with streamlined movement (sprint, slide, dash), dash-strike combat, environmental storytelling, and a linear progression that taught mechanics through level design.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-label">04 · Outcome</div>
+        <h4>Approved by committee</h4>
+        <p>The examining committee acknowledged technical flaws and design questions but appreciated the full picture — the game, the process, and the team's ability to ship. Demo available on itch.io.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       02 — WHAT I DID (PRODUCTION TOUCH)
+       ════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="section-label">My Role</div>
+    <h2 class="section-title">Three Hats, One Pipeline</h2>
+    <p class="section-desc">
+      On a team of 6 with no dedicated programmer, I took on design, programming,
+      and production. Programming consumed the most hours — but my biggest impact
+      was as producer: because I designed the game and understood every team member's
+      pipeline, I could coordinate effectively and make scope calls grounded in
+      both vision and reality.
+    </p>
+
+    <div class="team-grid">
+      <div class="team-card me">
+        <div class="role-title">Design · Programming · Production</div>
+        <div class="role-desc">Designed core systems + mechanics. Programmed all gameplay in C#. Managed production pipeline, weekly advisor meetings, and scope decisions. (Me)</div>
+      </div>
+      <div class="team-card">
+        <div class="role-title">Narrative & Game Design</div>
+        <div class="role-desc">World-building, lore, environmental storytelling concepts, and design collaboration.</div>
+      </div>
+      <div class="team-card">
+        <div class="role-title">3D Art · UI · VFX</div>
+        <div class="role-desc">3D environment and prop modeling, plus UI/UX layout and VFX..</div>
+      </div>
+      <div class="team-card">
+        <div class="role-title">3D Art · Animation</div>
+        <div class="role-desc">Character and enemy models, rigging, and all gameplay animations.</div>
+      </div>
+      <div class="team-card">
+        <div class="role-title">3D Art · Environment</div>
+        <div class="role-desc">Environment art, set dressing, and visual polish across all 3 zones.</div>
+      </div>
+      <div class="team-card">
+        <div class="role-title">Music & Sound</div>
+        <div class="role-desc">Original soundtrack, ambient sound design, and SFX.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       03 — VISION VS SHIP TABLE
+       ════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="section-label">Scope Management</div>
+    <h2 class="section-title">What We Envisioned vs. What Shipped</h2>
+    <p class="section-desc">
+      The original design document was written in months 1–2 of a 12-month timeline.
+      It was ambitious by design — the goal was to dream big and then scope down to
+      what the team could actually ship well. Here's what survived and why.
+    </p>
+
+    <table class="scope-table">
+      <thead>
+        <tr>
+          <th style="width:18%">System</th>
+          <th style="width:30%">Month 1 Vision</th>
+          <th style="width:34%">What Shipped</th>
+          <th style="width:18%">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feature">Movement</td>
+          <td class="vision">8 mechanics: vault, slide, wall jump, grab/climb, swing, roll, sprint, free jump</td>
+          <td class="final">Sprint, slide, dash. Free jump and dashes (horizontal + vertical) added. Vault, wall jump, grab/climb, and swing prototyped but cut.</td>
+          <td><span class="badge badge-evolved">Evolved</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Combat</td>
+          <td class="vision">3-hit combo, slide attack, bounce attack, power punch (horizontal + vertical), sprint attack</td>
+          <td class="final">Streamlined to a dash-into-enemy-strike system. Combos and special attacks were in early prototypes but cut for clarity and feel.</td>
+          <td><span class="badge badge-simplified">Simplified</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Stamina / Resilience</td>
+          <td class="vision">Stamina system, later planned as "resilience" (invulnerability mode with upgrades)</td>
+          <td class="final">Neither. The player can sprint and dash freely — removing the resource gate made movement feel faster and more fluid.</td>
+          <td><span class="badge badge-cut">Cut</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Zones</td>
+          <td class="vision">4+ zones (Moonlit Meadow, Bond Fracture, Jade Jungle, Innerlake) + Hub</td>
+          <td class="final">3 zones shipped: Moonlit Meadow, Jungle, and a Library area. Hub removed. No branching — linear progression.</td>
+          <td><span class="badge badge-simplified">Simplified</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Camera</td>
+          <td class="vision">Dynamic switching between static and side-scroller per room type</td>
+          <td class="final">Side-scroller camera attached to the player throughout. Simpler, more predictable for level design.</td>
+          <td><span class="badge badge-simplified">Simplified</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Progression</td>
+          <td class="vision">Skill tree, NPC quests, HUB, backtracking, left/right difficulty choice</td>
+          <td class="final">Linear progression through 3 zones. No skill tree or hub. Mechanical mastery is the progression.</td>
+          <td><span class="badge badge-cut">Cut</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Narrative</td>
+          <td class="vision">4 cardinal guardians, trauma metaphor, intro cutscene, NPC dialogue, symbolic enemy design</td>
+          <td class="final">Environmental storytelling and interactions carry the narrative. No cutscene. Enemies are generic. The world-building comes through level design and environmental detail.</td>
+          <td><span class="badge badge-evolved">Evolved</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Enemies</td>
+          <td class="vision">3 types per zone + mini-boss + final boss, thematically symbolic designs</td>
+          <td class="final">Generic enemy types. The focus shifted to making combat feel responsive rather than narratively themed.</td>
+          <td><span class="badge badge-simplified">Simplified</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Environment Interaction</td>
+          <td class="vision">Weapons on ground, barricading with doors/tables, destructible vine puzzles</td>
+          <td class="final">Basic environmental interactions shipped — enough to support the core loop and storytelling, not the full sandbox.</td>
+          <td><span class="badge badge-simplified">Simplified</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="tip">
+      <strong>The pattern —</strong>
+      Every cut either removed complexity that fought the core loop (stamina gate, branching paths)
+      or reduced scope to something the team could polish in time (3 zones instead of 4+, linear instead of hub-based).
+      The features that <em>evolved</em> — movement and narrative — changed shape but kept their purpose.
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       04 — MECHANICS DEEP DIVE
+       ════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="section-label">Design Process</div>
+    <h2 class="section-title">Movement & Combat — From Doc to Demo</h2>
+    <p class="section-desc">
+      The original design doc specified exact acceleration values (80% max speed in 0.2s,
+      95% in 0.4s, 100% in 1s) and referenced specific games for each mechanic.
+      That rigor mattered — but the real design happened in prototyping, when we discovered
+      which mechanics felt good together and which ones fought each other.
+    </p>
+
+    <!-- References -->
+    <div class="ref-grid">
+      <div class="ref-card">
+        <div class="ref-tag">Movement Feel</div>
+        <h4>Ori and the Blind Forest</h4>
+        <p>Fast acceleration curve, generous aerial control. Informed our sprint ramp-up values and how quickly the player should reach top speed.</p>
+      </div>
+      <div class="ref-card">
+        <div class="ref-tag">Parkour Chains</div>
+        <h4>Sifu · AC Chronicles: China</h4>
+        <p>Chaining traversal moves (vault → slide → jump) creates a skill ceiling beyond platforming. Informed our slide+jump speed boost design.</p>
+      </div>
+      <div class="ref-card">
+        <div class="ref-tag">Combat-Movement Sync</div>
+        <h4>Hollow Knight · Megaman X</h4>
+        <p>Attacks shouldn't break movement flow. Influenced the decision to make combat a dash-strike — momentum carries through the attack.</p>
+      </div>
+    </div>
+
+    <!-- Mechanic cards -->
+    <div class="mechanic-card">
+      <div class="mechanic-visual">GIF / Video<br>Sprint → Slide → Dash chained</div>
+      <div class="mechanic-body">
+        <div class="mech-tag">
+          <span class="tag-cat">Core · Movement</span>
+          <span class="badge badge-shipped">Shipped</span>
+        </div>
+        <h4>Sprint + Slide + Dash</h4>
+        <p>
+          <strong>Design intent:</strong> Three movement layers that chain together.
+          Sprint builds speed, slide maintains momentum while lowering the hitbox,
+          and dashes (horizontal + vertical) extend reach and create aerial routes.
+          No stamina cost — the player can chain freely.
+        </p>
+        <p>
+          <strong>Why it works:</strong> Removing the stamina gate from the original doc
+          was one of the best cuts we made. Movement feels fast and expressive without
+          a resource bar punishing experimentation.
+        </p>
+        <div class="iter-note">
+          <strong>Iteration:</strong> Early prototypes included vault, wall jump, and grab/climb
+          alongside these. The team cut them — with that many inputs, movement felt chaotic
+          instead of fluid. Reducing to 3 core mechanics made each one more readable and
+          the levels easier to design around.
+        </div>
+      </div>
+    </div>
+
+    <div class="mechanic-card">
+      <div class="mechanic-visual">GIF / Video<br>Dash-strike into enemy</div>
+      <div class="mechanic-body">
+        <div class="mech-tag">
+          <span class="tag-cat">Core · Combat</span>
+          <span class="badge badge-evolved">Evolved</span>
+        </div>
+        <h4>Dash-Strike Combat</h4>
+        <p>
+          <strong>Design intent:</strong> Combat is movement. Instead of standing and
+          executing combos, the player dashes into enemies to attack. This keeps the
+          game's momentum consistent — you're always moving, even when fighting.
+        </p>
+        <p>
+          <strong>What changed:</strong> The original doc specified a 3-hit combo tree,
+          slide attacks, bounce attacks, and two power punches (horizontal + vertical).
+          Early prototypes had these working, but they pulled the feel in the opposite
+          direction of the movement system. The combos made players stop and chain punches;
+          the dash-strike kept them flowing.
+        </p>
+        <div class="iter-note">
+          <strong>Iteration:</strong> This wasn't in the original doc — it emerged from
+          prototyping. Once we saw how the dash felt during traversal, applying that same
+          momentum to combat was a natural evolution. The combo system was cut, but the
+          core idea of "combat = movement" was stronger than the original plan.
+        </div>
+      </div>
+    </div>
+
+    <div class="mechanic-card">
+      <div class="mechanic-visual">GIF / Video<br>Environmental interaction</div>
+      <div class="mechanic-body">
+        <div class="mech-tag">
+          <span class="tag-cat">Supporting · Narrative</span>
+          <span class="badge badge-simplified">Simplified</span>
+        </div>
+        <h4>Environmental Storytelling & Interactions</h4>
+        <p>
+          <strong>Design intent:</strong> The original vision included weapons on the
+          ground, barricading with furniture, and destructible vine puzzles as narrative
+          devices. The shipped version uses simpler environmental interactions to carry
+          the story — the world tells the narrative that the missing cutscene would have.
+        </p>
+        <p>
+          <strong>What survived:</strong> Despite cutting the intro cutscene, thematic
+          enemy designs, and NPC dialogue, the narrative still comes through strongly
+          via environmental detail and interaction. The team's narrative designer ensured
+          the world-building was embedded in the spaces themselves.
+        </p>
+      </div>
+    </div>
+
+    <div class="media-placeholder">
+      Process artifacts to add here: side-by-side of the original mechanics priority list
+      (high / low / out of scope labels from the TCC document) next to the final shipped
+      input scheme. Shows structured design thinking → iteration → final result.
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       05 — BETA TESTING
+       ════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="section-label">Quality Assurance</div>
+    <h2 class="section-title">Beta Testing</h2>
+    <p class="section-desc">
+      Before the committee review, I designed and ran a structured beta test
+      with categorized feedback: mechanics bugs, collision bugs, UI/menu bugs,
+      difficulty assessment, control familiarity, and art/level/gameplay evaluation.
+      Testers received a written guide and a Google Form for responses.
+    </p>
+
+    <div class="cs-grid" style="grid-template-columns: repeat(3, 1fr);">
+      <div class="cs-card">
+        <div class="cs-label">Testers</div>
+        <h4>A few dozen</h4>
+        <p>College peers, friends, and family. Not industry-qualified QA, but enough to surface the biggest issues — especially around level design and controls.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-label">Biggest Finding</div>
+        <h4>Level design pain points</h4>
+        <p>Testers consistently struggled with level navigation. This was the most actionable feedback from the beta — and the hardest to fix under time pressure.</p>
+      </div>
+      <div class="cs-card">
+        <div class="cs-label">Control Iteration</div>
+        <h4>Simplified inputs</h4>
+        <p>Control familiarity was a known concern. We iterated by reducing the number of inputs, improving button mapping, and making the remaining controls more intuitive.</p>
+      </div>
+    </div>
+
+    <div class="media-placeholder">
+      Process artifact: screenshot or embed of the beta testing guide
+      (the structured categories document). Also: Google Form summary or
+      a synthesized chart of the most common feedback themes.
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       06 — HONEST ENDING
+       ════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="section-label">Outcome</div>
+    <h2 class="section-title">What Happened After</h2>
+    <p class="section-desc">
+      For the first 80% of the project, the team had a genuine goal of releasing
+      on Steam. By the end, team morale had worn down — 12 months of production
+      on a first project takes a toll. In the post-mortem, the team decided to
+      leave Guardian's Falls as a demo. That decision was honest, and it was the
+      right one.
+    </p>
+    <p class="section-desc">
+      The examining committee appreciated the full picture: the game itself,
+      the production process, and the fact that we shipped something coherent
+      despite the scope challenges. They noted technical flaws and had design
+      questions, but their focus was on what we delivered — not what we cut.
+    </p>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       07 — TAKEAWAYS
+       ════════════════════════════════════════════════════════ -->
+  <section>
+    <div class="section-label">Reflection</div>
+    <h2 class="section-title">What I Carried Forward</h2>
+    <p class="section-desc">
+      Guardian's Falls was my first shipped team project. Everything I did
+      differently on Idle Kingdom Builder and Idle Cyberpunk City Clicker
+      started with lessons from here.
+    </p>
+
+    <div class="takeaway-grid">
+      <div class="takeaway-card">
+        <h4>Scope is a design skill</h4>
+        <p>The original doc had 8 movement mechanics. The shipped game has 3 — and they feel better than 8 ever would have. Cutting isn't failure; it's focus. This mindset defined how I built both idle games: start with the minimum viable loop, not the maximum vision.</p>
+      </div>
+      <div class="takeaway-card">
+        <h4>Test before you're ready</h4>
+        <p>The beta test wasn't transformative, but it caught level design issues and control pain points we'd become blind to. Even imperfect testing with non-expert players surfaces problems you can't see from the inside.</p>
+      </div>
+      <div class="takeaway-card">
+        <h4>Mechanics must talk to each other</h4>
+        <p>The combo combat system fought the movement system — they wanted different things from the player. The dash-strike emerged because we prototyped both and noticed the conflict. Design documents are hypotheses; prototypes are experiments.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       FOOTER
+       ════════════════════════════════════════════════════════ -->
+  <footer class="case-footer">
+    <span>Guardian's Falls — Wounds · Graduation Thesis · Anhembi Morumbi / PUC-SP</span>
+    <a href="https://www.jhorro.com/guardiansfalls">Play demo on itch.io →</a>
+  </footer>
+
+</div>
+</body>
+</html>

@@ -5,661 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jhonnatan Barbosa — Game Designer</title>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #161619;
-    --surface: #1d1d21;
-    --surface-hover: #232328;
-    --border: #2c2c32;
-    --border-soft: #232327;
-    --text: #dddbd6;
-    --text-mid: #a09e97;
-    --text-dim: #6e6d68;
-    --accent: #a8b87a;
-    --accent-dim: #7a8a55;
-    --note-bg: rgba(168,184,122,0.06);
-    --note-border: rgba(168,184,122,0.25);
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: 'Geist', -apple-system, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-    font-size: 13.5px;
-  }
-
-  ::selection { background: var(--accent); color: var(--bg); }
-  a { color: var(--accent); text-decoration: none; }
-  a:hover { text-decoration: underline; }
-
-  .page { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
-
-  /* ── NAV ── */
-  nav {
-    position: sticky; top: 0; z-index: 50;
-    background: rgba(22,22,25,0.88);
-    backdrop-filter: blur(12px);
-    border-bottom: 1px solid var(--border-soft);
-  }
-
-  nav .nav-inner {
-    max-width: 960px; margin: 0 auto;
-    padding: 0.6rem 2rem;
-    display: flex; justify-content: space-between; align-items: center;
-  }
-
-  nav .name {
-    font-family: 'Instrument Serif', serif;
-    font-size: 1.05rem; color: var(--text);
-  }
-
-  nav .nav-links { display: flex; gap: 1.4rem; list-style: none; }
-
-  nav .nav-links a {
-    color: var(--text-dim); font-size: 0.8rem; font-weight: 500;
-    text-decoration: none; transition: color 0.15s;
-  }
-  nav .nav-links a:hover { color: var(--text); }
-
-  /* ── INTRO ── */
-  .intro {
-    padding: 2.5rem 0 1.75rem;
-    border-bottom: 1px solid var(--border-soft);
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 2rem;
-    align-items: end;
-  }
-
-  .intro h1 {
-    font-family: 'Instrument Serif', serif;
-    font-size: 1.7rem; font-weight: 400;
-    line-height: 1.2; letter-spacing: -0.015em;
-  }
-
-  .intro p {
-    color: var(--text-mid); font-size: 0.88rem;
-    max-width: 520px; margin-top: 0.5rem;
-  }
-
-  .intro-links {
-    display: flex; gap: 0.6rem; flex-shrink: 0;
-  }
-
-  .intro-links a {
-    font-size: 0.78rem; font-weight: 500;
-    color: var(--text-dim); padding: 0.35rem 0.8rem;
-    border: 1px solid var(--border); border-radius: 4px;
-    transition: border-color 0.15s;
-  }
-  .intro-links a:hover { border-color: var(--accent-dim); color: var(--text); text-decoration: none; }
-
-  /* ── TIP ── */
-  .tip {
-    background: var(--note-bg);
-    border-left: 2px solid var(--note-border);
-    padding: 0.55rem 0.85rem;
-    margin: 0.85rem 0;
-    font-size: 0.78rem;
-    color: var(--accent);
-    line-height: 1.55;
-  }
-  .tip strong {
-    font-weight: 600; font-size: 0.7rem;
-    text-transform: uppercase; letter-spacing: 0.06em;
-    margin-right: 0.3rem;
-  }
-
-  /* ── SECTIONS ── */
-  section { padding: 1.75rem 0; }
-  section + section { border-top: 1px solid var(--border-soft); }
-
-  .section-header {
-    display: flex; justify-content: space-between;
-    align-items: baseline; margin-bottom: 1.1rem;
-  }
-
-  .section-title {
-    font-family: 'Instrument Serif', serif;
-    font-size: 1.15rem; font-weight: 400;
-  }
-
-  .section-aside { font-size: 0.75rem; color: var(--text-dim); }
-
-  /* ── PROJECT CARDS — compact ── */
-  .project-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    margin-bottom: 0.75rem;
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    transition: border-color 0.2s;
-  }
-  .project-card:hover { border-color: var(--accent-dim); }
-
-  .project-thumb {
-    background: var(--surface-hover);
-    display: flex; align-items: center; justify-content: center;
-    border-right: 1px solid var(--border);
-    color: var(--text-dim); font-size: 0.75rem; font-weight: 500;
-    min-height: 160px;
-  }
-  .project-thumb img {
-    width: 100%; height: 100%; object-fit: cover;
-  }
-
-  .project-card:nth-child(1) .project-thumb {
-    background: radial-gradient(ellipse at 30% 50%, rgba(168,184,122,0.08) 0%, transparent 65%), var(--surface-hover);
-  }
-  .project-card:nth-child(2) .project-thumb {
-    background: radial-gradient(ellipse at 70% 40%, rgba(140,160,210,0.07) 0%, transparent 65%), var(--surface-hover);
-  }
-  .project-card:nth-child(3) .project-thumb {
-    background: radial-gradient(ellipse at 50% 60%, rgba(210,170,120,0.07) 0%, transparent 65%), var(--surface-hover);
-  }
-
-  .project-body { padding: 1rem 1.25rem; display: flex; flex-direction: column; justify-content: center; }
-
-  .project-top-row {
-    display: flex; justify-content: space-between;
-    align-items: baseline; margin-bottom: 0.2rem;
-    flex-wrap: wrap; gap: 0.4rem;
-  }
-
-  .project-name {
-    font-family: 'Instrument Serif', serif;
-    font-size: 1.02rem; font-weight: 400;
-  }
-
-  .project-badge {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.62rem; color: var(--text-dim);
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    padding: 0.1rem 0.45rem; border-radius: 3px;
-  }
-
-  .project-desc {
-    color: var(--text-mid); font-size: 0.84rem;
-    margin-bottom: 0.65rem; line-height: 1.55;
-  }
-
-  .meta-row {
-    display: flex; flex-wrap: wrap;
-    gap: 0.2rem 1.1rem; font-size: 0.78rem;
-    margin-bottom: 0.6rem;
-  }
-
-  .meta-pair { display: flex; gap: 0.3rem; }
-  .meta-pair .ml { color: var(--text-dim); }
-  .meta-pair .mv { color: var(--text); font-weight: 500; }
-
-  .project-tags { display: flex; flex-wrap: wrap; gap: 0.25rem; }
-
-  .ptag {
-    font-size: 0.66rem; font-weight: 500;
-    color: var(--text-dim);
-    background: rgba(255,255,255,0.03);
-    border: 1px solid var(--border);
-    padding: 0.12rem 0.5rem; border-radius: 3px;
-  }
-
-  .project-actions {
-    margin-top: 0.6rem; padding-top: 0.55rem;
-    border-top: 1px solid var(--border-soft);
-    display: flex; gap: 1.2rem;
-    font-size: 0.78rem; font-weight: 500;
-  }
-
-  /* ── CASE STUDY ── */
-  .cs-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 0.6rem;
-    margin-top: 0.85rem;
-  }
-
-  .cs-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.9rem 1rem;
-  }
-
-  .cs-card .cs-label {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.62rem; color: var(--accent);
-    text-transform: uppercase; letter-spacing: 0.08em;
-    margin-bottom: 0.35rem;
-  }
-
-  .cs-card h4 {
-    font-family: 'Instrument Serif', serif;
-    font-size: 0.9rem; font-weight: 400;
-    margin-bottom: 0.3rem; line-height: 1.25;
-  }
-
-  .cs-card p {
-    font-size: 0.78rem; color: var(--text-mid); line-height: 1.5;
-  }
-
-  .media-placeholder {
-    background: var(--surface);
-    border: 1px dashed var(--border);
-    border-radius: 6px;
-    padding: 1.25rem 1rem;
-    text-align: center;
-    color: var(--text-dim);
-    font-size: 0.78rem;
-    margin-top: 0.6rem;
-  }
-
-  /* ── DASHBOARD EMBED ── */
-  .dashboard-embed {
-    margin-top: 0.85rem;
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-  }
-
-  .dashboard-label {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
-    font-size: 0.75rem;
-    color: var(--text-dim);
-  }
-  .dashboard-label a {
-    font-size: 0.72rem;
-  }
-
-  .dashboard-embed iframe {
-    width: 100%;
-    height: 600px;
-    border: none;
-    background: var(--bg);
-  }
-
-  /* ── ABOUT ── */
-  .about-layout {
-    display: grid;
-    grid-template-columns: 110px 1fr;
-    gap: 1.5rem; align-items: start;
-  }
-
-  .about-photo {
-    width: 110px; height: 135px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.72rem; color: var(--text-dim);
-    overflow: hidden;
-  }
-  .about-photo img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-  }
-
-  .about-body p {
-    color: var(--text-mid); font-size: 0.88rem;
-    margin-bottom: 0.6rem; max-width: 580px; line-height: 1.6;
-  }
-
-  .about-body .design-philosophy {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.85rem 1rem;
-    margin: 0.85rem 0;
-    font-size: 0.82rem;
-    color: var(--text-mid);
-    line-height: 1.6;
-  }
-  .about-body .design-philosophy strong {
-    color: var(--text);
-    font-weight: 600;
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    display: block;
-    margin-bottom: 0.3rem;
-  }
-
-  .tools-row {
-    margin-top: 0.75rem;
-    display: flex; flex-wrap: wrap;
-    gap: 0.3rem 1.8rem;
-    font-size: 0.8rem;
-  }
-
-  .tools-row .tr-item { display: flex; gap: 0.3rem; }
-  .tools-row dt { color: var(--text-dim); font-weight: 500; }
-  .tools-row dd { color: var(--text); margin: 0; }
-
-  /* ── CONTACT ── */
-  .contact-row {
-    display: flex; flex-wrap: wrap;
-    gap: 0.5rem; margin-top: 0.75rem;
-  }
-
-  .contact-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 0.45rem 0.85rem;
-    font-size: 0.8rem; color: var(--text);
-    text-decoration: none;
-    transition: border-color 0.15s;
-    display: flex; align-items: center; gap: 0.4rem;
-  }
-  .contact-item:hover { border-color: var(--accent-dim); text-decoration: none; }
-  .contact-item .ci-label { color: var(--text-dim); font-size: 0.72rem; }
-
-  /* ── ADDITIONAL WORK GRID ── */
-  .additional-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    margin-top: 0.85rem;
-  }
-
-  .additional-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    overflow: hidden;
-    display: grid;
-    grid-template-columns: 68px 1fr;
-    transition: border-color 0.2s;
-  }
-  .additional-item:hover { border-color: var(--accent-dim); }
-
-  .additional-item .ai-thumb {
-    background: var(--surface-hover);
-    display: flex; align-items: center; justify-content: center;
-    border-right: 1px solid var(--border);
-    color: var(--text-dim);
-    font-size: 0.58rem;
-    font-weight: 500;
-    min-height: 90px;
-  }
-  .additional-item .ai-thumb img {
-    width: 100%; height: 100%; object-fit: cover;
-  }
-
-  .additional-item .ai-body {
-    padding: 0.5rem 0.7rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .additional-item .ai-name {
-    font-family: 'Instrument Serif', serif;
-    font-size: 0.85rem;
-    font-weight: 400;
-    line-height: 1.25;
-  }
-
-  .additional-item .ai-genre {
-    font-size: 0.68rem;
-    color: var(--text-dim);
-    margin-top: 0.1rem;
-  }
-
-  .additional-item .ai-role {
-    font-size: 0.72rem;
-    color: var(--text-mid);
-    margin-top: 0.25rem;
-    line-height: 1.4;
-  }
-
-  .additional-item .ai-link {
-    margin-top: 0.3rem;
-    font-size: 0.68rem;
-    font-weight: 500;
-  }
-
-  /* ── DOCUMENT GRID ── */
-  .doc-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.5rem;
-    margin-top: 0.85rem;
-  }
-
-  .doc-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.7rem 0.9rem;
-    display: flex;
-    gap: 0.7rem;
-    align-items: flex-start;
-    transition: border-color 0.2s;
-  }
-  .doc-item:hover { border-color: var(--accent-dim); }
-
-  .doc-item .doc-type {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.58rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--bg);
-    background: var(--accent-dim);
-    padding: 0.15rem 0.4rem;
-    border-radius: 3px;
-    white-space: nowrap;
-    flex-shrink: 0;
-    margin-top: 0.1rem;
-  }
-
-  .doc-item .doc-type.doc-qdd { background: #8a7abf; }
-  .doc-item .doc-type.doc-ldd { background: #7aabb8; }
-  .doc-item .doc-type.doc-test { background: #b8967a; }
-
-  .doc-item .doc-body { flex: 1; min-width: 0; }
-
-  .doc-item .doc-name {
-    font-family: 'Instrument Serif', serif;
-    font-size: 0.88rem;
-    font-weight: 400;
-    line-height: 1.25;
-  }
-
-  .doc-item .doc-desc {
-    font-size: 0.72rem;
-    color: var(--text-mid);
-    margin-top: 0.15rem;
-    line-height: 1.45;
-  }
-
-  .doc-item .doc-link {
-    margin-top: 0.25rem;
-    font-size: 0.68rem;
-    font-weight: 500;
-    display: inline-block;
-  }
-
-  /* ── LOOKING FOR ── */
-  .looking-for {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px;
-    padding: 0.6rem 1rem;
-    margin-top: 0.85rem;
-    font-size: 0.82rem;
-    color: var(--text-mid);
-    line-height: 1.55;
-  }
-  .looking-for strong {
-    color: var(--text);
-    font-weight: 600;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-    margin-right: 0.3rem;
-  }
-
-  /* ── SCOPE TABLE (Guardian's Falls) ── */
-  .scope-table {
-    width: 100%; border-collapse: collapse;
-    margin: 0.85rem 0; font-size: 0.8rem;
-  }
-  .scope-table th {
-    text-align: left; font-family: 'Geist Mono', monospace;
-    font-size: 0.6rem; color: var(--accent);
-    text-transform: uppercase; letter-spacing: 0.08em;
-    padding: 0.55rem 0.75rem;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
-  }
-  .scope-table td {
-    padding: 0.55rem 0.75rem;
-    border-bottom: 1px solid var(--border-soft);
-    vertical-align: top; line-height: 1.5;
-  }
-  .scope-table .feature { color: var(--text); font-weight: 500; }
-  .scope-table .vision { color: var(--text-dim); font-size: 0.75rem; }
-  .scope-table .final { color: var(--text-mid); font-size: 0.75rem; }
-
-  .badge {
-    display: inline-block; font-family: 'Geist Mono', monospace;
-    font-size: 0.56rem; padding: 0.1rem 0.4rem; border-radius: 3px;
-    text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap;
-  }
-  .badge-shipped { background: rgba(122,171,139,0.06); border: 1px solid rgba(122,171,139,0.3); color: #7aab8b; }
-  .badge-evolved { background: rgba(140,160,210,0.06); border: 1px solid rgba(140,160,210,0.3); color: #8ca0d2; }
-  .badge-simplified { background: rgba(201,179,106,0.06); border: 1px solid rgba(201,179,106,0.3); color: #c9b36a; }
-  .badge-cut { background: rgba(196,115,110,0.06); border: 1px solid rgba(196,115,110,0.25); color: #c4736e; }
-
-  /* ── MECHANIC SPOTLIGHT ── */
-  .mechanic-spotlight {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px; padding: 0.9rem 1.1rem;
-    margin: 0.85rem 0;
-    display: grid; grid-template-columns: 180px 1fr;
-    gap: 0; overflow: hidden;
-  }
-  .mechanic-spotlight .ms-visual {
-    background: var(--surface-hover);
-    border-right: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: center;
-    color: var(--text-dim); font-size: 0.72rem;
-    margin: -0.9rem 0 -0.9rem -1.1rem;
-    padding: 0; text-align: center; line-height: 1.45;
-    overflow: hidden;
-  }
-  .mechanic-spotlight .ms-visual img {
-    width: 100%; height: 100%; object-fit: cover; display: block;
-  }
-  .mechanic-spotlight .ms-body { padding-left: 1rem; }
-  .mechanic-spotlight .ms-tag {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.58rem; text-transform: uppercase;
-    letter-spacing: 0.06em; margin-bottom: 0.25rem;
-    display: flex; align-items: center; gap: 0.5rem;
-    color: var(--accent);
-  }
-  .mechanic-spotlight h4 {
-    font-family: 'Instrument Serif', serif;
-    font-size: 0.92rem; font-weight: 400;
-    margin-bottom: 0.3rem; line-height: 1.25;
-  }
-  .mechanic-spotlight p {
-    font-size: 0.78rem; color: var(--text-mid); line-height: 1.55;
-  }
-  .mechanic-spotlight .ms-iter {
-    font-size: 0.75rem; color: var(--text-dim);
-    padding-top: 0.35rem; border-top: 1px solid var(--border-soft);
-    margin-top: 0.35rem; line-height: 1.5;
-  }
-  .mechanic-spotlight .ms-iter strong { color: var(--text-mid); font-weight: 500; }
-
-  /* ── TAKEAWAY GRID ── */
-  .takeaway-grid {
-    display: grid; grid-template-columns: repeat(3, 1fr);
-    gap: 0.6rem; margin: 0.85rem 0;
-  }
-  .takeaway-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 6px; padding: 0.75rem 0.9rem;
-  }
-  .takeaway-card h4 {
-    font-family: 'Instrument Serif', serif;
-    font-size: 0.85rem; font-weight: 400;
-    margin-bottom: 0.2rem; line-height: 1.25;
-  }
-  .takeaway-card p {
-    font-size: 0.75rem; color: var(--text-mid); line-height: 1.5;
-  }
-
-  /* ── GF SECTION LABELS ── */
-  .gf-label {
-    font-family: 'Geist Mono', monospace;
-    font-size: 0.6rem; color: var(--accent);
-    text-transform: uppercase; letter-spacing: 0.08em;
-    margin-bottom: 0.2rem; margin-top: 1.25rem;
-  }
-  .gf-label:first-child { margin-top: 0; }
-  .gf-subtitle {
-    font-family: 'Instrument Serif', serif;
-    font-size: 1rem; font-weight: 400;
-    margin-bottom: 0.3rem;
-  }
-  .gf-desc {
-    color: var(--text-mid); font-size: 0.82rem;
-    max-width: 620px; line-height: 1.6;
-    margin-bottom: 0.5rem;
-  }
-
-  /* ── FOOTER ── */
-  footer {
-    padding: 1.25rem 0; border-top: 1px solid var(--border-soft);
-    font-size: 0.72rem; color: var(--text-dim);
-    display: flex; justify-content: space-between;
-  }
-
-  @media (max-width: 720px) {
-    .page { padding: 0 1.25rem; }
-    nav .nav-inner { padding: 0.6rem 1.25rem; }
-    .intro { grid-template-columns: 1fr; }
-    .intro-links { margin-top: 0.5rem; }
-    .project-card { grid-template-columns: 1fr; }
-    .project-thumb { min-height: 120px; border-right: none; border-bottom: 1px solid var(--border); }
-    .cs-grid { grid-template-columns: 1fr 1fr; }
-    .about-layout { grid-template-columns: 1fr; }
-    .additional-grid { grid-template-columns: 1fr 1fr; }
-    .doc-grid { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 0.2rem; }
-    .takeaway-grid { grid-template-columns: 1fr; }
-    .mechanic-spotlight { grid-template-columns: 1fr; }
-    .mechanic-spotlight .ms-visual {
-      margin: -0.9rem -1.1rem 0; border-right: none;
-      border-bottom: 1px solid var(--border); min-height: 80px;
-    }
-    .mechanic-spotlight .ms-body { padding-left: 0; padding-top: 0.75rem; }
-    .scope-table { font-size: 0.72rem; }
-  }
-
-  @media (max-width: 480px) {
-    .cs-grid { grid-template-columns: 1fr; }
-    .additional-grid { grid-template-columns: 1fr; }
-  }
-</style>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -693,9 +39,9 @@
       </p>
     </div>
     <div class="intro-links">
-      <a href="#">Resume (PDF)</a>
-      <a href="/cdn-cgi/l/email-protection#e58f8d8a86878497878a9684a58288848c89cb868a88">Email</a>
-      <a href="https://linkedin.com/in/jhonnatanbarbosa">LinkedIn</a>
+      <a href="docs/resume-jhonnatan-barbosa.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+      <a href="mailto:jhonnatan@example.com">Email</a>
+      <a href="https://linkedin.com/in/jhonnatanbarbosa" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
 
@@ -716,7 +62,7 @@
     <!-- Project 1: Idle Cyberpunk City Clicker -->
     <div class="project-card">
       <div class="project-thumb">
-        <img src="media/thumb-cyberpunk.gif" alt="Idle Cyberpunk City Clicker gameplay">
+        <img src="media/thumb-cyberpunk.gif" alt="Idle Cyberpunk City Clicker gameplay showing neon cityscape and upgrade UI">
       </div>
       <div class="project-body">
         <div class="project-top-row">
@@ -745,7 +91,7 @@
         </div>
         <div class="project-actions">
           <a href="#cyberpunk-analytics">Analytics case study →</a>
-          <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker">Play on Google Play →</a>
+          <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener">Play on Google Play →</a>
         </div>
       </div>
     </div>
@@ -753,7 +99,7 @@
     <!-- Project 2: Idle Kingdom Builder -->
     <div class="project-card">
       <div class="project-thumb">
-        <img src="media/thumb-idlekingdom.gif" alt="Idle Cyberpunk City Clicker gameplay">
+        <img src="media/thumb-idlekingdom.gif" alt="Idle Kingdom Builder gameplay showing kingdom construction and resource management">
       </div>
       <div class="project-body">
         <div class="project-top-row">
@@ -780,7 +126,7 @@
           <span class="ptag">First Ship</span>
         </div>
         <div class="project-actions">
-          <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder&pcampaignid=web_share">Play on Google Play →</a>
+          <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener">Play on Google Play →</a>
         </div>
       </div>
     </div>
@@ -788,7 +134,7 @@
     <!-- Project 3: Guardian's Falls -->
     <div class="project-card">
       <div class="project-thumb">
-          <img src="media/thumb-guardianfalls.gif" alt="Idle Cyberpunk City Clicker gameplay">
+          <img src="media/thumb-guardianfalls.gif" alt="Guardian's Falls parkour traversal and combat gameplay">
       </div>
       <div class="project-body">
         <div class="project-top-row">
@@ -817,7 +163,7 @@
         </div>
         <div class="project-actions">
           <a href="#guardians-case-study">Case study →</a>
-          <a href="https://www.jhorro.com/guardiansfalls">Play demo on itch.io →</a>
+          <a href="https://hanada1nonly.itch.io/guardians-fall-wounds" target="_blank" rel="noopener">Play on Itch.io →</a>
         </div>
       </div>
     </div>
@@ -825,7 +171,7 @@
     <!-- Project 4: Beasts of Agony (Showcase Card) -->
     <div class="project-card">
       <div class="project-thumb">
-          <img src="media/thumb-beastsofagony.gif" alt="Idle Cyberpunk City Clicker gameplay">
+          <img src="media/thumb-beastsofagony.gif" alt="Beasts of Agony souls-like boss fight combat">
       </div>
       <div class="project-body">
         <div class="project-top-row">
@@ -850,7 +196,7 @@
           <span class="ptag">Award Winner</span>
         </div>
         <div class="project-actions">
-          <a href="https://www.jhorro.com/beastsofagony">Play on itch.io →</a>
+          <a href="https://www.jhorro.com/beastsofagony" target="_blank" rel="noopener">Play on itch.io →</a>
         </div>
       </div>
     </div>
@@ -858,7 +204,7 @@
     <!-- Project 5: Operação Bagre Noturno (Showcase Card) -->
     <div class="project-card">
       <div class="project-thumb">
-                  <img src="media/thumb-bagre.gif" alt="Idle Cyberpunk City Clicker gameplay">
+          <img src="media/thumb-bagre.gif" alt="Operação Bagre Noturno stealth action gameplay in alternate-reality Brazil">
       </div>
       <div class="project-body">
         <div class="project-top-row">
@@ -883,7 +229,7 @@
           <span class="ptag">3D Art</span>
         </div>
         <div class="project-actions">
-          <a href="https://jhorro.itch.io/operacao-bagre-noturno">Play on itch.io →</a>
+          <a href="https://jhorro.itch.io/operacao-bagre-noturno" target="_blank" rel="noopener">Play on itch.io →</a>
         </div>
       </div>
     </div>
@@ -905,29 +251,29 @@
     <div class="additional-grid">
       <div class="additional-item">
         <div class="ai-thumb">
-           <img src="media/thumb-coal.jpg" alt="Idle Cyberpunk City Clicker gameplay">
+           <img src="media/thumb-coal.jpg" alt="Coal dark fantasy metroidvania environment">
         </div>
         <div class="ai-body">
           <div class="ai-name">Coal</div>
           <div class="ai-genre">Metroidvania · Unity · 2020</div>
           <div class="ai-role">Dark Fantasy World Design, interconnected levels, lore.</div>
-          <a class="ai-link" href="#">Play →</a>
+          <a class="ai-link" href="#" aria-label="Play Coal">Play →</a>
         </div>
       </div>
       <div class="additional-item">
         <div class="ai-thumb">
-           <img src="media/thumb-netuno.gif" alt="Idle Cyberpunk City Clicker gameplay">
+           <img src="media/thumb-netuno.gif" alt="Maldição de Netuno wave-based shooting action">
         </div>
         <div class="ai-body">
           <div class="ai-name">Maldição de Netuno</div>
           <div class="ai-genre">Action Rounds Shooter · Unity · 2022</div>
           <div class="ai-role">Level layout, wave economy balancing, weapon tuning, 3D props.</div>
-          <a class="ai-link" href="#">Play →</a>
+          <a class="ai-link" href="#" aria-label="Play Maldição de Netuno">Play →</a>
         </div>
       </div>
       <div class="additional-item">
         <div class="ai-thumb">
-           <img src="media/thumb-nark.gif" alt="Idle Cyberpunk City Clicker gameplay">
+           <img src="media/thumb-nark.gif" alt="Nárkissos first-person horror exploration">
         </div>
         <div class="ai-body">
           <div class="ai-name">Nárkissos</div>
@@ -937,7 +283,7 @@
       </div>
       <div class="additional-item">
         <div class="ai-thumb">
-           <img src="media/thumb-wings.gif" alt="Idle Cyberpunk City Clicker gameplay">
+           <img src="media/thumb-wings.gif" alt="Wings of Hope open-world island survival terrain">
         </div>
         <div class="ai-body">
           <div class="ai-name">Wings of Hope</div>
@@ -947,7 +293,7 @@
       </div>
       <div class="additional-item">
         <div class="ai-thumb">
-           <img src="media/thumb-sand.gif" alt="Idle Cyberpunk City Clicker gameplay">
+           <img src="media/thumb-sand.gif" alt="Riddles of the Sands open-world puzzle environment">
         </div>
         <div class="ai-body">
           <div class="ai-name">Riddles of the Sands</div>
@@ -957,7 +303,7 @@
       </div>
       <div class="additional-item">
         <div class="ai-thumb">
-           <img src="media/thumb-subway.gif" alt="Idle Cyberpunk City Clicker gameplay">
+           <img src="media/thumb-subway.gif" alt="Echoes of the Underground loop puzzle horror">
         </div>
         <div class="ai-body">
           <div class="ai-name">Echoes of the Underground</div>
@@ -967,7 +313,7 @@
       </div>
       <div class="additional-item">
         <div class="ai-thumb">
-           <img src="media/thumb-megakart.gif" alt="Idle Cyberpunk City Clicker gameplay">
+           <img src="media/thumb-megakart.gif" alt="Mega-Racing platform racing track with obstacles">
         </div>
         <div class="ai-body">
           <div class="ai-name">Mega-Racing</div>
@@ -977,18 +323,18 @@
       </div>
       <div class="additional-item">
         <div class="ai-thumb">
-           <img src="media/thumb-technichal.png" alt="Idle Cyberpunk City Clicker gameplay">
+           <img src="media/thumb-technichal.png" alt="Technical Difficulties multiplayer party game">
         </div>
         <div class="ai-body">
           <div class="ai-name">Technical Difficulties</div>
           <div class="ai-genre">Multiplayer Party Game · Unity · 2020</div>
           <div class="ai-role">Core mechanics, social deduction balancing, loop refinement.</div>
-          <a class="ai-link" href="#">Play →</a>
+          <a class="ai-link" href="#" aria-label="Play Technical Difficulties">Play →</a>
         </div>
       </div>
       <div class="additional-item">
         <div class="ai-thumb">
-           <img src="media/thumb-sonic.jpg" alt="Idle Cyberpunk City Clicker gameplay">
+           <img src="media/thumb-sonic.jpg" alt="Donkey Sonic retro platformer level">
         </div>
         <div class="ai-body">
           <div class="ai-name">Donkey Sonic</div>
@@ -1042,9 +388,9 @@
     <div class="dashboard-embed">
       <div class="dashboard-label">
         <span>Interactive Analytics Dashboard · Built from real Unity Analytics data</span>
-        <a href="cyberpunk-dashboard.html" target="_blank">Open full screen →</a>
+        <a href="cyberpunk-dashboard.html" target="_blank" rel="noopener">Open full screen →</a>
       </div>
-      <iframe src="cyberpunk-dashboard.html" title="Idle Cyberpunk City Clicker Analytics Dashboard"></iframe>
+      <iframe src="cyberpunk-dashboard.html" title="Idle Cyberpunk City Clicker analytics dashboard showing player milestone data and economy metrics"></iframe>
     </div>
 
     <div class="tip">
@@ -1156,7 +502,7 @@
 
     <div class="mechanic-spotlight">
       <div class="ms-visual">
-                   <img src="media/thumb-guardians2.gif" alt="Idle Cyberpunk City Clicker gameplay">
+           <img src="media/thumb-guardians2.gif" alt="Guardian's Falls dash-strike combat mechanic in action">
       </div>
       <div class="ms-body">
         <div class="ms-tag">
@@ -1211,7 +557,7 @@
         <div class="doc-body">
           <div class="doc-name">Secrets Submerged — Genshin Impact Quest</div>
           <div class="doc-desc">Fan-made world quest for Fontaine. Full quest flow, NPC interactions, item design, progression steps, and reward balancing. Demonstrates narrative design and quest structure thinking.</div>
-          <a class="doc-link" href="#">View PDF →</a>
+          <a href="docs/qdd-genshin-secrets-submerged_jhonnatanbarbosa.pdf" target="_blank" rel="noopener">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
@@ -1219,7 +565,7 @@
         <div class="doc-body">
           <div class="doc-name">Fire Dungeon — Level Design Document</div>
           <div class="doc-desc">Top-down dungeon level with hand-drawn room maps, enemy placement, boss encounters, objective flow, and challenge pacing.</div>
-          <a class="doc-link" href="#">View PDF →</a>
+          <a href="docs/LDD_FireDungeon_JhonnatanBarbosa.pdf" target="_blank" rel="noopener">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
@@ -1227,7 +573,8 @@
         <div class="doc-body">
           <div class="doc-name">Idle Cyberpunk City Clicker — Full GDD</div>
           <div class="doc-desc">Complete design document: core loop, economy system, progression tiers, monetization model, world-building lore, and analytics plan.</div>
-          <a class="doc-link" href="#">View PDF →</a>
+          <!-- TODO: replace with actual filename -->
+          <a href="docs/GDD_IdleCyberpunkCityClicker_JhonnatanBarbosa.pdf" target="_blank" rel="noopener">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
@@ -1235,7 +582,8 @@
         <div class="doc-body">
           <div class="doc-name">Idle Kingdom Builder — Full GDD</div>
           <div class="doc-desc">Economy system design, resource faucets/sinks, progression curves, ascension system, UI flow, and monetization strategy.</div>
-          <a class="doc-link" href="#">View PDF →</a>
+          <!-- TODO: replace with actual filename -->
+          <a href="docs/GDD_IdleKingdomBuilder_JhonnatanBarbosa.pdf" target="_blank" rel="noopener">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
@@ -1243,7 +591,7 @@
         <div class="doc-body">
           <div class="doc-name">Operação Bagre Noturno — Full GDD</div>
           <div class="doc-desc">Stealth-action design: level layout, mechanics, narrative structure, scoring system, and world-building for an alternate-reality Brazil.</div>
-          <a class="doc-link" href="#">View PDF →</a>
+          <a href="docs/GDD_bagrenoturno.pdf" target="_blank" rel="noopener">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
@@ -1251,7 +599,7 @@
         <div class="doc-body">
           <div class="doc-name">Quantum Cafe — Interview Design Test</div>
           <div class="doc-desc">Management sim GDD created for a studio interview. Budget breakdown, milestone timeline, career progression system, and economy design within scope constraints.</div>
-          <a class="doc-link" href="#">View PDF →</a>
+          <a href="docs/gdd_test_quantumcafe.pdf" target="_blank" rel="noopener">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
@@ -1259,7 +607,7 @@
         <div class="doc-body">
           <div class="doc-name">Jump Mechanic Level — Design Test GDD</div>
           <div class="doc-desc">Level design test: designed a new mechanic pushing the core jump to its limit, with progressive room-by-room difficulty and camera constraint solutions.</div>
-          <a class="doc-link" href="#">View PDF →</a>
+          <a href="docs/gdd_test_levalmechanic.pdf" target="_blank" rel="noopener">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
@@ -1267,7 +615,7 @@
         <div class="doc-body">
           <div class="doc-name">Jelly Morph: Shifty Speedway — Design Test GDD</div>
           <div class="doc-desc">Hypercasual mobile game design: core mechanics, competitive analysis, monetization strategy (ads/IAP), and UI wireframes.</div>
-          <a class="doc-link" href="#">View PDF →</a>
+          <a href="docs/gdd_test_jellymorph.pdf" target="_blank" rel="noopener">View PDF →</a>
         </div>
       </div>
     </div>
@@ -1290,7 +638,7 @@
 
     <div class="about-layout">
       <div class="about-photo">
-          <img src="media/thumb-jhonnatan.png" alt="Idle Cyberpunk City Clicker gameplay">
+          <img src="media/thumb-jhonnatan.png" alt="Jhonnatan Barbosa portrait photo">
       </div>
       <div class="about-body">
         <p>
@@ -1366,8 +714,22 @@
       <h2 class="section-title">Contact</h2>
     </div>
     <div class="contact-row">
-      <a href="/cdn-cgi/l/email-protection#f49e9c9b97969586969b8795b49399959d98da979b99" class="contact-item"><span class="ci-label">Email</span> <span class="__cf_email__" data-cfemail="cda7a5a2aeafacbfafa2beac8daaa0aca4a1e3aea2a0">[email&#160;protected]</span></a>
-      <a href="https://linkedin.com/in/jhonnatanbarbosa" class="contact-item"><span class="ci-label">LinkedIn</span> /in/jhonnatanbarbosa</a>
-      <a href="https://jhorro.itch.io" class="contact-item"><span class="ci-label">itch.io</span> jhorro.itch.io</a>
-      <a href="https://www.jhorro.com" class="contact-item"><span class="ci-label">Portfolio</span> jhorro.com</a>
-      <a href="#" class="contact-item"><span c
+      <a href="mailto:jhonnatanbarbosa@email.com" class="contact-item"><span class="ci-label">Email</span> jhonnatanbarbosa@email.com</a>
+      <a href="https://linkedin.com/in/jhonnatanbarbosa" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">LinkedIn</span> /in/jhonnatanbarbosa</a>
+      <a href="https://jhorro.itch.io" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">itch.io</span> jhorro.itch.io</a>
+      <a href="https://www.jhorro.com" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">Portfolio</span> jhorro.com</a>
+      <a href="docs/resume-jhonnatan-barbosa.pdf" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">Resume</span> Download PDF</a>
+    </div>
+  </section>
+
+</div><!-- .page -->
+
+<footer>
+  <div class="page">
+    <span>© 2025 Jhonnatan Barbosa</span>
+    <span>Game Designer — Data-Driven Systems & Gameplay</span>
+  </div>
+</footer>
+
+</body>
+</html>

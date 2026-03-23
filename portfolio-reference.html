@@ -508,6 +508,116 @@
     margin-right: 0.3rem;
   }
 
+  /* ── SCOPE TABLE (Guardian's Falls) ── */
+  .scope-table {
+    width: 100%; border-collapse: collapse;
+    margin: 0.85rem 0; font-size: 0.8rem;
+  }
+  .scope-table th {
+    text-align: left; font-family: 'Geist Mono', monospace;
+    font-size: 0.6rem; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+  }
+  .scope-table td {
+    padding: 0.55rem 0.75rem;
+    border-bottom: 1px solid var(--border-soft);
+    vertical-align: top; line-height: 1.5;
+  }
+  .scope-table .feature { color: var(--text); font-weight: 500; }
+  .scope-table .vision { color: var(--text-dim); font-size: 0.75rem; }
+  .scope-table .final { color: var(--text-mid); font-size: 0.75rem; }
+
+  .badge {
+    display: inline-block; font-family: 'Geist Mono', monospace;
+    font-size: 0.56rem; padding: 0.1rem 0.4rem; border-radius: 3px;
+    text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap;
+  }
+  .badge-shipped { background: rgba(122,171,139,0.06); border: 1px solid rgba(122,171,139,0.3); color: #7aab8b; }
+  .badge-evolved { background: rgba(140,160,210,0.06); border: 1px solid rgba(140,160,210,0.3); color: #8ca0d2; }
+  .badge-simplified { background: rgba(201,179,106,0.06); border: 1px solid rgba(201,179,106,0.3); color: #c9b36a; }
+  .badge-cut { background: rgba(196,115,110,0.06); border: 1px solid rgba(196,115,110,0.25); color: #c4736e; }
+
+  /* ── MECHANIC SPOTLIGHT ── */
+  .mechanic-spotlight {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.9rem 1.1rem;
+    margin: 0.85rem 0;
+    display: grid; grid-template-columns: 180px 1fr;
+    gap: 0; overflow: hidden;
+  }
+  .mechanic-spotlight .ms-visual {
+    background: var(--surface-hover);
+    border-right: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text-dim); font-size: 0.72rem;
+    margin: -0.9rem 0 -0.9rem -1.1rem;
+    padding: 0.75rem; text-align: center; line-height: 1.45;
+  }
+  .mechanic-spotlight .ms-body { padding-left: 1rem; }
+  .mechanic-spotlight .ms-tag {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.58rem; text-transform: uppercase;
+    letter-spacing: 0.06em; margin-bottom: 0.25rem;
+    display: flex; align-items: center; gap: 0.5rem;
+    color: var(--accent);
+  }
+  .mechanic-spotlight h4 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 0.92rem; font-weight: 400;
+    margin-bottom: 0.3rem; line-height: 1.25;
+  }
+  .mechanic-spotlight p {
+    font-size: 0.78rem; color: var(--text-mid); line-height: 1.55;
+  }
+  .mechanic-spotlight .ms-iter {
+    font-size: 0.75rem; color: var(--text-dim);
+    padding-top: 0.35rem; border-top: 1px solid var(--border-soft);
+    margin-top: 0.35rem; line-height: 1.5;
+  }
+  .mechanic-spotlight .ms-iter strong { color: var(--text-mid); font-weight: 500; }
+
+  /* ── TAKEAWAY GRID ── */
+  .takeaway-grid {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem; margin: 0.85rem 0;
+  }
+  .takeaway-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.75rem 0.9rem;
+  }
+  .takeaway-card h4 {
+    font-family: 'Instrument Serif', serif;
+    font-size: 0.85rem; font-weight: 400;
+    margin-bottom: 0.2rem; line-height: 1.25;
+  }
+  .takeaway-card p {
+    font-size: 0.75rem; color: var(--text-mid); line-height: 1.5;
+  }
+
+  /* ── GF SECTION LABELS ── */
+  .gf-label {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.6rem; color: var(--accent);
+    text-transform: uppercase; letter-spacing: 0.08em;
+    margin-bottom: 0.2rem; margin-top: 1.25rem;
+  }
+  .gf-label:first-child { margin-top: 0; }
+  .gf-subtitle {
+    font-family: 'Instrument Serif', serif;
+    font-size: 1rem; font-weight: 400;
+    margin-bottom: 0.3rem;
+  }
+  .gf-desc {
+    color: var(--text-mid); font-size: 0.82rem;
+    max-width: 620px; line-height: 1.6;
+    margin-bottom: 0.5rem;
+  }
+
   /* ── FOOTER ── */
   footer {
     padding: 1.25rem 0; border-top: 1px solid var(--border-soft);
@@ -527,6 +637,14 @@
     .additional-grid { grid-template-columns: 1fr 1fr; }
     .doc-grid { grid-template-columns: 1fr; }
     footer { flex-direction: column; gap: 0.2rem; }
+    .takeaway-grid { grid-template-columns: 1fr; }
+    .mechanic-spotlight { grid-template-columns: 1fr; }
+    .mechanic-spotlight .ms-visual {
+      margin: -0.9rem -1.1rem 0; border-right: none;
+      border-bottom: 1px solid var(--border); min-height: 80px;
+    }
+    .mechanic-spotlight .ms-body { padding-left: 0; padding-top: 0.75rem; }
+    .scope-table { font-size: 0.72rem; }
   }
 
   @media (max-width: 480px) {
@@ -564,7 +682,7 @@
     </div>
     <div class="intro-links">
       <a href="#">Resume (PDF)</a>
-      <a href="mailto:jhocbarbosa@gmail.com">Email</a>
+      <a href="/cdn-cgi/l/email-protection#e58f8d8a86878497878a9684a58288848c89cb868a88">Email</a>
       <a href="https://linkedin.com/in/jhonnatanbarbosa">LinkedIn</a>
     </div>
   </div>
@@ -586,7 +704,7 @@
     <!-- Project 1: Idle Cyberpunk City Clicker -->
     <div class="project-card">
       <div class="project-thumb">
-        <img src="media/ezgif-1-0156fa60ab.gif" alt="Idle Cyberpunk City Clicker gameplay">
+        <img src="media/thumb-cyberpunk.gif" alt="Idle Cyberpunk City Clicker gameplay">
       </div>
       <div class="project-body">
         <div class="project-top-row">
@@ -622,7 +740,9 @@
 
     <!-- Project 2: Idle Kingdom Builder -->
     <div class="project-card">
-      <div class="project-thumb">Screenshot / GIF / Video</div>
+      <div class="project-thumb">
+        <img src="media/thumb-idlekingdom.gif" alt="Idle Cyberpunk City Clicker gameplay">
+      </div>
       <div class="project-body">
         <div class="project-top-row">
           <span class="project-name">Idle Kingdom Builder — First Shipped Economy</span>
@@ -655,7 +775,9 @@
 
     <!-- Project 3: Guardian's Falls -->
     <div class="project-card">
-      <div class="project-thumb">Screenshot / GIF / Video</div>
+      <div class="project-thumb">
+          <img src="media/thumb-guardianfalls.gif" alt="Idle Cyberpunk City Clicker gameplay">
+      </div>
       <div class="project-body">
         <div class="project-top-row">
           <span class="project-name">Guardian's Falls — Wounds</span>
@@ -690,7 +812,9 @@
 
     <!-- Project 4: Beasts of Agony (Showcase Card) -->
     <div class="project-card">
-      <div class="project-thumb">Screenshot / GIF / Video</div>
+      <div class="project-thumb">
+          <img src="media/thumb-beastsofagony.gif" alt="Idle Cyberpunk City Clicker gameplay">
+      </div>
       <div class="project-body">
         <div class="project-top-row">
           <span class="project-name">Beasts of Agony — Souls-like Boss Fight</span>
@@ -721,11 +845,13 @@
 
     <!-- Project 5: Operação Bagre Noturno (Showcase Card) -->
     <div class="project-card">
-      <div class="project-thumb">Screenshot / GIF / Video</div>
+      <div class="project-thumb">
+                  <img src="media/thumb-bagre.gif" alt="Idle Cyberpunk City Clicker gameplay">
+      </div>
       <div class="project-body">
         <div class="project-top-row">
           <span class="project-name">Operação Bagre Noturno — Stealth Action Comedy</span>
-          <span class="project-badge">Game Jam · 3 weeks · 2024</span>
+          <span class="project-badge">Game Jam · 2 weeks · 2024</span>
         </div>
         <p class="project-desc">
           Stealth-action game set in an alternate 2031 Brazil, inspired by Metal Gear Solid
@@ -766,7 +892,9 @@
 
     <div class="additional-grid">
       <div class="additional-item">
-        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-thumb">
+           <img src="media/thumb-coal.jpg" alt="Idle Cyberpunk City Clicker gameplay">
+        </div>
         <div class="ai-body">
           <div class="ai-name">Coal</div>
           <div class="ai-genre">Dark Fantasy Metroidvania · Unity · 2020</div>
@@ -775,7 +903,9 @@
         </div>
       </div>
       <div class="additional-item">
-        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-thumb">
+           <img src="media/thumb-netuno.gif" alt="Idle Cyberpunk City Clicker gameplay">
+        </div>
         <div class="ai-body">
           <div class="ai-name">Maldição de Netuno</div>
           <div class="ai-genre">Action Rounds Shooter · Unity · 2021</div>
@@ -784,7 +914,9 @@
         </div>
       </div>
       <div class="additional-item">
-        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-thumb">
+           <img src="media/thumb-nark.gif" alt="Idle Cyberpunk City Clicker gameplay">
+        </div>
         <div class="ai-body">
           <div class="ai-name">Nárkissos</div>
           <div class="ai-genre">First-Person Horror · Unity · 2021</div>
@@ -792,7 +924,9 @@
         </div>
       </div>
       <div class="additional-item">
-        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-thumb">
+           <img src="media/thumb-wings.gif" alt="Idle Cyberpunk City Clicker gameplay">
+        </div>
         <div class="ai-body">
           <div class="ai-name">Wings of Hope</div>
           <div class="ai-genre">Open-World Survival · Unreal · 2021</div>
@@ -800,7 +934,9 @@
         </div>
       </div>
       <div class="additional-item">
-        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-thumb">
+           <img src="media/thumb-sand.gif" alt="Idle Cyberpunk City Clicker gameplay">
+        </div>
         <div class="ai-body">
           <div class="ai-name">Riddles of the Sands</div>
           <div class="ai-genre">Open World Puzzle · Unity · 2021</div>
@@ -808,7 +944,9 @@
         </div>
       </div>
       <div class="additional-item">
-        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-thumb">
+           <img src="media/thumb-subway.gif" alt="Idle Cyberpunk City Clicker gameplay">
+        </div>
         <div class="ai-body">
           <div class="ai-name">Echoes of the Underground</div>
           <div class="ai-genre">Puzzle Horror · Unreal · 2021</div>
@@ -816,7 +954,9 @@
         </div>
       </div>
       <div class="additional-item">
-        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-thumb">
+           <img src="media/thumb-megakart.gif" alt="Idle Cyberpunk City Clicker gameplay">
+        </div>
         <div class="ai-body">
           <div class="ai-name">Mega-Racing</div>
           <div class="ai-genre">Platform Racing · Unity · 2021</div>
@@ -824,7 +964,9 @@
         </div>
       </div>
       <div class="additional-item">
-        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-thumb">
+           <img src="media/thumb-technichal.png" alt="Idle Cyberpunk City Clicker gameplay">
+        </div>
         <div class="ai-body">
           <div class="ai-name">Technical Difficulties</div>
           <div class="ai-genre">Multiplayer Party Game · Unity · 2020</div>
@@ -833,7 +975,9 @@
         </div>
       </div>
       <div class="additional-item">
-        <div class="ai-thumb">Screenshot</div>
+        <div class="ai-thumb">
+           <img src="media/thumb-sonic.jpg" alt="Idle Cyberpunk City Clicker gameplay">
+        </div>
         <div class="ai-body">
           <div class="ai-name">Donkey Sonic</div>
           <div class="ai-genre">Retro Platformer · Unity · 2020</div>
@@ -904,42 +1048,139 @@
   <section id="guardians-case-study">
     <div class="section-header">
       <h2 class="section-title">Case Study — Guardian's Falls</h2>
-      <span class="section-aside">Team of 6 · Scope management · Graduation project</span>
+      <span class="section-aside">Team of 6 · 12 months · Scope management · Graduation thesis</span>
     </div>
 
     <div class="cs-grid">
       <div class="cs-card">
         <div class="cs-label">01 · Problem</div>
-        <h4>Ambitious scope vs. reality</h4>
-        <p>The original design was far larger than what a team of 6 could ship under academic deadlines. Art and sound deliverables created pipeline bottlenecks that blocked programming work.</p>
+        <h4>Ambition outpaced capacity</h4>
+        <p>Month-1 design doc envisioned 4+ zones, 8 parkour mechanics, combo combat, skill trees, and layered narrative. Team of 6, no dedicated programmer, 12-month academic deadline.</p>
       </div>
       <div class="cs-card">
         <div class="cs-label">02 · Process</div>
-        <h4>Role shifted to fill gaps</h4>
-        <p>Started as game designer, but pivoted to developer/producer as the project needed someone building systems and unblocking the pipeline. Designed systems I couldn't test until assets arrived, built modular to adapt.</p>
+        <h4>Prototype fast, cut decisively</h4>
+        <p>Built early prototypes with the full mechanic set. Tested which mechanics supported the core loop. Ran a structured beta with categorized feedback. Cut features that weren't pulling their weight.</p>
       </div>
       <div class="cs-card">
         <div class="cs-label">03 · Solution</div>
-        <h4>Scope cuts to ship</h4>
-        <p>Identified what was feasible to cut without breaking the core experience. Presented options to the team and made collective decisions on scope. The final product was a focused vertical slice of the original vision.</p>
+        <h4>Ship what works, not everything</h4>
+        <p>Delivered a focused demo across 3 zones with streamlined movement (sprint, slide, dash), dash-strike combat, and environmental storytelling. Linear progression that teaches mechanics through level design.</p>
       </div>
       <div class="cs-card">
         <div class="cs-label">04 · Outcome</div>
-        <h4>Shipped a playable demo</h4>
-        <p>Delivered a working 2.5D Metroidvania demo with parkour mechanics. Well received by the examining committee and new audiences. Those who knew the original scope were less impressed — a lesson in expectation management.</p>
+        <h4>Demo shipped + 3 design principles I still use</h4>
+        <p>Shipped a coherent vertical slice. Committee acknowledged design trade-offs. Every scope and iteration lesson here directly shaped how I built both idle games.</p>
       </div>
     </div>
 
-    <div class="media-placeholder">
-      Process artifacts: original vs. final scope comparison, production timeline,
-      pipeline bottleneck analysis, parkour mechanic iteration, team coordination docs.
-    </div>
+    <!-- Vision vs. Ship Table -->
+    <div class="gf-label">Scope Management</div>
+    <h3 class="gf-subtitle">What We Envisioned vs. What Shipped</h3>
+    <p class="gf-desc">
+      The original doc was ambitious by design — dream big, then scope down to what the team
+      can ship well. I handled design, C# programming, and production. No dedicated programmer.
+    </p>
+
+    <table class="scope-table">
+      <thead>
+        <tr>
+          <th style="width:16%">System</th>
+          <th style="width:30%">Month 1 Vision</th>
+          <th style="width:36%">What Shipped</th>
+          <th style="width:18%">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="feature">Movement</td>
+          <td class="vision">8 mechanics: vault, slide, wall jump, grab/climb, swing, roll, sprint, free jump. Stamina system gating usage.</td>
+          <td class="final">Sprint, slide, dash. Stamina cut entirely — removing the resource gate made movement feel fast and expressive. Vault, wall jump, grab/climb prototyped but cut for clarity.</td>
+          <td><span class="badge badge-evolved">Evolved</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Combat</td>
+          <td class="vision">3-hit combo tree, slide attack, bounce attack, power punches, sprint attack</td>
+          <td class="final">Dash-into-enemy strike. Combos made players stop and chain punches; the dash-strike kept them flowing. Emerged from prototyping, not the original doc.</td>
+          <td><span class="badge badge-simplified">Simplified</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Zones</td>
+          <td class="vision">4+ zones (Moonlit Meadow, Bond Fracture, Jade Jungle, Innerlake) + Hub</td>
+          <td class="final">3 zones shipped. Hub removed. Linear progression instead of branching.</td>
+          <td><span class="badge badge-simplified">Simplified</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Progression</td>
+          <td class="vision">Skill tree, NPC quests, HUB, backtracking, left/right difficulty choice</td>
+          <td class="final">Linear progression through 3 zones. No skill tree or hub. Mechanical mastery is the progression.</td>
+          <td><span class="badge badge-cut">Cut</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Narrative</td>
+          <td class="vision">4 cardinal guardians, trauma metaphor, intro cutscene, NPC dialogue, symbolic enemy design</td>
+          <td class="final">Environmental storytelling carries the narrative. No cutscene, no NPC dialogue. World-building embedded in level design.</td>
+          <td><span class="badge badge-evolved">Evolved</span></td>
+        </tr>
+        <tr>
+          <td class="feature">Enemies</td>
+          <td class="vision">3 types per zone + mini-boss + final boss, thematically symbolic designs</td>
+          <td class="final">Generic enemy types. Focus shifted to making combat feel responsive rather than narratively themed.</td>
+          <td><span class="badge badge-simplified">Simplified</span></td>
+        </tr>
+      </tbody>
+    </table>
 
     <div class="tip">
-      <strong>Production story —</strong>
-      This isn't framed as a design showcase — it's a production and scope management story.
-      "Led scope cuts to ship a playable vertical slice with 6 people under academic deadlines"
-      is more valuable to a hiring manager than pretending everything went smoothly.
+      <strong>The pattern —</strong>
+      Every cut either removed complexity that fought the core loop (stamina gate, combo system, branching paths)
+      or reduced scope to something the team could polish in time (3 zones instead of 4+, linear instead of hub-based).
+      Features that <em>evolved</em> — movement and narrative — changed shape but kept their purpose.
+    </div>
+
+    <!-- Mechanic Spotlight: Dash-Strike -->
+    <div class="gf-label">Design Process</div>
+    <h3 class="gf-subtitle">Mechanic Spotlight — Dash-Strike Combat</h3>
+
+    <div class="mechanic-spotlight">
+      <div class="ms-visual">GIF / Video<br>Dash-strike into enemy</div>
+      <div class="ms-body">
+        <div class="ms-tag">
+          <span>Core · Combat</span>
+          <span class="badge badge-evolved">Evolved</span>
+        </div>
+        <h4>Combat is movement</h4>
+        <p>
+          Instead of standing and executing combos, the player dashes into enemies to attack.
+          The original doc specified a 3-hit combo tree and special attacks — early prototypes had
+          these working, but they pulled the feel in the opposite direction of the movement system.
+          The combos made players stop; the dash-strike kept them flowing.
+        </p>
+        <div class="ms-iter">
+          <strong>Iteration:</strong> This wasn't in the original doc — it emerged from prototyping.
+          Once we saw how the dash felt during traversal, applying that momentum to combat was a
+          natural evolution. The combo system was cut, but the core idea was stronger than the original plan.
+        </div>
+      </div>
+    </div>
+
+    <!-- Takeaways -->
+    <div class="gf-label">Reflection</div>
+    <h3 class="gf-subtitle">What I Carried Forward</h3>
+
+    <div class="takeaway-grid">
+      <div class="takeaway-card">
+        <h4>Scope is a design skill</h4>
+        <p>The original doc had 8 movement mechanics. The shipped game has 3 — and they feel better. This mindset defined how I built both idle games: start with the minimum viable loop, not the maximum vision.</p>
+      </div>
+      <div class="takeaway-card">
+        <h4>Test before you're ready</h4>
+        <p>Even imperfect testing with non-expert players surfaces problems you can't see from the inside. Beta testers caught level navigation issues and control pain points we'd gone blind to.</p>
+      </div>
+      <div class="takeaway-card">
+        <h4>Mechanics must talk to each other</h4>
+        <p>The combo system fought the movement system. The dash-strike emerged because we prototyped both and noticed the conflict. Design documents are hypotheses; prototypes are experiments.</p>
+      </div>
     </div>
   </section>
 
@@ -1109,19 +1350,8 @@
       <h2 class="section-title">Contact</h2>
     </div>
     <div class="contact-row">
-      <a href="mailto:jhocbarbosa@gmail.com" class="contact-item"><span class="ci-label">Email</span> jhocbarbosa@gmail.com</a>
+      <a href="/cdn-cgi/l/email-protection#f49e9c9b97969586969b8795b49399959d98da979b99" class="contact-item"><span class="ci-label">Email</span> <span class="__cf_email__" data-cfemail="cda7a5a2aeafacbfafa2beac8daaa0aca4a1e3aea2a0">[email&#160;protected]</span></a>
       <a href="https://linkedin.com/in/jhonnatanbarbosa" class="contact-item"><span class="ci-label">LinkedIn</span> /in/jhonnatanbarbosa</a>
       <a href="https://jhorro.itch.io" class="contact-item"><span class="ci-label">itch.io</span> jhorro.itch.io</a>
       <a href="https://www.jhorro.com" class="contact-item"><span class="ci-label">Portfolio</span> jhorro.com</a>
-      <a href="#" class="contact-item"><span class="ci-label">Resume</span> PDF</a>
-    </div>
-  </section>
-
-  <footer>
-    <span>Jhonnatan Barbosa · Game Designer</span>
-    <span>2026</span>
-  </footer>
-
-</div>
-</body>
-</html>
+      <a href="#" class="contact-item"><span c

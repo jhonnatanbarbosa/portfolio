@@ -1,5 +1,6 @@
 /* ═══════════════════════════════════════════════════════════
    Jhonnatan Barbosa — Portfolio Styles
+   Updated: fluid container, mobile nav, improved breakpoints
    ═══════════════════════════════════════════════════════════ */
 
 :root {
@@ -33,7 +34,17 @@ body {
 a { color: var(--accent); text-decoration: none; }
 a:hover { text-decoration: underline; }
 
-.page { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+/* ── FLUID CONTAINER ─────────────────────────────────────
+   Scales from ~720px up to 1140px with comfortable padding.
+   On 1080p (1920px) this fills ~60% of viewport — still
+   readable without the text lines getting too long.
+   On 720p (1280px) it fills ~89% — nice and snug.
+   ────────────────────────────────────────────────────────── */
+.page {
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 0 clamp(1.25rem, 3vw, 3rem);
+}
 
 /* ── NAV ─────────────────────────────────────────────────── */
 nav {
@@ -44,9 +55,10 @@ nav {
 }
 
 nav .nav-inner {
-  max-width: 960px; margin: 0 auto;
-  padding: 0.6rem 2rem;
+  max-width: 1140px; margin: 0 auto;
+  padding: 0.6rem clamp(1.25rem, 3vw, 3rem);
   display: flex; justify-content: space-between; align-items: center;
+  position: relative;      /* anchor for mobile dropdown */
 }
 
 nav .name {
@@ -61,6 +73,39 @@ nav .nav-links a {
   text-decoration: none; transition: color 0.15s;
 }
 nav .nav-links a:hover { color: var(--text); }
+
+/* ── MOBILE NAV TOGGLE ───────────────────────────────────
+   Add this button inside .nav-inner, right before <ul class="nav-links">:
+
+   <button class="nav-toggle" aria-label="Menu"
+           onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('show')">
+     <span></span><span></span><span></span>
+   </button>
+   ────────────────────────────────────────────────────────── */
+.nav-toggle {
+  display: none;            /* hidden on desktop */
+  background: none; border: none; cursor: pointer;
+  width: 28px; height: 20px;
+  position: relative;
+  flex-shrink: 0;
+}
+
+.nav-toggle span {
+  display: block;
+  position: absolute; left: 0;
+  width: 100%; height: 2px;
+  background: var(--text-dim);
+  border-radius: 1px;
+  transition: transform 0.25s, opacity 0.2s;
+}
+.nav-toggle span:nth-child(1) { top: 0; }
+.nav-toggle span:nth-child(2) { top: 9px; }
+.nav-toggle span:nth-child(3) { top: 18px; }
+
+/* Animate to ✕ when open */
+.nav-toggle.open span:nth-child(1) { transform: translateY(9px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-9px) rotate(-45deg); }
 
 /* ── INTRO ───────────────────────────────────────────────── */
 .intro {
@@ -80,7 +125,7 @@ nav .nav-links a:hover { color: var(--text); }
 
 .intro p {
   color: var(--text-mid); font-size: 0.88rem;
-  max-width: 480px; margin-top: 0.5rem;
+  max-width: 520px; margin-top: 0.5rem;
 }
 
 .intro-links { display: flex; gap: 0.6rem; flex-shrink: 0; }
@@ -371,21 +416,99 @@ footer {
   display: flex; justify-content: space-between;
 }
 
-/* ── RESPONSIVE ──────────────────────────────────────────── */
+
+/* ═══════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── TABLET / SMALL LAPTOP (≤900px) ──────────────────────
+   Intermediate step so the thumbnail column doesn't get
+   too cramped before it fully stacks at 720px.
+   ────────────────────────────────────────────────────────── */
+@media (max-width: 900px) {
+  .project-card { grid-template-columns: 220px 1fr; }
+  .cs-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ── MOBILE (≤720px) ─────────────────────────────────────── */
 @media (max-width: 720px) {
-  .page { padding: 0 1.25rem; }
-  nav .nav-inner { padding: 0.6rem 1.25rem; }
+
+  /* Show hamburger, collapse nav links into dropdown */
+  .nav-toggle {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  nav .nav-links {
+    display: none;                     /* hidden by default */
+    position: absolute;
+    top: 100%; left: 0; right: 0;
+    flex-direction: column;
+    gap: 0;
+    background: rgba(22,22,25,0.96);
+    backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border);
+    padding: 0.5rem 0;
+  }
+
+  nav .nav-links.show { display: flex; }   /* toggled via JS onclick */
+
+  nav .nav-links li { list-style: none; }
+
+  nav .nav-links a {
+    display: block;
+    padding: 0.65rem clamp(1.25rem, 3vw, 3rem);
+    font-size: 0.88rem;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  nav .nav-links li:last-child a { border-bottom: none; }
+
+  /* Layout collapses */
   .intro { grid-template-columns: 1fr; }
   .intro-links { margin-top: 0.5rem; }
+
   .project-card { grid-template-columns: 1fr; }
-  .project-thumb { min-height: 120px; border-right: none; border-bottom: 1px solid var(--border); }
+  .project-thumb {
+    min-height: 140px;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
   .cs-grid { grid-template-columns: 1fr 1fr; }
   .about-layout { grid-template-columns: 1fr; }
+  .about-photo { width: 90px; height: 110px; }
+
   .dashboard-embed iframe { height: 560px; }
+
+  .section-header { flex-direction: column; gap: 0.25rem; }
+
   footer { flex-direction: column; gap: 0.2rem; }
 }
 
+/* ── SMALL PHONE (≤480px) ────────────────────────────────── */
 @media (max-width: 480px) {
+  body { font-size: 13px; }
+
+  .intro h1 { font-size: 1.4rem; }
+
+  .intro-links { flex-wrap: wrap; }
+  .intro-links a {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.75rem;
+  }
+
   .cs-grid { grid-template-columns: 1fr; }
-  .dashboard-embed iframe { height: 480px; }
+  .contact-row { flex-direction: column; }
+  .contact-item { justify-content: center; }
+
+  .dashboard-embed iframe { height: 440px; }
+
+  .tools-row {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .meta-row { font-size: 0.72rem; }
+  .project-actions { flex-wrap: wrap; gap: 0.8rem; }
 }

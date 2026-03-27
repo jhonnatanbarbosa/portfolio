@@ -783,6 +783,45 @@ section + section { border-top: 1px solid var(--border-soft); }
   margin-right: 0.3rem;
 }
 
+/* ── ABOUT SUB-SECTIONS ─────────────────────────────────── */
+.about-block {
+  margin-bottom: 0.5rem;
+}
+
+.about-label {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+}
+
+/* ── SITE FOOTER ────────────────────────────────────────── */
+.site-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.2rem 2rem;
+  margin-top: 1.5rem;
+  border-top: 1px solid var(--border-soft);
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.66rem;
+  color: var(--text-dim);
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 480px) {
+  .site-footer {
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: center;
+    padding: 1rem 1.25rem;
+  }
+}
+
 /* ── CONTACT ─────────────────────────────────────────────── */
 .contact-row {
   display: flex; flex-wrap: wrap;

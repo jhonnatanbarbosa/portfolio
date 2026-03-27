@@ -12,7 +12,7 @@
   --border-soft: #232327;
   --text: #dddbd6;
   --text-mid: #a09e97;
-  --text-dim: #6e6d68;
+  --text-dim: #918f89;
   --accent: #a8b87a;
   --accent-dim: #7a8a55;
   --note-bg: rgba(168,184,122,0.06);
@@ -183,7 +183,8 @@ section + section { border-top: 1px solid var(--border-soft); }
   color: var(--text-dim); font-size: 0.75rem; font-weight: 500;
   min-height: 160px;
 }
-.project-thumb img {
+.project-thumb img,
+.project-thumb video {
   width: 100%; height: 100%; object-fit: cover;
 }
 
@@ -278,7 +279,7 @@ section + section { border-top: 1px solid var(--border-soft); }
   margin-bottom: 0.35rem;
 }
 
-.cs-card h4 {
+.cs-card h3 {
   font-family: 'Instrument Serif', serif;
   font-size: 0.9rem; font-weight: 400;
   margin-bottom: 0.3rem; line-height: 1.25;
@@ -467,7 +468,8 @@ section + section { border-top: 1px solid var(--border-soft); }
   font-weight: 500;
   min-height: 90px;
 }
-.additional-item .ai-thumb img {
+.additional-item .ai-thumb img,
+.additional-item .ai-thumb video {
   width: 100%; height: 100%; object-fit: cover;
 }
 
@@ -617,7 +619,8 @@ section + section { border-top: 1px solid var(--border-soft); }
   padding: 0; text-align: center; line-height: 1.45;
   overflow: hidden;
 }
-.mechanic-spotlight .ms-visual img {
+.mechanic-spotlight .ms-visual img,
+.mechanic-spotlight .ms-visual video {
   width: 100%; height: 100%; object-fit: cover; display: block;
 }
 .mechanic-spotlight .ms-body { padding-left: 1rem; }

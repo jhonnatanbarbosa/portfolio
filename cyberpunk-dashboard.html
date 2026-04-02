@@ -212,6 +212,195 @@
       return v.toString();
     };
 
+    // ─── i18n ─────────────────────────────────────────────────────────────
+    const lang = localStorage.getItem('portfolio-lang') || 'en';
+    // Listen for language changes from parent page
+    window.addEventListener('storage', () => location.reload());
+
+    const pt = {
+      // Tabs
+      tab_funnel: "Funil de Jogadores",
+      tab_economy: "Clique vs Passivo",
+      tab_buildings: "Mix de Prédios",
+      tab_upgrades: "Upgrades",
+      tab_time: "Tempo & Cliques",
+      tab_pricing: "Curvas de Preço",
+      tab_data: "Integridade dos Dados",
+      // Shared
+      insight: "Análise",
+      note: "Nota",
+      resolved: "RESOLVIDO",
+      noted: "OBSERVADO",
+      show: "Mostrar",
+      hide: "Ocultar",
+      iqr_box: "box plots IQR",
+      dist_1m: "distribuição 1M",
+      milestone: "Marco",
+      players: "Jogadores",
+      unique_players: "jogadores únicos",
+      // Funnel
+      f_total: "Total Rastreado",
+      f_reached: "Alcançaram 1T",
+      f_of_total: "do total",
+      f_steepest: "Maior Queda",
+      f_dropoff: "queda",
+      f_insight: "A maior queda é 1M → 1B (27%), indicando a parede de progressão mid-game típica de jogos idle. Os 9 jogadores que alcançaram 1T representam o núcleo altamente engajado.",
+      // Economy
+      e_click_1k: "Clique % no 1K",
+      e_active_early: "ativo-dominante no início",
+      e_click_1t: "Clique % no 1T",
+      e_passive_over: "passivo assume",
+      e_crossover: "Ponto de Cruzamento",
+      e_passive_exceeds: "passivo excede clique",
+      e_insight: "A economia transita de clique-dominante (76%) para passivo-dominante (77%) exatamente como projetado. O cruzamento acontece por volta do marco 1B, confirmando que o loop idle entra em ação no mid-game. Esta é a curva característica de uma economia idle bem ajustada — engajamento ativo prende jogadores cedo, depois sistemas passivos sustentam retenção a longo prazo.",
+      // Buildings
+      b_iqr_1k: "Média IQR no 1K",
+      b_clicker: "clicker",
+      b_passive: "passivo",
+      b_iqr_1t: "Média IQR no 1T",
+      b_ratio: "Proporção Passiva",
+      b_grows: "cresce com progressão",
+      b_insight: "A proporção muda de ~60% passiva no 1K para 70% no 1T — prédios passivos têm escala de preço mais suave (1.25× vs 1.65×), tornando-os um gasto mais eficiente por crédito. Médias filtradas por IQR removem outliers extremos (ex: o jogador com 84 prédios no 1K) para uma visão mais limpa do comportamento típico.",
+      b_dist_title: "Distribuição de Prédios Comprados no 1M (n=93)",
+      // Upgrades
+      u_avg_1k: "Média Upgrades no 1K",
+      u_avg_1t: "Média Upgrades no 1T",
+      u_zero: "Jogadores 1K c/ 0 Upgrades",
+      u_of: "de",
+      u_warning: "O evento clickerUpgradesBought não estava incrementando devido a um erro de copiar-colar no handler de compra — todas as compras de upgrade de clicker e offline estavam incorretamente incrementando clickerBuildingsBought. Contagens de upgrade de clicker mostradas aqui são estimadas como totalUpgrades − passiveUpgrades. Isto foi resolvido para o próximo build.",
+      u_insight: "52% dos jogadores tinham zero upgrades no marco 1K — o primeiro upgrade custa 150–500 créditos, que compete diretamente com comprar o próximo prédio. Jogadores racionalmente priorizam novos prédios sobre upgrades no início. No 1B, a média IQR salta para 44.0 upgrades, mostrando que upgrades se tornam a principal alavanca de progressão no mid-to-late game quando custos de prédios ultrapassam seus retornos.",
+      u_box_note: "No 1M, 8 de 93 jogadores são filtrados como outliers para total de upgrades. A média IQR de 10.7 é próxima ao valor bruto de 10.9 — a maioria dos dados está bem distribuída neste marco. No 1K, a mediana é 0 e Q3 é apenas 1, confirmando que a maioria dos jogadores pula upgrades iniciais completamente.",
+      // Time
+      t_iqr_1k: "Média IQR até 1K",
+      t_iqr_1m: "Média IQR até 1M",
+      t_avg_1t: "Média até 1T",
+      t_defect: "defeito de rastreamento — corrigido no próximo build",
+      t_clicks_title: "Média Total de Cliques por Marco",
+      t_time_box: "Tempo Decorrido (segundos) — Faixa IQR",
+      t_clicks_box: "Total de Cliques — Faixa IQR",
+      t_warning: "Os dados de tempo 1B e 1T mostram medianas próximas de zero (408s e 2s respectivamente) — causado por um defeito de persistência do timeElapsed onde o contador reiniciava entre sessões em marcos superiores. O defeito foi resolvido para a v1.40. Dados de cliques nesses marcos também são não-confiáveis pela mesma razão.",
+      t_insight: "O tempo IQR-filtrado até 1K é aproximadamente 3.2 minutos (vs 4.6 bruto) e até 1M é aproximadamente 14.9 minutos (vs 41 bruto), indicando influência significativa de outliers nas médias brutas. A intensidade de cliques é consistente no 1K e 1M (~1.3 cliques/s). Os dados de tempo 1B e 1T são excluídos da análise devido a um defeito de persistência de timestamp que foi resolvido para o próximo build.",
+      // Pricing
+      pr_tiers_title: "Tiers de Prédios Acessíveis em Cada Marco",
+      pr_at: "No",
+      pr_tiers: "tiers",
+      pr_unlocked: "desbloqueados",
+      pr_actual: "Real avg:",
+      pr_owned: "possuídos",
+      pr_cost_title: "Custo Acumulado: Prédio Tier 1 × N Cópias",
+      pr_cost_desc: "Mostra como o multiplicador 1.65× de clicker ultrapassa o multiplicador 1.25× de passivo",
+      pr_mechanics: "Mecânicas:",
+      pr_mechanics_text: "O preço do prédio multiplica após compra (ex: base 100 com 1.3× → próximo custa 130). Upgrades dobram a produção do prédio a cada vez (1→2→4→8 pts/s). Preço de upgrade escala pelo próprio multiplicador (10× para clicker, 5× para passivo).",
+      pr_clicker_label: "Prédios Clicker (escala 1.65×)",
+      pr_passive_label: "Prédios Passivos (escala 1.25×)",
+      pr_insight: "Na 20ª cópia, um prédio clicker tier-1 custa 50× mais cumulativamente que um passivo. Essa assimetria de preço é o que mecanicamente impulsiona a transição clique-para-passivo vista nos dados de economia — não é apenas preferência do jogador, é a economia empurrando-os em direção ao jogo idle.",
+      // Data Quality
+      dq_title: "Revisão de Integridade de Dados — Build pré-1.40",
+      dq_desc: "Durante a análise, dois defeitos de instrumentação e uma limitação de precisão foram identificados no build pré-1.40. Todos os problemas foram diagnosticados e resolvidos para o próximo lançamento. Os achados abaixo documentam seu impacto no dataset atual.",
+      dq_issues: "Problemas Identificados",
+      dq1_title: "1. Erro de Atribuição do Contador de Upgrade de Clicker",
+      dq1_cause: "Causa:",
+      dq1_impact: "Impacto:",
+      dq1_resolution: "Resolução:",
+      dq1_cause_text: "Um erro de copiar-colar no handler de compra fez com que todas as transações de upgrade de clicker e upgrade offline incrementassem clickerBuildingsBought em vez de clickerUpgradesBought.",
+      dq1_impact_text: "clickerUpgradesBought reporta 0 em todos os marcos. O contador clickerBuildingsBought está inflado pelo número de upgrades de clicker e offline comprados. Contagens de upgrade de clicker neste dashboard são estimadas como totalUpgrades − passiveUpgrades.",
+      dq1_resolution_text: "Alvos de incremento corrigidos em todas as funções de compra afetadas (upgrades 11–24).",
+      dq2_title: "2. Defeito de Persistência do timeElapsed",
+      dq2_cause_text: "O contador timeElapsed não estava persistido no PlayerPrefs entre sessões. Jogadores que cruzaram o marco 1B ou 1T em uma sessão diferente da sessão 1K/1M teriam seu timer resetado para próximo de zero.",
+      dq2_impact_text: "Dados de tempo 1B e 1T mostram medianas próximas de zero (408s e 2s) — fundamentalmente inválidos para medir tempo de jogo real. Dados de 1K e 1M são confiáveis porque a maioria dos jogadores alcança estes na primeira sessão.",
+      dq2_resolution_text: "Adicionada persistência PlayerPrefs para rastreamento de tempo entre sessões.",
+      dq3_title: "3. Precisão de Porcentagem Clique/Passivo",
+      dq3_obs: "Observação:",
+      dq3_text: "Os valores clickPercentage e passivePercentage são reportados como inteiros (0–100), perdendo precisão sub-percentual. Isto é aceitável para análise em nível de design mas anotado para melhorias futuras de instrumentação.",
+      dq_iqr_title: "Metodologia de Filtragem IQR",
+      dq_iqr_text: "Onde toggles \"Bruto\" e \"Filtrado\" aparecem, o método IQR (Intervalo Interquartil) remove pontos de dados abaixo de Q1 − 1.5×IQR e acima de Q3 + 1.5×IQR. Esta abordagem padrão remove valores extremos em ambos os lados — sessões sub-engajadas (muito baixas) e comportamento atípico de grinder (muito alto) — para produzir uma medida mais representativa da progressão típica do jogador.",
+      dq_outlier_title: "Impacto de Outliers por Métrica",
+      dq_th_metric: "Métrica",
+      dq_th_milestone: "Marco",
+      dq_th_raw: "Média Bruta",
+      dq_th_iqr: "Média IQR",
+      dq_th_diff: "Dif",
+      dq_th_filtered: "Filtrados",
+      dq_buildings: "Prédios (total)",
+      dq_time: "Tempo Decorrido",
+      dq_clicks: "Total de Cliques",
+      dq_insight: "Tempo decorrido é a métrica mais afetada pela filtragem de outliers — a média IQR no 1M é 893s comparada a uma média bruta de 2.489s, uma redução de 64%, indicando que um pequeno número de sessões extremas distorceu significativamente a distribuição. Métricas de prédios e upgrades são bem distribuídas, com filtragem IQR produzindo apenas 2–10% de ajuste. O achado mais impactante foi o defeito de persistência do timeElapsed no 1B/1T, que produziu dados fundamentalmente inválidos em vez de meramente distribuições distorcidas. Todos os três problemas identificados foram resolvidos e serão refletidos no dataset pós-1.40.",
+      // Footer
+      footer: "Jhorro Productions · Dashboard de Analytics · Dados: Unity Analytics (pré-1.40)",
+      // Table headers
+      th_tier: "Tier",
+      th_base: "Preço Base",
+      th_upgrade: "Upgrade",
+      th_copies: "cópias possuídas",
+    };
+
+    const t = (key, fallback) => lang === 'pt' ? (pt[key] || fallback) : lang === 'ja' ? (ja[key] || fallback) : fallback;
+
+    const ja = {
+      tab_funnel: "プレイヤーファネル",
+      tab_economy: "クリック vs パッシブ",
+      tab_buildings: "ビルディング構成",
+      tab_upgrades: "アップグレード",
+      tab_time: "時間＆クリック",
+      tab_pricing: "価格曲線",
+      tab_data: "データ整合性",
+      insight: "分析",
+      note: "注記",
+      show: "表示",
+      hide: "非表示",
+      iqr_box: "IQRボックスプロット",
+      dist_1m: "1M分布",
+      unique_players: "ユニークプレイヤー",
+      f_total: "追跡総数",
+      f_reached: "1T到達",
+      f_of_total: "全体の",
+      f_steepest: "最大の落ち込み",
+      f_dropoff: "離脱",
+      f_insight: "最大の落ち込みは1M → 1B（27%）で、アイドルゲーム特有のミッドゲーム進行の壁を示している。1Tに到達した9人のプレイヤーは高度にエンゲージしたコア層を表す。",
+      e_click_1k: "1Kでのクリック%",
+      e_active_early: "初期はアクティブ優勢",
+      e_click_1t: "1Tでのクリック%",
+      e_passive_over: "パッシブが優勢に",
+      e_crossover: "クロスオーバーポイント",
+      e_passive_exceeds: "パッシブがクリックを超過",
+      e_insight: "エコノミーはクリック優勢（76%）からパッシブ優勢（77%）へ設計通りに移行。クロスオーバーは1Bマイルストーン付近で発生し、ミッドゲームでアイドルループが機能することを確認。これは良く調整されたアイドルエコノミーの特徴的な曲線 — アクティブエンゲージメントが早期にプレイヤーを引きつけ、パッシブシステムが長期リテンションを維持する。",
+      b_iqr_1k: "1KでのIQR平均",
+      b_clicker: "クリッカー",
+      b_passive: "パッシブ",
+      b_iqr_1t: "1TでのIQR平均",
+      b_ratio: "パッシブ比率",
+      b_grows: "進行とともに増加",
+      b_insight: "比率は1Kの約60%パッシブから1Tの70%に移行 — パッシブビルディングはより緩やかな価格スケーリング（1.25× vs 1.65×）を持ち、クレジットあたりより効率的な支出となる。IQRフィルタリング済み平均は極端な外れ値を除去しより典型的な行動のクリーンな像を提供。",
+      b_dist_title: "1Mでのビルディング購入分布 (n=93)",
+      u_avg_1k: "1Kでの平均アップグレード",
+      u_avg_1t: "1Tでの平均アップグレード",
+      u_zero: "1Kで0アップグレードのプレイヤー",
+      u_of: "/",
+      u_insight: "1Kマイルストーンで52%のプレイヤーがアップグレードゼロ — 最初のアップグレードは150–500クレジットで、次のビルディング購入と直接競合する。プレイヤーは合理的に初期はアップグレードより新しいビルディングを優先する。1Bでは、IQR平均が44.0アップグレードに跳ね上がり、ビルディングコストがリターンを上回るミッド〜レイトゲームでアップグレードが主要な進行レバーとなることを示す。",
+      u_box_note: "1Mでは93人中8人がアップグレード総数の外れ値としてフィルタリングされている。IQR平均10.7は生の10.9に近く、このマイルストーンではほとんどのデータが良好に分布している。1Kでは中央値が0、Q3がわずか1で、ほとんどのプレイヤーが初期アップグレードを完全にスキップしていることを確認。",
+      t_iqr_1k: "1KまでのIQR平均",
+      t_iqr_1m: "1MまでのIQR平均",
+      t_avg_1t: "1Tまでの平均",
+      t_defect: "追跡欠陥 — 次のビルドで修正済",
+      t_clicks_title: "マイルストーンごとの平均総クリック数",
+      t_time_box: "経過時間（秒）— IQR範囲",
+      t_clicks_box: "総クリック数 — IQR範囲",
+      t_warning: "1Bと1Tの時間データはゼロに近い中央値（それぞれ408sと2s）を示す — これはtimeElapsedの永続化欠陥により上位マイルストーンでカウンターがセッション間でリセットされたことが原因。欠陥はv1.40で解決済。これらのマイルストーンのクリックデータも同様に信頼性が低い。",
+      t_insight: "IQRフィルタリング済み時間は1Kまで約3.2分（生4.6分）、1Mまで約14.9分（生41分）で、生の平均に外れ値の大きな影響があることを示す。クリック強度は1Kと1Mで一貫（約1.3クリック/秒）。1Bと1Tの時間データは次のビルドで解決されたタイムスタンプ永続化欠陥のため分析から除外。",
+      pr_tiers_title: "各マイルストーンで購入可能なビルディングティア",
+      pr_cost_title: "累積コスト：ティア1ビルディング × N個",
+      pr_cost_desc: "1.65×クリッカー乗数が1.25×パッシブ乗数をどのように上回るかを示す",
+      pr_insight: "20個目のコピーで、クリッカーティア1ビルディングはパッシブより累積50×高くなる。この価格の非対称性がエコノミーデータに見られるクリックからパッシブへの移行を機械的に推進する — プレイヤーの好みだけでなく、エコノミーがアイドルプレイへと誘導している。",
+      dq_title: "データ整合性レビュー — v1.40以前のビルド",
+      dq_desc: "分析中、v1.40以前のビルドで2つの計装欠陥と1つの精度制限が特定された。すべての問題は原因が特定され、今後のリリースで解決済。以下の所見は現在のデータセットへの影響を記録している。",
+      dq_issues: "特定された問題",
+      dq_iqr_title: "IQRフィルタリング手法",
+      dq_iqr_text: "「生」と「フィルタリング」の切り替えが表示される箇所では、IQR（四分位範囲）手法がQ1 − 1.5×IQR未満とQ3 + 1.5×IQR超のデータポイントを除去する。この標準的なアプローチは両端の極端な値を除去し — エンゲージメント不足のセッション（低すぎ）と非典型的なグラインダー行動（高すぎ）— 典型的なプレイヤー進行のより代表的な指標を生成する。",
+      dq_outlier_title: "メトリクス別外れ値の影響",
+      dq_insight: "経過時間は外れ値フィルタリングの影響を最も受けるメトリクス — 1MのIQR平均は893sで生の平均2,489sと比較して64%の減少。少数の極端なセッションが分布を大きく歪めていたことを示す。ビルディングとアップグレードのメトリクスは良好に分布しており、IQRフィルタリングは2–10%の調整のみ。最も影響の大きい所見は1B/1TのtimeElapsed永続化欠陥で、単に歪んだ分布ではなく根本的に無効なデータを生成した。特定された3つの問題すべてが解決済で、v1.40以降のデータセットに反映される。",
+      footer: "アナリティクス ダッシュボード · データ: Unity Analytics (v1.40以前)",
+    };
+
     // ─── COMPONENTS ──────────────────────────────────────────────────────
 
     const CustomTooltip = ({ active, payload, label }) => {
@@ -237,13 +426,13 @@
     };
 
     const tabs = [
-      { id: "funnel", label: "Player Funnel" },
-      { id: "economy", label: "Click vs Passive" },
-      { id: "buildings", label: "Building Mix" },
-      { id: "upgrades", label: "Upgrades" },
-      { id: "time", label: "Time & Clicks" },
-      { id: "pricing", label: "Price Curves" },
-      { id: "dataQuality", label: "Data Integrity" },
+      { id: "funnel", label: t('tab_funnel', "Player Funnel") },
+      { id: "economy", label: t('tab_economy', "Click vs Passive") },
+      { id: "buildings", label: t('tab_buildings', "Building Mix") },
+      { id: "upgrades", label: t('tab_upgrades', "Upgrades") },
+      { id: "time", label: t('tab_time', "Time & Clicks") },
+      { id: "pricing", label: t('tab_pricing', "Price Curves") },
+      { id: "dataQuality", label: t('tab_data', "Data Integrity") },
     ];
 
     const InsightBox = ({ children }) => (
@@ -257,7 +446,7 @@
         lineHeight: 1.6,
         color: theme.textMuted,
       }}>
-        <span style={{ color: theme.accent, fontWeight: 600, marginRight: 6 }}>Insight</span>
+        <span style={{ color: theme.accent, fontWeight: 600, marginRight: 6 }}>{t('insight', 'Insight')}</span>
         {children}
       </div>
     );
@@ -273,7 +462,7 @@
         lineHeight: 1.6,
         color: theme.textMuted,
       }}>
-        <span style={{ color: theme.amber, fontWeight: 600, marginRight: 6 }}>Note</span>
+        <span style={{ color: theme.amber, fontWeight: 600, marginRight: 6 }}>{t('note', 'Note')}</span>
         {children}
       </div>
     );
@@ -346,9 +535,9 @@
       return (
         <div>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
-            <StatCard label="Total Tracked" value="220" sub="unique players" />
-            <StatCard label="Reached 1T" value="9" sub="4.1% of total" />
-            <StatCard label="Steepest Drop" value="1M → 1B" sub="73% drop-off" />
+            <StatCard label={t('f_total', "Total Tracked")} value="220" sub={t('unique_players', "unique players")} />
+            <StatCard label={t('f_reached', "Reached 1T")} value="9" sub={`4.1% ${t('f_of_total', "of total")}`} />
+            <StatCard label={t('f_steepest', "Steepest Drop")} value="1M → 1B" sub={`73% ${t('f_dropoff', "drop-off")}`} />
           </div>
           <ResponsiveContainer width="100%" height={300}>
             <BarChart data={funnelData} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
@@ -376,7 +565,7 @@
             ))}
           </div>
           <InsightBox>
-            The steepest drop is 1M → 1B (27%), indicating the mid-game progression wall typical of idle games. The 9 players who reached 1T represent the highly engaged core.
+            {t('f_insight', "The steepest drop is 1M → 1B (27%), indicating the mid-game progression wall typical of idle games. The 9 players who reached 1T represent the highly engaged core.")}
           </InsightBox>
         </div>
       );
@@ -386,9 +575,9 @@
       return (
         <div>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
-            <StatCard label="Click % at 1K" value="76%" sub="active-dominant early" />
-            <StatCard label="Click % at 1T" value="23%" sub="passive takes over" />
-            <StatCard label="Crossover Point" value="~1B" sub="passive exceeds click" />
+            <StatCard label={t('e_click_1k', "Click % at 1K")} value="76%" sub={t('e_active_early', "active-dominant early")} />
+            <StatCard label={t('e_click_1t', "Click % at 1T")} value="23%" sub={t('e_passive_over', "passive takes over")} />
+            <StatCard label={t('e_crossover', "Crossover Point")} value="~1B" sub={t('e_passive_exceeds', "passive exceeds click")} />
           </div>
           <ResponsiveContainer width="100%" height={320}>
             <AreaChart data={clickVsPassive} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
@@ -402,7 +591,7 @@
             </AreaChart>
           </ResponsiveContainer>
           <InsightBox>
-            The economy transitions from click-dominant (76%) to passive-dominant (77%) exactly as designed. The crossover happens around the 1B milestone, confirming the idle loop kicks in at mid-game. This is the signature curve of a well-tuned idle economy — active engagement hooks players early, then passive systems sustain long-term retention.
+            {t('e_insight', "The economy transitions from click-dominant (76%) to passive-dominant (77%) exactly as designed. The crossover happens around the 1B milestone, confirming the idle loop kicks in at mid-game. This is the signature curve of a well-tuned idle economy — active engagement hooks players early, then passive systems sustain long-term retention.")}
           </InsightBox>
         </div>
       );
@@ -414,9 +603,9 @@
       return (
         <div>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
-            <StatCard label="IQR Avg at 1K" value="11.9" sub="5 clicker · 7 passive" />
-            <StatCard label="IQR Avg at 1T" value="377" sub="147 clicker · 263 passive" />
-            <StatCard label="Passive Ratio" value="60→70%" sub="grows with progression" />
+            <StatCard label={t('b_iqr_1k', "IQR Avg at 1K")} value="11.9" sub={`5 ${t('b_clicker', "clicker")} · 7 ${t('b_passive', "passive")}`} />
+            <StatCard label={t('b_iqr_1t', "IQR Avg at 1T")} value="377" sub={`147 ${t('b_clicker', "clicker")} · 263 ${t('b_passive', "passive")}`} />
+            <StatCard label={t('b_ratio', "Passive Ratio")} value="60→70%" sub={t('b_grows', "grows with progression")} />
           </div>
           <ResponsiveContainer width="100%" height={320}>
             <BarChart data={buildingBreakdown} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
@@ -437,7 +626,7 @@
               borderRadius: 6, padding: "8px 16px",
               color: theme.accent, cursor: "pointer", fontSize: 13,
             }}>
-              {showBoxPlots ? "Hide" : "Show"} IQR box plots
+              {showBoxPlots ? t('hide', "Hide") : t('show', "Show")} {t('iqr_box', "IQR box plots")}
             </button>
             <button onClick={() => setShowDist(!showDist)} style={{
               background: showDist ? theme.surfaceHover : theme.surface,
@@ -445,7 +634,7 @@
               borderRadius: 6, padding: "8px 16px",
               color: theme.cyan, cursor: "pointer", fontSize: 13,
             }}>
-              {showDist ? "Hide" : "Show"} 1M distribution
+              {showDist ? t('hide', "Hide") : t('show', "Show")} {t('dist_1m', "1M distribution")}
             </button>
           </div>
 
@@ -459,7 +648,7 @@
 
           {showDist && (
             <div style={{ marginTop: 16 }}>
-              <div style={{ fontSize: 13, color: theme.text, fontWeight: 600, marginBottom: 8 }}>Buildings Bought Distribution at 1M (n=93)</div>
+              <div style={{ fontSize: 13, color: theme.text, fontWeight: 600, marginBottom: 8 }}>{t('b_dist_title', "Buildings Bought Distribution at 1M (n=93)")}</div>
               <ResponsiveContainer width="100%" height={200}>
                 <BarChart data={buildingsAt1M} margin={{ top: 10, right: 10, bottom: 10, left: 0 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
@@ -473,7 +662,7 @@
           )}
 
           <InsightBox>
-            The ratio shifts from ~60% passive at 1K to 70% at 1T — passive buildings have gentler price scaling (1.25× vs 1.65×), making them a more efficient spend per credit. IQR-filtered averages remove extreme outliers (e.g. the 84-building player at 1K) for a cleaner picture of typical behavior.
+            {t('b_insight', "The ratio shifts from ~60% passive at 1K to 70% at 1T — passive buildings have gentler price scaling (1.25× vs 1.65×), making them a more efficient spend per credit. IQR-filtered averages remove extreme outliers (e.g. the 84-building player at 1K) for a cleaner picture of typical behavior.")}
           </InsightBox>
         </div>
       );
@@ -488,9 +677,9 @@
       return (
         <div>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
-            <StatCard label="Avg Upgrades at 1K" value="0.5" sub="IQR mean (0.9 raw)" />
-            <StatCard label="Avg Upgrades at 1T" value="67.3" sub="~34 passive + ~33 est. clicker" />
-            <StatCard label="1K Players w/ 0 Upgrades" value="52%" sub="114 of 220" />
+            <StatCard label={t('u_avg_1k', "Avg Upgrades at 1K")} value="0.5" sub={`IQR mean (0.9 raw)`} />
+            <StatCard label={t('u_avg_1t', "Avg Upgrades at 1T")} value="67.3" sub={`~34 ${t('b_passive', "passive")} + ~33 est. ${t('b_clicker', "clicker")}`} />
+            <StatCard label={t('u_zero', "1K Players w/ 0 Upgrades")} value="52%" sub={`114 ${t('u_of', "of")} 220`} />
           </div>
           <ResponsiveContainer width="100%" height={320}>
             <ComposedChart data={estimatedClickerUpg} margin={{ top: 10, right: 20, bottom: 10, left: 0 }}>
@@ -516,7 +705,7 @@
             borderRadius: 6, padding: "8px 16px",
             color: theme.accent, cursor: "pointer", fontSize: 13,
           }}>
-            {showBoxPlots ? "Hide" : "Show"} IQR box plots
+            {showBoxPlots ? t('hide', "Hide") : t('show', "Show")} {t('iqr_box', "IQR box plots")}
           </button>
 
           {showBoxPlots && (
@@ -524,13 +713,13 @@
               <BoxPlotChart data={boxPlotData.upgrades} title="Total Upgrades — IQR Range" color={theme.purple} />
               <BoxPlotChart data={boxPlotData.passiveUpgrades} title="Passive Upgrades — IQR Range" color={theme.accent} />
               <div style={{ marginTop: 12, fontSize: 12, color: theme.textMuted, lineHeight: 1.7 }}>
-                At 1M, 8 of 93 players are filtered as outliers for total upgrades. The IQR mean of 10.7 is close to the raw 10.9 — most data is well-behaved at this milestone. At 1K, the median is 0 and Q3 is just 1, confirming most players skip early upgrades entirely.
+                {t('u_box_note', "At 1M, 8 of 93 players are filtered as outliers for total upgrades. The IQR mean of 10.7 is close to the raw 10.9 — most data is well-behaved at this milestone. At 1K, the median is 0 and Q3 is just 1, confirming most players skip early upgrades entirely.")}
               </div>
             </div>
           )}
 
           <InsightBox>
-            52% of players had zero upgrades at the 1K milestone — the first upgrade costs 150–500 credits, which competes directly with buying the next building. Players rationally prioritize new buildings over upgrades early on. By 1B, the IQR mean jumps to 44.0 upgrades, showing that upgrades become the main progression lever in mid-to-late game once building costs outpace their returns.
+            {t('u_insight', "52% of players had zero upgrades at the 1K milestone — the first upgrade costs 150–500 credits, which competes directly with buying the next building. Players rationally prioritize new buildings over upgrades early on. By 1B, the IQR mean jumps to 44.0 upgrades, showing that upgrades become the main progression lever in mid-to-late game once building costs outpace their returns.")}
           </InsightBox>
         </div>
       );
@@ -541,12 +730,12 @@
       return (
         <div>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
-            <StatCard label="IQR Avg to 1K" value="3.2 min" sub="194s (raw avg 277s)" />
-            <StatCard label="IQR Avg to 1M" value="14.9 min" sub="893s (raw avg 2,489s)" />
-            <StatCard label="Avg to 1T" value="N/A" sub="tracking defect — fixed in next build" />
+            <StatCard label={t('t_iqr_1k', "IQR Avg to 1K")} value="3.2 min" sub="194s (raw avg 277s)" />
+            <StatCard label={t('t_iqr_1m', "IQR Avg to 1M")} value="14.9 min" sub="893s (raw avg 2,489s)" />
+            <StatCard label={t('t_avg_1t', "Avg to 1T")} value="N/A" sub={t('t_defect', "tracking defect — fixed in next build")} />
           </div>
           <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 8, fontWeight: 600 }}>
-            Average Total Clicks per Milestone
+            {t('t_clicks_title', "Average Total Clicks per Milestone")}
           </div>
           <ResponsiveContainer width="100%" height={280}>
             <BarChart data={clicksData} margin={{ top: 10, right: 20, bottom: 10, left: 10 }}>
@@ -567,21 +756,21 @@
             borderRadius: 6, padding: "8px 16px",
             color: theme.accent, cursor: "pointer", fontSize: 13,
           }}>
-            {showBoxPlots ? "Hide" : "Show"} IQR box plots
+            {showBoxPlots ? t('hide', "Hide") : t('show', "Show")} {t('iqr_box', "IQR box plots")}
           </button>
 
           {showBoxPlots && (
             <div>
-              <BoxPlotChart data={boxPlotData.timeElapsed} title="Time Elapsed (seconds) — IQR Range" color={theme.amber} />
-              <BoxPlotChart data={boxPlotData.totalClicks} title="Total Clicks — IQR Range" color={theme.cyan} />
+              <BoxPlotChart data={boxPlotData.timeElapsed} title={t('t_time_box', "Time Elapsed (seconds) — IQR Range")} color={theme.amber} />
+              <BoxPlotChart data={boxPlotData.totalClicks} title={t('t_clicks_box', "Total Clicks — IQR Range")} color={theme.cyan} />
               <WarningBox>
-                The 1B and 1T time data shows near-zero medians (408s and 2s respectively) — this is caused by a <code style={{ background: theme.bg, padding: "2px 6px", borderRadius: 3, fontSize: 12 }}>timeElapsed</code> persistence defect where the counter reset between sessions at higher milestones. The defect has been resolved for v1.40. Click data at these milestones is also unreliable for the same reason.
+                {t('t_warning', "The 1B and 1T time data shows near-zero medians (408s and 2s respectively) — this is caused by a timeElapsed persistence defect where the counter reset between sessions at higher milestones. The defect has been resolved for v1.40. Click data at these milestones is also unreliable for the same reason.")}
               </WarningBox>
             </div>
           )}
 
           <InsightBox>
-            IQR-filtered time to 1K is approximately 3.2 minutes (vs 4.6 raw) and to 1M is approximately 14.9 minutes (vs 41 raw), indicating significant outlier influence on the raw averages. Click intensity is consistent at 1K and 1M (~1.3 clicks/sec). The 1B and 1T time data is excluded from analysis due to a timestamp persistence defect that has been resolved for the next build.
+            {t('t_insight', "IQR-filtered time to 1K is approximately 3.2 minutes (vs 4.6 raw) and to 1M is approximately 14.9 minutes (vs 41 raw), indicating significant outlier influence on the raw averages. Click intensity is consistent at 1K and 1M (~1.3 clicks/sec). The 1B and 1T time data is excluded from analysis due to a timestamp persistence defect that has been resolved for the next build.")}
           </InsightBox>
         </div>
       );
@@ -601,7 +790,7 @@
       return (
         <div>
           <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 8, fontWeight: 600 }}>
-            Building Tiers Affordable at Each Milestone
+            {t('pr_tiers_title', "Building Tiers Affordable at Each Milestone")}
           </div>
           <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 20 }}>
             {tierData.map(d => (
@@ -682,10 +871,10 @@
           )}
 
           <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 8, fontWeight: 600 }}>
-            Cumulative Cost: Tier 1 Building × N Copies
+            {t('pr_cost_title', "Cumulative Cost: Tier 1 Building × N Copies")}
           </div>
           <div style={{ fontSize: 12, color: theme.textMuted, marginBottom: 12 }}>
-            Shows how the 1.65× clicker multiplier outpaces the 1.25× passive multiplier
+            {t('pr_cost_desc', "Shows how the 1.65× clicker multiplier outpaces the 1.25× passive multiplier")}
           </div>
           <ResponsiveContainer width="100%" height={300}>
             <LineChart data={costScaling.slice(0, 25)} margin={{ top: 10, right: 20, bottom: 10, left: 10 }}>
@@ -704,7 +893,7 @@
           </ResponsiveContainer>
 
           <InsightBox>
-            By the 20th copy, a clicker tier-1 building costs 50× more cumulatively than a passive one. This price asymmetry is what mechanically drives the click-to-passive transition seen in the economy data — it's not just player preference, it's the economy nudging them toward idle play.
+            {t('pr_insight', "By the 20th copy, a clicker tier-1 building costs 50× more cumulatively than a passive one. This price asymmetry is what mechanically drives the click-to-passive transition seen in the economy data — it's not just player preference, it's the economy nudging them toward idle play.")}
           </InsightBox>
         </div>
       );
@@ -714,14 +903,14 @@
       return (
         <div>
           <div style={{ fontSize: 15, color: theme.text, fontWeight: 600, marginBottom: 6 }}>
-            Data Integrity Review — pre-1.40 Build
+            {t('dq_title', "Data Integrity Review — pre-1.40 Build")}
           </div>
           <div style={{ fontSize: 13, color: theme.textMuted, marginBottom: 20, lineHeight: 1.6 }}>
-            During analysis, two instrumentation defects and one precision limitation were identified in the pre-1.40 build. All issues have been root-caused and resolved for the upcoming release. The findings below document their impact on the current dataset.
+            {t('dq_desc', "During analysis, two instrumentation defects and one precision limitation were identified in the pre-1.40 build. All issues have been root-caused and resolved for the upcoming release. The findings below document their impact on the current dataset.")}
           </div>
 
           <div style={{ fontSize: 13, color: theme.text, fontWeight: 600, marginBottom: 10 }}>
-            Identified Issues
+            {t('dq_issues', "Identified Issues")}
           </div>
 
           {/* Issue 1 */}
@@ -771,15 +960,14 @@
           </div>
 
           <div style={{ fontSize: 13, color: theme.text, fontWeight: 600, marginBottom: 10, marginTop: 24 }}>
-            IQR Filtering Methodology
+            {t('dq_iqr_title', "IQR Filtering Methodology")}
           </div>
           <div style={{ fontSize: 12, color: theme.textMuted, lineHeight: 1.7, marginBottom: 16 }}>
-            Where "Raw" and "Filtered" toggles appear, the IQR (Interquartile Range) method removes data points below Q1 − 1.5×IQR and above Q3 + 1.5×IQR.
-            This standard approach removes extreme values on both ends — under-engaged sessions (too low) and atypical grinder behavior (too high) — to produce a more representative measure of typical player progression.
+            {t('dq_iqr_text', "Where \"Raw\" and \"Filtered\" toggles appear, the IQR (Interquartile Range) method removes data points below Q1 − 1.5×IQR and above Q3 + 1.5×IQR. This standard approach removes extreme values on both ends — under-engaged sessions (too low) and atypical grinder behavior (too high) — to produce a more representative measure of typical player progression.")}
           </div>
 
           <div style={{ fontSize: 13, color: theme.text, fontWeight: 600, marginBottom: 10 }}>
-            Outlier Impact by Metric
+            {t('dq_outlier_title', "Outlier Impact by Metric")}
           </div>
           <table style={{ width: "100%", borderCollapse: "collapse", background: theme.surface, borderRadius: 6, overflow: "hidden" }}>
             <thead>
@@ -819,7 +1007,7 @@
           </table>
 
           <InsightBox>
-            Time elapsed is the metric most affected by outlier filtering — the IQR mean at 1M is 893s compared to a raw average of 2,489s, a 64% reduction, indicating a small number of extreme sessions significantly skewed the distribution. Building and upgrade metrics are well-distributed, with IQR filtering producing only a 2–10% adjustment. The most impactful finding was the timeElapsed persistence defect at 1B/1T, which produced fundamentally invalid data rather than merely skewed distributions. All three identified issues have been addressed and will be reflected in the post-1.40 dataset.
+            {t('dq_insight', "Time elapsed is the metric most affected by outlier filtering — the IQR mean at 1M is 893s compared to a raw average of 2,489s, a 64% reduction, indicating a small number of extreme sessions significantly skewed the distribution. Building and upgrade metrics are well-distributed, with IQR filtering producing only a 2–10% adjustment. The most impactful finding was the timeElapsed persistence defect at 1B/1T, which produced fundamentally invalid data rather than merely skewed distributions. All three identified issues have been addressed and will be reflected in the post-1.40 dataset.")}
           </InsightBox>
         </div>
       );
@@ -895,7 +1083,7 @@
             color: theme.textMuted,
             textAlign: "center",
           }}>
-            Jhorro Productions · Analytics Dashboard · Data: Unity Analytics (pre-1.40)
+            Jhorro Productions · {t('footer', "Analytics Dashboard · Data: Unity Analytics (pre-1.40)")}
           </div>
         </div>
       );

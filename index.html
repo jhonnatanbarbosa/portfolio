@@ -5,10 +5,58 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jhonnatan Barbosa — Game Designer</title>
 <meta name="description" content="Game designer portfolio — data-driven systems, economy design, and gameplay. 5+ years shipping 12+ titles across mobile, PC, and web. Statistics background with real analytics case studies.">
+
+<!-- Open Graph / Social Preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jhonnatan Barbosa — Game Designer">
+<meta property="og:description" content="Data-driven systems & gameplay designer. 5+ years, 2 shipped mobile titles, real analytics case studies. Statistics background.">
+<meta property="og:url" content="https://www.jhorro.com">
+<meta property="og:image" content="https://www.jhorro.com/media/og-preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="pt_BR">
+<meta property="og:locale:alternate" content="ja_JP">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Jhonnatan Barbosa — Game Designer">
+<meta name="twitter:description" content="Data-driven systems & gameplay designer. 5+ years, 2 shipped mobile titles, real analytics case studies.">
+<meta name="twitter:image" content="https://www.jhorro.com/media/og-preview.png">
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
+
+<!-- ── LANGUAGE SELECTOR OVERLAY ──────────────────────── -->
+<div class="lang-overlay" id="langOverlay" style="display:flex">
+  <div class="lang-modal">
+    <h2>Welcome · Bem-vindo · ようこそ</h2>
+    <p>Choose your language · Escolha seu idioma · 言語を選択</p>
+    <div class="lang-buttons">
+      <button class="lang-btn" onclick="setLanguage('en')">
+        <span class="flag">🇺🇸</span>
+        English
+        <span class="label">English</span>
+      </button>
+      <button class="lang-btn" onclick="setLanguage('pt')">
+        <span class="flag">🇧🇷</span>
+        Português
+        <span class="label">Brasileiro</span>
+      </button>
+      <button class="lang-btn" onclick="setLanguage('ja')">
+        <span class="flag">🇯🇵</span>
+        日本語
+        <span class="label">Japanese</span>
+      </button>
+    </div>
+  </div>
+</div>
 
 <div class="scroll-progress" aria-hidden="true"></div>
 
@@ -20,12 +68,16 @@
   <span></span><span></span><span></span>
 </button>
     <ul class="nav-links">
-      <li><a href="#projects">Projects</a></li>
-      <li><a href="#cyberpunk-analytics">Case Study</a></li>
-      <li><a href="#documents">Documents</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="#contact">Contact</a></li>
+      <li><a href="#projects" data-i18n="nav_projects">Projects</a></li>
+      <li><a href="#cyberpunk-analytics" data-i18n="nav_casestudy">Case Study</a></li>
+      <li><a href="#documents" data-i18n="nav_documents">Documents</a></li>
+      <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="#contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
+    <button class="lang-toggle" onclick="toggleLanguage()" id="langToggle" aria-label="Switch language">
+      <span class="flag-small" id="toggleFlag">🇺🇸</span>
+      <span id="toggleLabel">EN</span>
+    </button>
   </div>
 </nav>
 
@@ -34,15 +86,15 @@
   <!-- INTRO -->
   <div class="intro reveal">
     <div>
-      <h1>Game Designer — Data-Driven Systems & Gameplay</h1>
-      <p>
+      <h1 data-i18n="hero_title">Game Designer — Data-Driven Systems & Gameplay</h1>
+      <p data-i18n="hero_desc">
         I design systems players discover on their own terms, then use data to make them better.
         5+ years in game design across 2 shipped mobile titles, a graduation thesis, and 10+ student and jam projects across mobile,  PC, and web.
         Statistics background — I iterate with spreadsheets, analytics, and evidence, not gut feel.
       </p>
     </div>
     <div class="intro-links">
-      <a href="docs/CV_Jhonnatan_Barbosa_Game_Designer.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+      <a href="docs/CV_Jhonnatan_Barbosa_Game_Designer.pdf" target="_blank" rel="noopener" data-i18n="link_resume">Resume (PDF)</a>
       <a href="/cdn-cgi/l/email-protection#5d3735323e3f3c2f3f322e3c1d3a303c3431733e3230">Email</a>
       <a href="https://linkedin.com/in/jhonnatanbarbosa" target="_blank" rel="noopener">LinkedIn</a>
     </div>
@@ -59,8 +111,8 @@
   <section id="projects">
     <br>
     <div class="section-header">
-      <h2 class="section-title">Selected Projects</h2>
-      <span class="section-aside">5 curated pieces · 2 case studies + 3 showcase cards</span>
+      <h2 class="section-title" data-i18n="sec_projects">Selected Projects</h2>
+      <span class="section-aside" data-i18n="sec_projects_aside">5 curated pieces · 2 case studies + 3 showcase cards</span>
     </div>
 
     <!-- Project 1: Idle Cyberpunk City Clicker -->
@@ -70,10 +122,10 @@
       </div>
       <div class="project-body">
         <div class="project-top-row">
-          <span class="project-name">Idle Cyberpunk City Clicker — Economy & Analytics</span>
-          <span class="project-badge">Shipped · 2025</span>
+          <span class="project-name" data-i18n="p1_name">Idle Cyberpunk City Clicker — Economy & Analytics</span>
+          <span class="project-badge" data-i18n="p1_badge">Shipped · 2025</span>
         </div>
-        <p class="project-desc">
+        <p class="project-desc" data-i18n="p1_desc">
           Built on lessons from Idle Kingdom Builder. Expanded the core loop with deep
           progression tiers and a reward-ad/IAP monetization layer. Instrumented Unity Analytics
           to snapshot player state at 4 milestones, identified economy bugs and a timer
@@ -81,21 +133,22 @@
           600+ organic downloads, 4.2/5 rating — zero marketing spend. Median session ~6 min, top 10% averaging 15+ min.
         </p>
         <div class="meta-row">
-          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer & Developer (Solo)</span></div>
-          <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity 6</span></div>
-          <div class="meta-pair"><span class="ml">Platform</span><span class="mv">Android</span></div>
-          <div class="meta-pair"><span class="ml">Duration</span><span class="mv">6 months</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_role">Role</span><span class="mv" data-i18n="p1_role">Designer & Developer (Solo)</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_engine">Engine</span><span class="mv">Unity 6</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_platform">Platform</span><span class="mv">Android</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_duration">Duration</span><span class="mv" data-i18n="p1_duration">6 months</span></div>
         </div>
         <div class="project-tags">
-          <span class="ptag">Economy Design</span>
-          <span class="ptag">Progression Tuning</span>
+          <span class="ptag" data-i18n="tag_economy">Economy Design</span>
+          <span class="ptag" data-i18n="tag_progression">Progression Tuning</span>
           <span class="ptag">Unity Analytics</span>
           <span class="ptag">AdMob / IAP</span>
-          <span class="ptag">Data-Driven Iteration</span>
+          <span class="ptag" data-i18n="tag_datadriven">Data-Driven Iteration</span>
         </div>
         <div class="project-actions">
-          <a href="#cyberpunk-analytics">Analytics case study →</a>
-          <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener">Play on Google Play →</a>
+          <a href="#cyberpunk-analytics" data-i18n="p1_link_case">Analytics case study →</a>
+          <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener" data-i18n="p1_link_play">Play on Google Play →</a>
+          <a class="pd-trigger" onclick="openProjectModal('cyberpunk')" data-i18n="link_details">View details →</a>
         </div>
         <!--<div class="player-reviews">
           <span class="pr-label">Player reviews</span>
@@ -122,10 +175,10 @@
       </div>
       <div class="project-body">
         <div class="project-top-row">
-          <span class="project-name">Idle Kingdom Builder — First Shipped Economy</span>
-          <span class="project-badge">Shipped · 2024</span>
+          <span class="project-name" data-i18n="p2_name">Idle Kingdom Builder — First Shipped Economy</span>
+          <span class="project-badge" data-i18n="p2_badge">Shipped · 2024</span>
         </div>
-        <p class="project-desc">
+        <p class="project-desc" data-i18n="p2_desc">
           My first published idle game. Designed the core loop and economy system from scratch,
            taking inspiration from Cookie Clicker's formulas and tuning them toward a slower, more deliberate pace.
             Shipped to Google Play with 800+ organic downloads. Strong early engagement,
@@ -133,19 +186,20 @@
               — that gap directly motivated the analytics system I built for Cyberpunk City.
         </p>
         <div class="meta-row">
-          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer & Developer (Solo)</span></div>
-          <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity 2022</span></div>
-          <div class="meta-pair"><span class="ml">Platform</span><span class="mv">Android</span></div>
-          <div class="meta-pair"><span class="ml">Duration</span><span class="mv">6 months</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_role">Role</span><span class="mv" data-i18n="p2_role">Designer & Developer (Solo)</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_engine">Engine</span><span class="mv">Unity 2022</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_platform">Platform</span><span class="mv">Android</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_duration">Duration</span><span class="mv" data-i18n="p2_duration">6 months</span></div>
         </div>
         <div class="project-tags">
-          <span class="ptag">Economy Design</span>
-          <span class="ptag">Progression Curves</span>
-          <span class="ptag">Monetization</span>
-          <span class="ptag">First Ship</span>
+          <span class="ptag" data-i18n="tag_economy">Economy Design</span>
+          <span class="ptag" data-i18n="tag_curves">Progression Curves</span>
+          <span class="ptag" data-i18n="tag_monetization">Monetization</span>
+          <span class="ptag" data-i18n="tag_firstship">First Ship</span>
         </div>
         <div class="project-actions">
-          <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener">Play on Google Play →</a>
+          <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener" data-i18n="p2_link_play">Play on Google Play →</a>
+          <a class="pd-trigger" onclick="openProjectModal('kingdom')" data-i18n="link_details">View details →</a>
         </div>
       </div>
     </div>
@@ -157,10 +211,10 @@
       </div>
       <div class="project-body">
         <div class="project-top-row">
-          <span class="project-name">Guardian's Falls — Wounds</span>
-          <span class="project-badge">Graduation · 2023</span>
+          <span class="project-name" data-i18n="p3_name">Guardian's Falls — Wounds</span>
+          <span class="project-badge" data-i18n="p3_badge">Graduation · 2023</span>
         </div>
-        <p class="project-desc">
+        <p class="project-desc" data-i18n="p3_desc">
           2.5D Metroidvania built as a graduation project at PUC-SP.
           Started as game designer, but the role shifted to developer/producer
           as I took over programming core systems, parkour mechanics, and managing
@@ -168,22 +222,23 @@
           with a team of 6 under academic deadlines. Well received by the examining committee.
         </p>
         <div class="meta-row">
-          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer → Developer / Producer</span></div>
-          <div class="meta-pair"><span class="ml">Team</span><span class="mv">6</span></div>
-          <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity 2021</span></div>
-          <div class="meta-pair"><span class="ml">Platform</span><span class="mv">PC (itch.io)</span></div>
-          <div class="meta-pair"><span class="ml">Duration</span><span class="mv">1 Year</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_role">Role</span><span class="mv" data-i18n="p3_role">Designer → Developer / Producer</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_team">Team</span><span class="mv">6</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_engine">Engine</span><span class="mv">Unity 2021</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_platform">Platform</span><span class="mv">PC (itch.io)</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_duration">Duration</span><span class="mv" data-i18n="p3_duration">1 Year</span></div>
         </div>
         <div class="project-tags">
-          <span class="ptag">Production</span>
-          <span class="ptag">Scope Management</span>
-          <span class="ptag">Systems Programming</span>
-          <span class="ptag">Parkour Mechanics</span>
-          <span class="ptag">Team Leadership</span>
+          <span class="ptag" data-i18n="tag_production">Production</span>
+          <span class="ptag" data-i18n="tag_scope">Scope Management</span>
+          <span class="ptag" data-i18n="tag_sysprog">Systems Programming</span>
+          <span class="ptag" data-i18n="tag_parkour">Parkour Mechanics</span>
+          <span class="ptag" data-i18n="tag_teamlead">Team Leadership</span>
         </div>
         <div class="project-actions">
-          <a href="#guardians-case-study">Case study →</a>
-          <a href="https://hanada1nonly.itch.io/guardians-fall-wounds" target="_blank" rel="noopener">Play on Itch.io →</a>
+          <a href="#guardians-case-study" data-i18n="p3_link_case">Case study →</a>
+          <a href="https://hanada1nonly.itch.io/guardians-fall-wounds" target="_blank" rel="noopener" data-i18n="p3_link_play">Play on Itch.io →</a>
+          <a class="pd-trigger" onclick="openProjectModal('guardians')" data-i18n="link_details">View details →</a>
         </div>
       </div>
     </div>
@@ -195,29 +250,30 @@
       </div>
       <div class="project-body">
         <div class="project-top-row">
-          <span class="project-name">Beasts of Agony — Souls-like Boss Fight</span>
-          <span class="project-badge">Game Jam · 9 days · 2023</span>
+          <span class="project-name" data-i18n="p4_name">Beasts of Agony — Souls-like Boss Fight</span>
+          <span class="project-badge" data-i18n="p4_badge">Game Jam · 9 days · 2023</span>
         </div>
-        <p class="project-desc">
+        <p class="project-desc" data-i18n="p4_desc">
           Souls-like combat demo built for PUCJam 2023 (theme: "Sacred"). Designed and
           programmed the core fighting system — hitboxes, animation trees, life/death state,
           combat balancing. Won Best Art at PUCJam 2023 across all participating teams
           (seniors through newcomers) at PUC-SP.
         </p>
         <div class="meta-row">
-          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer, Programmer & Producer</span></div>
-          <div class="meta-pair"><span class="ml">Team</span><span class="mv">7</span></div>
-          <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity 2022</span></div>
-          <div class="meta-pair"><span class="ml">Duration</span><span class="mv">9 Days</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_role">Role</span><span class="mv" data-i18n="p4_role">Designer, Programmer & Producer</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_team">Team</span><span class="mv">7</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_engine">Engine</span><span class="mv">Unity 2022</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_duration">Duration</span><span class="mv" data-i18n="p4_duration">9 Days</span></div>
         </div>
         <div class="project-tags">
-          <span class="ptag">Combat Systems</span>
+          <span class="ptag" data-i18n="tag_combat">Combat Systems</span>
           <span class="ptag">Game Jam</span>
-          <span class="ptag">Rapid Prototyping</span>
-          <span class="ptag">Award Winner</span>
+          <span class="ptag" data-i18n="tag_rapid">Rapid Prototyping</span>
+          <span class="ptag" data-i18n="tag_award">Award Winner</span>
         </div>
         <div class="project-actions">
           <a href="https://www.jhorro.com/beastsofagony" target="_blank" rel="noopener">Play on itch.io →</a>
+          <a class="pd-trigger" onclick="openProjectModal('beasts')" data-i18n="link_details">View details →</a>
         </div>
       </div>
     </div>
@@ -229,29 +285,30 @@
       </div>
       <div class="project-body">
         <div class="project-top-row">
-          <span class="project-name">Operação Bagre Noturno — Stealth Action Comedy</span>
-          <span class="project-badge">Game Jam · 2 weeks · 2024</span>
+          <span class="project-name" data-i18n="p5_name">Operação Bagre Noturno — Stealth Action Comedy</span>
+          <span class="project-badge" data-i18n="p5_badge">Game Jam · 2 weeks · 2024</span>
         </div>
-        <p class="project-desc">
+        <p class="project-desc" data-i18n="p5_desc">
           Stealth-action game set in an alternate 2031 Brazil, inspired by Metal Gear Solid
           and Splinter Cell. Designed the level layout, core stealth/shooting mechanics, and
           the narrative — blending espionage with absurd comedy in a Brazilian geopolitical
           setting. Built for CtrlAltJam#3 with a team of 4.
         </p>
         <div class="meta-row">
-          <div class="meta-pair"><span class="ml">Role</span><span class="mv">Game Designer, Producer & 3D Artist</span></div>
-          <div class="meta-pair"><span class="ml">Team</span><span class="mv">4</span></div>
-          <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity 2023</span></div>
-          <div class="meta-pair"><span class="ml">Duration</span><span class="mv">2 Weeks</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_role">Role</span><span class="mv" data-i18n="p5_role">Game Designer, Producer & 3D Artist</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_team">Team</span><span class="mv">4</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_engine">Engine</span><span class="mv">Unity 2023</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_duration">Duration</span><span class="mv" data-i18n="p5_duration">2 Weeks</span></div>
         </div>
         <div class="project-tags">
-          <span class="ptag">Level Design</span>
-          <span class="ptag">Stealth Mechanics</span>
-          <span class="ptag">Narrative Design</span>
-          <span class="ptag">3D Art</span>
+          <span class="ptag" data-i18n="tag_leveldesign">Level Design</span>
+          <span class="ptag" data-i18n="tag_stealth">Stealth Mechanics</span>
+          <span class="ptag" data-i18n="tag_narrative">Narrative Design</span>
+          <span class="ptag" data-i18n="tag_3dart">3D Art</span>
         </div>
         <div class="project-actions">
           <a href="https://jhorro.itch.io/operacao-bagre-noturno" target="_blank" rel="noopener">Play on itch.io →</a>
+          <a class="pd-trigger" onclick="openProjectModal('bagre')" data-i18n="link_details">View details →</a>
         </div>
       </div>
     </div>
@@ -266,8 +323,8 @@
 
     <!-- Additional Work: FoxTales Studios -->
     <div class="section-header" style="margin-top: 1.5rem;">
-      <h2 class="section-title">Additional Work — FoxTales Studios</h2>
-      <span class="section-aside">Student studio · PUC-SP · 2020–2023 · Game Designer & 3D Artist</span>
+      <h2 class="section-title" data-i18n="sec_additional">Additional Work — FoxTales Studios</h2>
+      <span class="section-aside" data-i18n="sec_additional_aside">Student studio · PUC-SP · 2020–2023 · Game Designer & 3D Artist</span>
     </div>
 
     <div class="additional-grid reveal">
@@ -278,7 +335,7 @@
         <div class="ai-body">
           <div class="ai-name">Coal</div>
           <div class="ai-genre">Metroidvania · Unity · 2020</div>
-          <div class="ai-role">Dark Fantasy World Design, interconnected levels, lore.</div>
+          <div class="ai-role" data-i18n="add_coal_role">Dark Fantasy World Design, interconnected levels, lore.</div>
           <a class="ai-link" href="https://metrodatiavania.itch.io/coal" aria-label="Play Coal" target="_blank" rel="noopener">Play on itch.io →</a>
         </div>
       </div>
@@ -289,7 +346,7 @@
         <div class="ai-body">
           <div class="ai-name">Maldição de Netuno</div>
           <div class="ai-genre">Action Rounds Shooter · Unity · 2022</div>
-          <div class="ai-role">Level layout, wave economy balancing, weapon tuning, 3D props.</div>
+          <div class="ai-role" data-i18n="add_netuno_role">Level layout, wave economy balancing, weapon tuning, 3D props.</div>
           <a class="ai-link" href="https://vinicim-no-poste.itch.io/maldicao-de-netuno" aria-label="Play Maldição de Netuno" target="_blank" rel="noopener">Play on itch.io →</a>
         </div>
       </div>
@@ -300,7 +357,7 @@
         <div class="ai-body">
           <div class="ai-name">Nárkissos</div>
           <div class="ai-genre">First-Person Horror · Unity · 2021</div>
-          <div class="ai-role">Level design, puzzle design, 3D scenario modeling and textures.</div>
+          <div class="ai-role" data-i18n="add_narkissos_role">Level design, puzzle design, 3D scenario modeling and textures.</div>
           <a class="ai-link" href="https://jhorro.itch.io/a22-osprimeiros" aria-label="Play Nárkissos" target="_blank" rel="noopener">Play on itch.io →</a>
         </div>
       </div>
@@ -321,7 +378,7 @@
         <div class="ai-body">
           <div class="ai-name">Riddles of the Sands</div>
           <div class="ai-genre">Open World Puzzle · Unity · 2021</div>
-          <div class="ai-role">Open world layout, puzzle progression system, documentation.</div>
+          <div class="ai-role" data-i18n="add_riddles_role">Open world layout, puzzle progression system, documentation.</div>
         </div>
       </div>
       <!--<div class="additional-item">
@@ -341,7 +398,7 @@
         <div class="ai-body">
           <div class="ai-name">Mega-Racing</div>
           <div class="ai-genre">Platform Racing · Unity · 2021</div>
-          <div class="ai-role">Track layouts, obstacles and power-ups, playtesting, 3D props.</div>
+          <div class="ai-role" data-i18n="add_mega_role">Track layouts, obstacles and power-ups, playtesting, 3D props.</div>
         </div>
       </div>
       <div class="additional-item">
@@ -351,7 +408,7 @@
         <div class="ai-body">
           <div class="ai-name">Technical Difficulties</div>
           <div class="ai-genre">Multiplayer Party Game · Unity · 2020</div>
-          <div class="ai-role">Core mechanics, social deduction balancing, loop refinement.</div>
+          <div class="ai-role" data-i18n="add_tech_role">Core mechanics, social deduction balancing, loop refinement.</div>
           <a class="ai-link" href="https://metrodatiavania.itch.io/technical-dificulties" aria-label="Play Technical Difficulties" target="_blank" rel="noopener">Play on itch.io →</a>
         </div>
       </div>
@@ -362,7 +419,7 @@
         <div class="ai-body">
           <div class="ai-name">Donkey Sonic</div>
           <div class="ai-genre">Retro Platformer · Unity · 2020</div>
-          <div class="ai-role">Level layouts, enemy placement, gameplay balancing.</div>
+          <div class="ai-role" data-i18n="add_sonic_role">Level layouts, enemy placement, gameplay balancing.</div>
         </div>
       </div>
     </div>
@@ -381,30 +438,30 @@
   <section id="cyberpunk-analytics">
     <br>
     <div class="section-header">
-      <h2 class="section-title">Case Study — Idle Cyberpunk City Clicker</h2>
-      <span class="section-aside">220 tracked players · pre-1.40 build · 4 milestone snapshots</span>
+      <h2 class="section-title" data-i18n="cs_cyber_title">Case Study — Idle Cyberpunk City Clicker</h2>
+      <span class="section-aside" data-i18n="cs_cyber_aside">220 tracked players · pre-1.40 build · 4 milestone snapshots</span>
     </div>
 
     <div class="cs-grid reveal-stagger">
       <div class="cs-card reveal">
-        <div class="cs-label">01 · Problem</div>
-        <h3>Flying blind after the first game</h3>
-        <p>Idle Kingdom Builder shipped with 800+ downloads and solid reviews, but no analytics pipeline — I had no idea where players dropped off or why. Cyberpunk City was growing steadily but had the same blind spot. I needed a system to see inside the player journey without breaking the budget.</p>
+        <div class="cs-label" data-i18n="cs_label_01">01 · Problem</div>
+        <h3 data-i18n="cs_cyber_01_h">Flying blind after the first game</h3>
+        <p data-i18n="cs_cyber_01_p">Idle Kingdom Builder shipped with 800+ downloads and solid reviews, but no analytics pipeline — I had no idea where players dropped off or why. Cyberpunk City was growing steadily but had the same blind spot. I needed a system to see inside the player journey without breaking the budget.</p>
       </div>
       <div class="cs-card reveal">
-        <div class="cs-label">02 · Process</div>
-        <h3>Milestone-based analytics on a budget</h3>
-        <p>Needed maximum data with minimum event sends (free Unity Analytics tier). Designed 4 snapshot events at 1K, 1M, 1B, and 1T credits — capturing buildings, upgrades, click/passive ratio, and time elapsed per player.</p>
+        <div class="cs-label" data-i18n="cs_label_02">02 · Process</div>
+        <h3 data-i18n="cs_cyber_02_h">Milestone-based analytics on a budget</h3>
+        <p data-i18n="cs_cyber_02_p">Needed maximum data with minimum event sends (free Unity Analytics tier). Designed 4 snapshot events at 1K, 1M, 1B, and 1T credits — capturing buildings, upgrades, click/passive ratio, and time elapsed per player.</p>
       </div>
       <div class="cs-card reveal">
-        <div class="cs-label">03 · Findings</div>
-        <h3>Economy validates, bugs surface</h3>
-        <p>Click-to-passive transition confirmed as designed. Found a tracking bug inflating clicker counts (variable naming mistake) and a timer persistence defect at higher milestones producing invalid data.</p>
+        <div class="cs-label" data-i18n="cs_label_03">03 · Findings</div>
+        <h3 data-i18n="cs_cyber_03_h">Economy validates, bugs surface</h3>
+        <p data-i18n="cs_cyber_03_p">Click-to-passive transition confirmed as designed. Found a tracking bug inflating clicker counts (variable naming mistake) and a timer persistence defect at higher milestones producing invalid data.</p>
       </div>
       <div class="cs-card reveal">
-        <div class="cs-label">04 · Outcome</div>
-        <h3>3 fixes shipped for v1.40</h3>
-        <p>Corrected analytics instrumentation, adjusted passive upgrade multiplier from 5× to 3.5×, and added session persistence. Clean data incoming for before/after comparison in the next analysis cycle.</p>
+        <div class="cs-label" data-i18n="cs_label_04">04 · Outcome</div>
+        <h3 data-i18n="cs_cyber_04_h">3 fixes shipped for v1.40</h3>
+        <p data-i18n="cs_cyber_04_p">Corrected analytics instrumentation, adjusted passive upgrade multiplier from 5× to 3.5×, and added session persistence. Clean data incoming for before/after comparison in the next analysis cycle.</p>
       </div>
     </div>
 
@@ -413,25 +470,25 @@
     <!-- Embedded Dashboard -->
     <div class="dashboard-embed reveal">
       <div class="dashboard-label">
-        <span>Interactive Analytics Dashboard · Built from real Unity Analytics data</span>
-        <a href="cyberpunk-dashboard.html" target="_blank" rel="noopener">Open full screen →</a>
+        <span data-i18n="dashboard_label">Interactive Analytics Dashboard · Built from real Unity Analytics data</span>
+        <a href="cyberpunk-dashboard.html" target="_blank" rel="noopener" data-i18n="dashboard_fullscreen">Open full screen →</a>
       </div>
       <iframe src="cyberpunk-dashboard.html" title="Idle Cyberpunk City Clicker analytics dashboard showing player milestone data and economy metrics"></iframe>
     </div>
 
     <!-- What I'd Change Next -->
     <div class="cs-retro reveal">
-      <div class="cs-retro-label">05 · What I'd change next</div>
-      <h3 class="cs-retro-title">Knowing what the data showed</h3>
+      <div class="cs-retro-label" data-i18n="cs_label_05">05 · What I'd change next</div>
+      <h3 class="cs-retro-title" data-i18n="cs_cyber_05_h">Knowing what the data showed</h3>
       <div class="cs-retro-body">
-        <p>
+        <p data-i18n="cs_cyber_05_p1">
           The 1M → 1B funnel is the steepest drop (73%). That wall coincides with passive
           upgrade costs scaling faster than player earning power — the multiplier jump
           from mid-tier to late-tier buildings is too aggressive. Next iteration targets
           a smoother mid-game curve: reducing the passive upgrade cost multiplier from
           5× to 3.5× (for passive) and 10× to 7× (for clicker).
         </p>
-        <p>
+        <p data-i18n="cs_cyber_05_p2">
           I'd also rethink upgrade discoverability — 52% of players had zero upgrades at
           1K, which means the UI isn't surfacing them early enough. A subtle prompt or
           visual cue when a player can afford their first upgrade could shift that ratio
@@ -453,37 +510,37 @@
   <section id="guardians-case-study">
     <br>
     <div class="section-header">
-      <h2 class="section-title">Case Study — Guardian's Falls</h2>
-      <span class="section-aside">Team of 6 · 12 months · Scope management · Graduation thesis</span>
+      <h2 class="section-title" data-i18n="cs_gf_title">Case Study — Guardian's Falls</h2>
+      <span class="section-aside" data-i18n="cs_gf_aside">Team of 6 · 12 months · Scope management · Graduation thesis</span>
     </div>
 
     <div class="cs-grid reveal-stagger">
       <div class="cs-card reveal">
-        <div class="cs-label">01 · Problem</div>
-        <h3>Ambition outpaced capacity</h3>
-        <p>Month-1 design doc envisioned 4+ zones, 8 parkour mechanics, combo combat, skill trees, and layered narrative. Team of 6, no dedicated programmer, 12-month academic deadline.</p>
+        <div class="cs-label" data-i18n="cs_label_01">01 · Problem</div>
+        <h3 data-i18n="cs_gf_01_h">Ambition outpaced capacity</h3>
+        <p data-i18n="cs_gf_01_p">Month-1 design doc envisioned 4+ zones, 8 parkour mechanics, combo combat, skill trees, and layered narrative. Team of 6, no dedicated programmer, 12-month academic deadline.</p>
       </div>
       <div class="cs-card reveal">
-        <div class="cs-label">02 · Process</div>
-        <h3>Prototype fast, cut decisively</h3>
-        <p>Built early prototypes with the full mechanic set. Tested which mechanics supported the core loop. Ran a structured beta with categorized feedback. Cut features that weren't pulling their weight.</p>
+        <div class="cs-label" data-i18n="cs_label_02">02 · Process</div>
+        <h3 data-i18n="cs_gf_02_h">Prototype fast, cut decisively</h3>
+        <p data-i18n="cs_gf_02_p">Built early prototypes with the full mechanic set. Tested which mechanics supported the core loop. Ran a structured beta with categorized feedback. Cut features that weren't pulling their weight.</p>
       </div>
       <div class="cs-card reveal">
-        <div class="cs-label">03 · Solution</div>
-        <h3>Ship what works, not everything</h3>
-        <p>Delivered a focused demo across 3 zones with streamlined movement (sprint, slide, dash), dash-strike combat, and environmental storytelling. Linear progression that teaches mechanics through level design.</p>
+        <div class="cs-label" data-i18n="cs_label_03_sol">03 · Solution</div>
+        <h3 data-i18n="cs_gf_03_h">Ship what works, not everything</h3>
+        <p data-i18n="cs_gf_03_p">Delivered a focused demo across 3 zones with streamlined movement (sprint, slide, dash), dash-strike combat, and environmental storytelling. Linear progression that teaches mechanics through level design.</p>
       </div>
       <div class="cs-card reveal">
-        <div class="cs-label">04 · Outcome</div>
-        <h3>Demo shipped + 3 design principles I still use</h3>
-        <p>Shipped a coherent vertical slice. Committee acknowledged design trade-offs. Every scope and iteration lesson here directly shaped how I built both idle games.</p>
+        <div class="cs-label" data-i18n="cs_label_04">04 · Outcome</div>
+        <h3 data-i18n="cs_gf_04_h">Demo shipped + 3 design principles I still use</h3>
+        <p data-i18n="cs_gf_04_p">Shipped a coherent vertical slice. Committee acknowledged design trade-offs. Every scope and iteration lesson here directly shaped how I built both idle games.</p>
       </div>
     </div>
 
     <!-- Vision vs. Ship Table -->
-    <div class="gf-label">Scope Management</div>
-    <h3 class="gf-subtitle">What We Envisioned vs. What Shipped</h3>
-    <p class="gf-desc">
+    <div class="gf-label" data-i18n="gf_scope_label">Scope Management</div>
+    <h3 class="gf-subtitle" data-i18n="gf_scope_subtitle">What We Envisioned vs. What Shipped</h3>
+    <p class="gf-desc" data-i18n="gf_scope_desc">
       The original doc was ambitious by design — dream big, then scope down to what the team
       can ship well. I handled design, C# programming, and production. No dedicated programmer.
     </p>
@@ -491,48 +548,48 @@
     <table class="scope-table reveal">
       <thead>
         <tr>
-          <th style="width:16%">System</th>
-          <th style="width:30%">Month 1 Vision</th>
-          <th style="width:36%">What Shipped</th>
-          <th style="width:18%">Status</th>
+          <th style="width:16%" data-i18n="th_system">System</th>
+          <th style="width:30%" data-i18n="th_vision">Month 1 Vision</th>
+          <th style="width:36%" data-i18n="th_shipped">What Shipped</th>
+          <th style="width:18%" data-i18n="th_status">Status</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="feature">Movement</td>
-          <td class="vision">8 mechanics: vault, slide, wall jump, grab/climb, swing, roll, sprint, free jump. Stamina system gating usage.</td>
-          <td class="final">Sprint, slide, dash. Stamina cut entirely — removing the resource gate made movement feel fast and expressive. Vault, wall jump, grab/climb prototyped but cut for clarity.</td>
-          <td><span class="badge badge-evolved">Evolved</span></td>
+          <td class="feature" data-i18n="scope_movement">Movement</td>
+          <td class="vision" data-i18n="scope_movement_v">8 mechanics: vault, slide, wall jump, grab/climb, swing, roll, sprint, free jump. Stamina system gating usage.</td>
+          <td class="final" data-i18n="scope_movement_s">Sprint, slide, dash. Stamina cut entirely — removing the resource gate made movement feel fast and expressive. Vault, wall jump, grab/climb prototyped but cut for clarity.</td>
+          <td><span class="badge badge-evolved" data-i18n="badge_evolved">Evolved</span></td>
         </tr>
         <tr>
-          <td class="feature">Combat</td>
-          <td class="vision">3-hit combo tree, slide attack, bounce attack, power punches, sprint attack</td>
-          <td class="final">Dash-into-enemy strike. Combos made players stop and chain punches; the dash-strike kept them flowing. Emerged from prototyping, not the original doc.</td>
-          <td><span class="badge badge-simplified">Simplified</span></td>
+          <td class="feature" data-i18n="scope_combat">Combat</td>
+          <td class="vision" data-i18n="scope_combat_v">3-hit combo tree, slide attack, bounce attack, power punches, sprint attack</td>
+          <td class="final" data-i18n="scope_combat_s">Dash-into-enemy strike. Combos made players stop and chain punches; the dash-strike kept them flowing. Emerged from prototyping, not the original doc.</td>
+          <td><span class="badge badge-simplified" data-i18n="badge_simplified">Simplified</span></td>
         </tr>
         <tr>
-          <td class="feature">Zones</td>
-          <td class="vision">4+ zones (Moonlit Meadow, Bond Fracture, Jade Jungle, Innerlake) + Hub</td>
-          <td class="final">3 zones shipped. Hub removed. Linear progression instead of branching.</td>
-          <td><span class="badge badge-simplified">Simplified</span></td>
+          <td class="feature" data-i18n="scope_zones">Zones</td>
+          <td class="vision" data-i18n="scope_zones_v">4+ zones (Moonlit Meadow, Bond Fracture, Jade Jungle, Innerlake) + Hub</td>
+          <td class="final" data-i18n="scope_zones_s">3 zones shipped. Hub removed. Linear progression instead of branching.</td>
+          <td><span class="badge badge-simplified" data-i18n="badge_simplified">Simplified</span></td>
         </tr>
         <tr>
-          <td class="feature">Progression</td>
-          <td class="vision">Skill tree, NPC quests, HUB, backtracking, left/right difficulty choice</td>
-          <td class="final">Linear progression through 3 zones. No skill tree or hub. Mechanical mastery is the progression.</td>
-          <td><span class="badge badge-cut">Cut</span></td>
+          <td class="feature" data-i18n="scope_progression">Progression</td>
+          <td class="vision" data-i18n="scope_progression_v">Skill tree, NPC quests, HUB, backtracking, left/right difficulty choice</td>
+          <td class="final" data-i18n="scope_progression_s">Linear progression through 3 zones. No skill tree or hub. Mechanical mastery is the progression.</td>
+          <td><span class="badge badge-cut" data-i18n="badge_cut">Cut</span></td>
         </tr>
         <tr>
-          <td class="feature">Narrative</td>
-          <td class="vision">4 cardinal guardians, trauma metaphor, intro cutscene, NPC dialogue, symbolic enemy design</td>
-          <td class="final">Environmental storytelling carries the narrative. No cutscene, no NPC dialogue. World-building embedded in level design.</td>
-          <td><span class="badge badge-evolved">Evolved</span></td>
+          <td class="feature" data-i18n="scope_narrative">Narrative</td>
+          <td class="vision" data-i18n="scope_narrative_v">4 cardinal guardians, trauma metaphor, intro cutscene, NPC dialogue, symbolic enemy design</td>
+          <td class="final" data-i18n="scope_narrative_s">Environmental storytelling carries the narrative. No cutscene, no NPC dialogue. World-building embedded in level design.</td>
+          <td><span class="badge badge-evolved" data-i18n="badge_evolved">Evolved</span></td>
         </tr>
         <tr>
-          <td class="feature">Enemies</td>
-          <td class="vision">3 types per zone + mini-boss + final boss, thematically symbolic designs</td>
-          <td class="final">Generic enemy types. Focus shifted to making combat feel responsive rather than narratively themed.</td>
-          <td><span class="badge badge-simplified">Simplified</span></td>
+          <td class="feature" data-i18n="scope_enemies">Enemies</td>
+          <td class="vision" data-i18n="scope_enemies_v">3 types per zone + mini-boss + final boss, thematically symbolic designs</td>
+          <td class="final" data-i18n="scope_enemies_s">Generic enemy types. Focus shifted to making combat feel responsive rather than narratively themed.</td>
+          <td><span class="badge badge-simplified" data-i18n="badge_simplified">Simplified</span></td>
         </tr>
       </tbody>
     </table>
@@ -545,8 +602,8 @@
     </div>-->
 
     <!-- Mechanic Spotlight: Dash-Strike -->
-    <div class="gf-label">Design Process</div>
-    <h3 class="gf-subtitle">Mechanic Spotlight — Dash-Strike Combat</h3>
+    <div class="gf-label" data-i18n="gf_process_label">Design Process</div>
+    <h3 class="gf-subtitle" data-i18n="gf_mechanic_subtitle">Mechanic Spotlight — Dash-Strike Combat</h3>
 
     <div class="mechanic-spotlight reveal">
       <div class="ms-visual">
@@ -557,37 +614,37 @@
           <span>Core · Combat</span>
           <span class="badge badge-evolved">Evolved</span>
         </div>
-        <h4>Combat is movement</h4>
-        <p>
+        <h4 data-i18n="ms_h">Combat is movement</h4>
+        <p data-i18n="ms_p">
           Instead of standing and executing combos, the player dashes into enemies to attack.
           The original doc specified a 3-hit combo tree and special attacks — early prototypes had
           these working, but they pulled the feel in the opposite direction of the movement system.
           The combos made players stop; the dash-strike kept them flowing.
         </p>
         <div class="ms-iter">
-          <strong>Iteration:</strong> This wasn't in the original doc — it emerged from prototyping.
+          <strong data-i18n="ms_iter_label">Iteration:</strong> <span data-i18n="ms_iter_text">This wasn't in the original doc — it emerged from prototyping.
           Once we saw how the dash felt during traversal, applying that momentum to combat was a
-          natural evolution. The combo system was cut, but the core idea was stronger than the original plan.
+          natural evolution. The combo system was cut, but the core idea was stronger than the original plan.</span>
         </div>
       </div>
     </div>
 
     <!-- Takeaways -->
-    <div class="gf-label">Reflection</div>
-    <h3 class="gf-subtitle">What I Carried Forward</h3>
+    <div class="gf-label" data-i18n="gf_reflection_label">Reflection</div>
+    <h3 class="gf-subtitle" data-i18n="gf_reflection_subtitle">What I Carried Forward</h3>
 
     <div class="takeaway-grid reveal-stagger">
       <div class="takeaway-card reveal">
-        <h4>Scope is a design skill</h4>
-        <p>The original doc had 8 movement mechanics. The shipped game has 3 — and they feel better. This mindset defined how I built both idle games: start with the minimum viable loop, not the maximum vision.</p>
+        <h4 data-i18n="tk1_h">Scope is a design skill</h4>
+        <p data-i18n="tk1_p">The original doc had 8 movement mechanics. The shipped game has 3 — and they feel better. This mindset defined how I built both idle games: start with the minimum viable loop, not the maximum vision.</p>
       </div>
       <div class="takeaway-card reveal">
-        <h4>Test before you're ready</h4>
-        <p>Even imperfect testing with non-expert players surfaces problems you can't see from the inside. Beta testers caught level navigation issues and control pain points we'd gone blind to.</p>
+        <h4 data-i18n="tk2_h">Test before you're ready</h4>
+        <p data-i18n="tk2_p">Even imperfect testing with non-expert players surfaces problems you can't see from the inside. Beta testers caught level navigation issues and control pain points we'd gone blind to.</p>
       </div>
       <div class="takeaway-card reveal">
-        <h4>Mechanics must talk to each other</h4>
-        <p>The combo system fought the movement system. The dash-strike emerged because we prototyped both and noticed the conflict. Design documents are hypotheses; prototypes are experiments.</p>
+        <h4 data-i18n="tk3_h">Mechanics must talk to each other</h4>
+        <p data-i18n="tk3_p">The combo system fought the movement system. The dash-strike emerged because we prototyped both and noticed the conflict. Design documents are hypotheses; prototypes are experiments.</p>
       </div>
     </div>
   </section>
@@ -596,75 +653,83 @@
   <section id="documents">
     <br>
     <div class="section-header">
-      <h2 class="section-title">Design Documents</h2>
-      <span class="section-aside">GDDs, QDDs, LDDs, and design tests — how I think on paper</span>
+      <h2 class="section-title" data-i18n="sec_documents">Design Documents</h2>
+      <span class="section-aside" data-i18n="sec_documents_aside">GDDs, QDDs, LDDs, and design tests — how I think on paper</span>
     </div>
 
     <div class="doc-grid reveal">
       <div class="doc-item">
+        <div class="doc-preview doc-prev-qdd"><span class="doc-preview-type">QDD</span><div class="doc-preview-lines"><span></span><span></span><span></span><span></span></div></div>
         <span class="doc-type doc-qdd">QDD</span>
         <div class="doc-body">
-          <div class="doc-name">Secrets Submerged — Genshin Impact Quest</div>
-          <div class="doc-desc">Fan-made world quest for Fontaine. Full quest flow, NPC interactions, item design, progression steps, and reward balancing. Demonstrates narrative design and quest structure thinking.</div>
-          <a href="docs/qdd-genshin-secrets-submerged_jhonnatanbarbosa.pdf" target="_blank" rel="noopener">View PDF →</a>
+          <div class="doc-name" data-i18n="doc1_name">Secrets Submerged — Genshin Impact Quest</div>
+          <div class="doc-desc" data-i18n="doc1_desc">Fan-made world quest for Fontaine. Full quest flow, NPC interactions, item design, progression steps, and reward balancing. Demonstrates narrative design and quest structure thinking.</div>
+          <a href="docs/qdd-genshin-secrets-submerged_jhonnatanbarbosa.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
+        <div class="doc-preview doc-prev-ldd"><span class="doc-preview-type">LDD</span><div class="doc-preview-lines"><span></span><span></span><span></span><span></span></div></div>
         <span class="doc-type doc-ldd">LDD</span>
         <div class="doc-body">
-          <div class="doc-name">Fire Dungeon — Level Design Document</div>
-          <div class="doc-desc">Top-down dungeon level with hand-drawn room maps, enemy placement, boss encounters, objective flow, and challenge pacing.</div>
-          <a href="docs/LDD_FireDungeon_JhonnatanBarbosa.pdf" target="_blank" rel="noopener">View PDF →</a>
+          <div class="doc-name" data-i18n="doc2_name">Fire Dungeon — Level Design Document</div>
+          <div class="doc-desc" data-i18n="doc2_desc">Top-down dungeon level with hand-drawn room maps, enemy placement, boss encounters, objective flow, and challenge pacing.</div>
+          <a href="docs/LDD_FireDungeon_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
+        <div class="doc-preview"><span class="doc-preview-type">GDD</span><div class="doc-preview-lines"><span></span><span></span><span></span><span></span></div></div>
         <span class="doc-type">GDD</span>
         <div class="doc-body">
-          <div class="doc-name">Idle Cyberpunk City Clicker — Full GDD</div>
-          <div class="doc-desc">Complete design document: core loop, economy system, progression tiers, monetization model, world-building lore, and analytics plan.</div>
+          <div class="doc-name" data-i18n="doc3_name">Idle Cyberpunk City Clicker — Full GDD</div>
+          <div class="doc-desc" data-i18n="doc3_desc">Complete design document: core loop, economy system, progression tiers, monetization model, world-building lore, and analytics plan.</div>
           <!-- TODO: replace with actual filename -->
-          <a href="docs/GDD_IdleCyberpunkCityClicker_JhonnatanBarbosa.pdf" target="_blank" rel="noopener">View PDF →</a>
+          <a href="docs/GDD_IdleCyberpunkCityClicker_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
+        <div class="doc-preview"><span class="doc-preview-type">GDD</span><div class="doc-preview-lines"><span></span><span></span><span></span><span></span></div></div>
         <span class="doc-type">GDD</span>
         <div class="doc-body">
-          <div class="doc-name">Idle Kingdom Builder — Full GDD</div>
-          <div class="doc-desc">Economy system design, resource faucets/sinks, progression curves, ascension system, UI flow, and monetization strategy.</div>
+          <div class="doc-name" data-i18n="doc4_name">Idle Kingdom Builder — Full GDD</div>
+          <div class="doc-desc" data-i18n="doc4_desc">Economy system design, resource faucets/sinks, progression curves, ascension system, UI flow, and monetization strategy.</div>
           <!-- TODO: replace with actual filename -->
-          <a href="docs/GDD_IdleKingdomBuilder_JhonnatanBarbosa.pdf" target="_blank" rel="noopener">View PDF →</a>
+          <a href="docs/GDD_IdleKingdomBuilder_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
+        <div class="doc-preview"><span class="doc-preview-type">GDD</span><div class="doc-preview-lines"><span></span><span></span><span></span><span></span></div></div>
         <span class="doc-type">GDD</span>
         <div class="doc-body">
-          <div class="doc-name">Operação Bagre Noturno — Full GDD</div>
-          <div class="doc-desc">Stealth-action design: level layout, mechanics, narrative structure, scoring system, and world-building for an alternate-reality Brazil.</div>
-          <a href="docs/GDD_bagrenoturno.pdf" target="_blank" rel="noopener">View PDF →</a>
+          <div class="doc-name" data-i18n="doc5_name">Operação Bagre Noturno — Full GDD</div>
+          <div class="doc-desc" data-i18n="doc5_desc">Stealth-action design: level layout, mechanics, narrative structure, scoring system, and world-building for an alternate-reality Brazil.</div>
+          <a href="docs/GDD_bagrenoturno.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
+        <div class="doc-preview doc-prev-test"><span class="doc-preview-type">TEST</span><div class="doc-preview-lines"><span></span><span></span><span></span><span></span></div></div>
         <span class="doc-type doc-test">TEST</span>
         <div class="doc-body">
-          <div class="doc-name">Quantum Cafe — Interview Design Test</div>
-          <div class="doc-desc">Management sim GDD created for a studio interview. Budget breakdown, milestone timeline, career progression system, and economy design within scope constraints.</div>
-          <a href="docs/gdd_test_quantumcafe.pdf" target="_blank" rel="noopener">View PDF →</a>
+          <div class="doc-name" data-i18n="doc6_name">Quantum Cafe — Interview Design Test</div>
+          <div class="doc-desc" data-i18n="doc6_desc">Management sim GDD created for a studio interview. Budget breakdown, milestone timeline, career progression system, and economy design within scope constraints.</div>
+          <a href="docs/gdd_test_quantumcafe.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
+        <div class="doc-preview doc-prev-test"><span class="doc-preview-type">TEST</span><div class="doc-preview-lines"><span></span><span></span><span></span><span></span></div></div>
         <span class="doc-type doc-test">TEST</span>
         <div class="doc-body">
-          <div class="doc-name">Jump Mechanic Level — Design Test GDD</div>
-          <div class="doc-desc">Level design test: designed a new mechanic pushing the core jump to its limit, with progressive room-by-room difficulty and camera constraint solutions.</div>
-          <a href="docs/gdd_test_levalmechanic.pdf" target="_blank" rel="noopener">View PDF →</a>
+          <div class="doc-name" data-i18n="doc7_name">Jump Mechanic Level — Design Test GDD</div>
+          <div class="doc-desc" data-i18n="doc7_desc">Level design test: designed a new mechanic pushing the core jump to its limit, with progressive room-by-room difficulty and camera constraint solutions.</div>
+          <a href="docs/gdd_test_levalmechanic.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
         </div>
       </div>
       <div class="doc-item">
+        <div class="doc-preview doc-prev-test"><span class="doc-preview-type">TEST</span><div class="doc-preview-lines"><span></span><span></span><span></span><span></span></div></div>
         <span class="doc-type doc-test">TEST</span>
         <div class="doc-body">
-          <div class="doc-name">Jelly Morph: Shifty Speedway — Design Test GDD</div>
-          <div class="doc-desc">Hypercasual mobile game design: core mechanics, competitive analysis, monetization strategy (ads/IAP), and UI wireframes.</div>
-          <a href="docs/gdd_test_jellymorph.pdf" target="_blank" rel="noopener">View PDF →</a>
+          <div class="doc-name" data-i18n="doc8_name">Jelly Morph: Shifty Speedway — Design Test GDD</div>
+          <div class="doc-desc" data-i18n="doc8_desc">Hypercasual mobile game design: core mechanics, competitive analysis, monetization strategy (ads/IAP), and UI wireframes.</div>
+          <a href="docs/gdd_test_jellymorph.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
         </div>
       </div>
     </div>
@@ -683,7 +748,7 @@
   <section id="about">
     <br>
     <div class="section-header">
-      <h2 class="section-title">About</h2>
+      <h2 class="section-title" data-i18n="sec_about">About</h2>
     </div>
 
     <div class="about-layout reveal">
@@ -692,8 +757,8 @@
       </div>
       <div class="about-body">
         <div class="about-block">
-          <div class="about-label">Background</div>
-          <p>
+          <div class="about-label" data-i18n="about_bg_label">Background</div>
+          <p data-i18n="about_bg_p">
             Game designer with a statistics background and a build-first, iterate-always approach.
             I bring a structured, evidence-based methodology to whatever design problem I'm
             facing — whether that's economy tuning, mechanics, levels, or narrative.
@@ -703,16 +768,16 @@
         </div>
 
         <div class="design-philosophy">
-          <strong>Design philosophy</strong>
-          I design systems players feel they discovered on their own — then use data to make
+          <strong data-i18n="about_phil_label">Design philosophy</strong>
+          <span data-i18n="about_phil_p">I design systems players feel they discovered on their own — then use data to make
           sure they actually can. When players feel lost, that's not a badge of honor, it's
           data showing where the invisible guidance failed. Every design is a hypothesis.
-          Build, ship, measure, improve.
+          Build, ship, measure, improve.</span>
         </div>
 
         <div class="about-block">
-          <div class="about-label">Influences</div>
-          <p>
+          <div class="about-label" data-i18n="about_inf_label">Influences</div>
+          <p data-i18n="about_inf_p">
             That approach comes from studying how Valve teaches Portal's mechanics through play
             and guides Half-Life players with lighting and architecture instead of waypoints —
             invisible design validated by obsessive playtesting. Kojima's influence shows up in
@@ -722,8 +787,8 @@
         </div>
 
         <div class="about-block">
-          <div class="about-label">Teaching</div>
-          <p>
+          <div class="about-label" data-i18n="about_teach_label">Teaching</div>
+          <p data-i18n="about_teach_p">
             Outside of shipping games, I teach game development and design to kids and teens —
             300+ students across three schools, adapting content for ages 8 through 17. It's the
             best training I've found for studio communication: if a 10-year-old can follow your
@@ -735,8 +800,8 @@
         </div>
 
         <div class="about-block">
-          <div class="about-label">Design range</div>
-          <p>
+          <div class="about-label" data-i18n="about_range_label">Design range</div>
+          <p data-i18n="about_range_p">
             My core is systems and economy design, but I actively work across disciplines.
             The Genshin Impact quest doc demonstrates narrative and quest structure thinking,
             Bagre Noturno blends stealth mechanics with alternate-reality storytelling, and
@@ -745,14 +810,14 @@
         </div>
 
         <div class="looking-for">
-          <strong>Looking for</strong>
-          A systems or gameplay design role where I can combine hands-on design work with
+          <strong data-i18n="about_looking_label">Looking for</strong>
+          <span data-i18n="about_looking_p">A systems or gameplay design role where I can combine hands-on design work with
           data analysis to shape player behavior — ideally at a mid-size to AAA studio
-          working on PC/console titles. Open to remote or relocation.
+          working on PC/console titles. Open to remote or relocation.</span>
         </div>
 
         <div class="about-block">
-          <div class="about-label">Tools</div>
+          <div class="about-label" data-i18n="about_tools_label">Tools</div>
           <div class="tools-row">
             <dl class="tr-item"><dt>Engines&nbsp;</dt><dd>Unity 6 (Expert), UE5 (Blueprints/C++), Godot</dd></dl>
             <dl class="tr-item"><dt>Design&nbsp;</dt><dd>GDDs, economy modeling, level design, quest design, playtesting</dd></dl>
@@ -775,24 +840,1008 @@
     </div>-->
   </sentact">
     <div class="section-header">
-      <h2 class="section-title">Contact</h2>
-      <span class="section-aside">Currently seeking a systems or gameplay design role · Open to remote or relocation</span>
+      <h2 class="section-title" data-i18n="sec_contact">Contact</h2>
+      <span class="section-aside" data-i18n="sec_contact_aside">Currently seeking a systems or gameplay design role · Open to remote or relocation</span>
     </div>
     <div class="contact-row reveal">
       <a href="/cdn-cgi/l/email-protection#016b696e62636073636e726041666c60686d2f626e6c" class="contact-item"><span class="ci-label">Email</span> <span class="__cf_email__" data-cfemail="f3999b9c90919281919c8092b3949e929a9fdd909c9e">[email&#160;protected]</span></a>
       <a href="https://linkedin.com/in/jhonnatanbarbosa" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">LinkedIn</span> /in/jhonnatanbarbosa</a>
       <a href="https://jhorro.itch.io" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">itch.io</span> jhorro.itch.io</a>
       <a href="https://www.jhorro.com" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">Portfolio</span> jhorro.com</a>
-      <a href="docs/CV_Jhonnatan_Barbosa_Game_Designer.pdf" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">Resume</span> Download PDF</a>
+      <a href="docs/CV_Jhonnatan_Barbosa_Game_Designer.pdf" target="_blank" rel="noopener" class="contact-item"><span class="ci-label" data-i18n="contact_resume">Resume</span> <span data-i18n="contact_download">Download PDF</span></a>
     </div>
   </section>
 
 </main>
 
+  <!-- ══════════════════════════════════════════════════════
+       PROJECT DETAIL MODALS
+       ══════════════════════════════════════════════════════ -->
+
+  <!-- Modal: Cyberpunk -->
+  <div class="pd-overlay" id="pd-cyberpunk" onclick="if(event.target===this)closeProjectModal()">
+    <div class="pd-modal">
+      <div class="pd-close"><button onclick="closeProjectModal()" aria-label="Close">✕</button></div>
+      <div class="pd-hero">
+        <div class="pd-hero-top">
+          <h2 data-i18n="pd1_title">Idle Cyberpunk City Clicker</h2>
+          <span class="pd-badge-pill" data-i18n="p1_badge">Shipped · 2025</span>
+          <span class="pd-badge-pill pd-badge-cyan" data-i18n="pd_solo">Solo Project</span>
+        </div>
+        <p class="pd-tagline" data-i18n="pd1_tagline">An idle clicker set in a dystopian cyberpunk metropolis. Players earn credits to expand their city through passive income, active clicking, and deep progression tiers — all instrumented with real analytics.</p>
+      </div>
+      <div class="pd-gallery">
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/01optimizedVideo-Cyberpunk.mp4" type="video/mp4"></video></div>
+        <div class="pd-gallery-item" style="background:linear-gradient(135deg,#1a1a2e,#16213e);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd1_ss1">Screenshot: Economy panel</span></div>
+        <div class="pd-gallery-item" style="background:linear-gradient(135deg,#1a2a1a,#162e16);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd1_ss2">Screenshot: Building tiers</span></div>
+      </div>
+      <div class="pd-body">
+        <div class="pd-metrics">
+          <div class="pd-metric"><div class="val">600+</div><div class="lbl" data-i18n="pd1_m1">Organic Downloads</div></div>
+          <div class="pd-metric"><div class="val">4.2/5</div><div class="lbl" data-i18n="pd1_m2">Play Store Rating</div></div>
+          <div class="pd-metric"><div class="val">~6 min</div><div class="lbl" data-i18n="pd1_m3">Median Session</div></div>
+          <div class="pd-metric"><div class="val">220</div><div class="lbl" data-i18n="pd1_m4">Tracked Players</div></div>
+        </div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_contribution">My Contribution</div><p data-i18n="pd1_contrib">Solo designed and developed from concept to launch. Built on lessons from Idle Kingdom Builder — expanded the core loop with deep progression tiers and a reward-ad/IAP monetization layer. Instrumented Unity Analytics to snapshot player state at 4 milestones, identified economy bugs and a timer persistence defect, and shipped 3 targeted fixes in v1.70.</p></div>
+        <div class="pd-divider"></div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_decisions">Key Design Decisions</div>
+          <div class="pd-details-grid">
+            <div class="pd-detail-card"><h4 data-i18n="pd1_d1h">4-Pillar Economy</h4><p data-i18n="pd1_d1p">Passive, Clicker, Offline, and Ascension buildings offer distinct progression paths — each mechanically nudges different playstyles.</p></div>
+            <div class="pd-detail-card"><h4 data-i18n="pd1_d2h">Budget Analytics</h4><p data-i18n="pd1_d2p">Designed 4 snapshot events to maximize data under Unity Analytics' free tier. Captured buildings, upgrades, click/passive ratio, and time at each milestone.</p></div>
+            <div class="pd-detail-card"><h4 data-i18n="pd1_d3h">Price Asymmetry</h4><p data-i18n="pd1_d3p">Clicker buildings scale at 1.65× vs passive at 1.25× — this mechanically drives the click-to-passive transition without explicit tutorialization.</p></div>
+            <div class="pd-detail-card"><h4 data-i18n="pd1_d4h">Non-Intrusive Monetization</h4><p data-i18n="pd1_d4p">Reward ads are opt-in only; banner ads stay peripheral. Players praised: "non-intrusive ads, a lot of rewards and a clean UI."</p></div>
+          </div>
+        </div>
+        <div class="pd-divider"></div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_retro">What I'd Do Differently</div><p data-i18n="pd1_retro">The 1M → 1B funnel drops 73%. Mid-tier passive upgrade costs scale too aggressively — reducing the multiplier from 5× to 3.5× is the next iteration target. 52% of players had zero upgrades at 1K, meaning the UI isn't surfacing them early enough.</p></div>
+        <div class="pd-divider"></div>
+        <div class="pd-tags">
+          <span class="pd-tag" data-i18n="tag_economy">Economy Design</span><span class="pd-tag" data-i18n="tag_progression">Progression Tuning</span><span class="pd-tag">Unity Analytics</span><span class="pd-tag">AdMob / IAP</span><span class="pd-tag" data-i18n="tag_datadriven">Data-Driven Iteration</span><span class="pd-tag" data-i18n="pdtag_idle">Idle Mechanics</span><span class="pd-tag" data-i18n="pdtag_prestige">Prestige Systems</span><span class="pd-tag" data-i18n="pdtag_mux">Mobile UX</span>
+        </div>
+        <div class="pd-actions">
+          <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener" class="pd-primary" data-i18n="p1_link_play">Play on Google Play</a>
+          <a href="#cyberpunk-analytics" onclick="closeProjectModal()" class="pd-secondary" data-i18n="p1_link_case">Analytics Case Study →</a>
+          <a href="docs/GDD_IdleCyberpunkCityClicker_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" class="pd-secondary" data-i18n="pd_gdd_link">Full GDD (PDF) →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Kingdom Builder -->
+  <div class="pd-overlay" id="pd-kingdom" onclick="if(event.target===this)closeProjectModal()">
+    <div class="pd-modal">
+      <div class="pd-close"><button onclick="closeProjectModal()" aria-label="Close">✕</button></div>
+      <div class="pd-hero">
+        <div class="pd-hero-top">
+          <h2 data-i18n="pd2_title">Idle Kingdom Builder</h2>
+          <span class="pd-badge-pill" data-i18n="p2_badge">Shipped · 2024</span>
+          <span class="pd-badge-pill pd-badge-cyan" data-i18n="pd_solo">Solo Project</span>
+        </div>
+        <p class="pd-tagline" data-i18n="pd2_tagline">A medieval kingdom-building idle game. Players click to earn gold and build houses, farms, markets, and more — each generating passive income to expand the kingdom further.</p>
+      </div>
+      <div class="pd-gallery">
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/02optimizedVideo-IdleKingdom.mp4" type="video/mp4"></video></div>
+        <div class="pd-gallery-item" style="background:linear-gradient(135deg,#2a2a1a,#2e2616);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd2_ss1">Screenshot: Kingdom view</span></div>
+        <div class="pd-gallery-item" style="background:linear-gradient(135deg,#1a2a2a,#162e2e);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd2_ss2">Screenshot: Upgrade panel</span></div>
+      </div>
+      <div class="pd-body">
+        <div class="pd-metrics">
+          <div class="pd-metric"><div class="val">800+</div><div class="lbl" data-i18n="pd1_m1">Organic Downloads</div></div>
+          <div class="pd-metric"><div class="val">30%</div><div class="lbl" data-i18n="pd2_m2">D30 Retention</div></div>
+          <div class="pd-metric"><div class="val">3–6×</div><div class="lbl" data-i18n="pd2_m3">Above Casual Avg</div></div>
+          <div class="pd-metric"><div class="val">10</div><div class="lbl" data-i18n="pd2_m4">Building Types</div></div>
+        </div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_contribution">My Contribution</div><p data-i18n="pd2_contrib">Designed the core loop and economy system from scratch, taking inspiration from Cookie Clicker's formulas and tuning them toward a slower, more deliberate pace. 10 building types (House through Bank) with upgrade paths and a Royal Ascension prestige system. Implemented ad monetization with reward videos and banners.</p></div>
+        <div class="pd-divider"></div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_decisions">Key Design Decisions</div>
+          <div class="pd-details-grid">
+            <div class="pd-detail-card"><h4 data-i18n="pd2_d1h">Cookie Clicker as Foundation</h4><p data-i18n="pd2_d1p">Studied the exponential curves that make Cookie Clicker addictive, then slowed the pace — medieval theme calls for deliberate growth, not frantic clicking.</p></div>
+            <div class="pd-detail-card"><h4 data-i18n="pd2_d2h">Royal Ascension</h4><p data-i18n="pd2_d2p">Prestige system resets progress for permanent bonuses. Gives long-term players a reason to restart and re-engage with the economy from a stronger position.</p></div>
+            <div class="pd-detail-card"><h4 data-i18n="pd2_d3h">75 Achievements</h4><p data-i18n="pd2_d3p">Tiered achievement system (Common → Legendary) across buildings, upgrades, clicking, and GPS milestones. Drives micro-goals between major progression beats.</p></div>
+            <div class="pd-detail-card"><h4 data-i18n="pd2_d4h">No Analytics — The Gap</h4><p data-i18n="pd2_d4p">Shipped without a data pipeline. Couldn't identify where players dropped off. This gap directly motivated the analytics system built for Cyberpunk City.</p></div>
+          </div>
+        </div>
+        <div class="pd-divider"></div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_retro">What I'd Do Differently</div><p data-i18n="pd2_retro">Add analytics from day one — even basic milestone events would have revealed progression bottlenecks early. The economy feels solid in the first hour but the mid-game pacing was never validated with real data. That lesson shaped everything about how I approached Cyberpunk City.</p></div>
+        <div class="pd-divider"></div>
+        <div class="pd-tags">
+          <span class="pd-tag" data-i18n="tag_economy">Economy Design</span><span class="pd-tag" data-i18n="tag_curves">Progression Curves</span><span class="pd-tag" data-i18n="tag_monetization">Monetization</span><span class="pd-tag" data-i18n="tag_firstship">First Ship</span><span class="pd-tag" data-i18n="pdtag_prestige">Prestige Systems</span><span class="pd-tag" data-i18n="pdtag_idle">Idle Mechanics</span>
+        </div>
+        <div class="pd-actions">
+          <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener" class="pd-primary" data-i18n="p2_link_play">Play on Google Play</a>
+          <a href="docs/GDD_IdleKingdomBuilder_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" class="pd-secondary" data-i18n="pd_gdd_link">Full GDD (PDF) →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Guardian's Falls -->
+  <div class="pd-overlay" id="pd-guardians" onclick="if(event.target===this)closeProjectModal()">
+    <div class="pd-modal">
+      <div class="pd-close"><button onclick="closeProjectModal()" aria-label="Close">✕</button></div>
+      <div class="pd-hero">
+        <div class="pd-hero-top">
+          <h2 data-i18n="pd3_title">Guardian's Falls — Wounds</h2>
+          <span class="pd-badge-pill" data-i18n="p3_badge">Graduation · 2023</span>
+          <span class="pd-badge-pill pd-badge-amber" data-i18n="pd_team6">Team of 6</span>
+        </div>
+        <p class="pd-tagline" data-i18n="pd3_tagline">A 2.5D Metroidvania with parkour traversal and dash-strike combat. Built as a graduation thesis at PUC-SP — the project that taught me scope is a design skill.</p>
+      </div>
+      <div class="pd-gallery">
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/010optimizedVideo-Guardians1.mp4" type="video/mp4"></video></div>
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/03optimizedVideo-Guardians2.mp4" type="video/mp4"></video><div class="pd-gallery-caption" data-i18n="pd3_cap1">Dash-strike combat</div></div>
+        <div class="pd-gallery-item" style="background:linear-gradient(135deg,#1a1a2e,#1a2e1a);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd3_ss1">Screenshot: Zone traversal</span></div>
+      </div>
+      <div class="pd-body">
+        <div class="pd-metrics">
+          <div class="pd-metric"><div class="val">6</div><div class="lbl" data-i18n="pd3_m1">Team Members</div></div>
+          <div class="pd-metric"><div class="val">12 mo</div><div class="lbl" data-i18n="pd3_m2">Development Time</div></div>
+          <div class="pd-metric"><div class="val">3</div><div class="lbl" data-i18n="pd3_m3">Zones Shipped</div></div>
+          <div class="pd-metric"><div class="val">8→3</div><div class="lbl" data-i18n="pd3_m4">Mechanics Scoped</div></div>
+        </div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_contribution">My Contribution</div><p data-i18n="pd3_contrib">Started as game designer, shifted to developer/producer. Programmed core systems and parkour mechanics in C#. Managed the art/sound pipeline. Led scope cuts: original doc had 8 movement mechanics, 4+ zones, combo combat, and skill trees. Shipped a focused vertical slice with 3 mechanics, 3 zones, and dash-strike combat.</p></div>
+        <div class="pd-divider"></div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_decisions">Key Design Decisions</div>
+          <div class="pd-details-grid">
+            <div class="pd-detail-card"><h4 data-i18n="pd3_d1h">Dash-Strike Over Combos</h4><p data-i18n="pd3_d1p">The original 3-hit combo system stopped player flow. The dash-strike emerged from prototyping — combat became an extension of the movement system instead of fighting it.</p></div>
+            <div class="pd-detail-card"><h4 data-i18n="pd3_d2h">Stamina Cut</h4><p data-i18n="pd3_d2p">Removing the stamina gate made movement fast and expressive. The resource system was fighting the core fantasy of fluid parkour traversal.</p></div>
+            <div class="pd-detail-card"><h4 data-i18n="pd3_d3h">Linear Over Hub</h4><p data-i18n="pd3_d3p">Cut the hub and branching paths. Linear progression lets the level design teach mechanics sequentially — each zone introduces and tests a new skill.</p></div>
+            <div class="pd-detail-card"><h4 data-i18n="pd3_d4h">Environmental Narrative</h4><p data-i18n="pd3_d4p">No cutscenes, no NPC dialogue. The world tells the story through level design and environmental details — the narrative survived the scope cuts by changing form.</p></div>
+          </div>
+        </div>
+        <div class="pd-divider"></div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_retro">What I'd Do Differently</div><p data-i18n="pd3_retro">Playtest earlier and more often. Beta testers caught navigation and control issues we'd gone blind to. I'd also set hard scope ceilings at month 1 instead of letting the dream doc grow unchecked before cutting — cut early, cut once.</p></div>
+        <div class="pd-divider"></div>
+        <div class="pd-tags">
+          <span class="pd-tag" data-i18n="tag_production">Production</span><span class="pd-tag" data-i18n="tag_scope">Scope Management</span><span class="pd-tag" data-i18n="tag_sysprog">Systems Programming</span><span class="pd-tag" data-i18n="tag_parkour">Parkour Mechanics</span><span class="pd-tag" data-i18n="tag_teamlead">Team Leadership</span><span class="pd-tag" data-i18n="pdtag_metroid">Metroidvania</span>
+        </div>
+        <div class="pd-actions">
+          <a href="https://hanada1nonly.itch.io/guardians-fall-wounds" target="_blank" rel="noopener" class="pd-primary" data-i18n="p3_link_play">Play on Itch.io</a>
+          <a href="#guardians-case-study" onclick="closeProjectModal()" class="pd-secondary" data-i18n="p3_link_case">Case Study →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Beasts of Agony -->
+  <div class="pd-overlay" id="pd-beasts" onclick="if(event.target===this)closeProjectModal()">
+    <div class="pd-modal">
+      <div class="pd-close"><button onclick="closeProjectModal()" aria-label="Close">✕</button></div>
+      <div class="pd-hero">
+        <div class="pd-hero-top">
+          <h2 data-i18n="pd4_title">Beasts of Agony</h2>
+          <span class="pd-badge-pill" data-i18n="p4_badge">Game Jam · 9 days · 2023</span>
+          <span class="pd-badge-pill pd-badge-purple" data-i18n="pd4_award">Best Art — PUCJam 2023</span>
+        </div>
+        <p class="pd-tagline" data-i18n="pd4_tagline">A souls-like boss fight demo built in 9 days for PUCJam 2023. Theme: "Sacred." Designed and programmed the core fighting system from scratch with a team of 7.</p>
+      </div>
+      <div class="pd-gallery">
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/04optimizedVideo-Beastsofagony.mp4" type="video/mp4"></video></div>
+        <div class="pd-gallery-item" style="background:linear-gradient(135deg,#2e1a1a,#2e1626);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd4_ss1">Screenshot: Boss encounter</span></div>
+      </div>
+      <div class="pd-body">
+        <div class="pd-metrics">
+          <div class="pd-metric"><div class="val">7</div><div class="lbl" data-i18n="pd3_m1">Team Members</div></div>
+          <div class="pd-metric"><div class="val">9</div><div class="lbl" data-i18n="pd4_m2">Days to Ship</div></div>
+          <div class="pd-metric"><div class="val">🏆</div><div class="lbl" data-i18n="pd4_m3">Best Art Award</div></div>
+        </div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_contribution">My Contribution</div><p data-i18n="pd4_contrib">Designed and programmed the core fighting system — hitboxes, animation trees, life/death state machines, and combat balancing. Also handled production: scoped daily milestones across a 7-person team to ensure the boss fight was playable and polished by day 9.</p></div>
+        <div class="pd-divider"></div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_decisions">Key Design Decisions</div>
+          <div class="pd-details-grid">
+            <div class="pd-detail-card"><h4 data-i18n="pd4_d1h">One Boss, Done Well</h4><p data-i18n="pd4_d1p">Instead of multiple enemies with shallow behavior, focused all design effort on a single boss with readable tells, punish windows, and escalating phases.</p></div>
+            <div class="pd-detail-card"><h4 data-i18n="pd4_d2h">Weight Over Speed</h4><p data-i18n="pd4_d2p">Animations prioritize impact and readability. Attacks have wind-up frames that telegraph intent — the souls-like contract of "fair but punishing."</p></div>
+          </div>
+        </div>
+        <div class="pd-divider"></div>
+        <div class="pd-tags">
+          <span class="pd-tag" data-i18n="tag_combat">Combat Systems</span><span class="pd-tag">Game Jam</span><span class="pd-tag" data-i18n="tag_rapid">Rapid Prototyping</span><span class="pd-tag" data-i18n="tag_award">Award Winner</span><span class="pd-tag" data-i18n="pdtag_souls">Souls-like</span><span class="pd-tag" data-i18n="pdtag_anim">Animation Systems</span>
+        </div>
+        <div class="pd-actions">
+          <a href="https://www.jhorro.com/beastsofagony" target="_blank" rel="noopener" class="pd-primary">Play on itch.io</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Bagre Noturno -->
+  <div class="pd-overlay" id="pd-bagre" onclick="if(event.target===this)closeProjectModal()">
+    <div class="pd-modal">
+      <div class="pd-close"><button onclick="closeProjectModal()" aria-label="Close">✕</button></div>
+      <div class="pd-hero">
+        <div class="pd-hero-top">
+          <h2 data-i18n="pd5_title">Operação Bagre Noturno</h2>
+          <span class="pd-badge-pill" data-i18n="p5_badge">Game Jam · 2 weeks · 2024</span>
+          <span class="pd-badge-pill pd-badge-amber" data-i18n="pd_team4">Team of 4</span>
+        </div>
+        <p class="pd-tagline" data-i18n="pd5_tagline">A stealth-action game set in an alternate 2031 Brazil, blending Metal Gear Solid-inspired espionage with absurd Brazilian comedy. Built for CtrlAltJam#3.</p>
+      </div>
+      <div class="pd-gallery">
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/05optimizedVideo-Bagre.mp4" type="video/mp4"></video></div>
+        <div class="pd-gallery-item" style="background:linear-gradient(135deg,#1a2e1a,#16261a);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd5_ss1">Screenshot: Stealth gameplay</span></div>
+      </div>
+      <div class="pd-body">
+        <div class="pd-metrics">
+          <div class="pd-metric"><div class="val">4</div><div class="lbl" data-i18n="pd3_m1">Team Members</div></div>
+          <div class="pd-metric"><div class="val">2 wk</div><div class="lbl" data-i18n="pd5_m2">Development Time</div></div>
+          <div class="pd-metric"><div class="val">3</div><div class="lbl" data-i18n="pd5_m3">Roles Held</div></div>
+        </div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_contribution">My Contribution</div><p data-i18n="pd5_contrib">Game designer, producer, and 3D artist. Designed the level layout, core stealth and shooting mechanics, and wrote the narrative — blending espionage with absurd comedy in a Brazilian geopolitical setting. Created 3D environment assets and managed the production pipeline across a 4-person team under a 2-week deadline.</p></div>
+        <div class="pd-divider"></div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_decisions">Key Design Decisions</div>
+          <div class="pd-details-grid">
+            <div class="pd-detail-card"><h4 data-i18n="pd5_d1h">Stealth-First Loop</h4><p data-i18n="pd5_d1p">Detection triggers escalation, not instant failure. Players can fight their way out or retreat — keeping tension without frustration in a jam-scoped project.</p></div>
+            <div class="pd-detail-card"><h4 data-i18n="pd5_d2h">Comedy as World-Building</h4><p data-i18n="pd5_d2p">The absurd alternate-reality Brazil setting lets the narrative carry weight without taking itself seriously — geopolitical satire through gameplay, not exposition.</p></div>
+          </div>
+        </div>
+        <div class="pd-divider"></div>
+        <div class="pd-tags">
+          <span class="pd-tag" data-i18n="tag_leveldesign">Level Design</span><span class="pd-tag" data-i18n="tag_stealth">Stealth Mechanics</span><span class="pd-tag" data-i18n="tag_narrative">Narrative Design</span><span class="pd-tag" data-i18n="tag_3dart">3D Art</span><span class="pd-tag">Game Jam</span><span class="pd-tag" data-i18n="tag_production">Production</span>
+        </div>
+        <div class="pd-actions">
+          <a href="https://jhorro.itch.io/operacao-bagre-noturno" target="_blank" rel="noopener" class="pd-primary">Play on itch.io</a>
+          <a href="docs/GDD_bagrenoturno.pdf" target="_blank" rel="noopener" class="pd-secondary" data-i18n="pd_gdd_link">Full GDD (PDF) →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
 <footer class="site-footer">
   <span>Jhonnatan Barbosa · 2026</span>
-  <span>Game Designer — Data-Driven Systems & Gameplay</span>
+  <span data-i18n="footer_tagline">Game Designer — Data-Driven Systems & Gameplay</span>
 </footer>
+
+<script>
+// ══════════════════════════════════════════════════════════
+//  i18n — Language switcher system
+// ══════════════════════════════════════════════════════════
+
+const translations = {
+pt: {
+  // ── Nav ──
+  nav_projects: "Projetos",
+  nav_casestudy: "Estudo de Caso",
+  nav_documents: "Documentos",
+  nav_about: "Sobre",
+  nav_contact: "Contato",
+
+  // ── Intro ──
+  hero_title: "Game Designer — Sistemas e Gameplay Orientados por Dados",
+  hero_desc: "Projeto sistemas que os jogadores descobrem no próprio ritmo, depois uso dados para melhorá-los. 5+ anos em game design com 2 jogos mobile publicados, um TCC e 10+ projetos acadêmicos e de game jams em mobile, PC e web. Formação em estatística — itero com planilhas, analytics e evidências, não intuição.",
+  link_resume: "Currículo (PDF)",
+
+  // ── Section headers ──
+  sec_projects: "Projetos Selecionados",
+  sec_projects_aside: "5 peças selecionadas · 2 estudos de caso + 3 cards de vitrine",
+  sec_additional: "Trabalhos Adicionais — FoxTales Studios",
+  sec_additional_aside: "Estúdio acadêmico · PUC-SP · 2020–2023 · Game Designer & Artista 3D",
+  sec_documents: "Documentos de Design",
+  sec_documents_aside: "GDDs, QDDs, LDDs e testes de design — como penso no papel",
+  sec_about: "Sobre",
+  sec_contact: "Contato",
+  sec_contact_aside: "Buscando uma posição em design de sistemas ou gameplay · Aberto a remoto ou realocação",
+
+  // ── Shared labels ──
+  label_role: "Função",
+  label_engine: "Motor",
+  label_platform: "Plataforma",
+  label_duration: "Duração",
+  label_team: "Equipe",
+
+  // ── Project 1: Cyberpunk ──
+  p1_name: "Idle Cyberpunk City Clicker — Economia & Analytics",
+  p1_badge: "Publicado · 2025",
+  p1_desc: "Construído com base nas lições do Idle Kingdom Builder. Expandiu o core loop com camadas profundas de progressão e monetização via ads/IAP. Instrumentou Unity Analytics para capturar o estado do jogador em 4 marcos, identificou bugs na economia e um defeito de persistência de timer, e lançou 3 correções direcionadas na v1.70. 600+ downloads orgânicos, nota 4.2/5 — sem investimento em marketing. Sessão mediana ~6 min, top 10% com média de 15+ min.",
+  p1_role: "Designer & Desenvolvedor (Solo)",
+  p1_duration: "6 meses",
+  p1_link_case: "Estudo de caso de analytics →",
+  p1_link_play: "Jogar no Google Play →",
+
+  // ── Project 2: Kingdom Builder ──
+  p2_name: "Idle Kingdom Builder — Primeira Publicação & Retenção",
+  p2_badge: "Publicado · 2024",
+  p2_desc: "Meu primeiro jogo idle publicado. Projetei o core loop e sistema econômico do zero, inspirando-me nas fórmulas do Cookie Clicker e ajustando para um ritmo mais lento e deliberado. Publicado no Google Play com 800+ downloads orgânicos. Forte engajamento inicial, mas sem um pipeline de analytics não conseguia identificar onde os jogadores desistiam — essa lacuna motivou diretamente o sistema de analytics que construí para Cyberpunk City.",
+  p2_role: "Designer & Desenvolvedor (Solo)",
+  p2_duration: "6 meses",
+  p2_link_play: "Jogar no Google Play →",
+
+  // ── Project 3: Guardian's Falls ──
+  p3_name: "Guardian's Falls — Wounds",
+  p3_badge: "TCC · 2023",
+  p3_desc: "Metroidvania 2.5D construído como projeto de graduação na PUC-SP. Comecei como game designer, mas o papel migrou para desenvolvedor/produtor ao assumir a programação dos sistemas principais, mecânicas de parkour e gerenciamento do pipeline de arte/som. Conduzi cortes de escopo para entregar uma vertical slice jogável com um time de 6 dentro dos prazos acadêmicos. Bem recebido pela banca examinadora.",
+  p3_role: "Designer → Desenvolvedor / Produtor",
+  p3_duration: "1 Ano",
+  p3_link_case: "Estudo de caso →",
+  p3_link_play: "Jogar no Itch.io →",
+
+  // ── Project 4: Beasts of Agony ──
+  p4_name: "Beasts of Agony — Boss Fight Souls-like",
+  p4_badge: "Game Jam · 9 dias · 2023",
+  p4_desc: "Demo de combate souls-like criada para a PUCJam 2023 (tema: \"Sagrado\"). Projetei e programei o sistema de combate — hitboxes, árvores de animação, estados de vida/morte, balanceamento. Ganhou Melhor Arte na PUCJam 2023 entre todas as equipes participantes (veteranos a calouros) na PUC-SP.",
+  p4_role: "Designer, Programador & Produtor",
+  p4_duration: "9 Dias",
+
+  // ── Project 5: Bagre Noturno ──
+  p5_name: "Operação Bagre Noturno — Stealth Action Comédia",
+  p5_badge: "Game Jam · 2 semanas · 2024",
+  p5_desc: "Jogo stealth-action ambientado em um Brasil alternativo de 2031, inspirado em Metal Gear Solid e Splinter Cell. Projetei o layout dos níveis, mecânicas de furtividade/tiro e a narrativa — misturando espionagem com comédia absurda em um cenário geopolítico brasileiro. Feito para a CtrlAltJam#3 com uma equipe de 4.",
+  p5_role: "Game Designer, Produtor & Artista 3D",
+  p5_duration: "2 Semanas",
+
+  // ── Tags ──
+  tag_economy: "Design de Economia",
+  tag_progression: "Ajuste de Progressão",
+  tag_datadriven: "Iteração Baseada em Dados",
+  tag_curves: "Curvas de Progressão",
+  tag_monetization: "Monetização",
+  tag_firstship: "Primeiro Lançamento",
+  tag_production: "Produção",
+  tag_scope: "Gestão de Escopo",
+  tag_sysprog: "Programação de Sistemas",
+  tag_parkour: "Mecânicas de Parkour",
+  tag_teamlead: "Liderança de Equipe",
+  tag_combat: "Sistemas de Combate",
+  tag_rapid: "Prototipagem Rápida",
+  tag_award: "Premiado",
+  tag_leveldesign: "Level Design",
+  tag_stealth: "Mecânicas Furtivas",
+  tag_narrative: "Design Narrativo",
+  tag_3dart: "Arte 3D",
+
+  // ── Additional work roles ──
+  add_coal_role: "World design dark fantasy, níveis interconectados, lore.",
+  add_netuno_role: "Layout de níveis, balanceamento de ondas, ajuste de armas, props 3D.",
+  add_narkissos_role: "Level design, puzzle design, modelagem e texturas de cenário 3D.",
+  add_riddles_role: "Layout de mundo aberto, sistema de progressão de puzzles, documentação.",
+  add_mega_role: "Layouts de pista, obstáculos e power-ups, playtesting, props 3D.",
+  add_tech_role: "Mecânicas core, balanceamento de dedução social, refinamento do loop.",
+  add_sonic_role: "Layouts de níveis, posicionamento de inimigos, balanceamento de gameplay.",
+
+  // ── Cyberpunk Case Study ──
+  cs_cyber_title: "Estudo de Caso — Idle Cyberpunk City Clicker",
+  cs_cyber_aside: "220 jogadores rastreados · build pré-1.40 · 4 snapshots de marco",
+  cs_label_01: "01 · Problema",
+  cs_label_02: "02 · Processo",
+  cs_label_03: "03 · Achados",
+  cs_label_04: "04 · Resultado",
+  cs_label_05: "05 · O que eu mudaria",
+  cs_cyber_01_h: "Voando no escuro após o primeiro jogo",
+  cs_cyber_01_p: "Idle Kingdom Builder publicou com 800+ downloads e boas avaliações, mas sem pipeline de analytics — eu não fazia ideia de onde os jogadores desistiam ou por quê. Cyberpunk City crescia de forma constante mas tinha o mesmo ponto cego. Eu precisava de um sistema para enxergar dentro da jornada do jogador sem estourar o orçamento.",
+  cs_cyber_02_h: "Analytics baseado em marcos com orçamento limitado",
+  cs_cyber_02_p: "Precisava do máximo de dados com o mínimo de envios de eventos (tier gratuito do Unity Analytics). Projetei 4 eventos de snapshot nos marcos de 1K, 1M, 1B e 1T créditos — capturando prédios, upgrades, proporção clique/passivo e tempo decorrido por jogador.",
+  cs_cyber_03_h: "Economia valida, bugs surgem",
+  cs_cyber_03_p: "Transição clique-para-passivo confirmada como projetada. Encontrei um bug de rastreamento inflando contagem de cliques (erro de nomenclatura de variável) e um defeito de persistência de timer nos marcos superiores produzindo dados inválidos.",
+  cs_cyber_04_h: "3 correções lançadas na v1.40",
+  cs_cyber_04_p: "Corrigi a instrumentação de analytics, ajustei o multiplicador de upgrade passivo de 5× para 3.5×, e adicionei persistência de sessão. Dados limpos chegando para comparação antes/depois no próximo ciclo de análise.",
+  cs_cyber_05_h: "Sabendo o que os dados mostraram",
+  cs_cyber_05_p1: "O funil 1M → 1B é a queda mais íngreme (73%). Essa parede coincide com custos de upgrade passivo escalando mais rápido que o poder de ganho do jogador — o salto de multiplicador do mid-tier para late-tier é agressivo demais. A próxima iteração visa uma curva mid-game mais suave: reduzindo o multiplicador de custo de upgrade passivo de 5× para 3.5× (passivo) e 10× para 7× (clicker).",
+  cs_cyber_05_p2: "Eu também repensaria a descoberta de upgrades — 52% dos jogadores tinham zero upgrades no marco 1K, o que significa que a UI não os está exibindo cedo o suficiente. Um prompt sutil ou indicação visual quando o jogador pode comprar seu primeiro upgrade poderia mudar essa proporção sem ser intrusivo.",
+
+  // ── Dashboard ──
+  dashboard_label: "Dashboard de Analytics Interativo · Construído com dados reais do Unity Analytics",
+  dashboard_fullscreen: "Abrir em tela cheia →",
+
+  // ── Guardian's Falls Case Study ──
+  cs_gf_title: "Estudo de Caso — Guardian's Falls",
+  cs_gf_aside: "Equipe de 6 · 12 meses · Gestão de escopo · TCC",
+  cs_gf_01_h: "Ambição maior que a capacidade",
+  cs_gf_01_p: "O documento de design do mês 1 previa 4+ zonas, 8 mecânicas de parkour, combate combo, árvores de habilidade e narrativa em camadas. Equipe de 6, sem programador dedicado, prazo acadêmico de 12 meses.",
+  cs_gf_02_h: "Prototipar rápido, cortar decisivamente",
+  cs_gf_02_p: "Construí protótipos iniciais com o conjunto completo de mecânicas. Testei quais mecânicas sustentavam o core loop. Realizei um beta estruturado com feedback categorizado. Cortei funcionalidades que não justificavam seu peso.",
+  cs_label_03_sol: "03 · Solução",
+  cs_gf_03_h: "Entregar o que funciona, não tudo",
+  cs_gf_03_p: "Entregou uma demo focada com 3 zonas, movimentação simplificada (sprint, slide, dash), combate dash-strike e narrativa ambiental. Progressão linear que ensina mecânicas através do level design.",
+  cs_gf_04_h: "Demo publicada + 3 princípios de design que uso até hoje",
+  cs_gf_04_p: "Publicamos uma vertical slice coerente. A banca reconheceu as decisões de design. Cada lição de escopo e iteração aqui moldou diretamente como construí ambos os jogos idle.",
+
+  // ── Scope table ──
+  gf_scope_label: "Gestão de Escopo",
+  gf_scope_subtitle: "O Que Imaginamos vs. O Que Publicamos",
+  gf_scope_desc: "O documento original era ambicioso por design — sonhe grande, depois reduza o escopo para o que a equipe consegue entregar bem. Eu cuidei de design, programação C# e produção. Sem programador dedicado.",
+  th_system: "Sistema",
+  th_vision: "Visão do Mês 1",
+  th_shipped: "O Que Publicou",
+  th_status: "Status",
+  scope_movement: "Movimentação",
+  scope_movement_v: "8 mecânicas: vault, slide, wall jump, agarrar/escalar, balanço, rolamento, sprint, pulo livre. Sistema de stamina limitando uso.",
+  scope_movement_s: "Sprint, slide, dash. Stamina cortada totalmente — remover a barreira de recurso tornou a movimentação rápida e expressiva. Vault, wall jump, agarrar/escalar prototipados mas cortados por clareza.",
+  scope_combat: "Combate",
+  scope_combat_v: "Árvore de combo de 3 hits, ataque de slide, ataque de bounce, socos potentes, ataque em sprint",
+  scope_combat_s: "Dash contra inimigo para atacar. Combos faziam jogadores parar e encadear socos; o dash-strike os mantinha fluindo. Emergiu da prototipagem, não do documento original.",
+  scope_zones: "Zonas",
+  scope_zones_v: "4+ zonas (Moonlit Meadow, Bond Fracture, Jade Jungle, Innerlake) + Hub",
+  scope_zones_s: "3 zonas publicadas. Hub removido. Progressão linear em vez de ramificada.",
+  scope_progression: "Progressão",
+  scope_progression_v: "Árvore de habilidades, missões NPC, HUB, backtracking, escolha de dificuldade esquerda/direita",
+  scope_progression_s: "Progressão linear por 3 zonas. Sem árvore de habilidades ou hub. Maestria mecânica é a progressão.",
+  scope_narrative: "Narrativa",
+  scope_narrative_v: "4 guardiões cardinais, metáfora de trauma, cutscene de intro, diálogo NPC, design simbólico de inimigos",
+  scope_narrative_s: "Narrativa ambiental conduz a história. Sem cutscene, sem diálogo NPC. World-building integrado ao level design.",
+  scope_enemies: "Inimigos",
+  scope_enemies_v: "3 tipos por zona + mini-boss + boss final, designs tematicamente simbólicos",
+  scope_enemies_s: "Tipos genéricos de inimigos. Foco mudou para tornar o combate responsivo em vez de tematicamente narrativo.",
+  badge_evolved: "Evoluiu",
+  badge_simplified: "Simplificado",
+  badge_cut: "Cortado",
+
+  // ── Mechanic Spotlight ──
+  gf_process_label: "Processo de Design",
+  gf_mechanic_subtitle: "Mecânica em Destaque — Combate Dash-Strike",
+  ms_h: "Combate é movimento",
+  ms_p: "Em vez de ficar parado executando combos, o jogador avança contra inimigos para atacar. O documento original especificava uma árvore de combo de 3 hits e ataques especiais — os protótipos iniciais tinham isso funcionando, mas puxavam a sensação na direção oposta do sistema de movimentação. Os combos faziam jogadores parar; o dash-strike os mantinha fluindo.",
+  ms_iter_label: "Iteração:",
+  ms_iter_text: "Isso não estava no documento original — emergiu da prototipagem. Quando vimos como o dash se sentia durante a travessia, aplicar esse momentum ao combate foi uma evolução natural. O sistema de combo foi cortado, mas a ideia central ficou mais forte que o plano original.",
+
+  // ── Takeaways ──
+  gf_reflection_label: "Reflexão",
+  gf_reflection_subtitle: "O Que Levei Adiante",
+  tk1_h: "Escopo é uma habilidade de design",
+  tk1_p: "O documento original tinha 8 mecânicas de movimentação. O jogo publicado tem 3 — e elas funcionam melhor. Essa mentalidade definiu como construí ambos os jogos idle: começar pelo loop mínimo viável, não pela visão máxima.",
+  tk2_h: "Teste antes de estar pronto",
+  tk2_p: "Até testes imperfeitos com jogadores não-especialistas revelam problemas que você não consegue ver de dentro. Testadores beta pegaram problemas de navegação e pontos de dor nos controles que tínhamos ficado cegos.",
+  tk3_h: "Mecânicas precisam conversar entre si",
+  tk3_p: "O sistema de combo lutava contra o sistema de movimentação. O dash-strike emergiu porque prototipamos ambos e notamos o conflito. Documentos de design são hipóteses; protótipos são experimentos.",
+
+  // ── Documents ──
+  doc_view: "Ver PDF →",
+  doc1_name: "Secrets Submerged — Quest de Genshin Impact",
+  doc1_desc: "World quest fan-made para Fontaine. Fluxo completo de quest, interações NPC, design de itens, passos de progressão e balanceamento de recompensas. Demonstra pensamento de design narrativo e estrutura de quests.",
+  doc2_name: "Fire Dungeon — Documento de Level Design",
+  doc2_desc: "Nível de dungeon top-down com mapas de salas desenhados à mão, posicionamento de inimigos, encontros de boss, fluxo de objetivos e pacing de desafio.",
+  doc3_name: "Idle Cyberpunk City Clicker — GDD Completo",
+  doc3_desc: "Documento de design completo: core loop, sistema econômico, tiers de progressão, modelo de monetização, lore e world-building, e plano de analytics.",
+  doc4_name: "Idle Kingdom Builder — GDD Completo",
+  doc4_desc: "Design do sistema econômico, faucets/sinks de recursos, curvas de progressão, sistema de ascensão, fluxo de UI e estratégia de monetização.",
+  doc5_name: "Operação Bagre Noturno — GDD Completo",
+  doc5_desc: "Design stealth-action: layout de níveis, mecânicas, estrutura narrativa, sistema de pontuação e world-building para um Brasil de realidade alternativa.",
+  doc6_name: "Quantum Cafe — Teste de Design para Entrevista",
+  doc6_desc: "GDD de sim de gerenciamento criado para entrevista de estúdio. Divisão de orçamento, timeline de milestones, sistema de progressão de carreira e design de economia dentro de restrições de escopo.",
+  doc7_name: "Jump Mechanic Level — GDD Teste de Design",
+  doc7_desc: "Teste de level design: projetou uma nova mecânica levando o pulo ao limite, com dificuldade progressiva sala a sala e soluções de restrição de câmera.",
+  doc8_name: "Jelly Morph: Shifty Speedway — GDD Teste de Design",
+  doc8_desc: "Design de jogo mobile hypercasual: mecânicas core, análise competitiva, estratégia de monetização (ads/IAP) e wireframes de UI.",
+
+  // ── About ──
+  about_bg_label: "Formação",
+  about_bg_p: "Game designer com formação em estatística e abordagem de construir primeiro, iterar sempre. Trago uma metodologia estruturada e baseada em evidências para qualquer problema de design que enfrento — seja ajuste de economia, mecânicas, níveis ou narrativa. 5+ anos em game design com 2 jogos mobile publicados, um TCC e 10+ projetos acadêmicos e de game jams. Atualmente baseado em São Paulo, Brasil.",
+  about_phil_label: "Filosofia de design",
+  about_phil_p: "Projeto sistemas que os jogadores sentem que descobriram sozinhos — depois uso dados para garantir que realmente conseguem. Quando jogadores se sentem perdidos, isso não é um mérito, é dado mostrando onde a orientação invisível falhou. Todo design é uma hipótese. Construir, publicar, medir, melhorar.",
+  about_inf_label: "Influências",
+  about_inf_p: "Essa abordagem vem de estudar como a Valve ensina as mecânicas de Portal através do jogo e guia jogadores de Half-Life com iluminação e arquitetura em vez de waypoints — design invisível validado por playtesting obsessivo. A influência de Kojima aparece na ambição: confiar nos jogadores com sistemas complexos e escolhas significativas, não simplificar as coisas, mas tornar a profundidade acessível através de iteração cuidadosa.",
+  about_teach_label: "Ensino",
+  about_teach_p: "Além de publicar jogos, ensino desenvolvimento e design de jogos para crianças e adolescentes — 300+ alunos em três escolas, adaptando conteúdo para idades de 8 a 17 anos. É o melhor treino que encontrei para comunicação em estúdio: se uma criança de 10 anos consegue acompanhar sua explicação de uma state machine, seu spec sobrevive a uma revisão cross-discipline. Também significa que consigo dimensionar uma aula da mesma forma que dimensiono um milestone — quebrar um sistema complexo em partes entregáveis, testar se as pessoas realmente entenderam, e ajustar antes de seguir em frente.",
+  about_range_label: "Amplitude de design",
+  about_range_p: "Meu core é design de sistemas e economia, mas trabalho ativamente entre disciplinas. O documento de quest de Genshin Impact demonstra pensamento de design narrativo e estrutura de quests, Bagre Noturno mescla mecânicas stealth com narrativa de realidade alternativa, e o lore atmosférico de Cyberpunk City conecta world-building a sistemas de progressão.",
+  about_looking_label: "Buscando",
+  about_looking_p: "Uma posição em design de sistemas ou gameplay onde possa combinar trabalho prático de design com análise de dados para moldar o comportamento do jogador — idealmente em um estúdio médio a AAA trabalhando em títulos PC/console. Aberto a remoto ou realocação.",
+  about_tools_label: "Ferramentas",
+
+  // ── Contact ──
+  contact_resume: "Currículo",
+  contact_download: "Baixar PDF",
+
+  // ── Footer ──
+  footer_tagline: "Game Designer — Sistemas e Gameplay Orientados por Dados",
+
+  // ── Project Detail Modals — Shared ──
+  link_details: "Ver detalhes →",
+  pd_contribution: "Minha Contribuição",
+  pd_decisions: "Decisões de Design",
+  pd_retro: "O Que Eu Mudaria",
+  pd_solo: "Projeto Solo",
+  pd_team6: "Equipe de 6",
+  pd_team4: "Equipe de 4",
+  pd_gdd_link: "GDD Completo (PDF) →",
+  pdtag_idle: "Mecânicas Idle",
+  pdtag_prestige: "Sistemas de Prestígio",
+  pdtag_mux: "UX Mobile",
+  pdtag_metroid: "Metroidvania",
+  pdtag_souls: "Souls-like",
+  pdtag_anim: "Sistemas de Animação",
+
+  // ── Modal 1: Cyberpunk ──
+  pd1_title: "Idle Cyberpunk City Clicker",
+  pd1_tagline: "Um idle clicker ambientado em uma metrópole cyberpunk distópica. Jogadores ganham créditos para expandir sua cidade através de renda passiva, cliques ativos e camadas profundas de progressão — tudo instrumentado com analytics reais.",
+  pd1_ss1: "Screenshot: Painel de economia",
+  pd1_ss2: "Screenshot: Tiers de prédios",
+  pd1_m1: "Downloads Orgânicos",
+  pd1_m2: "Nota na Play Store",
+  pd1_m3: "Sessão Mediana",
+  pd1_m4: "Jogadores Rastreados",
+  pd1_contrib: "Projetei e desenvolvi sozinho do conceito ao lançamento. Construído com base nas lições do Idle Kingdom Builder — expandiu o core loop com camadas profundas de progressão e monetização via ads/IAP. Instrumentou Unity Analytics para capturar o estado do jogador em 4 marcos, identificou bugs na economia e um defeito de persistência de timer, e lançou 3 correções direcionadas na v1.70.",
+  pd1_d1h: "Economia de 4 Pilares",
+  pd1_d1p: "Prédios Passivos, Clicker, Offline e Ascensão oferecem caminhos de progressão distintos — cada um empurra mecanicamente diferentes estilos de jogo.",
+  pd1_d2h: "Analytics Econômico",
+  pd1_d2p: "Projetou 4 eventos de snapshot para maximizar dados no tier gratuito do Unity Analytics. Capturou prédios, upgrades, proporção clique/passivo e tempo em cada marco.",
+  pd1_d3h: "Assimetria de Preço",
+  pd1_d3p: "Prédios clicker escalam a 1.65× vs passivos a 1.25× — isso impulsiona mecanicamente a transição clique-para-passivo sem tutorização explícita.",
+  pd1_d4h: "Monetização Não-Intrusiva",
+  pd1_d4p: "Ads de recompensa são opt-in; banners ficam periféricos. Jogadores elogiaram: \"ads não-intrusivos, muitas recompensas e uma UI limpa.\"",
+  pd1_retro: "O funil 1M → 1B cai 73%. Custos de upgrade passivo mid-tier escalam agressivamente demais — reduzir o multiplicador de 5× para 3.5× é o alvo da próxima iteração. 52% dos jogadores tinham zero upgrades no 1K, significando que a UI não os exibe cedo o suficiente.",
+
+  // ── Modal 2: Kingdom Builder ──
+  pd2_title: "Idle Kingdom Builder",
+  pd2_tagline: "Um jogo idle de construção de reino medieval. Jogadores clicam para ganhar ouro e construir casas, fazendas, mercados e mais — cada um gerando renda passiva para expandir o reino.",
+  pd2_ss1: "Screenshot: Vista do reino",
+  pd2_ss2: "Screenshot: Painel de upgrades",
+  pd2_m2: "Retenção D30",
+  pd2_m3: "Acima da Média Casual",
+  pd2_m4: "Tipos de Prédio",
+  pd2_contrib: "Projetei o core loop e sistema econômico do zero, inspirando-me nas fórmulas do Cookie Clicker e ajustando para um ritmo mais lento e deliberado. 10 tipos de prédios (Casa até Banco) com caminhos de upgrade e um sistema de prestígio Royal Ascension. Implementei monetização via ads com vídeos recompensados e banners.",
+  pd2_d1h: "Cookie Clicker como Base",
+  pd2_d1p: "Estudei as curvas exponenciais que tornam Cookie Clicker viciante, depois desacelerei o ritmo — o tema medieval pede crescimento deliberado, não cliques frenéticos.",
+  pd2_d2h: "Royal Ascension",
+  pd2_d2p: "Sistema de prestígio reseta progresso por bônus permanentes. Dá a jogadores de longo prazo um motivo para recomeçar de uma posição mais forte.",
+  pd2_d3h: "75 Conquistas",
+  pd2_d3p: "Sistema de conquistas em tiers (Comum → Lendário) em prédios, upgrades, cliques e marcos de GPS. Impulsiona micro-objetivos entre batidas maiores de progressão.",
+  pd2_d4h: "Sem Analytics — A Lacuna",
+  pd2_d4p: "Lançou sem pipeline de dados. Não conseguia identificar onde jogadores desistiam. Essa lacuna motivou diretamente o sistema de analytics do Cyberpunk City.",
+  pd2_retro: "Adicionar analytics desde o dia um — até eventos básicos de marco teriam revelado gargalos de progressão cedo. A economia é sólida na primeira hora mas o pacing mid-game nunca foi validado com dados reais.",
+
+  // ── Modal 3: Guardian's Falls ──
+  pd3_title: "Guardian's Falls — Wounds",
+  pd3_tagline: "Um Metroidvania 2.5D com travessia de parkour e combate dash-strike. Construído como TCC na PUC-SP — o projeto que me ensinou que escopo é uma habilidade de design.",
+  pd3_cap1: "Combate dash-strike",
+  pd3_ss1: "Screenshot: Travessia de zona",
+  pd3_m1: "Membros da Equipe",
+  pd3_m2: "Tempo de Desenvolvimento",
+  pd3_m3: "Zonas Entregues",
+  pd3_m4: "Mecânicas Reduzidas",
+  pd3_contrib: "Comecei como game designer, migrei para desenvolvedor/produtor. Programei sistemas core e mecânicas de parkour em C#. Gerenciei o pipeline de arte/som. Conduzi cortes de escopo: doc original tinha 8 mecânicas de movimentação, 4+ zonas, combate combo e árvores de habilidade. Entregou uma vertical slice focada com 3 mecânicas, 3 zonas e combate dash-strike.",
+  pd3_d1h: "Dash-Strike em Vez de Combos",
+  pd3_d1p: "O sistema de combo original parava o fluxo do jogador. O dash-strike emergiu da prototipagem — combate se tornou extensão do sistema de movimentação.",
+  pd3_d2h: "Stamina Cortada",
+  pd3_d2p: "Remover a barreira de stamina tornou a movimentação rápida e expressiva. O sistema de recurso lutava contra a fantasia central de travessia fluida.",
+  pd3_d3h: "Linear em Vez de Hub",
+  pd3_d3p: "Cortou o hub e caminhos ramificados. Progressão linear permite que o level design ensine mecânicas sequencialmente.",
+  pd3_d4h: "Narrativa Ambiental",
+  pd3_d4p: "Sem cutscenes, sem diálogo NPC. O mundo conta a história através do level design e detalhes ambientais.",
+  pd3_retro: "Testar mais cedo e mais frequentemente. Testadores beta pegaram problemas de navegação e controle que tínhamos ficado cegos. Também definiria tetos rígidos de escopo no mês 1.",
+
+  // ── Modal 4: Beasts of Agony ──
+  pd4_title: "Beasts of Agony",
+  pd4_tagline: "Uma demo de boss fight souls-like construída em 9 dias para a PUCJam 2023. Tema: \"Sagrado.\" Projetei e programei o sistema de combate do zero com uma equipe de 7.",
+  pd4_award: "Melhor Arte — PUCJam 2023",
+  pd4_ss1: "Screenshot: Encontro com o boss",
+  pd4_m2: "Dias para Entregar",
+  pd4_m3: "Prêmio Melhor Arte",
+  pd4_contrib: "Projetei e programei o sistema de combate — hitboxes, árvores de animação, state machines de vida/morte e balanceamento. Também cuidei da produção: defini marcos diários para uma equipe de 7 para garantir que a boss fight estivesse jogável e polida no dia 9.",
+  pd4_d1h: "Um Boss, Bem Feito",
+  pd4_d1p: "Em vez de múltiplos inimigos com comportamento raso, concentrou todo o esforço de design em um único boss com tells legíveis, janelas de punição e fases escalantes.",
+  pd4_d2h: "Peso Sobre Velocidade",
+  pd4_d2p: "Animações priorizam impacto e legibilidade. Ataques têm frames de preparação que telegrafam intenção — o contrato souls-like de \"justo mas punitivo.\"",
+
+  // ── Modal 5: Bagre Noturno ──
+  pd5_title: "Operação Bagre Noturno",
+  pd5_tagline: "Um jogo stealth-action ambientado em um Brasil alternativo de 2031, misturando espionagem inspirada em Metal Gear Solid com comédia absurda brasileira. Feito para a CtrlAltJam#3.",
+  pd5_ss1: "Screenshot: Gameplay stealth",
+  pd5_m2: "Tempo de Desenvolvimento",
+  pd5_m3: "Funções Exercidas",
+  pd5_contrib: "Game designer, produtor e artista 3D. Projetei o layout dos níveis, mecânicas core de stealth e tiro, e escrevi a narrativa — misturando espionagem com comédia absurda em um cenário geopolítico brasileiro. Criei assets 3D de ambiente e gerenciei o pipeline de produção com equipe de 4 em prazo de 2 semanas.",
+  pd5_d1h: "Loop Stealth-First",
+  pd5_d1p: "Detecção dispara escalação, não falha instantânea. Jogadores podem lutar ou recuar — mantendo tensão sem frustração em um projeto de jam.",
+  pd5_d2h: "Comédia como World-Building",
+  pd5_d2p: "O cenário absurdo de Brasil alternativo permite que a narrativa tenha peso sem se levar a sério — sátira geopolítica através do gameplay, não exposição.",
+},
+
+ja: {
+  // ── Nav ──
+  nav_projects: "プロジェクト",
+  nav_casestudy: "ケーススタディ",
+  nav_documents: "ドキュメント",
+  nav_about: "プロフィール",
+  nav_contact: "お問い合わせ",
+
+  // ── Intro ──
+  hero_title: "ゲームデザイナー — データドリブンなシステム＆ゲームプレイ",
+  hero_desc: "プレイヤーが自ら発見できるシステムをデザインし、データを使ってそれをより良くします。モバイル2タイトルのリリース、卒業論文、10以上の学生・ゲームジャムプロジェクトなど、5年以上のゲームデザイン経験。統計学のバックグラウンドを活かし、スプレッドシート・アナリティクス・エビデンスに基づいてイテレーションします。",
+  link_resume: "履歴書 (PDF)",
+
+  // ── Section headers ──
+  sec_projects: "主要プロジェクト",
+  sec_projects_aside: "厳選5作品 · ケーススタディ2 + ショーケース3",
+  sec_additional: "追加作品 — FoxTales Studios",
+  sec_additional_aside: "学生スタジオ · PUC-SP · 2020–2023 · ゲームデザイナー＆3Dアーティスト",
+  sec_documents: "デザインドキュメント",
+  sec_documents_aside: "GDD、QDD、LDD、デザインテスト — 紙の上での思考プロセス",
+  sec_about: "プロフィール",
+  sec_contact: "お問い合わせ",
+  sec_contact_aside: "システムまたはゲームプレイデザイン職を求職中 · リモートまたは転勤可",
+
+  // ── Shared labels ──
+  label_role: "役割",
+  label_engine: "エンジン",
+  label_platform: "プラットフォーム",
+  label_duration: "期間",
+  label_team: "チーム",
+
+  // ── Project 1: Cyberpunk ──
+  p1_name: "Idle Cyberpunk City Clicker — エコノミー＆アナリティクス",
+  p1_badge: "リリース済 · 2025",
+  p1_desc: "Idle Kingdom Builderでの教訓を基に構築。深い進行段階とリワード広告/IAPの収益化レイヤーでコアループを拡張。Unity Analyticsで4つのマイルストーンにおけるプレイヤー状態をスナップショットし、エコノミーバグとタイマー永続化の欠陥を特定、v1.70で3つの修正をリリース。オーガニックダウンロード600以上、評価4.2/5 — マーケティング費ゼロ。セッション中央値約6分、上位10%は平均15分以上。",
+  p1_role: "デザイナー＆開発者（ソロ）",
+  p1_duration: "6ヶ月",
+  p1_link_case: "アナリティクス ケーススタディ →",
+  p1_link_play: "Google Playでプレイ →",
+
+  // ── Project 2: Kingdom Builder ──
+  p2_name: "Idle Kingdom Builder — 初リリース＆リテンション",
+  p2_badge: "リリース済 · 2024",
+  p2_desc: "初めてリリースしたアイドルゲーム。Cookie Clickerの計算式を参考に、よりゆっくりした慎重なペースに調整したコアループとエコノミーシステムをゼロから設計。Google Playでオーガニックダウンロード800以上を達成。初期エンゲージメントは好調だったが、分析パイプラインがなくプレイヤーの離脱ポイントを特定できなかった — この課題がCyberpunk Cityで構築したアナリティクスシステムの直接的な動機となった。",
+  p2_role: "デザイナー＆開発者（ソロ）",
+  p2_duration: "6ヶ月",
+  p2_link_play: "Google Playでプレイ →",
+
+  // ── Project 3: Guardian's Falls ──
+  p3_name: "Guardian's Falls — Wounds",
+  p3_badge: "卒業制作 · 2023",
+  p3_desc: "PUC-SPの卒業プロジェクトとして制作した2.5Dメトロイドヴァニア。ゲームデザイナーとしてスタートしたが、コアシステム・パルクールメカニクスのプログラミングやアート/サウンドパイプラインの管理を引き受け、開発者/プロデューサーへと役割が変化。6人チームで学術的な締め切りの中、プレイ可能な垂直スライスを届けるためスコープカットを主導。審査委員会に好評を得た。",
+  p3_role: "デザイナー → 開発者/プロデューサー",
+  p3_duration: "1年",
+  p3_link_case: "ケーススタディ →",
+  p3_link_play: "Itch.ioでプレイ →",
+
+  // ── Project 4: Beasts of Agony ──
+  p4_name: "Beasts of Agony — ソウルライク ボスファイト",
+  p4_badge: "ゲームジャム · 9日間 · 2023",
+  p4_desc: "PUCJam 2023（テーマ：「聖なるもの」）で制作したソウルライクの戦闘デモ。ヒットボックス・アニメーションツリー・生死ステート・戦闘バランスなどのコア戦闘システムを設計・プログラミング。PUC-SPの全参加チーム（上級生から新入生まで）の中でPUCJam 2023ベストアート賞を受賞。",
+  p4_role: "デザイナー、プログラマー＆プロデューサー",
+  p4_duration: "9日間",
+
+  // ── Project 5: Bagre Noturno ──
+  p5_name: "Operação Bagre Noturno — ステルスアクションコメディ",
+  p5_badge: "ゲームジャム · 2週間 · 2024",
+  p5_desc: "メタルギアソリッドとスプリンターセルにインスパイアされた、2031年の架空のブラジルを舞台にしたステルスアクションゲーム。レベルレイアウト、ステルス/シューティングメカニクスのコア、ナラティブをデザイン — ブラジルの地政学的設定でスパイ活動と不条理なコメディを融合。CtrlAltJam#3で4人チームで制作。",
+  p5_role: "ゲームデザイナー、プロデューサー＆3Dアーティスト",
+  p5_duration: "2週間",
+
+  // ── Tags ──
+  tag_economy: "エコノミーデザイン",
+  tag_progression: "プログレッション調整",
+  tag_datadriven: "データドリブン イテレーション",
+  tag_curves: "プログレッション曲線",
+  tag_monetization: "マネタイゼーション",
+  tag_firstship: "初リリース",
+  tag_production: "プロダクション",
+  tag_scope: "スコープ管理",
+  tag_sysprog: "システムプログラミング",
+  tag_parkour: "パルクール メカニクス",
+  tag_teamlead: "チームリーダーシップ",
+  tag_combat: "戦闘システム",
+  tag_rapid: "ラピッドプロトタイピング",
+  tag_award: "受賞作品",
+  tag_leveldesign: "レベルデザイン",
+  tag_stealth: "ステルス メカニクス",
+  tag_narrative: "ナラティブデザイン",
+  tag_3dart: "3Dアート",
+
+  // ── Additional work roles ──
+  add_coal_role: "ダークファンタジーのワールドデザイン、相互接続されたレベル、ロア。",
+  add_netuno_role: "レベルレイアウト、ウェーブエコノミーバランス、武器調整、3Dプロップ。",
+  add_narkissos_role: "レベルデザイン、パズルデザイン、3Dシナリオモデリング＆テクスチャ。",
+  add_riddles_role: "オープンワールドレイアウト、パズル進行システム、ドキュメンテーション。",
+  add_mega_role: "トラックレイアウト、障害物＆パワーアップ、プレイテスト、3Dプロップ。",
+  add_tech_role: "コアメカニクス、社会的推理バランス、ループ改良。",
+  add_sonic_role: "レベルレイアウト、敵配置、ゲームプレイバランス。",
+
+  // ── Cyberpunk Case Study ──
+  cs_cyber_title: "ケーススタディ — Idle Cyberpunk City Clicker",
+  cs_cyber_aside: "追跡プレイヤー220名 · v1.40以前のビルド · 4マイルストーン スナップショット",
+  cs_label_01: "01 · 課題",
+  cs_label_02: "02 · プロセス",
+  cs_label_03: "03 · 発見",
+  cs_label_04: "04 · 結果",
+  cs_label_05: "05 · 次に変えること",
+  cs_cyber_01_h: "最初のゲームの後、手探り状態だった",
+  cs_cyber_01_p: "Idle Kingdom Builderは800以上のダウンロードと好評を得てリリースされたが、アナリティクスパイプラインがなく、プレイヤーがどこで離脱するのか、なぜ離脱するのか見当がつかなかった。Cyberpunk Cityは着実に成長していたが同じ盲点があった。予算を超えずにプレイヤージャーニーの内部を見るシステムが必要だった。",
+  cs_cyber_02_h: "低予算でのマイルストーンベースのアナリティクス",
+  cs_cyber_02_p: "最小のイベント送信で最大のデータが必要だった（Unity Analytics無料枠）。1K・1M・1B・1Tクレジットの4つのスナップショットイベントを設計 — ビルディング数、アップグレード数、クリック/パッシブ比率、経過時間をプレイヤーごとに取得。",
+  cs_cyber_03_h: "エコノミーは検証され、バグが浮上",
+  cs_cyber_03_p: "クリックからパッシブへの移行は設計通りに確認された。変数名のミスによりクリッカーカウントを水増ししていたトラッキングバグと、上位マイルストーンで無効なデータを生成するタイマー永続化の欠陥を発見。",
+  cs_cyber_04_h: "v1.40で3つの修正をリリース",
+  cs_cyber_04_p: "アナリティクスの計装を修正、パッシブアップグレードの乗数を5×から3.5×に調整、セッション永続化を追加。次の分析サイクルで前後比較のためのクリーンなデータが届く予定。",
+  cs_cyber_05_h: "データが示したものを踏まえて",
+  cs_cyber_05_p1: "1M → 1Bのファネルが最も急な落ち込み（73%）。この壁はパッシブアップグレードのコストがプレイヤーの稼ぎ力より速くスケールすることと一致 — 中盤から終盤のビルディングへの乗数ジャンプが攻撃的すぎる。次のイテレーションでは、パッシブアップグレードコスト乗数を5×から3.5×に、クリッカーを10×から7×に削減し、よりスムーズなミッドゲーム曲線を目指す。",
+  cs_cyber_05_p2: "アップグレードの発見性も再考したい — 1Kで52%のプレイヤーがアップグレードゼロだった。これはUIが十分早くアップグレードを表示していないことを意味する。プレイヤーが最初のアップグレードを購入できる時にさりげないプロンプトや視覚的な手がかりがあれば、押しつけがましくなくこの比率を変えられるだろう。",
+
+  // ── Dashboard ──
+  dashboard_label: "インタラクティブ アナリティクス ダッシュボード · Unity Analyticsの実データから構築",
+  dashboard_fullscreen: "フルスクリーンで開く →",
+
+  // ── Guardian's Falls Case Study ──
+  cs_gf_title: "ケーススタディ — Guardian's Falls",
+  cs_gf_aside: "6人チーム · 12ヶ月 · スコープ管理 · 卒業論文",
+  cs_gf_01_h: "野心がキャパシティを超えた",
+  cs_gf_01_p: "月1のデザインドキュメントは4以上のゾーン、8つのパルクールメカニクス、コンボ戦闘、スキルツリー、レイヤードナラティブを構想。6人チーム、専任プログラマーなし、12ヶ月の学術的締め切り。",
+  cs_gf_02_h: "素早くプロトタイプし、断固としてカット",
+  cs_gf_02_p: "完全なメカニクスセットで初期プロトタイプを構築。どのメカニクスがコアループを支えるかテスト。カテゴリ分けされたフィードバックで構造化ベータを実施。価値を生み出していない機能をカット。",
+  cs_label_03_sol: "03 · ソリューション",
+  cs_gf_03_h: "すべてではなく、機能するものをリリース",
+  cs_gf_03_p: "3つのゾーンにわたる焦点を絞ったデモを提供。簡素化された移動（スプリント、スライド、ダッシュ）、ダッシュストライク戦闘、環境ストーリーテリング。レベルデザインを通じてメカニクスを教えるリニアプログレッション。",
+  cs_gf_04_h: "デモをリリース + 今も使う3つのデザイン原則",
+  cs_gf_04_p: "一貫性のある垂直スライスをリリース。委員会はデザインのトレードオフを認めた。ここでのスコープとイテレーションの教訓すべてが、両方のアイドルゲーム構築に直接影響した。",
+
+  // ── Scope table ──
+  gf_scope_label: "スコープ管理",
+  gf_scope_subtitle: "構想したもの vs. リリースしたもの",
+  gf_scope_desc: "オリジナルのドキュメントは意図的に野心的だった — 大きく夢見て、チームが上手くリリースできるものにスコープダウン。デザイン、C#プログラミング、プロダクションを担当。専任プログラマーなし。",
+  th_system: "システム",
+  th_vision: "月1の構想",
+  th_shipped: "リリースしたもの",
+  th_status: "ステータス",
+  scope_movement: "移動",
+  scope_movement_v: "8メカニクス：ヴォルト、スライド、ウォールジャンプ、つかまり/クライム、スイング、ローリング、スプリント、フリージャンプ。使用制限するスタミナシステム。",
+  scope_movement_s: "スプリント、スライド、ダッシュ。スタミナは完全にカット — リソース制限の撤廃で移動が高速で表現豊かに。ヴォルト、ウォールジャンプ、つかまり/クライムはプロトタイプしたが明快さのためカット。",
+  scope_combat: "戦闘",
+  scope_combat_v: "3ヒットコンボツリー、スライド攻撃、バウンド攻撃、パワーパンチ、スプリント攻撃",
+  scope_combat_s: "敵にダッシュして攻撃。コンボはプレイヤーを停止させパンチを連鎖させた。ダッシュストライクはフローを維持した。元のドキュメントではなくプロトタイピングから生まれた。",
+  scope_zones: "ゾーン",
+  scope_zones_v: "4以上のゾーン（Moonlit Meadow, Bond Fracture, Jade Jungle, Innerlake）＋ ハブ",
+  scope_zones_s: "3ゾーンをリリース。ハブ削除。分岐ではなくリニアプログレッション。",
+  scope_progression: "プログレッション",
+  scope_progression_v: "スキルツリー、NPCクエスト、ハブ、バックトラッキング、左右の難易度選択",
+  scope_progression_s: "3ゾーンを通じたリニアプログレッション。スキルツリーやハブなし。メカニクスの習熟がプログレッション。",
+  scope_narrative: "ナラティブ",
+  scope_narrative_v: "4つの守護者、トラウマのメタファー、イントロカットシーン、NPCダイアログ、シンボリックなエネミーデザイン",
+  scope_narrative_s: "環境ストーリーテリングでナラティブを伝える。カットシーン・NPCダイアログなし。レベルデザインにワールドビルディングを埋め込み。",
+  scope_enemies: "敵",
+  scope_enemies_v: "ゾーンごとに3タイプ + ミニボス + 最終ボス、テーマ的にシンボリックなデザイン",
+  scope_enemies_s: "ジェネリックな敵タイプ。ナラティブ的テーマよりも戦闘のレスポンシブさに焦点を移行。",
+  badge_evolved: "進化",
+  badge_simplified: "簡素化",
+  badge_cut: "カット",
+
+  // ── Mechanic Spotlight ──
+  gf_process_label: "デザインプロセス",
+  gf_mechanic_subtitle: "メカニクス スポットライト — ダッシュストライク戦闘",
+  ms_h: "戦闘は移動である",
+  ms_p: "立ち止まってコンボを実行するのではなく、プレイヤーは敵にダッシュして攻撃する。元のドキュメントは3ヒットコンボツリーと特殊攻撃を指定していた — 初期プロトタイプでは動作していたが、移動システムの逆方向にフィールを引っ張った。コンボはプレイヤーを停止させた。ダッシュストライクはフローを維持した。",
+  ms_iter_label: "イテレーション：",
+  ms_iter_text: "元のドキュメントにはなかった — プロトタイピングから生まれた。トラバーサル中のダッシュの感触を見て、そのモメンタムを戦闘に適用するのは自然な進化だった。コンボシステムはカットされたが、コアアイデアは元の計画より強くなった。",
+
+  // ── Takeaways ──
+  gf_reflection_label: "振り返り",
+  gf_reflection_subtitle: "持ち帰ったもの",
+  tk1_h: "スコープはデザインスキルである",
+  tk1_p: "元のドキュメントには8つの移動メカニクスがあった。リリースしたゲームには3つ — そしてそれらの方が良い。このマインドセットが両方のアイドルゲーム構築を定義した：最大の構想ではなく、最小限の実行可能ループから始める。",
+  tk2_h: "準備ができる前にテストする",
+  tk2_p: "非専門家プレイヤーとの不完全なテストでさえ、内部からは見えない問題を浮かび上がらせる。ベータテスターがレベルナビゲーションの問題やコントロールのペインポイントを発見した。",
+  tk3_h: "メカニクスは互いに会話しなければならない",
+  tk3_p: "コンボシステムは移動システムと衝突した。ダッシュストライクは両方をプロトタイプし衝突に気づいたから生まれた。デザインドキュメントは仮説であり、プロトタイプは実験である。",
+
+  // ── Documents ──
+  doc_view: "PDFを見る →",
+  doc1_name: "Secrets Submerged — 原神クエスト",
+  doc1_desc: "フォンテーヌのファンメイドワールドクエスト。完全なクエストフロー、NPC対話、アイテムデザイン、プログレッションステップ、報酬バランス。ナラティブデザインとクエスト構造の思考を実証。",
+  doc2_name: "Fire Dungeon — レベルデザインドキュメント",
+  doc2_desc: "手描きの部屋マップ、敵配置、ボスエンカウンター、目標フロー、チャレンジペーシングを含むトップダウンダンジョンレベル。",
+  doc3_name: "Idle Cyberpunk City Clicker — フルGDD",
+  doc3_desc: "完全なデザインドキュメント：コアループ、エコノミーシステム、プログレッション段階、マネタイゼーションモデル、ワールドビルディングロア、アナリティクス計画。",
+  doc4_name: "Idle Kingdom Builder — フルGDD",
+  doc4_desc: "エコノミーシステムデザイン、リソースの蛇口/排水溝、プログレッション曲線、アセンションシステム、UIフロー、マネタイゼーション戦略。",
+  doc5_name: "Operação Bagre Noturno — フルGDD",
+  doc5_desc: "ステルスアクションデザイン：レベルレイアウト、メカニクス、ナラティブ構造、スコアリングシステム、架空のブラジルのワールドビルディング。",
+  doc6_name: "Quantum Cafe — 面接デザインテスト",
+  doc6_desc: "スタジオ面接用に作成した経営シミュレーションGDD。予算内訳、マイルストーンタイムライン、キャリアプログレッションシステム、スコープ制約内でのエコノミーデザイン。",
+  doc7_name: "Jump Mechanic Level — デザインテストGDD",
+  doc7_desc: "レベルデザインテスト：コアジャンプを限界まで押し上げる新メカニクスを設計。部屋ごとの段階的難易度とカメラ制約の解決策。",
+  doc8_name: "Jelly Morph: Shifty Speedway — デザインテストGDD",
+  doc8_desc: "ハイパーカジュアルモバイルゲームデザイン：コアメカニクス、競合分析、マネタイゼーション戦略（広告/IAP）、UIワイヤーフレーム。",
+
+  // ── About ──
+  about_bg_label: "経歴",
+  about_bg_p: "統計学のバックグラウンドを持つゲームデザイナー。「まず作り、常にイテレーション」がモットー。エコノミー調整、メカニクス、レベル、ナラティブなど、直面するデザイン課題に構造的でエビデンスベースの方法論を持ち込みます。モバイル2タイトルのリリース、卒業論文、10以上の学生・ゲームジャムプロジェクトなど、5年以上のゲームデザイン経験。現在ブラジル・サンパウロ在住。",
+  about_phil_label: "デザイン哲学",
+  about_phil_p: "プレイヤーが自ら発見したと感じるシステムをデザインし、データを使って実際に発見できることを確認します。プレイヤーが迷った時、それは名誉の印ではなく、不可視のガイダンスが失敗したことを示すデータです。すべてのデザインは仮説。作り、リリースし、計測し、改善する。",
+  about_inf_label: "影響を受けたもの",
+  about_inf_p: "このアプローチは、Valveがプレイを通じてPortalのメカニクスを教え、ウェイポイントの代わりにライティングとアーキテクチャでHalf-Lifeのプレイヤーを導く方法 — 強迫的なプレイテストで検証された不可視のデザインを研究することから来ています。小島秀夫の影響は野心に現れます：複雑なシステムと意味のある選択をプレイヤーに委ね、物事を簡単にするのではなく、慎重なイテレーションを通じて深さをアクセシブルにする。",
+  about_teach_label: "教育活動",
+  about_teach_p: "ゲームをリリースする傍ら、子供と10代の若者にゲーム開発とデザインを教えています — 3つの学校で300人以上の生徒に、8歳から17歳向けにコンテンツを適応。スタジオコミュニケーションの最高のトレーニングです：10歳の子供がステートマシンの説明について来られるなら、そのスペックはクロスディシプリンレビューを生き残るでしょう。また、マイルストーンと同じようにレッスンのスコープを管理できることを意味します — 複雑なシステムを納品可能なチャンクに分解し、人々が実際に理解したかテストし、先に進む前に調整する。",
+  about_range_label: "デザインの幅",
+  about_range_p: "コアはシステムとエコノミーデザインですが、積極的に分野を横断して取り組んでいます。原神のクエストドキュメントはナラティブとクエスト構造の思考を実証し、Bagre Noturnoはステルスメカニクスとオルタナティブリアリティのストーリーテリングを融合し、Cyberpunk Cityの雰囲気あるロアはワールドビルディングとプログレッションシステムを結びつけています。",
+  about_looking_label: "求職中",
+  about_looking_p: "ハンズオンなデザイン作業とデータ分析を組み合わせてプレイヤー行動を形作れるシステムまたはゲームプレイデザインの役職を探しています — 理想的には中規模〜AAAスタジオでPC/コンソールタイトルに取り組むこと。リモートまたは転勤可。",
+  about_tools_label: "ツール",
+
+  // ── Contact ──
+  contact_resume: "履歴書",
+  contact_download: "PDFをダウンロード",
+
+  // ── Footer ──
+  footer_tagline: "ゲームデザイナー — データドリブンなシステム＆ゲームプレイ",
+
+  // ── Project Detail Modals — Shared ──
+  link_details: "詳細を見る →",
+  pd_contribution: "私の貢献",
+  pd_decisions: "主要なデザイン判断",
+  pd_retro: "次にやり直すなら",
+  pd_solo: "ソロプロジェクト",
+  pd_team6: "6人チーム",
+  pd_team4: "4人チーム",
+  pd_gdd_link: "フルGDD (PDF) →",
+  pdtag_idle: "アイドル メカニクス",
+  pdtag_prestige: "プレステージシステム",
+  pdtag_mux: "モバイルUX",
+  pdtag_metroid: "メトロイドヴァニア",
+  pdtag_souls: "ソウルライク",
+  pdtag_anim: "アニメーションシステム",
+
+  // ── Modal 1: Cyberpunk ──
+  pd1_title: "Idle Cyberpunk City Clicker",
+  pd1_tagline: "ディストピアなサイバーパンク大都市を舞台にしたアイドルクリッカー。パッシブ収入、アクティブクリック、深い進行段階を通じて都市を拡大 — すべてリアルなアナリティクスで計装。",
+  pd1_ss1: "スクリーンショット: エコノミーパネル",
+  pd1_ss2: "スクリーンショット: ビルディングティア",
+  pd1_m1: "オーガニックダウンロード",
+  pd1_m2: "Play Store評価",
+  pd1_m3: "セッション中央値",
+  pd1_m4: "追跡プレイヤー",
+  pd1_contrib: "コンセプトからリリースまでソロで設計・開発。Idle Kingdom Builderの教訓を基に構築 — 深い進行段階とリワード広告/IAPの収益化レイヤーでコアループを拡張。Unity Analyticsで4つのマイルストーンにおけるプレイヤー状態をスナップショットし、エコノミーバグとタイマー永続化の欠陥を特定、v1.70で3つの修正をリリース。",
+  pd1_d1h: "4つの柱のエコノミー",
+  pd1_d1p: "パッシブ、クリッカー、オフライン、アセンションビルディングが異なる進行パスを提供 — 各メカニクスが異なるプレイスタイルを促進。",
+  pd1_d2h: "低予算アナリティクス",
+  pd1_d2p: "Unity Analytics無料枠でデータを最大化する4つのスナップショットイベントを設計。各マイルストーンでビルディング、アップグレード、クリック/パッシブ比率、時間を取得。",
+  pd1_d3h: "価格の非対称性",
+  pd1_d3p: "クリッカービルディングは1.65×、パッシブは1.25×でスケール — 明示的なチュートリアルなしにクリックからパッシブへの移行を機械的に推進。",
+  pd1_d4h: "非侵入的マネタイゼーション",
+  pd1_d4p: "リワード広告はオプトインのみ。バナー広告は周辺に配置。プレイヤーから好評：「押しつけがましくない広告、豊富な報酬、クリーンなUI」。",
+  pd1_retro: "1M → 1Bファネルが73%落ち込む。ミッドティアのパッシブアップグレードコストのスケールが攻撃的すぎる — 乗数を5×から3.5×に削減が次のイテレーション目標。1Kで52%のプレイヤーがアップグレードゼロ。",
+
+  // ── Modal 2: Kingdom Builder ──
+  pd2_title: "Idle Kingdom Builder",
+  pd2_tagline: "中世の王国建設アイドルゲーム。プレイヤーはクリックでゴールドを稼ぎ、家、農場、市場などを建設 — それぞれがパッシブ収入を生成し王国を拡大。",
+  pd2_ss1: "スクリーンショット: 王国ビュー",
+  pd2_ss2: "スクリーンショット: アップグレードパネル",
+  pd2_m2: "D30リテンション",
+  pd2_m3: "カジュアル平均の上",
+  pd2_m4: "ビルディングタイプ",
+  pd2_contrib: "Cookie Clickerの計算式を参考に、よりゆっくりした慎重なペースに調整したコアループとエコノミーシステムをゼロから設計。10種類のビルディング（家から銀行）にアップグレードパスとRoyal Ascensionプレステージシステム。リワード動画とバナーによる広告マネタイゼーションを実装。",
+  pd2_d1h: "Cookie Clickerを基盤に",
+  pd2_d1p: "Cookie Clickerを中毒的にする指数曲線を研究し、ペースを落とした — 中世テーマには慎重な成長が求められる。",
+  pd2_d2h: "Royal Ascension",
+  pd2_d2p: "プレステージシステムが進行をリセットし永久ボーナスを付与。長期プレイヤーにより強い位置から再スタートする理由を提供。",
+  pd2_d3h: "75のアチーブメント",
+  pd2_d3p: "ティア制アチーブメントシステム（コモン→レジェンダリー）。ビルディング、アップグレード、クリック、GPSマイルストーンにわたるマイクロゴールを推進。",
+  pd2_d4h: "アナリティクスなし — 課題",
+  pd2_d4p: "データパイプラインなしでリリース。プレイヤーの離脱ポイントを特定できなかった。この課題がCyberpunk Cityのアナリティクスシステムの直接的動機に。",
+  pd2_retro: "初日からアナリティクスを追加すべきだった — 基本的なマイルストーンイベントでも進行のボトルネックを早期に明らかにできたはず。",
+
+  // ── Modal 3: Guardian's Falls ──
+  pd3_title: "Guardian's Falls — Wounds",
+  pd3_tagline: "パルクールトラバーサルとダッシュストライク戦闘の2.5Dメトロイドヴァニア。PUC-SPの卒業論文として制作 — スコープがデザインスキルであることを教えてくれたプロジェクト。",
+  pd3_cap1: "ダッシュストライク戦闘",
+  pd3_ss1: "スクリーンショット: ゾーントラバーサル",
+  pd3_m1: "チームメンバー",
+  pd3_m2: "開発期間",
+  pd3_m3: "リリースしたゾーン",
+  pd3_m4: "スコープしたメカニクス",
+  pd3_contrib: "ゲームデザイナーとしてスタートし、開発者/プロデューサーへ移行。C#でコアシステムとパルクールメカニクスをプログラミング。アート/サウンドパイプラインを管理。スコープカットを主導：元のドキュメントは8つの移動メカニクス、4+ゾーン、コンボ戦闘、スキルツリーがあった。3つのメカニクス、3ゾーン、ダッシュストライク戦闘に焦点を絞った垂直スライスを提供。",
+  pd3_d1h: "コンボよりダッシュストライク",
+  pd3_d1p: "元の3ヒットコンボシステムはプレイヤーのフローを止めた。ダッシュストライクはプロトタイピングから生まれた — 戦闘が移動システムの延長に。",
+  pd3_d2h: "スタミナをカット",
+  pd3_d2p: "スタミナゲートの撤廃で移動が高速で表現豊かに。リソースシステムが流動的なパルクールの核心的ファンタジーと衝突していた。",
+  pd3_d3h: "ハブよりリニア",
+  pd3_d3p: "ハブと分岐パスをカット。リニアプログレッションでレベルデザインがメカニクスを順番に教える。",
+  pd3_d4h: "環境ナラティブ",
+  pd3_d4p: "カットシーンなし、NPCダイアログなし。レベルデザインと環境ディテールで世界が物語を伝える。",
+  pd3_retro: "もっと早く、もっと頻繁にテストすべきだった。ベータテスターがナビゲーションとコントロールの問題を発見した。月1でスコープの上限を厳格に設定すべきだった。",
+
+  // ── Modal 4: Beasts of Agony ──
+  pd4_title: "Beasts of Agony",
+  pd4_tagline: "PUCJam 2023で9日間で制作したソウルライクのボスファイトデモ。テーマ：「聖なるもの」。7人チームでコア戦闘システムをゼロから設計・プログラミング。",
+  pd4_award: "ベストアート — PUCJam 2023",
+  pd4_ss1: "スクリーンショット: ボスエンカウンター",
+  pd4_m2: "リリースまでの日数",
+  pd4_m3: "ベストアート賞",
+  pd4_contrib: "コア戦闘システムを設計・プログラミング — ヒットボックス、アニメーションツリー、生死ステートマシン、戦闘バランス。プロダクションも担当：7人チームで日次マイルストーンを設定し、9日目までにボスファイトがプレイ可能でポリッシュされた状態を確保。",
+  pd4_d1h: "1体のボスを完璧に",
+  pd4_d1p: "浅い行動の複数敵ではなく、読みやすいテル、パニッシュウィンドウ、エスカレートするフェーズを持つ1体のボスに全デザイン努力を集中。",
+  pd4_d2h: "スピードより重み",
+  pd4_d2p: "アニメーションはインパクトと可読性を優先。攻撃に意図を伝える予備動作フレーム — 「公正だが厳しい」ソウルライクの約束。",
+
+  // ── Modal 5: Bagre Noturno ──
+  pd5_title: "Operação Bagre Noturno",
+  pd5_tagline: "2031年の架空のブラジルを舞台にしたステルスアクションゲーム。メタルギアソリッドにインスパイアされたスパイ活動とブラジルの不条理なコメディを融合。CtrlAltJam#3で制作。",
+  pd5_ss1: "スクリーンショット: ステルスゲームプレイ",
+  pd5_m2: "開発期間",
+  pd5_m3: "担当した役割数",
+  pd5_contrib: "ゲームデザイナー、プロデューサー、3Dアーティスト。レベルレイアウト、コアのステルス/シューティングメカニクスを設計し、ナラティブを執筆 — ブラジルの地政学的設定でスパイ活動と不条理なコメディを融合。3D環境アセットを作成し、4人チームで2週間の締め切りの中プロダクションパイプラインを管理。",
+  pd5_d1h: "ステルスファーストのループ",
+  pd5_d1p: "検出は即失敗ではなくエスカレーションを発動。プレイヤーは戦って脱出するか退却できる — ジャムスコープのプロジェクトでフラストレーションなく緊張感を維持。",
+  pd5_d2h: "コメディとしてのワールドビルディング",
+  pd5_d2p: "不条理な架空ブラジルの設定で、ナラティブが真面目にならずに重みを持つ — 説明ではなくゲームプレイを通じた地政学的風刺。",
+}
+};
+
+// ── LANGUAGE STATE ──────────────────────────────────────
+let currentLang = 'en';
+const langMeta = {
+  en: { flag: '🇺🇸', label: 'EN', htmlLang: 'en' },
+  pt: { flag: '🇧🇷', label: 'PT', htmlLang: 'pt-BR' },
+  ja: { flag: '🇯🇵', label: 'JA', htmlLang: 'ja' },
+};
+const langCycle = ['en', 'pt', 'ja'];
+
+function applyLanguage(lang) {
+  currentLang = lang;
+  if (lang === 'en') {
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      if (el.dataset.i18nDefault === undefined) return;
+      el.textContent = el.dataset.i18nDefault;
+    });
+  } else {
+    const dict = translations[lang];
+    if (!dict) return;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+      const key = el.getAttribute('data-i18n');
+      if (dict[key]) el.textContent = dict[key];
+    });
+  }
+  const meta = langMeta[lang] || langMeta.en;
+  document.documentElement.lang = meta.htmlLang;
+  document.getElementById('toggleFlag').textContent = meta.flag;
+  document.getElementById('toggleLabel').textContent = meta.label;
+}
+
+function setLanguage(lang) {
+  localStorage.setItem('portfolio-lang', lang);
+  applyLanguage(lang);
+  const overlay = document.getElementById('langOverlay');
+  overlay.classList.add('hidden');
+  setTimeout(() => overlay.style.display = 'none', 400);
+}
+
+function toggleLanguage() {
+  const idx = langCycle.indexOf(currentLang);
+  const next = langCycle[(idx + 1) % langCycle.length];
+  localStorage.setItem('portfolio-lang', next);
+  applyLanguage(next);
+}
+
+// ── PROJECT DETAIL MODALS ────────────────────────────────
+let activeModal = null;
+function openProjectModal(id) {
+  const overlay = document.getElementById('pd-' + id);
+  if (!overlay) return;
+  if (activeModal) activeModal.classList.remove('open');
+  overlay.classList.add('open');
+  activeModal = overlay;
+  document.body.style.overflow = 'hidden';
+}
+function closeProjectModal() {
+  if (activeModal) {
+    activeModal.classList.remove('open');
+    activeModal = null;
+    document.body.style.overflow = '';
+  }
+}
+
+// ── INIT: Store English defaults, then check saved lang ──
+document.addEventListener('DOMContentLoaded', function() {
+  // Save original English text as data attributes
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    el.dataset.i18nDefault = el.textContent;
+  });
+
+  const overlay = document.getElementById('langOverlay');
+  const saved = localStorage.getItem('portfolio-lang');
+
+  if (saved && langMeta[saved]) {
+    // Returning visitor — apply saved language, hide popup
+    applyLanguage(saved);
+    if (overlay) {
+      overlay.classList.add('hidden');
+      overlay.style.display = 'none';
+    }
+  } else {
+    // First visit — make sure popup is visible
+    if (overlay) {
+      overlay.style.display = 'flex';
+      overlay.classList.remove('hidden');
+    }
+  }
+});
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProjectModal(); });
+</script>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // ── Nav scroll state ─────────────────────────────────────

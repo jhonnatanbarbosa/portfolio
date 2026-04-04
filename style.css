@@ -1248,11 +1248,14 @@ footer {
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   z-index: 9999;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   opacity: 1;
   transition: opacity 0.35s ease;
+}
+.lang-overlay.visible {
+  display: flex;
 }
 .lang-overlay.hidden {
   opacity: 0;
@@ -1352,11 +1355,14 @@ footer {
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   z-index: 9999;
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   opacity: 1;
   transition: opacity 0.35s ease;
+}
+.lang-overlay.visible {
+  display: flex;
 }
 .lang-overlay.hidden {
   opacity: 0;

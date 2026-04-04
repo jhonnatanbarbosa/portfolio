@@ -26,15 +26,13 @@
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
-<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <!-- ── LANGUAGE SELECTOR OVERLAY ──────────────────────── -->
-<div class="lang-overlay" id="langOverlay" style="display:flex">
+<div class="lang-overlay" id="langOverlay">
   <div class="lang-modal">
     <h2>Welcome · Bem-vindo · ようこそ</h2>
     <p>Choose your language · Escolha seu idioma · 言語を選択</p>
@@ -95,7 +93,7 @@
     </div>
     <div class="intro-links">
       <a href="docs/CV_Jhonnatan_Barbosa_Game_Designer.pdf" target="_blank" rel="noopener" data-i18n="link_resume">Resume (PDF)</a>
-      <a href="/cdn-cgi/l/email-protection#5d3735323e3f3c2f3f322e3c1d3a303c3431733e3230">Email</a>
+      <a href="mailto:jhocbarbosa@gmail.com">Email</a>
       <a href="https://linkedin.com/in/jhonnatanbarbosa" target="_blank" rel="noopener">LinkedIn</a>
     </div>
   </div>
@@ -839,7 +837,7 @@
       <span class="section-aside" data-i18n="sec_contact_aside">Currently seeking a systems or gameplay design role · Open to remote or relocation</span>
     </div>
     <div class="contact-row reveal">
-      <a href="/cdn-cgi/l/email-protection#016b696e62636073636e726041666c60686d2f626e6c" class="contact-item"><span class="ci-label">Email</span> <span class="__cf_email__" data-cfemail="f3999b9c90919281919c8092b3949e929a9fdd909c9e">[email&#160;protected]</span></a>
+      <a href="mailto:jhocbarbosa@gmail.com" class="contact-item"><span class="ci-label">Email</span> jhocbarbosa@gmail.com</a>
       <a href="https://linkedin.com/in/jhonnatanbarbosa" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">LinkedIn</span> /in/jhonnatanbarbosa</a>
       <a href="https://jhorro.itch.io" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">itch.io</span> jhorro.itch.io</a>
       <a href="https://www.jhorro.com" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">Portfolio</span> jhorro.com</a>
@@ -1800,7 +1798,7 @@ function setLanguage(lang) {
   applyLanguage(lang);
   const overlay = document.getElementById('langOverlay');
   overlay.classList.add('hidden');
-  setTimeout(() => overlay.style.display = 'none', 400);
+  setTimeout(() => overlay.classList.remove('visible'), 400);
 }
 
 function toggleLanguage() {
@@ -1841,14 +1839,10 @@ document.addEventListener('DOMContentLoaded', function() {
   if (saved && langMeta[saved]) {
     // Returning visitor — apply saved language, hide popup
     applyLanguage(saved);
-    if (overlay) {
-      overlay.classList.add('hidden');
-      overlay.style.display = 'none';
-    }
   } else {
-    // First visit — make sure popup is visible
+    // First visit — show popup
     if (overlay) {
-      overlay.style.display = 'flex';
+      overlay.classList.add('visible');
       overlay.classList.remove('hidden');
     }
   }
@@ -1856,7 +1850,7 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProjectModal(); });
 </script>
 
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 // ── Nav scroll state ─────────────────────────────────────
 const nav = document.querySelector('nav');
 const progressBar = document.querySelector('.scroll-progress');

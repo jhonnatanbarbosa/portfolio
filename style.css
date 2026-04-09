@@ -1052,7 +1052,7 @@ section + section { border-top: 1px solid var(--border-soft); }
   display: flex; align-items: center; gap: 0.5rem;
   color: var(--accent);
 }
-.mechanic-spotlight h4 {
+.mechanic-spotlight h3 {
   font-family: 'Instrument Serif', serif;
   font-size: 0.92rem; font-weight: 400;
   margin-bottom: 0.3rem; line-height: 1.25;
@@ -1083,7 +1083,7 @@ section + section { border-top: 1px solid var(--border-soft); }
   transform: translateY(-2px);
   box-shadow: var(--shadow-soft);
 }
-.takeaway-card h4 {
+.takeaway-card h3 {
   font-family: 'Instrument Serif', serif;
   font-size: 0.85rem; font-weight: 400;
   margin-bottom: 0.2rem; line-height: 1.25;
@@ -1555,7 +1555,7 @@ footer {
   padding: 14px 16px; background: var(--surface);
   border: 1px solid var(--border); border-radius: 10px;
 }
-.pd-detail-card h4 { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
+.pd-detail-card h3 { font-size: 0.82rem; font-weight: 600; color: var(--text); margin-bottom: 4px; }
 .pd-detail-card p { font-size: 0.78rem; color: var(--text-dim); line-height: 1.55; }
 
 .pd-meta-row { display: flex; gap: 24px; flex-wrap: wrap; margin-bottom: 20px; font-size: 0.78rem; }

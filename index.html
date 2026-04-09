@@ -16,7 +16,7 @@
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="pt_BR">
-<meta property="og:locale:alternate" content="ja_JP">
+<!-- <meta property="og:locale:alternate" content="ja_JP"> -->
 
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary_large_image">
@@ -28,14 +28,29 @@
 <link rel="icon" type="image/svg+xml" href="favicon.svg">
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Jhonnatan Barbosa",
+  "url": "https://www.jhorro.com",
+  "jobTitle": "Game Designer",
+  "description": "Data-driven systems & gameplay designer. 5+ years shipping titles across mobile, PC, and web.",
+  "sameAs": [
+    "https://linkedin.com/in/jhonnatanbarbosa",
+    "https://jhorro.itch.io"
+  ]
+}
+</script>
 </head>
 <body>
 
 <!-- ── LANGUAGE SELECTOR OVERLAY ──────────────────────── -->
 <div class="lang-overlay" id="langOverlay">
   <div class="lang-modal">
-    <h2>Welcome · Bem-vindo · ようこそ</h2>
-    <p>Choose your language · Escolha seu idioma · 言語を選択</p>
+    <h2>Welcome · Bem-vindo</h2>
+    <p>Choose your language · Escolha seu idioma</p>
     <div class="lang-buttons">
       <button class="lang-btn" onclick="setLanguage('en')">
         <span class="flag">🇺🇸</span>
@@ -47,11 +62,11 @@
         Português
         <span class="label">Brasileiro</span>
       </button>
-      <button class="lang-btn" onclick="setLanguage('ja')">
+      <!-- <button class="lang-btn" onclick="setLanguage('ja')">
         <span class="flag">🇯🇵</span>
         日本語
         <span class="label">Japanese</span>
-      </button>
+      </button> -->
     </div>
   </div>
 </div>
@@ -115,7 +130,7 @@
     <!-- Project 1: Idle Cyberpunk City Clicker -->
     <div class="project-card reveal">
       <div class="project-thumb">
-        <video autoplay muted loop playsinline aria-label="Idle Cyberpunk City Clicker gameplay showing neon cityscape and upgrade UI"><source src="media/01optimizedVideo-Cyberpunk.mp4" type="video/mp4"></video>
+        <video autoplay muted loop playsinline aria-label="Idle Cyberpunk City Clicker gameplay showing neon cityscape and upgrade UI"><source src="media/01optimizedVideo-Cyberpunk.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
       </div>
       <div class="project-body">
         <div class="project-top-row">
@@ -144,8 +159,8 @@
         </div>
         <div class="project-actions">
           <a href="#cyberpunk-analytics" data-i18n="p1_link_case">Analytics case study →</a>
-          <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener" data-i18n="p1_link_play">Play on Google Play →</a>
-          <a class="pd-trigger" onclick="openProjectModal('cyberpunk')" data-i18n="link_details">View details →</a>
+          <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener" data-i18n="p1_link_play">Cyberpunk City on Google Play →</a>
+          <a class="pd-trigger" href="#pd-cyberpunk" role="button" onclick="event.preventDefault();openProjectModal('cyberpunk')" data-i18n="link_details">View details →</a>
         </div>
         <!--<div class="player-reviews">
           <span class="pr-label">Player reviews</span>
@@ -168,7 +183,7 @@
     <!-- Project 2: Idle Kingdom Builder -->
     <div class="project-card reveal">
       <div class="project-thumb">
-        <video autoplay muted loop playsinline aria-label="Idle Kingdom Builder gameplay showing kingdom construction and resource management"><source src="media/02optimizedVideo-IdleKingdom.mp4" type="video/mp4"></video>
+        <video autoplay muted loop playsinline aria-label="Idle Kingdom Builder gameplay showing kingdom construction and resource management"><source src="media/02optimizedVideo-IdleKingdom.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
       </div>
       <div class="project-body">
         <div class="project-top-row">
@@ -195,8 +210,8 @@
           <span class="ptag" data-i18n="tag_firstship">First Ship</span>
         </div>
         <div class="project-actions">
-          <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener" data-i18n="p2_link_play">Play on Google Play →</a>
-          <a class="pd-trigger" onclick="openProjectModal('kingdom')" data-i18n="link_details">View details →</a>
+          <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener" data-i18n="p2_link_play">Kingdom Builder on Google Play →</a>
+          <a class="pd-trigger" href="#pd-kingdom" role="button" onclick="event.preventDefault();openProjectModal('kingdom')" data-i18n="link_details">View details →</a>
         </div>
       </div>
     </div>
@@ -204,7 +219,7 @@
     <!-- Project 3: Guardian's Falls -->
     <div class="project-card reveal">
       <div class="project-thumb">
-          <video autoplay muted loop playsinline aria-label="Guardian's Falls parkour traversal and combat gameplay"><source src="media/010optimizedVideo-Guardians1.mp4" type="video/mp4"></video>
+          <video autoplay muted loop playsinline aria-label="Guardian's Falls parkour traversal and combat gameplay"><source src="media/010optimizedVideo-Guardians1.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
       </div>
       <div class="project-body">
         <div class="project-top-row">
@@ -235,7 +250,7 @@
         <div class="project-actions">
           <a href="#guardians-case-study" data-i18n="p3_link_case">Case study →</a>
           <a href="https://hanada1nonly.itch.io/guardians-fall-wounds" target="_blank" rel="noopener" data-i18n="p3_link_play">Play on Itch.io →</a>
-          <a class="pd-trigger" onclick="openProjectModal('guardians')" data-i18n="link_details">View details →</a>
+          <a class="pd-trigger" href="#pd-guardians" role="button" onclick="event.preventDefault();openProjectModal('guardians')" data-i18n="link_details">View details →</a>
         </div>
       </div>
     </div>
@@ -243,7 +258,7 @@
     <!-- Project 4: Beasts of Agony (Showcase Card) -->
     <div class="project-card reveal">
       <div class="project-thumb">
-          <video autoplay muted loop playsinline aria-label="Beasts of Agony souls-like boss fight combat"><source src="media/04optimizedVideo-Beastsofagony.mp4" type="video/mp4"></video>
+          <video autoplay muted loop playsinline aria-label="Beasts of Agony souls-like boss fight combat"><source src="media/04optimizedVideo-Beastsofagony.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
       </div>
       <div class="project-body">
         <div class="project-top-row">
@@ -270,7 +285,7 @@
         </div>
         <div class="project-actions">
           <a href="https://www.jhorro.com/beastsofagony" target="_blank" rel="noopener">Play on itch.io →</a>
-          <a class="pd-trigger" onclick="openProjectModal('beasts')" data-i18n="link_details">View details →</a>
+          <a class="pd-trigger" href="#pd-beasts" role="button" onclick="event.preventDefault();openProjectModal('beasts')" data-i18n="link_details">View details →</a>
         </div>
       </div>
     </div>
@@ -278,7 +293,7 @@
     <!-- Project 5: Operação Bagre Noturno (Showcase Card) -->
     <div class="project-card reveal">
       <div class="project-thumb">
-          <video autoplay muted loop playsinline aria-label="Operação Bagre Noturno stealth action gameplay in alternate-reality Brazil"><source src="media/05optimizedVideo-Bagre.mp4" type="video/mp4"></video>
+          <video autoplay muted loop playsinline aria-label="Operação Bagre Noturno stealth action gameplay in alternate-reality Brazil"><source src="media/05optimizedVideo-Bagre.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
       </div>
       <div class="project-body">
         <div class="project-top-row">
@@ -305,7 +320,7 @@
         </div>
         <div class="project-actions">
           <a href="https://jhorro.itch.io/operacao-bagre-noturno" target="_blank" rel="noopener">Play on itch.io →</a>
-          <a class="pd-trigger" onclick="openProjectModal('bagre')" data-i18n="link_details">View details →</a>
+          <a class="pd-trigger" href="#pd-bagre" role="button" onclick="event.preventDefault();openProjectModal('bagre')" data-i18n="link_details">View details →</a>
         </div>
       </div>
     </div>
@@ -338,7 +353,7 @@
       </div>
       <div class="additional-item">
         <div class="ai-thumb">
-           <video autoplay muted loop playsinline aria-label="Maldição de Netuno wave-based shooting action"><source src="media/06optimizedVideo-Netuno.mp4" type="video/mp4"></video>
+           <video autoplay muted loop playsinline aria-label="Maldição de Netuno wave-based shooting action"><source src="media/06optimizedVideo-Netuno.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
         </div>
         <div class="ai-body">
           <div class="ai-name">Maldição de Netuno</div>
@@ -349,7 +364,7 @@
       </div>
       <div class="additional-item">
         <div class="ai-thumb">
-           <video autoplay muted loop playsinline aria-label="Nárkissos first-person horror exploration"><source src="media/07optimizedVideo-Narksisso.mp4" type="video/mp4"></video>
+           <video autoplay muted loop playsinline aria-label="Nárkissos first-person horror exploration"><source src="media/07optimizedVideo-Narksisso.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
         </div>
         <div class="ai-body">
           <div class="ai-name">Nárkissos</div>
@@ -360,7 +375,7 @@
       </div>
     <!--<div class="additional-item">
         <div class="ai-thumb">
-           <video autoplay muted loop playsinline aria-label="Wings of Hope open-world island survival terrain"><source src="media/template" type="video/mp4"></video>
+           <video autoplay muted loop playsinline aria-label="Wings of Hope open-world island survival terrain"><source src="media/template" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
         </div>
         <div class="ai-body">
           <div class="ai-name">Wings of Hope</div>
@@ -370,7 +385,7 @@
       </div>-->
       <div class="additional-item">
         <div class="ai-thumb">
-           <video autoplay muted loop playsinline aria-label="Riddles of the Sands open-world puzzle environment"><source src="media/08optimizedVideo-Sands.mp4" type="video/mp4"></video>
+           <video autoplay muted loop playsinline aria-label="Riddles of the Sands open-world puzzle environment"><source src="media/08optimizedVideo-Sands.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
         </div>
         <div class="ai-body">
           <div class="ai-name">Riddles of the Sands</div>
@@ -380,7 +395,7 @@
       </div>
       <!--<div class="additional-item">
         <div class="ai-thumb">
-           <video autoplay muted loop playsinline aria-label="Echoes of the Underground loop puzzle horror"><source src="media/template" type="video/mp4"></video>
+           <video autoplay muted loop playsinline aria-label="Echoes of the Underground loop puzzle horror"><source src="media/template" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
         </div>
         <div class="ai-body">
           <div class="ai-name">Echoes of the Underground</div>
@@ -390,7 +405,7 @@
       </div>-->
       <div class="additional-item">
         <div class="ai-thumb">
-           <video autoplay muted loop playsinline aria-label="Mega-Racing platform racing track with obstacles"><source src="media/09optimizedVideo-MegaKart.mp4" type="video/mp4"></video>
+           <video autoplay muted loop playsinline aria-label="Mega-Racing platform racing track with obstacles"><source src="media/09optimizedVideo-MegaKart.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
         </div>
         <div class="ai-body">
           <div class="ai-name">Mega-Racing</div>
@@ -601,14 +616,14 @@
 
     <div class="mechanic-spotlight reveal">
       <div class="ms-visual">
-           <video autoplay muted loop playsinline aria-label="Guardian's Falls dash-strike combat mechanic in action"><source src="media/03optimizedVideo-Guardians2.mp4" type="video/mp4"></video>
+           <video autoplay muted loop playsinline aria-label="Guardian's Falls dash-strike combat mechanic in action"><source src="media/03optimizedVideo-Guardians2.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
       </div>
       <div class="ms-body">
         <div class="ms-tag">
           <span>Core · Combat</span>
           <span class="badge badge-evolved">Evolved</span>
         </div>
-        <h4 data-i18n="ms_h">Combat is movement</h4>
+        <h3 data-i18n="ms_h">Combat is movement</h3>
         <p data-i18n="ms_p">
           Instead of standing and executing combos, the player dashes into enemies to attack.
           The original doc specified a 3-hit combo tree and special attacks — early prototypes had
@@ -629,15 +644,15 @@
 
     <div class="takeaway-grid reveal-stagger">
       <div class="takeaway-card reveal">
-        <h4 data-i18n="tk1_h">Scope is a design skill</h4>
+        <h3 data-i18n="tk1_h">Scope is a design skill</h3>
         <p data-i18n="tk1_p">The original doc had 8 movement mechanics. The shipped game has 3 — and they feel better. This mindset defined how I built both idle games: start with the minimum viable loop, not the maximum vision.</p>
       </div>
       <div class="takeaway-card reveal">
-        <h4 data-i18n="tk2_h">Test before you're ready</h4>
+        <h3 data-i18n="tk2_h">Test before you're ready</h3>
         <p data-i18n="tk2_p">Even imperfect testing with non-expert players surfaces problems you can't see from the inside. Beta testers caught level navigation issues and control pain points we'd gone blind to.</p>
       </div>
       <div class="takeaway-card reveal">
-        <h4 data-i18n="tk3_h">Mechanics must talk to each other</h4>
+        <h3 data-i18n="tk3_h">Mechanics must talk to each other</h3>
         <p data-i18n="tk3_p">The combo system fought the movement system. The dash-strike emerged because we prototyped both and noticed the conflict. Design documents are hypotheses; prototypes are experiments.</p>
       </div>
     </div>
@@ -864,7 +879,7 @@
         <p class="pd-tagline" data-i18n="pd1_tagline">An idle clicker set in a dystopian cyberpunk metropolis. Players earn credits to expand their city through passive income, active clicking, and deep progression tiers — all instrumented with real analytics.</p>
       </div>
       <div class="pd-gallery">
-        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/01optimizedVideo-Cyberpunk.mp4" type="video/mp4"></video></div>
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/01optimizedVideo-Cyberpunk.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video></div>
         <div class="pd-gallery-item" style="background:linear-gradient(135deg,#1a1a2e,#16213e);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd1_ss1">Screenshot: Economy panel</span></div>
         <div class="pd-gallery-item" style="background:linear-gradient(135deg,#1a2a1a,#162e16);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd1_ss2">Screenshot: Building tiers</span></div>
       </div>
@@ -879,10 +894,10 @@
         <div class="pd-divider"></div>
         <div class="pd-section"><div class="pd-section-label" data-i18n="pd_decisions">Key Design Decisions</div>
           <div class="pd-details-grid">
-            <div class="pd-detail-card"><h4 data-i18n="pd1_d1h">4-Pillar Economy</h4><p data-i18n="pd1_d1p">Passive, Clicker, Offline, and Ascension buildings offer distinct progression paths — each mechanically nudges different playstyles.</p></div>
-            <div class="pd-detail-card"><h4 data-i18n="pd1_d2h">Budget Analytics</h4><p data-i18n="pd1_d2p">Designed 4 snapshot events to maximize data under Unity Analytics' free tier. Captured buildings, upgrades, click/passive ratio, and time at each milestone.</p></div>
-            <div class="pd-detail-card"><h4 data-i18n="pd1_d3h">Price Asymmetry</h4><p data-i18n="pd1_d3p">Clicker buildings scale at 1.65× vs passive at 1.25× — this mechanically drives the click-to-passive transition without explicit tutorialization.</p></div>
-            <div class="pd-detail-card"><h4 data-i18n="pd1_d4h">Non-Intrusive Monetization</h4><p data-i18n="pd1_d4p">Reward ads are opt-in only; banner ads stay peripheral. Players praised: "non-intrusive ads, a lot of rewards and a clean UI."</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd1_d1h">4-Pillar Economy</h3><p data-i18n="pd1_d1p">Passive, Clicker, Offline, and Ascension buildings offer distinct progression paths — each mechanically nudges different playstyles.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd1_d2h">Budget Analytics</h3><p data-i18n="pd1_d2p">Designed 4 snapshot events to maximize data under Unity Analytics' free tier. Captured buildings, upgrades, click/passive ratio, and time at each milestone.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd1_d3h">Price Asymmetry</h3><p data-i18n="pd1_d3p">Clicker buildings scale at 1.65× vs passive at 1.25× — this mechanically drives the click-to-passive transition without explicit tutorialization.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd1_d4h">Non-Intrusive Monetization</h3><p data-i18n="pd1_d4p">Reward ads are opt-in only; banner ads stay peripheral. Players praised: "non-intrusive ads, a lot of rewards and a clean UI."</p></div>
           </div>
         </div>
         <div class="pd-divider"></div>
@@ -892,7 +907,7 @@
           <span class="pd-tag" data-i18n="tag_economy">Economy Design</span><span class="pd-tag" data-i18n="tag_progression">Progression Tuning</span><span class="pd-tag">Unity Analytics</span><span class="pd-tag">AdMob / IAP</span><span class="pd-tag" data-i18n="tag_datadriven">Data-Driven Iteration</span><span class="pd-tag" data-i18n="pdtag_idle">Idle Mechanics</span><span class="pd-tag" data-i18n="pdtag_prestige">Prestige Systems</span><span class="pd-tag" data-i18n="pdtag_mux">Mobile UX</span>
         </div>
         <div class="pd-actions">
-          <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener" class="pd-primary" data-i18n="p1_link_play">Play on Google Play</a>
+          <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener" class="pd-primary" data-i18n="p1_link_play">Cyberpunk City on Google Play</a>
           <a href="#cyberpunk-analytics" onclick="closeProjectModal()" class="pd-secondary" data-i18n="p1_link_case">Analytics Case Study →</a>
           <a href="docs/GDD_IdleCyberpunkCityClicker_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" class="pd-secondary" data-i18n="pd_gdd_link">Full GDD (PDF) →</a>
         </div>
@@ -913,7 +928,7 @@
         <p class="pd-tagline" data-i18n="pd2_tagline">A medieval kingdom-building idle game. Players click to earn gold and build houses, farms, markets, and more — each generating passive income to expand the kingdom further.</p>
       </div>
       <div class="pd-gallery">
-        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/02optimizedVideo-IdleKingdom.mp4" type="video/mp4"></video></div>
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/02optimizedVideo-IdleKingdom.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video></div>
         <div class="pd-gallery-item" style="background:linear-gradient(135deg,#2a2a1a,#2e2616);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd2_ss1">Screenshot: Kingdom view</span></div>
         <div class="pd-gallery-item" style="background:linear-gradient(135deg,#1a2a2a,#162e2e);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd2_ss2">Screenshot: Upgrade panel</span></div>
       </div>
@@ -928,10 +943,10 @@
         <div class="pd-divider"></div>
         <div class="pd-section"><div class="pd-section-label" data-i18n="pd_decisions">Key Design Decisions</div>
           <div class="pd-details-grid">
-            <div class="pd-detail-card"><h4 data-i18n="pd2_d1h">Cookie Clicker as Foundation</h4><p data-i18n="pd2_d1p">Studied the exponential curves that make Cookie Clicker addictive, then slowed the pace — medieval theme calls for deliberate growth, not frantic clicking.</p></div>
-            <div class="pd-detail-card"><h4 data-i18n="pd2_d2h">Royal Ascension</h4><p data-i18n="pd2_d2p">Prestige system resets progress for permanent bonuses. Gives long-term players a reason to restart and re-engage with the economy from a stronger position.</p></div>
-            <div class="pd-detail-card"><h4 data-i18n="pd2_d3h">75 Achievements</h4><p data-i18n="pd2_d3p">Tiered achievement system (Common → Legendary) across buildings, upgrades, clicking, and GPS milestones. Drives micro-goals between major progression beats.</p></div>
-            <div class="pd-detail-card"><h4 data-i18n="pd2_d4h">No Analytics — The Gap</h4><p data-i18n="pd2_d4p">Shipped without a data pipeline. Couldn't identify where players dropped off. This gap directly motivated the analytics system built for Cyberpunk City.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd2_d1h">Cookie Clicker as Foundation</h3><p data-i18n="pd2_d1p">Studied the exponential curves that make Cookie Clicker addictive, then slowed the pace — medieval theme calls for deliberate growth, not frantic clicking.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd2_d2h">Royal Ascension</h3><p data-i18n="pd2_d2p">Prestige system resets progress for permanent bonuses. Gives long-term players a reason to restart and re-engage with the economy from a stronger position.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd2_d3h">75 Achievements</h3><p data-i18n="pd2_d3p">Tiered achievement system (Common → Legendary) across buildings, upgrades, clicking, and GPS milestones. Drives micro-goals between major progression beats.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd2_d4h">No Analytics — The Gap</h3><p data-i18n="pd2_d4p">Shipped without a data pipeline. Couldn't identify where players dropped off. This gap directly motivated the analytics system built for Cyberpunk City.</p></div>
           </div>
         </div>
         <div class="pd-divider"></div>
@@ -941,7 +956,7 @@
           <span class="pd-tag" data-i18n="tag_economy">Economy Design</span><span class="pd-tag" data-i18n="tag_curves">Progression Curves</span><span class="pd-tag" data-i18n="tag_monetization">Monetization</span><span class="pd-tag" data-i18n="tag_firstship">First Ship</span><span class="pd-tag" data-i18n="pdtag_prestige">Prestige Systems</span><span class="pd-tag" data-i18n="pdtag_idle">Idle Mechanics</span>
         </div>
         <div class="pd-actions">
-          <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener" class="pd-primary" data-i18n="p2_link_play">Play on Google Play</a>
+          <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener" class="pd-primary" data-i18n="p2_link_play">Kingdom Builder on Google Play</a>
           <a href="docs/GDD_IdleKingdomBuilder_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" class="pd-secondary" data-i18n="pd_gdd_link">Full GDD (PDF) →</a>
         </div>
       </div>
@@ -961,8 +976,8 @@
         <p class="pd-tagline" data-i18n="pd3_tagline">A 2.5D Metroidvania with parkour traversal and dash-strike combat. Built as a graduation thesis at PUC-SP — the project that taught me scope is a design skill.</p>
       </div>
       <div class="pd-gallery">
-        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/010optimizedVideo-Guardians1.mp4" type="video/mp4"></video></div>
-        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/03optimizedVideo-Guardians2.mp4" type="video/mp4"></video><div class="pd-gallery-caption" data-i18n="pd3_cap1">Dash-strike combat</div></div>
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/010optimizedVideo-Guardians1.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video></div>
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/03optimizedVideo-Guardians2.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video><div class="pd-gallery-caption" data-i18n="pd3_cap1">Dash-strike combat</div></div>
         <div class="pd-gallery-item" style="background:linear-gradient(135deg,#1a1a2e,#1a2e1a);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd3_ss1">Screenshot: Zone traversal</span></div>
       </div>
       <div class="pd-body">
@@ -976,10 +991,10 @@
         <div class="pd-divider"></div>
         <div class="pd-section"><div class="pd-section-label" data-i18n="pd_decisions">Key Design Decisions</div>
           <div class="pd-details-grid">
-            <div class="pd-detail-card"><h4 data-i18n="pd3_d1h">Dash-Strike Over Combos</h4><p data-i18n="pd3_d1p">The original 3-hit combo system stopped player flow. The dash-strike emerged from prototyping — combat became an extension of the movement system instead of fighting it.</p></div>
-            <div class="pd-detail-card"><h4 data-i18n="pd3_d2h">Stamina Cut</h4><p data-i18n="pd3_d2p">Removing the stamina gate made movement fast and expressive. The resource system was fighting the core fantasy of fluid parkour traversal.</p></div>
-            <div class="pd-detail-card"><h4 data-i18n="pd3_d3h">Linear Over Hub</h4><p data-i18n="pd3_d3p">Cut the hub and branching paths. Linear progression lets the level design teach mechanics sequentially — each zone introduces and tests a new skill.</p></div>
-            <div class="pd-detail-card"><h4 data-i18n="pd3_d4h">Environmental Narrative</h4><p data-i18n="pd3_d4p">No cutscenes, no NPC dialogue. The world tells the story through level design and environmental details — the narrative survived the scope cuts by changing form.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd3_d1h">Dash-Strike Over Combos</h3><p data-i18n="pd3_d1p">The original 3-hit combo system stopped player flow. The dash-strike emerged from prototyping — combat became an extension of the movement system instead of fighting it.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd3_d2h">Stamina Cut</h3><p data-i18n="pd3_d2p">Removing the stamina gate made movement fast and expressive. The resource system was fighting the core fantasy of fluid parkour traversal.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd3_d3h">Linear Over Hub</h3><p data-i18n="pd3_d3p">Cut the hub and branching paths. Linear progression lets the level design teach mechanics sequentially — each zone introduces and tests a new skill.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd3_d4h">Environmental Narrative</h3><p data-i18n="pd3_d4p">No cutscenes, no NPC dialogue. The world tells the story through level design and environmental details — the narrative survived the scope cuts by changing form.</p></div>
           </div>
         </div>
         <div class="pd-divider"></div>
@@ -1009,7 +1024,7 @@
         <p class="pd-tagline" data-i18n="pd4_tagline">A souls-like boss fight demo built in 9 days for PUCJam 2023. Theme: "Sacred." Designed and programmed the core fighting system from scratch with a team of 7.</p>
       </div>
       <div class="pd-gallery">
-        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/04optimizedVideo-Beastsofagony.mp4" type="video/mp4"></video></div>
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/04optimizedVideo-Beastsofagony.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video></div>
         <div class="pd-gallery-item" style="background:linear-gradient(135deg,#2e1a1a,#2e1626);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd4_ss1">Screenshot: Boss encounter</span></div>
       </div>
       <div class="pd-body">
@@ -1022,8 +1037,8 @@
         <div class="pd-divider"></div>
         <div class="pd-section"><div class="pd-section-label" data-i18n="pd_decisions">Key Design Decisions</div>
           <div class="pd-details-grid">
-            <div class="pd-detail-card"><h4 data-i18n="pd4_d1h">One Boss, Done Well</h4><p data-i18n="pd4_d1p">Instead of multiple enemies with shallow behavior, focused all design effort on a single boss with readable tells, punish windows, and escalating phases.</p></div>
-            <div class="pd-detail-card"><h4 data-i18n="pd4_d2h">Weight Over Speed</h4><p data-i18n="pd4_d2p">Animations prioritize impact and readability. Attacks have wind-up frames that telegraph intent — the souls-like contract of "fair but punishing."</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd4_d1h">One Boss, Done Well</h3><p data-i18n="pd4_d1p">Instead of multiple enemies with shallow behavior, focused all design effort on a single boss with readable tells, punish windows, and escalating phases.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd4_d2h">Weight Over Speed</h3><p data-i18n="pd4_d2p">Animations prioritize impact and readability. Attacks have wind-up frames that telegraph intent — the souls-like contract of "fair but punishing."</p></div>
           </div>
         </div>
         <div class="pd-divider"></div>
@@ -1050,7 +1065,7 @@
         <p class="pd-tagline" data-i18n="pd5_tagline">A stealth-action game set in an alternate 2031 Brazil, blending Metal Gear Solid-inspired espionage with absurd Brazilian comedy. Built for CtrlAltJam#3.</p>
       </div>
       <div class="pd-gallery">
-        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/05optimizedVideo-Bagre.mp4" type="video/mp4"></video></div>
+        <div class="pd-gallery-item"><video autoplay muted loop playsinline><source src="media/05optimizedVideo-Bagre.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video></div>
         <div class="pd-gallery-item" style="background:linear-gradient(135deg,#1a2e1a,#16261a);display:flex;align-items:center;justify-content:center"><span style="color:var(--text-dim);font-size:.78rem" data-i18n="pd5_ss1">Screenshot: Stealth gameplay</span></div>
       </div>
       <div class="pd-body">
@@ -1063,8 +1078,8 @@
         <div class="pd-divider"></div>
         <div class="pd-section"><div class="pd-section-label" data-i18n="pd_decisions">Key Design Decisions</div>
           <div class="pd-details-grid">
-            <div class="pd-detail-card"><h4 data-i18n="pd5_d1h">Stealth-First Loop</h4><p data-i18n="pd5_d1p">Detection triggers escalation, not instant failure. Players can fight their way out or retreat — keeping tension without frustration in a jam-scoped project.</p></div>
-            <div class="pd-detail-card"><h4 data-i18n="pd5_d2h">Comedy as World-Building</h4><p data-i18n="pd5_d2p">The absurd alternate-reality Brazil setting lets the narrative carry weight without taking itself seriously — geopolitical satire through gameplay, not exposition.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd5_d1h">Stealth-First Loop</h3><p data-i18n="pd5_d1p">Detection triggers escalation, not instant failure. Players can fight their way out or retreat — keeping tension without frustration in a jam-scoped project.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd5_d2h">Comedy as World-Building</h3><p data-i18n="pd5_d2p">The absurd alternate-reality Brazil setting lets the narrative carry weight without taking itself seriously — geopolitical satire through gameplay, not exposition.</p></div>
           </div>
         </div>
         <div class="pd-divider"></div>
@@ -1128,7 +1143,7 @@ en: {
   p1_role: "Designer & Developer (Solo)",
   p1_duration: "6 months",
   p1_link_case: "Analytics case study →",
-  p1_link_play: "Play on Google Play →",
+  p1_link_play: "Cyberpunk City on Google Play →",
 
   // ── Project 2: Kingdom Builder ──
   p2_name: "Idle Kingdom Builder — First Shipped Economy",
@@ -1136,7 +1151,7 @@ en: {
   p2_desc: "My first published idle game. Designed the core loop and economy system from scratch, taking inspiration from Cookie Clicker's formulas and tuning them toward a slower, more deliberate pace. Shipped to Google Play with 800+ organic downloads. Strong early engagement, but without a proper analytics pipeline I couldn't identify where players dropped off — that gap directly motivated the analytics system I built for Cyberpunk City.",
   p2_role: "Designer & Developer (Solo)",
   p2_duration: "6 months",
-  p2_link_play: "Play on Google Play →",
+  p2_link_play: "Kingdom Builder on Google Play →",
 
   // ── Project 3: Guardian's Falls ──
   p3_name: "Guardian's Falls — Wounds",
@@ -1464,7 +1479,7 @@ pt: {
   p1_role: "Designer & Desenvolvedor (Solo)",
   p1_duration: "6 meses",
   p1_link_case: "Estudo de caso de analytics →",
-  p1_link_play: "Jogar no Google Play →",
+  p1_link_play: "Cyberpunk City no Google Play →",
 
   // ── Project 2: Kingdom Builder ──
   p2_name: "Idle Kingdom Builder — Primeira Economia Publicada",
@@ -1472,7 +1487,7 @@ pt: {
   p2_desc: "Meu primeiro jogo idle publicado. Projetei o core loop e sistema econômico do zero, inspirando-me nas fórmulas do Cookie Clicker e ajustando para um ritmo mais lento e deliberado. Publicado no Google Play com 800+ downloads orgânicos. Forte engajamento inicial, mas sem um pipeline de analytics não conseguia identificar onde os jogadores desistiam — essa lacuna motivou diretamente o sistema de analytics que construí para Cyberpunk City.",
   p2_role: "Designer & Desenvolvedor (Solo)",
   p2_duration: "6 meses",
-  p2_link_play: "Jogar no Google Play →",
+  p2_link_play: "Kingdom Builder no Google Play →",
 
   // ── Project 3: Guardian's Falls ──
   p3_name: "Guardian's Falls — Wounds",
@@ -1800,7 +1815,7 @@ ja: {
   p1_role: "デザイナー＆開発者（ソロ）",
   p1_duration: "6ヶ月",
   p1_link_case: "アナリティクス ケーススタディ →",
-  p1_link_play: "Google Playでプレイ →",
+  p1_link_play: "Cyberpunk CityをGoogle Playで →",
 
   // ── Project 2: Kingdom Builder ──
   p2_name: "Idle Kingdom Builder — 初リリース＆リテンション",
@@ -1808,7 +1823,7 @@ ja: {
   p2_desc: "初めてリリースしたアイドルゲーム。Cookie Clickerの計算式を参考に、よりゆっくりした慎重なペースに調整したコアループとエコノミーシステムをゼロから設計。Google Playでオーガニックダウンロード800以上を達成。初期エンゲージメントは好調だったが、分析パイプラインがなくプレイヤーの離脱ポイントを特定できなかった — この課題がCyberpunk Cityで構築したアナリティクスシステムの直接的な動機となった。",
   p2_role: "デザイナー＆開発者（ソロ）",
   p2_duration: "6ヶ月",
-  p2_link_play: "Google Playでプレイ →",
+  p2_link_play: "Kingdom BuilderをGoogle Playで →",
 
   // ── Project 3: Guardian's Falls ──
   p3_name: "Guardian's Falls — Wounds",
@@ -2106,7 +2121,7 @@ const langMeta = {
   pt: { flag: '🇧🇷', label: 'PT', htmlLang: 'pt-BR' },
   ja: { flag: '🇯🇵', label: 'JA', htmlLang: 'ja' },
 };
-const langCycle = ['en', 'pt', 'ja'];
+const langCycle = ['en', 'pt'];
 
 function applyLanguage(lang) {
   currentLang = lang;

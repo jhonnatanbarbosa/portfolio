@@ -23,7 +23,10 @@
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; overflow-x: hidden; }
+
+/* ── Safety net for media overflow ──────────────────────────── */
+img, video, iframe, table { max-width: 100%; }
 
 /* ── SCROLL PROGRESS BAR ──────────────────────────────────── */
 .scroll-progress {
@@ -84,6 +87,18 @@ body::after {
   width: 500px; height: 500px;
   bottom: 10%; right: -140px;
   background: radial-gradient(circle, rgba(140,160,210,0.035) 0%, transparent 70%);
+}
+
+/* Constrain glow blobs on mobile to prevent overflow */
+@media (max-width: 720px) {
+  body::before {
+    width: 320px; height: 320px;
+    top: -80px; left: -100px;
+  }
+  body::after {
+    width: 280px; height: 280px;
+    bottom: 5%; right: -80px;
+  }
 }
 
 ::selection { background: var(--accent); color: var(--bg); }
@@ -1008,6 +1023,20 @@ section + section { border-top: 1px solid var(--border-soft); }
 .scope-table .vision { color: var(--text-dim); font-size: 0.75rem; }
 .scope-table .final { color: var(--text-mid); font-size: 0.75rem; }
 
+/* ── SCOPE TABLE WRAPPER (for mobile horizontal scroll) ────── */
+.scope-table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+}
+
+@media (max-width: 640px) {
+  .scope-table {
+    min-width: 560px;
+  }
+}
+
 /* ── BADGES ──────────────────────────────────────────────── */
 .badge {
   display: inline-block; font-family: 'Geist Mono', monospace;
@@ -1213,6 +1242,7 @@ footer {
 @media (max-width: 480px) {
   body { font-size: 13px; }
 
+  .intro { padding: 2rem 0 2.25rem; }
   .intro h1 { font-size: 1.4rem; }
 
   .intro-links { flex-wrap: wrap; }
@@ -1455,6 +1485,43 @@ footer {
   color: var(--text);
 }
 .lang-toggle .flag-small { font-size: 0.95rem; }
+
+/* Mobile breakpoints for language modal */
+@media (max-width: 480px) {
+  .lang-modal {
+    padding: 28px 20px;
+    max-width: 340px;
+    width: calc(100% - 24px);
+  }
+  .lang-modal h2 {
+    font-size: 1.35rem;
+  }
+  .lang-btn {
+    padding: 16px 10px;
+    font-size: 0.78rem;
+  }
+  .lang-btn .flag {
+    font-size: 1.6rem;
+  }
+  .lang-buttons {
+    gap: 10px;
+  }
+}
+
+@media (max-width: 360px) {
+  .lang-modal {
+    padding: 24px 14px;
+    width: calc(100% - 20px);
+  }
+  .lang-btn {
+    padding: 14px 8px;
+    font-size: 0.75rem;
+  }
+  .lang-modal h2 {
+    font-size: 1.2rem;
+  }
+}
+
 /* ══════════════════════════════════════════════════════════
    Project Detail Modals
    ══════════════════════════════════════════════════════════ */
@@ -1465,7 +1532,7 @@ footer {
   backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
   z-index: 9000;
   display: flex; align-items: center; justify-content: center;
-  padding: 24px;
+  padding: clamp(0px, 3vw, 24px);
   opacity: 0; pointer-events: none;
   transition: opacity 0.3s ease;
 }
@@ -1473,7 +1540,7 @@ footer {
 
 .pd-modal {
   background: var(--bg); border: 1px solid var(--border); border-radius: 16px;
-  width: 100%; max-width: 860px; max-height: 88vh; overflow-y: auto;
+  width: 100%; max-width: 860px; max-height: min(88dvh, 88vh); overflow-y: auto;
   box-shadow: 0 24px 80px rgba(0,0,0,0.5), 0 0 120px rgba(168,184,122,0.04);
   transform: translateY(16px) scale(0.98);
   transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
@@ -1500,7 +1567,7 @@ footer {
   border-color: var(--accent-dim); color: var(--text); background: var(--surface-hover);
 }
 
-.pd-hero { padding: 8px 32px 0; }
+.pd-hero { padding: 8px clamp(16px, 4vw, 32px) 0; }
 .pd-hero-top { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 6px; }
 .pd-hero h2 { font-family: 'Instrument Serif', serif; font-size: 1.6rem; font-weight: 400; color: var(--text); }
 .pd-badge-pill {
@@ -1514,13 +1581,13 @@ footer {
 .pd-tagline { color: var(--text-mid); font-size: 0.88rem; line-height: 1.6; max-width: 640px; }
 
 .pd-gallery {
-  display: flex; gap: 8px; padding: 20px 32px;
+  display: flex; gap: 8px; padding: 20px clamp(16px, 4vw, 32px);
   overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
 }
 .pd-gallery::-webkit-scrollbar { display: none; }
 .pd-gallery-item {
-  flex: 0 0 auto; width: 280px; height: 170px; border-radius: 10px;
+  flex: 0 0 auto; width: clamp(220px, 72vw, 280px); height: 170px; border-radius: 10px;
   border: 1px solid var(--border); background: var(--surface); overflow: hidden;
   scroll-snap-align: start; position: relative;
 }
@@ -1533,7 +1600,46 @@ footer {
   font-size: 0.72rem; color: var(--text-mid);
 }
 
-.pd-body { padding: 0 32px 28px; }
+/* Swipe affordance for mobile modal galleries */
+.pd-gallery-wrap { position: relative; }
+.pd-gallery-hint {
+  display: none; /* hidden on desktop */
+  position: absolute;
+  top: 20px; /* matches .pd-gallery vertical padding */
+  right: 0;
+  width: 72px;
+  height: 170px; /* matches .pd-gallery-item height */
+  pointer-events: none;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: clamp(16px, 4vw, 32px);
+  background: linear-gradient(
+    to right,
+    rgba(22,22,25,0) 0%,
+    rgba(22,22,25,0.75) 70%,
+    rgba(22,22,25,0.9) 100%
+  );
+  color: var(--accent);
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+.pd-gallery-hint svg {
+  animation: pd-hint-pulse 1.6s ease-in-out infinite;
+  filter: drop-shadow(0 0 4px rgba(0,0,0,0.5));
+}
+@keyframes pd-hint-pulse {
+  0%, 100% { transform: translateX(0); opacity: 0.75; }
+  50%      { transform: translateX(4px); opacity: 1; }
+}
+.pd-gallery-wrap.scrolled .pd-gallery-hint { opacity: 0; }
+@media (max-width: 640px) {
+  .pd-gallery-hint { display: flex; height: 150px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pd-gallery-hint svg { animation: none; }
+}
+
+.pd-body { padding: 0 clamp(16px, 4vw, 32px) 28px; }
 
 .pd-metrics { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
 .pd-metric {
@@ -1587,16 +1693,18 @@ footer {
 /* View Details button — styled in the section below */
 
 @media (max-width: 640px) {
-  .pd-overlay { padding: 12px; }
-  .pd-modal { max-height: 92vh; border-radius: 12px; }
-  .pd-hero, .pd-body { padding-left: 20px; padding-right: 20px; }
-  .pd-gallery { padding: 16px 20px; }
-  .pd-gallery-item { width: 240px; height: 150px; }
+  .pd-modal { border-radius: 12px; }
+  .pd-gallery-item { height: 150px; }
   .pd-details-grid { grid-template-columns: 1fr; }
   .pd-hero h2 { font-size: 1.3rem; }
   .pd-metrics { gap: 6px; }
   .pd-metric { min-width: 100px; padding: 10px 12px; }
   .pd-close { padding: 12px 16px 0; }
+}
+
+@media (max-width: 480px) {
+  .pd-overlay { padding: 0; }
+  .pd-modal { max-height: 100dvh; border-radius: 0; border-left: none; border-right: none; }
 }
 
 /* ── Doc thumbnails (CSS-only mini page previews) ──────── */

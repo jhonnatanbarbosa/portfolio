@@ -75,7 +75,10 @@
 
 <nav>
   <div class="nav-inner">
-    <span class="name">Jhonnatan Barbosa</span>
+    <span class="nav-brand">
+      <span class="name">Jhonnatan Barbosa</span>
+      <span class="nav-role" data-i18n="nav_role">Game Designer</span>
+    </span>
     <button class="nav-toggle" aria-label="Menu"
         onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('show')">
   <span></span><span></span><span></span>
@@ -216,6 +219,9 @@
           <span class="project-name" data-i18n="p3_name">Guardian's Falls — Wounds</span>
           <span class="project-badge" data-i18n="p3_badge">Graduation · 2023</span>
         </div>
+        <p class="project-bridge" data-i18n="p3_bridge">
+          This project taught me the scope management principles I later applied to shipping my solo idle games on time.
+        </p>
         <p class="project-desc" data-i18n="p3_desc">
           2.5D Metroidvania developed as a graduation project at PUC-SP. I started as game designer, then took on developer and producer duties as the project progressed. That meant core systems, parkour mechanics, and the art/sound pipeline. I led the scope cuts needed to ship a playable vertical slice with a team of 6 inside academic deadlines. Well received by the examining committee.
         </p>
@@ -227,8 +233,8 @@
           <div class="meta-pair"><span class="ml" data-i18n="label_duration">Duration</span><span class="mv" data-i18n="p3_duration">1 Year</span></div>
         </div>
         <div class="project-tags">
-          <span class="ptag" data-i18n="tag_production">Production</span>
           <span class="ptag" data-i18n="tag_scope">Scope Management</span>
+          <span class="ptag" data-i18n="tag_production">Production</span>
           <span class="ptag" data-i18n="tag_sysprog">Systems Programming</span>
           <span class="ptag" data-i18n="tag_parkour">Parkour Mechanics</span>
           <span class="ptag" data-i18n="tag_teamlead">Team Leadership</span>
@@ -251,6 +257,9 @@
           <span class="project-name" data-i18n="p4_name">Beasts of Agony: Souls-like Boss Fight</span>
           <span class="project-badge" data-i18n="p4_badge">Game Jam · 9 days · 2023</span>
         </div>
+        <p class="project-bridge" data-i18n="p4_bridge">
+          Demonstrates real-time combat system architecture and animation state machines under tight deadlines.
+        </p>
         <p class="project-desc" data-i18n="p4_desc">
           Souls-like combat demo built for PUCJam 2023 on the theme: "Sacred". I designed and programmed the core fighting system: hitboxes, animation trees, life/death state, and combat balancing. Won Best Art at PUCJam 2023 against every participating team at PUC-SP, newcomers through seniors.
         </p>
@@ -312,6 +321,99 @@
       The IKB → Cyberpunk learning arc now lives inside the Cyberpunk case study's Problem card,
       where it has more impact. Beasts + Bagre Noturno show range (combat, stealth, level design, narrative).
     </div>-->
+
+    <!-- Currently Working On: Project 41:41 -->
+    <div class="section-header" style="margin-top: 1.5rem;">
+      <h2 class="section-title" data-i18n="sec_wip">Currently Working On</h2>
+      <span class="section-aside" style="display:inline-flex;align-items:center;gap:0.5rem;">
+        <span class="live-dot"></span>
+        <span data-i18n="sec_wip_aside">In development · updated as builds ship</span>
+      </span>
+    </div>
+
+    <div class="project-card wip-layout reveal">
+      <div class="project-thumb">
+        <video autoplay muted loop playsinline aria-label="Project 41:41 immersive sim stealth gameplay prototype">
+          <source src="media/project4141UpdateApril.mp4" type="video/mp4">
+          <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+        </video>
+      </div>
+      <div class="project-body">
+        <div class="project-top-row">
+          <span class="project-name">Project 41:41</span>
+          <span class="project-badge active" data-i18n="wip_badge">● In Progress · 2025 -> 2026</span>
+        </div>
+        <p class="project-bridge" data-i18n="wip_bridge">
+          A third-person immersive sim stealth game — a personal study of how stealth tension is engineered through systems rather than scripting.
+        </p>
+        <p class="project-desc" data-i18n="wip_desc">
+          My biggest project to date. Solo prototype inspired by Thief, Dishonored, Metal Gear Solid, and Gloomwood. The player is a vulnerable spy infiltrating a Gothic-Victorian world where information is the most powerful weapon and direct combat is a death sentence. I'm building patrol AI, detection state machines, multi-guard coordination, lockpicking, cover, stats, and a journal system from scratch, targeting a 15-minute vertical slice.
+        </p>
+        <div class="meta-row">
+          <div class="meta-pair"><span class="ml" data-i18n="label_role">Role</span><span class="mv" data-i18n="wip_role">Designer & Developer (Solo)</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_engine">Engine</span><span class="mv">Unity 6.3</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="label_platform">Platform</span><span class="mv" data-i18n="wip_platform">PC(Steam)</span></div>
+          <div class="meta-pair"><span class="ml" data-i18n="wip_label_target">Target</span><span class="mv" data-i18n="wip_target">Vertical Slice</span></div>
+        </div>
+        <div class="project-tags">
+          <span class="ptag" data-i18n="wip_tag_immersive">Immersive Sim</span>
+          <span class="ptag" data-i18n="wip_tag_stealth">Stealth Systems</span>
+          <span class="ptag" data-i18n="wip_tag_ai">AI State Machines</span>
+          <span class="ptag" data-i18n="wip_tag_coord">Multi-Guard Coordination</span>
+          <span class="ptag">Unity 6</span>
+          <span class="ptag" data-i18n="wip_tag_personal">Personal Study</span>
+        </div>
+
+        <div class="wip-progress">
+          <div class="wip-progress-label">
+            <span data-i18n="wip_progress_label">Vertical Slice Progress</span>
+            <span class="pct">54%</span>
+          </div>
+          <div class="wip-progress-bar">
+            <div class="wip-progress-fill" style="width:54%;"></div>
+          </div>
+
+          <div class="wip-columns">
+            <div>
+              <div class="wip-column-label" data-i18n="wip_col_done">Shipped Systems</div>
+              <div class="wip-milestones">
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d1">Lockpicking minigame</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d2">Cover &amp; peek system</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d3">Enemy AI — single guard</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d4">Light &amp; shadow detection</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d5">Contextual interactions</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d6">Inventory system</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d7">Health &amp; damage</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d8">Multi-guard coordination</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d9">Character progression</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d10">Journal &amp; observation</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d11">Player controller hooks</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d12">Debug infrastructure v2</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d13">Analytics collection plan</span></div>
+              </div>
+            </div>
+            <div>
+              <div class="wip-column-label" data-i18n="wip_col_todo">On The Board</div>
+              <div class="wip-milestones">
+                <div class="wip-milestone active"><span class="check">▸</span><span data-i18n="wip_t1">Unified pause menu UI</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t2">Distraction system</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t3">Sound propagation (full)</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t4">Combat (dagger + pistol)</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t5">The Maestro boss AI</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t6">Climbing mechanics</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t7">Minimap</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t8">Trap system</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t9">Player lantern</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t10">Save / load</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t11">Cutscene system</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="wip-updated" data-i18n="wip_updated">Last updated: April 2026</div>
+      </div>
+    </div>
 
     <!-- Additional Work: FoxTales Studios -->
     <div class="section-header" style="margin-top: 1.5rem;">
@@ -456,6 +558,7 @@
       </div>
     </div>
 
+    <br>
 
     <!-- Embedded Dashboard -->
     <div class="dashboard-embed reveal">
@@ -463,7 +566,7 @@
         <span data-i18n="dashboard_label">Interactive Analytics Dashboard · Built from real Unity Analytics data</span>
         <a href="cyberpunk-dashboard.html" target="_blank" rel="noopener" data-i18n="dashboard_fullscreen">Open full screen →</a>
       </div>
-      <iframe src="cyberpunk-dashboard.html" title="Idle Cyberpunk City Clicker analytics dashboard showing player milestone data and economy metrics"></iframe>
+      <iframe src="cyberpunk-dashboard.html" loading="lazy" title="Idle Cyberpunk City Clicker analytics dashboard showing player milestone data and economy metrics"></iframe>
     </div>
 
     <!-- What I'd Change Next -->
@@ -743,13 +846,6 @@
         </div>
 
         <div class="about-block">
-          <div class="about-label" data-i18n="about_inf_label">Influences</div>
-          <p data-i18n="about_inf_p">
-            The approach comes from studying how Valve teaches Portal's mechanics through play, and how Half-Life guides players with lighting and architecture instead of waypoints. Invisible design, validated by obsessive playtesting. Kojima's influence shows up in the ambition: trust players with complex systems and meaningful choices. Make depth accessible through iteration, not simplification.
-          </p>
-        </div>
-
-        <div class="about-block">
           <div class="about-label" data-i18n="about_teach_label">Teaching</div>
           <p data-i18n="about_teach_p">
             Alongside shipping games, I teach game development and design to kids and teens. Over 300 students across three schools, content adapted for ages 8 through 17. It's the best training I've found for studio communication: if a 10-year-old can follow your explanation of a state machine, your spec will probably survive a cross-discipline review. It also means I can scope a lesson the way I scope a milestone. Break a complex system into deliverable chunks, check whether people actually understood, adjust before moving on.
@@ -763,10 +859,19 @@
           </p>
         </div>
 
+        <div class="about-block">
+          <div class="about-label" data-i18n="about_inf_label">Influences</div>
+          <p data-i18n="about_inf_p">
+            The approach comes from studying how Valve teaches Portal's mechanics through play, and how Half-Life guides players with lighting and architecture instead of waypoints. Invisible design, validated by obsessive playtesting. Kojima's influence shows up in the ambition: trust players with complex systems and meaningful choices. Make depth accessible through iteration, not simplification.
+          </p>
+        </div>
+
         <div class="looking-for">
           <strong data-i18n="about_looking_label">Looking for</strong>
           <span data-i18n="about_looking_p">A systems or gameplay design role where I can combine hands-on design work with data analysis to shape player behavior. Ideally at a mid-size to AAA studio working on PC or console titles. Open to remote or relocation.</span>
         </div>
+
+        <br>
 
         <div class="about-block">
           <div class="about-label" data-i18n="about_tools_label">Tools</div>
@@ -1069,6 +1174,7 @@
 const translations = {
 en: {
   // ── Nav ──
+  nav_role: "Game Designer",
   nav_projects: "Projects",
   nav_casestudy: "Case Study",
   nav_documents: "Documents",
@@ -1083,6 +1189,8 @@ en: {
   // ── Section headers ──
   sec_projects: "Selected Projects",
   sec_projects_aside: "5 curated pieces · 2 case studies + 3 showcase cards",
+  sec_wip: "Currently Working On",
+  sec_wip_aside: "In development · updated as builds ship",
   sec_additional: "Additional Work: FoxTales Studios",
   sec_additional_aside: "Student studio · PUC-SP · 2020–2023 · Game Designer & 3D Artist",
   sec_documents: "Design Documents",
@@ -1118,6 +1226,7 @@ en: {
   // ── Project 3: Guardian's Falls ──
   p3_name: "Guardian's Falls — Wounds",
   p3_badge: "Graduation · 2023",
+  p3_bridge: "This project taught me the scope management principles I later applied to shipping my solo idle games on time.",
   p3_desc: "2.5D Metroidvania developed as a graduation project at PUC-SP. I started as game designer, then took on developer and producer duties as the project progressed. That meant core systems, parkour mechanics, and the art/sound pipeline. I led the scope cuts needed to ship a playable vertical slice with a team of 6 inside academic deadlines. Well received by the examining committee.",
   p3_role: "Designer → Developer / Producer",
   p3_duration: "1 Year",
@@ -1127,6 +1236,7 @@ en: {
   // ── Project 4: Beasts of Agony ──
   p4_name: "Beasts of Agony: Souls-like Boss Fight",
   p4_badge: "Game Jam · 9 days · 2023",
+  p4_bridge: "Demonstrates real-time combat system architecture and animation state machines under tight deadlines.",
   p4_desc: "Souls-like combat demo built for PUCJam 2023 on the theme: \"Sacred\". I designed and programmed the core fighting system: hitboxes, animation trees, life/death state, and combat balancing. Won Best Art at PUCJam 2023 against every participating team at PUC-SP, newcomers through seniors.",
   p4_role: "Designer, Programmer & Producer",
   p4_duration: "9 Days",
@@ -1401,10 +1511,54 @@ en: {
   pd5_d1p: "Detection triggers escalation, not instant failure. Players can fight their way out or retreat. That keeps tension in the loop without becoming frustrating in a jam-scoped project.",
   pd5_d2h: "Comedy as World-Building",
   pd5_d2p: "The absurd alternate-reality Brazil setting lets the narrative carry weight without taking itself too seriously. Geopolitical satire through gameplay, not exposition.",
+
+  // ── Currently Working On: Project 41:41 ──
+  wip_badge: "● In Progress · 2025 -> 2026",
+  wip_bridge: "A third-person immersive sim stealth game — a personal study of how stealth tension is engineered through systems rather than scripting.",
+  wip_desc: "My biggest project to date. Solo prototype inspired by Thief, Dishonored, Metal Gear Solid, and Gloomwood. The player is a vulnerable spy infiltrating a Gothic-Victorian world where information is the most powerful weapon and direct combat is a death sentence. I'm building patrol AI, detection state machines, multi-guard coordination, lockpicking, cover, stats, and a journal system from scratch, targeting a 15-minute vertical slice.",
+  wip_role: "Designer & Developer (Solo)",
+  wip_platform: "PC (Steam)",
+  wip_label_target: "Target",
+  wip_target: "Vertical Slice",
+  wip_tag_immersive: "Immersive Sim",
+  wip_tag_stealth: "Stealth Systems",
+  wip_tag_ai: "AI State Machines",
+  wip_tag_coord: "Multi-Guard Coordination",
+  wip_tag_personal: "Personal Study",
+  wip_progress_label: "Vertical Slice Progress",
+  wip_col_done: "Shipped Systems",
+  wip_col_todo: "On The Board",
+  wip_d1: "Lockpicking minigame",
+  wip_d2: "Cover & peek system",
+  wip_d3: "Enemy AI — single guard",
+  wip_d4: "Light & shadow detection",
+  wip_d5: "Contextual interactions",
+  wip_d6: "Inventory system",
+  wip_d7: "Health & damage",
+  wip_d8: "Multi-guard coordination",
+  wip_d9: "Character progression",
+  wip_d10: "Journal & observation",
+  wip_d11: "Player controller hooks",
+  wip_d12: "Debug infrastructure v2",
+  wip_d13: "Analytics collection plan",
+  wip_t1: "Unified pause menu UI",
+  wip_t2: "Distraction system",
+  wip_t3: "Sound propagation (full)",
+  wip_t4: "Combat (dagger + pistol)",
+  wip_t5: "The Maestro boss AI",
+  wip_t6: "Climbing mechanics",
+  wip_t7: "Minimap",
+  wip_t8: "Trap system",
+  wip_t9: "Player lantern",
+  wip_t10: "Save / load",
+  wip_t11: "Cutscene system",
+  wip_updated: "Last updated: April 2026",
+  wip_thumb_placeholder: "[ gameplay capture pending ]",
 },
 
 pt: {
   // ── Nav ──
+  nav_role: "Game Designer",
   nav_projects: "Projetos",
   nav_casestudy: "Estudo de Caso",
   nav_documents: "Documentos",
@@ -1419,6 +1573,8 @@ pt: {
   // ── Section headers ──
   sec_projects: "Projetos Selecionados",
   sec_projects_aside: "5 peças selecionadas · 2 estudos de caso + 3 cards de vitrine",
+  sec_wip: "Em Desenvolvimento",
+  sec_wip_aside: "Em desenvolvimento · atualizado a cada build",
   sec_additional: "Trabalho Adicional: FoxTales Studios",
   sec_additional_aside: "Estúdio estudantil · PUC-SP · 2020–2023 · Game Designer e Artista 3D",
   sec_documents: "Documentos de Design",
@@ -1454,6 +1610,7 @@ pt: {
   // ── Project 3: Guardian's Falls ──
   p3_name: "Guardian's Falls — Wounds",
   p3_badge: "TCC · 2023",
+  p3_bridge: "Esse projeto me ensinou os princípios de gestão de escopo que eu aplicaria depois pra lançar meus jogos idle solo no prazo.",
   p3_desc: "Metroidvania 2.5D desenvolvido como trabalho de conclusão de curso na PUC-SP. Comecei como game designer e, conforme o projeto avançava, assumi também funções de desenvolvedor e produtor. Isso significou sistemas principais, mecânicas de parkour e o pipeline de arte e som. Liderei os cortes de escopo necessários pra entregar uma vertical slice jogável com um time de 6 dentro dos prazos acadêmicos. Foi bem recebido pela banca avaliadora.",
   p3_role: "Designer → Desenvolvedor / Produtor",
   p3_duration: "1 ano",
@@ -1463,6 +1620,7 @@ pt: {
   // ── Project 4: Beasts of Agony ──
   p4_name: "Beasts of Agony: Boss Fight Souls-like",
   p4_badge: "Game Jam · 9 dias · 2023",
+  p4_bridge: "Demonstra arquitetura de sistema de combate em tempo real e máquinas de estado de animação sob prazos apertados.",
   p4_desc: "Demo de combate souls-like feito em 9 dias pra PUCJam 2023, com o tema \"Sagrado\". Desenhei e programei o sistema de combate principal: hitboxes, árvores de animação, estados de vida/morte e balanceamento de combate. Levamos o prêmio de Melhor Arte na PUCJam 2023 contra todos os times participantes da PUC-SP, de calouros a veteranos.",
   p4_role: "Designer, Programador e Produtor",
   p4_duration: "9 dias",
@@ -1737,10 +1895,54 @@ pt: {
   pd5_d1p: "Ser detectado aciona escalada, não falha instantânea. O jogador pode abrir caminho na bala ou recuar. Isso mantém a tensão no loop sem virar frustração num projeto de escopo de jam.",
   pd5_d2h: "Comédia como Construção de Mundo",
   pd5_d2p: "O cenário de Brasil em realidade alternativa absurda deixa a narrativa ter peso sem se levar a sério demais. Sátira geopolítica pelo gameplay, não pela exposição.",
+
+  // ── Em Desenvolvimento: Project 41:41 ──
+  wip_badge: "● Em Desenvolvimento · 2025 -> 2026",
+  wip_bridge: "Um jogo de stealth immersive sim em terceira pessoa — um estudo pessoal de como a tensão do stealth é construída por sistemas, não por scripting.",
+  wip_desc: "Meu maior projeto até agora. Protótipo solo inspirado em Thief, Dishonored, Metal Gear Solid e Gloomwood. O jogador é um espião vulnerável infiltrando um mundo gótico-vitoriano onde informação é a arma mais poderosa e combate direto é sentença de morte. Estou construindo IA de patrulha, máquinas de estado de detecção, coordenação multi-guarda, lockpicking, cover, stats e um sistema de diário do zero, mirando uma vertical slice de 15 minutos.",
+  wip_role: "Designer e Desenvolvedor (Solo)",
+  wip_platform: "PC (Steam)",
+  wip_label_target: "Meta",
+  wip_target: "Vertical Slice",
+  wip_tag_immersive: "Immersive Sim",
+  wip_tag_stealth: "Sistemas de Stealth",
+  wip_tag_ai: "Máquinas de Estado de IA",
+  wip_tag_coord: "Coordenação Multi-Guarda",
+  wip_tag_personal: "Estudo Pessoal",
+  wip_progress_label: "Progresso da Vertical Slice",
+  wip_col_done: "Sistemas Entregues",
+  wip_col_todo: "No Quadro",
+  wip_d1: "Minigame de lockpicking",
+  wip_d2: "Sistema de cover e peek",
+  wip_d3: "IA inimiga — guarda único",
+  wip_d4: "Detecção de luz e sombra",
+  wip_d5: "Interações contextuais",
+  wip_d6: "Sistema de inventário",
+  wip_d7: "Vida e dano",
+  wip_d8: "Coordenação multi-guarda",
+  wip_d9: "Progressão de personagem",
+  wip_d10: "Diário e observações",
+  wip_d11: "Hooks do player controller",
+  wip_d12: "Infraestrutura de debug v2",
+  wip_d13: "Plano de coleta de analytics",
+  wip_t1: "Menu de pause unificado",
+  wip_t2: "Sistema de distração",
+  wip_t3: "Propagação de som (completa)",
+  wip_t4: "Combate (adaga + pistola)",
+  wip_t5: "IA do chefe Maestro",
+  wip_t6: "Mecânicas de escalada",
+  wip_t7: "Minimapa",
+  wip_t8: "Sistema de armadilhas",
+  wip_t9: "Lanterna do jogador",
+  wip_t10: "Save / load",
+  wip_t11: "Sistema de cutscenes",
+  wip_updated: "Última atualização: Abril de 2026",
+  wip_thumb_placeholder: "[ captura de gameplay pendente ]",
 },
 
 ja: {
   // ── Nav ──
+  nav_role: "ゲームデザイナー",
   nav_projects: "プロジェクト",
   nav_casestudy: "ケーススタディ",
   nav_documents: "ドキュメント",
@@ -1755,6 +1957,8 @@ ja: {
   // ── Section headers ──
   sec_projects: "主な制作実績",
   sec_projects_aside: "厳選5作品 · ケーススタディ2本 + ショーケース3枚",
+  sec_wip: "開発中のプロジェクト",
+  sec_wip_aside: "開発中 · ビルドごとに更新",
   sec_additional: "関連実績:FoxTales Studios",
   sec_additional_aside: "学生スタジオ · PUC-SP · 2020〜2023 · ゲームデザイナー兼3Dアーティスト",
   sec_documents: "デザインドキュメント",
@@ -1790,6 +1994,7 @@ ja: {
   // ── Project 3: Guardian's Falls ──
   p3_name: "Guardian's Falls — Wounds",
   p3_badge: "卒業制作 · 2023",
+  p3_bridge: "このプロジェクトを通じて学んだスコープ管理の原則を、後にソロ開発したアイドルゲームを期日通りに出荷するために活かしました。",
   p3_desc: "PUC-SPの卒業制作として開発した2.5Dメトロイドヴァニアです。当初はゲームデザイナーとして参加し、プロジェクトの進行に合わせて開発者とプロデューサーの役割も担当。コアシステム、パルクールメカニクス、アート/サウンドのパイプライン管理までを手掛けました。6人チームで学内の期限内にプレイ可能な垂直スライスを完成させるため、必要なスコープカットの判断をリード。審査委員会からも高い評価を受けました。",
   p3_role: "デザイナー → 開発者 / プロデューサー",
   p3_duration: "1年",
@@ -1799,6 +2004,7 @@ ja: {
   // ── Project 4: Beasts of Agony ──
   p4_name: "Beasts of Agony:ソウルライクのボスファイト",
   p4_badge: "ゲームジャム · 9日間 · 2023",
+  p4_bridge: "リアルタイム戦闘システムの設計と、厳しい締切下でのアニメーションステートマシンの実装を示す作品です。",
   p4_desc: "PUCJam 2023のテーマ「神聖なるもの」に合わせ、9日間で制作したソウルライク戦闘デモです。ヒットボックス、アニメーションツリー、生死ステートマシン、戦闘バランスといったコア戦闘システムを設計・実装しました。PUC-SPの全参加チーム(1年生からベテランまで)を相手に、PUCJam 2023のベストアート賞を受賞しました。",
   p4_role: "デザイナー、プログラマー兼プロデューサー",
   p4_duration: "9日間",
@@ -2073,6 +2279,49 @@ ja: {
   pd5_d1p: "発見は即失敗ではなく、状況のエスカレーションを引き起こす設計です。プレイヤーは戦って突破することも、撤退することもできます。これによって、ジャム規模のプロジェクトでも、緊張感を保ったままフラストレーションを溜めすぎずにループを回せるようにしました。",
   pd5_d2h: "世界観構築としてのコメディ",
   pd5_d2p: "もうひとつのブラジルという不条理な舞台設定のおかげで、ナラティブは自らを重くしすぎることなく芯を持てます。説明台詞ではなく、ゲームプレイそのものを通して描く地政学的風刺、という狙いです。",
+
+  // ── 開発中のプロジェクト:Project 41:41 ──
+  wip_badge: "● 開発中 · 2025 -> 2026",
+  wip_bridge: "三人称視点のイマーシブシム・ステルスゲーム — スクリプトではなくシステムによってステルスの緊張感をいかに作り上げるかを探る個人的な研究作品です。",
+  wip_desc: "これまでで最大のプロジェクトです。Thief、Dishonored、Metal Gear Solid、Gloomwood に影響を受けたソロ開発のプロトタイプ。プレイヤーは脆弱なスパイとなり、情報こそが最強の武器で、正面からの戦闘は即死を意味するゴシック・ヴィクトリアンの世界に潜入します。パトロール AI、検知ステートマシン、複数ガードの連携、ロックピック、カバー、ステータス、ジャーナルシステムをゼロから構築中。目標は15分のバーティカルスライスです。",
+  wip_role: "デザイナー兼開発者(ソロ)",
+  wip_platform: "PC(Steam)",
+  wip_label_target: "目標",
+  wip_target: "バーティカルスライス",
+  wip_tag_immersive: "イマーシブシム",
+  wip_tag_stealth: "ステルスシステム",
+  wip_tag_ai: "AI ステートマシン",
+  wip_tag_coord: "マルチガード連携",
+  wip_tag_personal: "個人研究",
+  wip_progress_label: "バーティカルスライス進捗",
+  wip_col_done: "実装済みシステム",
+  wip_col_todo: "開発予定",
+  wip_d1: "ロックピック ミニゲーム",
+  wip_d2: "カバー&ピークシステム",
+  wip_d3: "敵 AI — 単体ガード",
+  wip_d4: "光と影の検知",
+  wip_d5: "コンテキスチュアル インタラクション",
+  wip_d6: "インベントリシステム",
+  wip_d7: "HP とダメージ",
+  wip_d8: "マルチガード連携",
+  wip_d9: "キャラクター成長",
+  wip_d10: "ジャーナルと観察",
+  wip_d11: "プレイヤーコントローラーの連携",
+  wip_d12: "デバッグ基盤 v2",
+  wip_d13: "アナリティクス収集計画",
+  wip_t1: "統合ポーズメニュー UI",
+  wip_t2: "陽動システム",
+  wip_t3: "サウンド伝播(完全版)",
+  wip_t4: "戦闘(ダガー+ピストル)",
+  wip_t5: "ボス AI「The Maestro」",
+  wip_t6: "クライミング",
+  wip_t7: "ミニマップ",
+  wip_t8: "トラップシステム",
+  wip_t9: "プレイヤーランタン",
+  wip_t10: "セーブ / ロード",
+  wip_t11: "カットシーンシステム",
+  wip_updated: "最終更新:2026年4月",
+  wip_thumb_placeholder: "[ ゲームプレイ映像は準備中 ]",
 }};
 
 // ── LANGUAGE STATE ──────────────────────────────────────

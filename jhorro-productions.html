@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jhorro Productions — Independent Studio</title>
+<meta name="description" content="Jhorro Productions — an independent game and interactive studio. The Watcher, watching through the keyhole." />
+
+<!-- Open Graph -->
+<meta property="og:type" content="website" />
+<meta property="og:title" content="Jhorro Productions" />
+<meta property="og:description" content="An independent game & interactive studio. The Watcher, watching through the keyhole." />
+<meta property="og:url" content="https://www.jhorro.com/jhorro-productions.html" />
+
+<link rel="icon" type="image/svg+xml" href="jhorro%20productions%20logo%202/export/svg/jhorro-symbol-white.svg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --paper:   #0b0b0d;
+    --surface: #131316;
+    --surface-hover: #18181c;
+    --ink:     #f1efe9;
+    --mut:     rgba(241,239,233,.55);
+    --dim:     rgba(241,239,233,.4);
+    --hair:    rgba(241,239,233,.16);
+    --hair2:   rgba(241,239,233,.08);
+    --mono:    "JetBrains Mono", monospace;
+    --serif:   "Cormorant Garamond", serif;
+    --lift: transform .25s cubic-bezier(.22,1,.36,1), border-color .25s ease, background .25s ease, box-shadow .25s ease;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; scroll-padding-top: 76px; overflow-x: hidden; }
+  img, video { max-width: 100%; }
+
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--serif);
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.5;
+    padding-top: 64px;
+    overflow-x: hidden;
+    /* faint dot grid */
+    background-image: radial-gradient(circle, rgba(241,239,233,.035) 1px, transparent 1px);
+    background-size: 30px 30px;
+    background-attachment: fixed;
+  }
+  @media (max-width: 560px) { body { padding-top: 52px; } html { scroll-padding-top: 62px; } }
+
+  a { color: var(--ink); text-decoration: none; }
+  ::selection { background: var(--ink); color: var(--paper); }
+
+  /* ── SCROLL PROGRESS ─────────────────────────────────── */
+  .scroll-progress {
+    position: fixed; top: 0; left: 0; height: 2px; width: 0%;
+    background: linear-gradient(90deg, rgba(241,239,233,.3), var(--ink));
+    z-index: 100; pointer-events: none; transition: width .05s linear;
+  }
+
+  /* ── NAV ─────────────────────────────────────────────── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+    background: rgba(11,11,13,.82);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid transparent;
+    transition: background .3s ease, border-color .3s ease, box-shadow .3s ease;
+  }
+  nav.scrolled {
+    background: rgba(11,11,13,.95);
+    border-bottom-color: var(--hair2);
+    box-shadow: 0 1px 12px rgba(0,0,0,.4);
+  }
+  .nav-inner {
+    max-width: 1080px; margin: 0 auto;
+    padding: .6rem clamp(1.25rem, 3vw, 3rem);
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .nav-brand { display: flex; align-items: center; gap: .6rem; }
+  .nav-brand .mark { width: 26px; height: 26px; flex-shrink: 0; }
+  .nav-brand .brand-text { display: flex; flex-direction: column; line-height: 1.05; }
+  .nav-brand .name { font-family: var(--serif); font-size: 1.1rem; font-weight: 500; letter-spacing: .01em; }
+  .nav-brand .role {
+    font-family: var(--mono); font-size: .6rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--dim); margin-top: 2px;
+  }
+  @media (max-width: 560px) { .nav-brand .role { display: none; } }
+
+  .nav-links { display: flex; gap: 1.4rem; list-style: none; }
+  .nav-links a {
+    color: var(--mut); font-family: var(--mono); font-size: .7rem;
+    letter-spacing: .08em; text-transform: uppercase; transition: color .25s ease;
+    position: relative;
+  }
+  .nav-links a:hover { color: var(--ink); }
+  .nav-links a.active { color: var(--ink); }
+  .nav-links a.active::after {
+    content: ''; position: absolute; bottom: -6px; left: 0; right: 0;
+    height: 1.5px; background: var(--ink); opacity: .6; border-radius: 1px;
+  }
+
+  .nav-toggle {
+    display: none; background: none; border: none; cursor: pointer;
+    width: 26px; height: 18px; position: relative; flex-shrink: 0;
+  }
+  .nav-toggle span {
+    display: block; position: absolute; left: 0; width: 100%; height: 2px;
+    background: var(--mut); border-radius: 1px; transition: transform .25s, opacity .2s;
+  }
+  .nav-toggle span:nth-child(1) { top: 0; }
+  .nav-toggle span:nth-child(2) { top: 8px; }
+  .nav-toggle span:nth-child(3) { top: 16px; }
+  .nav-toggle.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+  .nav-toggle.open span:nth-child(2) { opacity: 0; }
+  .nav-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+  /* ── PAGE CONTAINER + GUIDE RAILS ────────────────────── */
+  .page {
+    max-width: 1080px; margin: 0 auto;
+    padding: 0 clamp(1.25rem, 3vw, 3rem);
+    position: relative; z-index: 1;
+  }
+  .page::before, .page::after {
+    content: ''; position: fixed; top: 0; bottom: 0; width: 1px;
+    pointer-events: none; z-index: 0;
+    background: linear-gradient(180deg, transparent 0%, rgba(241,239,233,.08) 15%, rgba(241,239,233,.04) 50%, rgba(241,239,233,.08) 85%, transparent 100%);
+  }
+  .page::before { left: calc(50% - 540px); }
+  .page::after  { right: calc(50% - 540px); }
+  @media (max-width: 1160px) { .page::before, .page::after { display: none; } }
+
+  /* ── SCROLL REVEAL ───────────────────────────────────── */
+  .reveal {
+    opacity: 0; transform: translateY(18px);
+    transition: opacity .6s cubic-bezier(.22,1,.36,1), transform .6s cubic-bezier(.22,1,.36,1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } }
+
+  /* ── INTRO / HERO ────────────────────────────────────── */
+  .intro {
+    padding: clamp(3rem, 7vw, 5rem) 0 2.5rem;
+    display: grid; grid-template-columns: 1fr auto;
+    gap: 2.5rem; align-items: end; position: relative;
+  }
+  .intro::after {
+    content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 1px;
+    background: linear-gradient(90deg, rgba(241,239,233,.4) 0%, var(--hair2) 50%, transparent 100%);
+  }
+  .intro-mark { display: flex; align-items: center; gap: .9rem; margin-bottom: 1.4rem; }
+  .intro-mark .mark { width: clamp(54px, 9vw, 72px); height: auto; filter: drop-shadow(0 6px 22px rgba(0,0,0,.5)); }
+  .kick {
+    font-family: var(--mono); font-size: 10px; letter-spacing: .28em;
+    text-transform: uppercase; color: var(--mut);
+  }
+  .intro h1 {
+    font-family: var(--serif); font-size: clamp(2.4rem, 6vw, 4rem);
+    font-weight: 500; line-height: 1.02; letter-spacing: .01em; margin: .4rem 0 .9rem;
+  }
+  .intro .lede {
+    color: rgba(241,239,233,.82); font-size: clamp(1.05rem, 2.2vw, 1.3rem);
+    max-width: 46ch; line-height: 1.55; text-wrap: pretty;
+  }
+  .intro-links { display: flex; flex-direction: column; gap: .55rem; flex-shrink: 0; }
+  .intro-links a {
+    font-family: var(--mono); font-size: .72rem; letter-spacing: .04em;
+    color: var(--ink); padding: .5rem 1rem; border: 1px solid var(--hair);
+    border-radius: 999px; text-align: center; transition: var(--lift);
+  }
+  .intro-links a:hover { border-color: rgba(241,239,233,.4); background: var(--hair2); transform: translateY(-1px); }
+
+  @media (max-width: 680px) {
+    .intro { grid-template-columns: 1fr; gap: 1.6rem; }
+    .intro-links { flex-direction: row; flex-wrap: wrap; }
+  }
+
+  /* ── SECTIONS ────────────────────────────────────────── */
+  section { padding: clamp(2.5rem, 5vw, 3.5rem) 0; position: relative; z-index: 1; }
+  section + section { border-top: 1px solid var(--hair2); }
+
+  .section-header {
+    display: flex; justify-content: space-between; align-items: baseline;
+    margin-bottom: 1.6rem; position: relative;
+  }
+  .section-header::before, .section-header::after {
+    content: '+'; position: absolute; top: 50%; transform: translateY(-50%);
+    font-family: var(--mono); font-size: .65rem; color: var(--mut); opacity: .4; pointer-events: none;
+  }
+  .section-header::before { left: -2.2rem; }
+  .section-header::after  { right: -2.2rem; }
+  @media (max-width: 1160px) { .section-header::before, .section-header::after { display: none; } }
+
+  .section-title { font-family: var(--serif); font-size: clamp(1.5rem, 3vw, 1.9rem); font-weight: 500; letter-spacing: .02em; }
+  .section-aside { font-family: var(--mono); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; color: var(--mut); }
+
+  /* ── ABOUT ───────────────────────────────────────────── */
+  .about-body p {
+    font-size: clamp(1rem, 2vw, 1.15rem); line-height: 1.7;
+    color: rgba(241,239,233,.8); max-width: 64ch; text-wrap: pretty;
+  }
+  .about-body p + p { margin-top: 1rem; }
+  .pull {
+    font-family: var(--serif); font-style: italic; font-size: clamp(1.2rem, 2.6vw, 1.55rem);
+    line-height: 1.5; color: var(--ink); max-width: 30ch;
+    border-left: 1px solid var(--hair); padding-left: 1.2rem; margin: 1.6rem 0 0;
+  }
+
+  /* ── WHAT WE DO — CARD GRID ──────────────────────────── */
+  .card-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: .85rem; }
+  .card {
+    background: var(--surface); border: 1px solid var(--hair);
+    border-radius: 6px; padding: 1.4rem 1.5rem 1.6rem; transition: var(--lift); position: relative;
+  }
+  .card:hover { transform: translateY(-2px); border-color: rgba(241,239,233,.34); background: var(--surface-hover); box-shadow: 0 8px 30px rgba(0,0,0,.35); }
+  .card .idx { font-family: var(--mono); font-size: .65rem; letter-spacing: .16em; text-transform: uppercase; color: var(--mut); }
+  .card h3 { font-family: var(--serif); font-size: 1.5rem; font-weight: 500; letter-spacing: .02em; margin: .5rem 0 .5rem; }
+  .card p { font-size: 1rem; line-height: 1.6; color: var(--mut); text-wrap: pretty; }
+  @media (max-width: 560px) { .card-grid { grid-template-columns: 1fr; } }
+
+  /* ── GAMES ───────────────────────────────────────────── */
+  .games-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: .85rem; }
+  .game-card {
+    background: var(--surface); border: 1px solid var(--hair);
+    border-radius: 6px; overflow: hidden; transition: var(--lift);
+    display: flex; flex-direction: column;
+  }
+  .game-card:hover { transform: translateY(-2px); border-color: rgba(241,239,233,.34); background: var(--surface-hover); box-shadow: 0 8px 30px rgba(0,0,0,.35); }
+  .game-thumb { aspect-ratio: 16 / 10; overflow: hidden; background: #000; border-bottom: 1px solid var(--hair2); }
+  .game-thumb video, .game-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .game-body { padding: 1.1rem 1.25rem 1.3rem; display: flex; flex-direction: column; flex: 1; }
+  .game-status {
+    font-family: var(--mono); font-size: .6rem; letter-spacing: .14em;
+    text-transform: uppercase; color: var(--mut); display: flex; align-items: center; gap: .4rem;
+  }
+  .game-status .dot { width: 6px; height: 6px; border-radius: 50%; background: var(--mut); flex-shrink: 0; }
+  .game-status.live .dot { background: #8fd16f; box-shadow: 0 0 8px rgba(143,209,111,.7); }
+  .game-card h3 { font-family: var(--serif); font-size: 1.45rem; font-weight: 500; letter-spacing: .02em; margin: .45rem 0 .15rem; }
+  .game-genre { font-family: var(--mono); font-size: .64rem; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
+  .game-card p { font-size: .95rem; line-height: 1.55; color: var(--mut); margin: .7rem 0 1rem; text-wrap: pretty; flex: 1; }
+  .game-link {
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .06em;
+    color: var(--ink); padding: .5rem .9rem; border: 1px solid var(--hair);
+    border-radius: 999px; text-align: center; transition: var(--lift); align-self: flex-start;
+  }
+  .game-link:hover { border-color: rgba(241,239,233,.4); background: var(--hair2); transform: translateY(-1px); }
+  .game-link.steam { border-color: rgba(241,239,233,.34); background: var(--hair2); }
+  .game-link.steam:hover { border-color: var(--ink); background: var(--ink); color: var(--paper); }
+  @media (max-width: 860px) { .games-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 560px) { .games-grid { grid-template-columns: 1fr; } }
+
+  /* ── CONTACT ─────────────────────────────────────────── */
+  .contact-row { display: flex; flex-wrap: wrap; gap: .55rem; margin-top: .5rem; }
+  .contact-item {
+    background: var(--surface); border: 1px solid var(--hair); border-radius: 4px;
+    padding: .55rem 1rem; font-family: var(--mono); font-size: .78rem;
+    color: var(--ink); display: flex; align-items: center; gap: .5rem; transition: var(--lift);
+  }
+  .contact-item:hover { border-color: rgba(241,239,233,.4); transform: translateY(-1px); background: var(--surface-hover); }
+  .contact-item .ci-label { color: var(--mut); font-size: .66rem; letter-spacing: .08em; text-transform: uppercase; }
+
+  /* ── FOOTER ──────────────────────────────────────────── */
+  footer {
+    max-width: 1080px; margin: 0 auto;
+    padding: 1.4rem clamp(1.25rem, 3vw, 3rem);
+    border-top: 1px solid var(--hair2);
+    display: flex; justify-content: space-between; flex-wrap: wrap; gap: .6rem;
+    font-family: var(--mono); font-size: .68rem; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--mut);
+  }
+  footer a { color: var(--mut); transition: color .2s ease; }
+  footer a:hover { color: var(--ink); }
+
+  /* ── MOBILE NAV ──────────────────────────────────────── */
+  @media (max-width: 680px) {
+    .nav-toggle { display: flex; flex-direction: column; justify-content: space-between; }
+    .nav-links {
+      display: none; position: absolute; top: 100%; left: 0; right: 0;
+      flex-direction: column; gap: 0; background: rgba(11,11,13,.97);
+      backdrop-filter: blur(14px); border-bottom: 1px solid var(--hair); padding: .5rem 0;
+    }
+    .nav-links.show { display: flex; }
+    .nav-links a { padding: .7rem clamp(1.25rem, 3vw, 3rem); }
+  }
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" aria-hidden="true"></div>
+
+<!-- ── NAV ─────────────────────────────────────────────── -->
+<nav id="nav">
+  <div class="nav-inner">
+    <a class="nav-brand" href="#top">
+      <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Jhorro Productions logo">
+        <polygon points="50,5 95,50 50,95 5,50" fill="none" stroke="#f1efe9" stroke-width="3" stroke-linejoin="miter"></polygon>
+        <mask id="khNav" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+          <rect x="0" y="0" width="100" height="100" fill="#fff"></rect>
+          <path d="M34 41 Q50 30 66 41 Q50 52 34 41 Z" fill="#000"></path>
+          <ellipse cx="50" cy="41" rx="2.5" ry="4.6" fill="#fff"></ellipse>
+        </mask>
+        <g mask="url(#khNav)">
+          <circle cx="50" cy="41" r="18" fill="#f1efe9"></circle>
+          <path d="M46 53 L40.5 78 L59.5 78 L54 53 Z" fill="#f1efe9"></path>
+        </g>
+      </svg>
+      <span class="brand-text">
+        <span class="name">Jhorro Productions</span>
+        <span class="role">Independent Studio</span>
+      </span>
+    </a>
+    <button class="nav-toggle" aria-label="Menu"
+      onclick="this.classList.toggle('open');this.nextElementSibling.classList.toggle('show')">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="nav-links">
+      <li><a href="#about">About</a></li>
+      <li><a href="#games">Games</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="index.html">Portfolio</a></li>
+    </ul>
+  </div>
+</nav>
+
+<main class="page" id="top">
+
+  <!-- ── INTRO ─────────────────────────────────────────── -->
+  <div class="intro">
+    <div>
+      <div class="intro-mark">
+        <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Jhorro Productions logo">
+          <polygon points="50,5 95,50 50,95 5,50" fill="none" stroke="#f1efe9" stroke-width="3" stroke-linejoin="miter"></polygon>
+          <mask id="khHero" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+            <rect x="0" y="0" width="100" height="100" fill="#fff"></rect>
+            <path d="M34 41 Q50 30 66 41 Q50 52 34 41 Z" fill="#000"></path>
+            <ellipse cx="50" cy="41" rx="2.5" ry="4.6" fill="#fff"></ellipse>
+          </mask>
+          <g mask="url(#khHero)">
+            <circle cx="50" cy="41" r="18" fill="#f1efe9"></circle>
+            <path d="M46 53 L40.5 78 L59.5 78 L54 53 Z" fill="#f1efe9"></path>
+          </g>
+        </svg>
+        <span class="kick">Independent Studio · Est. 2024</span>
+      </div>
+      <h1>Jhorro Productions</h1>
+      <p class="lede">The Watcher, watching through the keyhole — a studio for games and interactive work, built one careful system at a time.</p>
+    </div>
+    <div class="intro-links">
+      <a href="#work">View Work</a>
+      <a href="mailto:jhonnatan.c.b@gmail.com">Email</a>
+      <a href="index.html">Portfolio</a>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ─────────────────────────────────────────── -->
+  <section id="about">
+    <div class="section-header">
+      <h2 class="section-title">About</h2>
+      <span class="section-aside">01 · Studio</span>
+    </div>
+    <div class="about-body reveal">
+      <p>
+        Jhorro Productions is the independent label behind the work of Jhonnatan Barbosa — a game designer with a statistics background and a habit of iterating with spreadsheets and player data. We make games, prototypes, and interactive experiences, with an emphasis on systems that hold together and mechanics that earn their place.
+      </p>
+      <p>
+        Small by design, broad by curiosity. From commercial mobile titles to game jams, the throughline is the same: watch closely, measure honestly, and build deliberately.
+      </p>
+      <p class="pull">Watch closely, measure honestly, build deliberately.</p>
+    </div>
+  </section>
+
+  <!-- ── GAMES ─────────────────────────────────────────── -->
+  <section id="games">
+    <div class="section-header">
+      <h2 class="section-title">Games</h2>
+      <span class="section-aside">02 · Titles</span>
+    </div>
+    <div class="games-grid">
+
+      <!-- Dead Saints Parade -->
+      <div class="game-card reveal">
+        <div class="game-thumb">
+          <video autoplay muted loop playsinline aria-label="Dead Saints Parade third-person stealth immersive sim gameplay">
+            <source src="media/project4141UpdateApril.mp4" type="video/mp4">
+            <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+          </video>
+        </div>
+        <div class="game-body">
+          <div class="game-status live"><span class="dot"></span>In Development · Target 2027</div>
+          <h3>Dead Saints Parade</h3>
+          <div class="game-genre">Third-Person Immersive Sim · PC &amp; Steam Deck · Unity 6.3</div>
+          <p>Our first commercial title — inspired by Thief, Dishonored, Metal Gear Solid, and Gloomwood. A vulnerable spy infiltrates a Gothic-Victorian world where information is the most powerful weapon and direct combat is a death sentence. A ~2–3 hour loop of Observe, Plan, Infiltrate, Evade. Steam Next Fest demo February 2027, full release Q2 2027.</p>
+          <a class="game-link steam" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">Wishlist on Steam →</a>
+        </div>
+      </div>
+
+      <!-- Idle Kingdom Builder -->
+      <div class="game-card reveal">
+        <div class="game-thumb">
+          <video autoplay muted loop playsinline aria-label="Idle Kingdom Builder gameplay showing kingdom construction and resource management">
+            <source src="media/02optimizedVideo-IdleKingdom.mp4" type="video/mp4">
+            <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+          </video>
+        </div>
+        <div class="game-body">
+          <div class="game-status"><span class="dot"></span>Shipped · 2024</div>
+          <h3>Idle Kingdom Builder</h3>
+          <div class="game-genre">Idle / Economy · Android</div>
+          <p>A medieval kingdom-building idle game with a hand-tuned economy and a Royal Ascension prestige system. Shipped on Google Play with 1000+ organic downloads.</p>
+          <a class="game-link" href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener">Google Play →</a>
+        </div>
+      </div>
+
+      <!-- Idle Cyberpunk City Clicker -->
+      <div class="game-card reveal">
+        <div class="game-thumb">
+          <video autoplay muted loop playsinline aria-label="Idle Cyberpunk City Clicker gameplay showing neon cityscape and upgrade UI">
+            <source src="media/01optimizedVideo-Cyberpunk.mp4" type="video/mp4">
+            <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+          </video>
+        </div>
+        <div class="game-body">
+          <div class="game-status"><span class="dot"></span>Shipped · 2025</div>
+          <h3>Idle Cyberpunk City Clicker</h3>
+          <div class="game-genre">Idle / Analytics · Android</div>
+          <p>A neon idle builder with deeper progression tiers and a full analytics pipeline. Telemetry at four milestones surfaced two economy bugs and a persistence defect — all fixed in v1.70. 4.2/5 with no marketing spend.</p>
+          <a class="game-link" href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener">Google Play →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── WORK / WHAT WE DO ─────────────────────────────── -->
+  <section id="work">
+    <div class="section-header">
+      <h2 class="section-title">What we do</h2>
+      <span class="section-aside">03 · Practice</span>
+    </div>
+    <div class="card-grid">
+      <div class="card reveal">
+        <div class="idx">A · Design</div>
+        <h3>Game Design</h3>
+        <p>Systems, economy, and gameplay design — data-driven and tested against real player behaviour.</p>
+      </div>
+      <div class="card reveal">
+        <div class="idx">B · Build</div>
+        <h3>Production</h3>
+        <p>Prototypes to shipped titles across mobile, PC, and web, from concept to release.</p>
+      </div>
+      <div class="card reveal">
+        <div class="idx">C · Measure</div>
+        <h3>Analytics</h3>
+        <p>Turning telemetry and spreadsheets into design decisions — balance, retention, and tuning.</p>
+      </div>
+      <div class="card reveal">
+        <div class="idx">D · Identity</div>
+        <h3>Branding</h3>
+        <p>Identity and interactive presentation — logo systems, sites, and presentation craft.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CONTACT ───────────────────────────────────────── -->
+  <section id="contact">
+    <div class="section-header">
+      <h2 class="section-title">Contact</h2>
+      <span class="section-aside">04 · Reach</span>
+    </div>
+    <div class="contact-row reveal">
+      <a href="mailto:jhonnatan.c.b@gmail.com" class="contact-item"><span class="ci-label">Email</span> jhonnatan.c.b@gmail.com</a>
+      <a href="https://linkedin.com/in/jhonnatanbarbosa" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">LinkedIn</span> /in/jhonnatanbarbosa</a>
+      <a href="https://jhorro.itch.io" target="_blank" rel="noopener" class="contact-item"><span class="ci-label">itch.io</span> jhorro.itch.io</a>
+      <a href="index.html" class="contact-item"><span class="ci-label">Portfolio</span> jhorro.com</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <span>© Jhorro Productions</span>
+  <span><a href="index.html">Jhonnatan Barbosa — Game Designer</a></span>
+</footer>
+
+<script>
+  // Nav background on scroll + scroll progress bar
+  const nav = document.getElementById('nav');
+  const bar = document.querySelector('.scroll-progress');
+  function onScroll() {
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+    const h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+  // Active nav link via section observation
+  const links = [...document.querySelectorAll('.nav-links a[href^="#"]')];
+  const map = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  const navIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        links.forEach(a => a.classList.remove('active'));
+        const a = map.get(e.target.id); if (a) a.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-45% 0px -50% 0px' });
+  document.querySelectorAll('section[id]').forEach(s => navIo.observe(s));
+
+  // Close mobile menu on link tap
+  document.querySelectorAll('.nav-links a').forEach(a => a.addEventListener('click', () => {
+    document.querySelector('.nav-toggle')?.classList.remove('open');
+    document.querySelector('.nav-links')?.classList.remove('show');
+  }));
+</script>
+</body>
+</html>

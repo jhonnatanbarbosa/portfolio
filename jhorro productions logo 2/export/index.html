@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Jhorro Productions — Logo Package</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root { --paper:#0b0b0d; --ink:#f1efe9; --mut:rgba(241,239,233,.55); --hair:rgba(241,239,233,.16); --hair2:rgba(241,239,233,.08); --mono:"JetBrains Mono",monospace; }
+  * { box-sizing:border-box; margin:0; }
+  body { background:var(--paper); color:var(--ink); font-family:"Cormorant Garamond",serif; -webkit-font-smoothing:antialiased; }
+  .wrap { max-width:1080px; margin:0 auto; padding:clamp(40px,7vw,96px) clamp(22px,5vw,64px) 120px; }
+  .kick { font-family:var(--mono); font-size:10.5px; letter-spacing:.28em; text-transform:uppercase; color:var(--mut); }
+  h1 { font-size:clamp(34px,6vw,60px); font-weight:500; letter-spacing:.02em; margin:18px 0 14px; }
+  .lede { font-size:clamp(17px,2.2vw,21px); line-height:1.6; color:rgba(241,239,233,.82); max-width:52ch; text-wrap:pretty; }
+  section { margin-top:clamp(48px,7vw,84px); }
+  .sec-head { display:flex; align-items:baseline; justify-content:space-between; gap:16px; border-bottom:1px solid var(--hair); padding-bottom:14px; margin-bottom:30px; }
+  .sec-title { font-size:25px; letter-spacing:.03em; }
+  .sec-idx { font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; color:var(--mut); text-transform:uppercase; }
+  .grid { display:grid; gap:18px; }
+  .g2 { grid-template-columns:1fr 1fr; }
+  .g4 { grid-template-columns:repeat(4,1fr); }
+  .card { border:1px solid var(--hair); border-radius:5px; overflow:hidden; display:flex; flex-direction:column; }
+  .stage { display:grid; place-items:center; padding:30px; min-height:150px; }
+  .stage.dark { background:#0b0b0d; }
+  .stage.light { background:#f1efe9; }
+  .stage img { max-width:100%; max-height:200px; display:block; }
+  .cap { font-family:var(--mono); font-size:10px; letter-spacing:.04em; color:var(--mut); padding:12px 15px; border-top:1px solid var(--hair2); display:flex; justify-content:space-between; gap:10px; }
+  .cap b { color:rgba(241,239,233,.82); font-weight:500; }
+  .files { font-family:var(--mono); font-size:11.5px; line-height:1.95; color:var(--mut); }
+  .files b { color:rgba(241,239,233,.85); font-weight:500; }
+  .note { font-size:15.5px; line-height:1.65; color:var(--mut); max-width:60ch; margin-top:10px; text-wrap:pretty; }
+  .spec { font-family:var(--mono); font-size:11px; letter-spacing:.06em; color:var(--mut); line-height:2; }
+  .spec b { color:rgba(241,239,233,.85); font-weight:500; }
+  @media (max-width:720px){ .g4{grid-template-columns:1fr 1fr;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="kick">Brand assets · v1 · monochrome</div>
+  <h1>Jhorro Productions</h1>
+  <p class="lede">The Watcher — an eye watching through a keyhole. A complete logo package: vector symbol, three lockups, favicons and app icons, in both colour versions.</p>
+
+  <section>
+    <div class="sec-head"><div class="sec-title">Symbol</div><div class="sec-idx">Vector · SVG</div></div>
+    <div class="grid g2">
+      <div class="card"><div class="stage dark"><img src="svg/jhorro-symbol-white.svg" alt="symbol white" style="width:150px" /></div><div class="cap"><b>jhorro-symbol-white.svg</b><span>on black</span></div></div>
+      <div class="card"><div class="stage light"><img src="svg/jhorro-symbol-black.svg" alt="symbol black" style="width:150px" /></div><div class="cap"><b>jhorro-symbol-black.svg</b><span>on white</span></div></div>
+    </div>
+    <p class="note">Pure geometry — scales to any size with no quality loss. The master artwork; everything else derives from it. Drop the diamond frame for ultra-tight crops if needed.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="sec-title">Lockups</div><div class="sec-idx">PNG · high-res + transparent</div></div>
+    <div class="grid g2">
+      <div class="card"><div class="stage dark"><img src="png/lockup-stacked-dark.png" alt="" /></div><div class="cap"><b>Primary — stacked</b><span>01</span></div></div>
+      <div class="card"><div class="stage light"><img src="png/lockup-stacked-light.png" alt="" /></div><div class="cap"><b>Primary — stacked</b><span>01</span></div></div>
+      <div class="card"><div class="stage dark"><img src="png/lockup-horizontal-dark.png" alt="" /></div><div class="cap"><b>Horizontal — stacked words</b><span>02</span></div></div>
+      <div class="card"><div class="stage light"><img src="png/lockup-horizontal-light.png" alt="" /></div><div class="cap"><b>Horizontal — stacked words</b><span>02</span></div></div>
+    </div>
+    <div class="grid" style="margin-top:18px">
+      <div class="card"><div class="stage dark"><img src="png/lockup-row-dark.png" alt="" /></div><div class="cap"><b>Single-line — mark · JHORRO · PRODUCTIONS</b><span>03</span></div></div>
+      <div class="card"><div class="stage light"><img src="png/lockup-row-light.png" alt="" /></div><div class="cap"><b>Single-line — mark · JHORRO · PRODUCTIONS</b><span>03</span></div></div>
+    </div>
+    <p class="note">Each lockup ships in dark and light, plus a <b>-transparent.png</b> version (no background) for placing over imagery. Wordmark set in Cormorant Garamond, equal tracking on both words.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="sec-title">Favicon &amp; app icon</div><div class="sec-idx">PNG</div></div>
+    <div class="grid g4">
+      <div class="card"><div class="stage dark"><img src="png/app-icon-dark-512.png" alt="" style="width:96px" /></div><div class="cap"><b>App icon</b><span>dark</span></div></div>
+      <div class="card"><div class="stage light"><img src="png/app-icon-light-512.png" alt="" style="width:96px" /></div><div class="cap"><b>App icon</b><span>light</span></div></div>
+      <div class="card"><div class="stage dark"><img src="png/favicon-white-512.png" alt="" style="width:80px" /></div><div class="cap"><b>Favicon</b><span>transp.</span></div></div>
+      <div class="card"><div class="stage light"><img src="png/favicon-black-512.png" alt="" style="width:80px" /></div><div class="cap"><b>Favicon</b><span>transp.</span></div></div>
+    </div>
+    <p class="note">App icons (rounded square, padded) at 512 / 180 / 64 / 32 px. Favicons (full-bleed, transparent) at 512 / 64 / 32 / 16 px. The mark holds its read down to 16px.</p>
+  </section>
+
+  <section>
+    <div class="sec-head"><div class="sec-title">Specs</div><div class="sec-idx">For production</div></div>
+    <div class="spec">
+      <b>Wordmark</b>&nbsp; Cormorant Garamond · 500 · all caps · letter-spacing 0.30em<br/>
+      <b>Ink</b>&nbsp; #0B0B0D &nbsp;·&nbsp; <b>Paper</b>&nbsp; #F1EFE9 &nbsp;·&nbsp; monochrome only<br/>
+      <b>Mark</b>&nbsp; diamond frame · eye in negative space · slit pupil · stroke weight 3 (on 100-unit grid)<br/>
+      <b>Clear space</b>&nbsp; keep at least one diamond-half around the lockup<br/>
+      <b>Minimum size</b>&nbsp; symbol 16px · stacked lockup 120px wide
+    </div>
+  </section>
+</div>
+</body>
+</html>

@@ -333,7 +333,7 @@
       </span>
     </div>
 
-    <div class="project-card wip-layout reveal">
+    <div class="project-card wip-layout reveal" id="dead-saints-parade">
       <div class="project-thumb">
         <video autoplay muted loop playsinline aria-label="Dead Saints Parade third-person stealth immersive sim gameplay">
           <source src="media/project4141UpdateApril.mp4" type="video/mp4">
@@ -349,7 +349,7 @@
           A third-person stealth immersive sim from Jhorro Productions — stealth tension engineered through systems rather than scripting. Announced for PC and Steam Deck, full release Q2 2027.
         </p>
         <p class="project-desc" data-i18n="wip_desc">
-          My biggest project to date and Jhorro Productions' first commercial title — self-developed and self-published. Inspired by Thief, Dishonored, Metal Gear Solid, and Gloomwood. The player is a vulnerable spy infiltrating a Gothic-Victorian world where information is the most powerful weapon and direct combat is a death sentence. I'm building patrol AI, detection state machines, multi-guard coordination, lockpicking, cover, stats, and a journal system from scratch. A Steam Next Fest demo lands in February 2027, with full release targeting Q2 2027.
+          My biggest project to date and Jhorro Productions' first commercial title — self-developed and self-published. Inspired by Thief, Dishonored, Metal Gear Solid, and Gloomwood. The player is a vulnerable spy infiltrating a Gothic-Victorian world where information is the most powerful weapon and combat is lethal in both directions. The systems core is built: coordinated guard AI, civilians and informants, light/shadow and sound-based detection, stealth kills with body discovery, throwables, traps, lockpicking, and a journal that turns observation into leverage. Current focus is building out the cathedral levels, the second combat slice, and Steam Deck input. A Steam Next Fest demo lands in February 2027, with full release targeting Q2 2027.
         </p>
         <div class="meta-row">
           <div class="meta-pair"><span class="ml" data-i18n="label_role">Role</span><span class="mv" data-i18n="wip_role">Designer & Developer (Solo)</span></div>
@@ -370,10 +370,10 @@
         <div class="wip-progress">
           <div class="wip-progress-label">
             <span data-i18n="wip_progress_label">Demo Progress</span>
-            <span class="pct">54%</span>
+            <span class="pct">62%</span>
           </div>
           <div class="wip-progress-bar">
-            <div class="wip-progress-fill" style="width:54%;"></div>
+            <div class="wip-progress-fill" style="width:62%;"></div>
           </div>
 
           <div class="wip-columns">
@@ -381,7 +381,7 @@
               <div class="wip-column-label" data-i18n="wip_col_done">Shipped Systems</div>
               <div class="wip-milestones">
                 <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d1">Lockpicking minigame</span></div>
-                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d2">Cover &amp; peek system</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d2">Cover &amp; peek system v2</span></div>
                 <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d3">Enemy AI — single guard</span></div>
                 <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d4">Multi-guard coordination</span></div>
                 <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d5">Light &amp; shadow detection</span></div>
@@ -397,20 +397,24 @@
                 <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d15">Player controller hooks</span></div>
                 <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d16">Debug infrastructure v2</span></div>
                 <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d17">Analytics collection plan</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d18">Combat v1 — stealth kills &amp; body discovery</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d19">Throwables &amp; distractions</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d20">Traps &amp; hazards</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d21">Civilian NPCs — informants &amp; panic</span></div>
+                <div class="wip-milestone done"><span class="check">✓</span><span data-i18n="wip_d22">Game flow — splash, main menu &amp; save shrines</span></div>
               </div>
             </div>
             <div>
               <div class="wip-column-label" data-i18n="wip_col_todo">On The Board</div>
               <div class="wip-milestones">
-                <div class="wip-milestone active"><span class="check">▸</span><span data-i18n="wip_t1">Unified pause menu UI</span></div>
-                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t2">Distraction / throwables (partial)</span></div>
-                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t3">Combat (dagger + pistol)</span></div>
-                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t4">The Maestro boss AI</span></div>
-                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t5">Minimap (MGS-style)</span></div>
-                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t6">Trap system</span></div>
-                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t7">Cutscene system</span></div>
-                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t8">Steam Deck optimization pass</span></div>
-                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t9">Steam Next Fest demo build</span></div>
+                <div class="wip-milestone active"><span class="check">▸</span><span data-i18n="wip_t10">Level 1 &amp; 2 — greybox done, art pass next</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t11">Combat slice 2 — dagger &amp; pistol</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t12">Unified pause menu UI</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t13">The Maestro boss AI</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t14">Minimap (MGS-style)</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t15">Cutscene system</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t16">Steam Input wiring &amp; Deck optimization</span></div>
+                <div class="wip-milestone"><span class="check"></span><span data-i18n="wip_t17">Steam Next Fest demo build</span></div>
               </div>
             </div>
           </div>
@@ -422,7 +426,7 @@
             <span data-i18n="wip_steam_link">Wishlist on Steam →</span>
           </a>
         </div>
-        <div class="wip-updated" data-i18n="wip_updated">Last updated: May 2026 · 17 systems implemented</div>
+        <div class="wip-updated" data-i18n="wip_updated">Last updated: July 2026 · 22 systems implemented</div>
       </div>
     </div>
 
@@ -575,9 +579,9 @@
     <div class="dashboard-embed reveal">
       <div class="dashboard-label">
         <span data-i18n="dashboard_label">Interactive Analytics Dashboard · Built from real Unity Analytics data</span>
-        <a href="cyberpunk-dashboard.html" target="_blank" rel="noopener" data-i18n="dashboard_fullscreen">Open full screen →</a>
+        <a href="cyberpunk-dashboard-v2.html" target="_blank" rel="noopener" data-i18n="dashboard_fullscreen">Open full screen →</a>
       </div>
-      <iframe src="cyberpunk-dashboard.html" loading="lazy" title="Idle Cyberpunk City Clicker analytics dashboard showing player milestone data and economy metrics"></iframe>
+      <iframe src="cyberpunk-dashboard-v2.html" loading="lazy" title="Idle Cyberpunk City Clicker analytics dashboard showing player milestone data and economy metrics"></iframe>
     </div>
 
     <!-- What I'd Change Next -->
@@ -1528,7 +1532,7 @@ en: {
   // ── Currently Working On: Dead Saints Parade ──
   wip_badge: "● In Development · Target 2027",
   wip_bridge: "A third-person stealth immersive sim from Jhorro Productions — stealth tension engineered through systems rather than scripting. Announced for PC and Steam Deck, full release Q2 2027.",
-  wip_desc: "My biggest project to date and Jhorro Productions' first commercial title — self-developed and self-published. Inspired by Thief, Dishonored, Metal Gear Solid, and Gloomwood. The player is a vulnerable spy infiltrating a Gothic-Victorian world where information is the most powerful weapon and direct combat is a death sentence. I'm building patrol AI, detection state machines, multi-guard coordination, lockpicking, cover, stats, and a journal system from scratch. A Steam Next Fest demo lands in February 2027, with full release targeting Q2 2027.",
+  wip_desc: "My biggest project to date and Jhorro Productions' first commercial title — self-developed and self-published. Inspired by Thief, Dishonored, Metal Gear Solid, and Gloomwood. The player is a vulnerable spy infiltrating a Gothic-Victorian world where information is the most powerful weapon and combat is lethal in both directions. The systems core is built: coordinated guard AI, civilians and informants, light/shadow and sound-based detection, stealth kills with body discovery, throwables, traps, lockpicking, and a journal that turns observation into leverage. Current focus is building out the cathedral levels, the second combat slice, and Steam Deck input. A Steam Next Fest demo lands in February 2027, with full release targeting Q2 2027.",
   wip_role: "Designer & Developer (Solo)",
   wip_platform: "PC · Steam Deck",
   wip_label_target: "Target",
@@ -1543,7 +1547,7 @@ en: {
   wip_col_done: "Shipped Systems",
   wip_col_todo: "On The Board",
   wip_d1: "Lockpicking minigame",
-  wip_d2: "Cover & peek system",
+  wip_d2: "Cover & peek system v2",
   wip_d3: "Enemy AI — single guard",
   wip_d4: "Multi-guard coordination",
   wip_d5: "Light & shadow detection",
@@ -1559,16 +1563,20 @@ en: {
   wip_d15: "Player controller hooks",
   wip_d16: "Debug infrastructure v2",
   wip_d17: "Analytics collection plan",
-  wip_t1: "Unified pause menu UI",
-  wip_t2: "Distraction / throwables (partial)",
-  wip_t3: "Combat (dagger + pistol)",
-  wip_t4: "The Maestro boss AI",
-  wip_t5: "Minimap (MGS-style)",
-  wip_t6: "Trap system",
-  wip_t7: "Cutscene system",
-  wip_t8: "Steam Deck optimization pass",
-  wip_t9: "Steam Next Fest demo build",
-  wip_updated: "Last updated: May 2026 · 17 systems implemented",
+  wip_d18: "Combat v1 — stealth kills & body discovery",
+  wip_d19: "Throwables & distractions",
+  wip_d20: "Traps & hazards",
+  wip_d21: "Civilian NPCs — informants & panic",
+  wip_d22: "Game flow — splash, main menu & save shrines",
+  wip_t10: "Level 1 & 2 — greybox done, art pass next",
+  wip_t11: "Combat slice 2 — dagger & pistol",
+  wip_t12: "Unified pause menu UI",
+  wip_t13: "The Maestro boss AI",
+  wip_t14: "Minimap (MGS-style)",
+  wip_t15: "Cutscene system",
+  wip_t16: "Steam Input wiring & Deck optimization",
+  wip_t17: "Steam Next Fest demo build",
+  wip_updated: "Last updated: July 2026 · 22 systems implemented",
   wip_thumb_placeholder: "[ gameplay capture pending ]",
 },
 
@@ -1948,16 +1956,8 @@ pt: {
   wip_d15: "Hooks do player controller",
   wip_d16: "Infraestrutura de debug v2",
   wip_d17: "Plano de coleta de analytics",
-  wip_t1: "Menu de pause unificado",
-  wip_t2: "Distração / arremessáveis (parcial)",
-  wip_t3: "Combate (adaga + pistola)",
-  wip_t4: "IA do chefe Maestro",
-  wip_t5: "Minimapa (estilo MGS)",
-  wip_t6: "Sistema de armadilhas",
-  wip_t7: "Sistema de cutscenes",
-  wip_t8: "Pass de otimização pro Steam Deck",
-  wip_t9: "Build da demo do Steam Next Fest",
-  wip_updated: "Última atualização: Maio de 2026 · 17 sistemas implementados",
+  // wip_d18–d22 e wip_t10–t17: sem tradução ainda — caem no inglês inline (passe de tradução pendente)
+  wip_updated: "Última atualização: Julho de 2026 · 22 sistemas implementados",
   wip_thumb_placeholder: "[ captura de gameplay pendente ]",
 },
 
@@ -2337,16 +2337,8 @@ ja: {
   wip_d15: "プレイヤーコントローラーの連携",
   wip_d16: "デバッグ基盤 v2",
   wip_d17: "アナリティクス収集計画",
-  wip_t1: "統合ポーズメニュー UI",
-  wip_t2: "陽動 / 投擲(一部実装)",
-  wip_t3: "戦闘(ダガー+ピストル)",
-  wip_t4: "ボス AI「The Maestro」",
-  wip_t5: "ミニマップ(MGS 風)",
-  wip_t6: "トラップシステム",
-  wip_t7: "カットシーンシステム",
-  wip_t8: "Steam Deck 最適化パス",
-  wip_t9: "Steam Next Fest デモビルド",
-  wip_updated: "最終更新:2026年5月 · 17システム実装済み",
+  // wip_d18–d22 / wip_t10–t17:未翻訳 — インライン英語にフォールバック(翻訳パスは後日)
+  wip_updated: "最終更新:2026年7月 · 22システム実装済み",
   wip_thumb_placeholder: "[ ゲームプレイ映像は準備中 ]",
 }};
 

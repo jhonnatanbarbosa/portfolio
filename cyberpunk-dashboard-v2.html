@@ -1,0 +1,1242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Idle Cyberpunk City Clicker — Analytics Dashboard v2</title>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #161619; font-family: 'Geist', system-ui, -apple-system, sans-serif; }
+    #root { min-height: 100%; }
+  </style>
+
+  <!-- React 18 -->
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+
+  <!-- Recharts -->
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/prop-types/15.8.1/prop-types.min.js"></script>
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/recharts/2.12.7/Recharts.min.js"></script>
+
+  <!-- Babel -->
+  <script crossorigin src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    const { useState } = React;
+    const {
+      BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
+      ResponsiveContainer, LineChart, Line, ComposedChart, Cell, LabelList, ReferenceLine
+    } = Recharts;
+
+    // ─── THEME ───────────────────────────────────────────────────────────
+    const theme = {
+      bg: "#161619",
+      surface: "#1d1d21",
+      surfaceHover: "#232328",
+      border: "#2c2c32",
+      text: "#dddbd6",
+      textMuted: "#a09e97",
+      accent: "#a8b87a",
+      accentDim: "#7a8a55",
+      cyan: "#7ec8c8",
+      amber: "#d4a95a",
+      red: "#c97070",
+      purple: "#a78bfa",
+    };
+
+    const chartColors = {
+      pre: "#7ec8c8",
+      post: "#a8b87a",
+      old: "#c97070",
+      now: "#a8b87a",
+      bar: "#a8b87a",
+      line: "#7ec8c8",
+    };
+
+    // ─── DATA ────────────────────────────────────────────────────────────
+    // Aggregated from Unity Analytics CSV. Pre-1.40 = versions <1.6.0.
+    // After-1.40 = 1.6.0, 1.6.1, 1.7.0, 1.8.1. Excludes 1.8.2 + test builds.
+    const eraStats = {
+      timeElapsed: { pre: { med: 194, mean: 277, n: 220 }, post: { med: 360, mean: 395, n: 22 } },
+      totalClicks: { pre: { med: 308, mean: 371, n: 210 }, post: { med: 355, mean: 451, n: 22 } },
+      buildingsBought: { pre: { med: 13, mean: 13.0, n: 220 }, post: { med: 12, mean: 10.0, n: 22 } },
+      activePlayTime: { post: { med: 239, mean: 247, n: 22 } },
+      sessionCount: { post: { med: 1, mean: 1.4, n: 11 } },
+    };
+
+    // Headline KPI dataset for behavior comparison
+    const behaviorCompare = [
+      { metric: "time1K", pre: 194, post: 360, label: "Time to 1K (s, median)" },
+      { metric: "clicks1K", pre: 308, post: 355, label: "Total clicks at 1K (median)" },
+      { metric: "buildings1K", pre: 13, post: 12, label: "Buildings owned at 1K (median)" },
+    ];
+
+    // From price changes.csv. Buildings: base price old → new.
+    const buildingPrices = [
+      { tier: "T1", passOld: 10, passNew: 10, clickOld: 5, clickNew: 5 },
+      { tier: "T2", passOld: 100, passNew: 130, clickOld: 50, clickNew: 60 },
+      { tier: "T3", passOld: 1600, passNew: 1600, clickOld: 750, clickNew: 790 },
+      { tier: "T4", passOld: 14500, passNew: 20000, clickOld: 7500, clickNew: 10000 },
+      { tier: "T5", passOld: 130000, passNew: 250000, clickOld: 75000, clickNew: 130000 },
+      { tier: "T6", passOld: 1675000, passNew: 3200000, clickOld: 750000, clickNew: 1600000 },
+      { tier: "T7", passOld: 20000000, passNew: 40000000, clickOld: 10000000, clickNew: 20000000 },
+      { tier: "T8", passOld: 350000000, passNew: 500000000, clickOld: 175000000, clickNew: 250000000 },
+      { tier: "T9", passOld: 5000000000, passNew: 6300000000, clickOld: 2500000000, clickNew: 3200000000 },
+      { tier: "T10", passOld: 80000000000, passNew: 80000000000, clickOld: 40000000000, clickNew: 40000000000 },
+    ];
+
+    // Multiplier changes (from price changes.csv)
+    const multiplierChanges = [
+      { name: "Passive Upgrade Mult.", old: 5.0, now: 3.5 },
+      { name: "Clicker Upgrade Mult.", old: 10.0, now: 7.0 },
+      { name: "Offline Multiplier", old: 1000, now: 150 },
+    ];
+
+    // Cumulative upgrade-purchase cost: base 150 (passive upgrade T1), old 5x vs new 3.5x scaling
+    const upgradeCostCurve = (() => {
+      const out = [];
+      const base = 150;
+      for (let n = 0; n <= 10; n++) {
+        out.push({
+          n,
+          old: Math.round(base * Math.pow(5, n)),
+          now: Math.round(base * Math.pow(3.5, n)),
+        });
+      }
+      return out;
+    })();
+
+    // Offline reward simulation: pre-fix double-application vs post-fix linear with caps.
+    // Assumption: baseline CPS=1, 5 offline upgrades owned, time = hours offline.
+    // Pre-fix: applied bonus twice → reward = CPS * t * Pow(2,5) * 1.05 (5% rate)  (illustrative)
+    // Post-fix: capped at 75% rate, 8h, 2x bonus, linear (1+0.5*n)
+    const offlineSim = (() => {
+      const out = [];
+      const cps = 1, upgrades = 5, baseRate = 0.05;
+      const preMult = Math.pow(2, upgrades) * 1.05; // double-application illustration
+      const postBonus = Math.min(2.0, 1 + 0.5 * upgrades); // capped at 2x
+      const postRate = Math.min(0.75, baseRate * postBonus);
+      for (let h = 0.25; h <= 12; h += h < 4 ? 0.25 : 1) {
+        const hCapped = Math.min(h, 8);
+        out.push({
+          h: +h.toFixed(2),
+          pre: Math.round(cps * h * 3600 * preMult * baseRate),
+          post: Math.round(cps * hCapped * 3600 * postRate),
+        });
+      }
+      return out;
+    })();
+
+    // Events: pre-1.40 vs after-1.40 param counts
+    const eventParamCounts = [
+      { event: "ThousandMilestone", pre: 7, post: 33 },
+      { event: "MillionMilestone", pre: 7, post: 33 },
+      { event: "BillionMilestone", pre: 7, post: 33 },
+      { event: "TrillionMilestone", pre: 7, post: 33 },
+      { event: "SessionStart", pre: 0, post: 14 },
+      { event: "AdWatched5x", pre: 0, post: 8 },
+      { event: "AdFreeBuilding", pre: 0, post: 7 },
+    ];
+
+    const newStatsFields = [
+      "totalAdsWatched5x",
+      "totalBuildingAdsWatched",
+      "totalAdBonusTime",
+      "lastSessionPlayTime",
+      "lastSessionClicks",
+      "lastSessionBuildings",
+      "lastSessionScore",
+      "lastSessionEnd",
+      "totalSessions",
+      "ipQuitFlag",
+      "snapshotEconomyMult",
+      "snapshotRoyalUpgMult",
+    ];
+
+    // ─── MILESTONE PROGRESSION (1K / 1M / 1B / 1T) ───────────────────────
+    // Pre counts per v1 dashboard (220 → 93 → 25 → 9). Post counts from current SQL pull.
+    const milestoneFunnel = [
+      { milestone: "1K", pre: 220, post: 22 },
+      { milestone: "1M", pre: 93, post: 9 },
+      { milestone: "1B", pre: 25, post: 3 },
+      { milestone: "1T", pre: 9, post: 1 },
+    ];
+
+    // Median time-to-milestone (seconds). Pre: from 1K/1M (1B/1T pre-1.40 was buggy per v1 dashboard).
+    const milestoneTimes = [
+      { milestone: "1K", pre: 194, post: 360, preN: 220, postN: 22 },
+      { milestone: "1M", pre: 827, post: 1635, preN: 91, postN: 9 },
+      { milestone: "1B", pre: null, post: 320781, preN: 0, postN: 3 },
+      { milestone: "1T", pre: null, post: 67521, preN: 0, postN: 1 },
+    ];
+
+    // Active play time at milestone (after-1.40 only — metric introduced in v1.70)
+    const milestoneActiveTime = [
+      { milestone: "1K", active: 239, n: 22 },
+      { milestone: "1M", active: 974, n: 9 },
+      { milestone: "1B", active: 4532, n: 3 },
+      { milestone: "1T", active: 17195, n: 1 },
+    ];
+
+    // ─── COUNTRY DATA ────────────────────────────────────────────────────
+    // Per-country distinct-player events from timeElapsed at any milestone (after-1.40 / pre-1.40).
+    const countryDataPost = [
+      { code: "US", name: "United States", players: 14, pct: 40.0 },
+      { code: "BR", name: "Brazil", players: 12, pct: 34.3 },
+      { code: "DE", name: "Germany", players: 4, pct: 11.4 },
+      { code: "IT", name: "Italy", players: 1, pct: 2.9 },
+      { code: "ES", name: "Spain", players: 1, pct: 2.9 },
+      { code: "PR", name: "Puerto Rico", players: 1, pct: 2.9 },
+      { code: "GR", name: "Greece", players: 1, pct: 2.9 },
+      { code: "GB", name: "United Kingdom", players: 1, pct: 2.9 },
+    ];
+
+    const countryDataPre = [
+      { code: "US", name: "United States", players: 83 },
+      { code: "DE", name: "Germany", players: 33 },
+      { code: "BR", name: "Brazil", players: 26 },
+      { code: "RU", name: "Russia", players: 18 },
+      { code: "FR", name: "France", players: 14 },
+      { code: "GB", name: "United Kingdom", players: 11 },
+      { code: "CA", name: "Canada", players: 10 },
+      { code: "NL", name: "Netherlands", players: 10 },
+      { code: "KR", name: "South Korea", players: 8 },
+      { code: "JP", name: "Japan", players: 7 },
+    ];
+
+    // Per-country median time-to-1K (after-1.40)
+    const countryTimeToK = [
+      { code: "US", med: 308, n: 8 },
+      { code: "BR", med: 474, n: 8 },
+      { code: "DE", med: 943, n: 1 },
+      { code: "IT", med: 240, n: 1 },
+      { code: "ES", med: 356, n: 1 },
+      { code: "PR", med: 363, n: 1 },
+      { code: "GR", med: 383, n: 1 },
+    ];
+
+    // ─── AD WATCHED 5x DATA ──────────────────────────────────────────────
+    // Total 146 events after-1.40. Heavy concentration on a single DE player.
+    const adByCountry = [
+      { code: "DE", name: "Germany", events: 120, pct: 82.2 },
+      { code: "US", name: "United States", events: 13, pct: 8.9 },
+      { code: "BR", name: "Brazil", events: 10, pct: 6.8 },
+      { code: "GB", name: "United Kingdom", events: 2, pct: 1.4 },
+      { code: "PR", name: "Puerto Rico", events: 1, pct: 0.7 },
+    ];
+
+    // ─── SESSION DATA ────────────────────────────────────────────────────
+    // 27 SessionStart events (after-1.40)
+    const sessionNumberHist = [
+      { n: "1", count: 2 },
+      { n: "2", count: 10 },
+      { n: "3", count: 7 },
+      { n: "4", count: 5 },
+      { n: "5", count: 1 },
+      { n: "6+", count: 2 },
+    ];
+
+    const daysSinceInstallHist = [
+      { bucket: "Day 0", count: 13 },
+      { bucket: "Day 1", count: 6 },
+      { bucket: "4-7 days", count: 2 },
+      { bucket: "8-14 days", count: 4 },
+      { bucket: "15+ days", count: 2 },
+    ];
+
+    // ─── HELPERS ─────────────────────────────────────────────────────────
+    const fmt = (v) => {
+      if (v == null) return "—";
+      const abs = Math.abs(v);
+      if (abs >= 1e12) return `${(v/1e12).toFixed(1)}T`;
+      if (abs >= 1e9) return `${(v/1e9).toFixed(1)}B`;
+      if (abs >= 1e6) return `${(v/1e6).toFixed(1)}M`;
+      if (abs >= 1e3) return `${(v/1e3).toFixed(1)}K`;
+      return v.toString();
+    };
+
+    const fmtSec = (s) => {
+      if (s < 60) return `${s}s`;
+      const m = s / 60;
+      if (m < 60) return `${m.toFixed(1)} min`;
+      return `${(m/60).toFixed(1)} h`;
+    };
+
+    // ─── i18n ────────────────────────────────────────────────────────────
+    const lang = localStorage.getItem('portfolio-lang') || 'en';
+    window.addEventListener('storage', () => location.reload());
+
+    const pt = {
+      tab_overview: "Visão Geral",
+      tab_economy: "Rebalance Econômico",
+      tab_offline: "Bug do Offline",
+      tab_analytics: "Expansão de Analytics",
+      tab_behavior: "Impacto no Jogador",
+      tab_method: "Metodologia",
+      tab_geo: "Distribuição Geo",
+      tab_ads: "Ads & Sessões",
+      // shared
+      insight: "Análise",
+      note: "Nota",
+      pre_label: "Pré-1.40",
+      post_label: "Pós-1.40",
+      players: "jogadores",
+      median: "mediana",
+      mean: "média",
+      // overview
+      ov_subtitle: "O que mudou após a v1.40 e como os dados responderam",
+      ov_kpi_pre: "Cohort pré-1.40",
+      ov_kpi_post: "Cohort pós-1.40",
+      ov_kpi_fixes: "Correções enviadas",
+      ov_kpi_events: "Novos eventos",
+      ov_kpi_time: "Tempo até 1K",
+      ov_kpi_pre_sub: "build legada",
+      ov_kpi_post_sub: "build pós-overhaul",
+      ov_kpi_fixes_sub: "v1.70 + v1.81",
+      ov_kpi_events_sub: "instrumentados",
+      ov_kpi_time_sub: "mediana, +85%",
+      ov_timeline_title: "Linha do Tempo",
+      ov_timeline_pre: "Build legada com 3 problemas conhecidos: contador de upgrade clicker mal-mapeado, persistência de timeElapsed e bug de produção offline acumulando até ~38.000× a CPS de jogo final.",
+      ov_timeline_post: "Overhaul de v1.70 (rebalance econômico, correção do offline, analytics expandido, fix de IAP) seguido pelo polimento estável da v1.81. Esta análise compara o cohort agregado pós-1.40 contra a baseline.",
+      ov_insight: "O painel anterior diagnosticou três problemas e propôs um rebalance específico de mid-game. Este painel mostra o que entrou em produção e como o comportamento dos jogadores respondeu — com o tamanho amostral menor da nova build claramente sinalizado.",
+      // economy
+      ec_intro: "O rebalance focou onde o painel anterior identificou a parede de progressão: nos custos de upgrade. Multiplicadores de upgrade caíram (passivo 5× → 3.5×, clicker 10× → 7×) e o multiplicador de bônus offline foi reduzido em 6.7×. Os multiplicadores de preço de prédios em si (1.65× clicker, 1.25× passivo) permanecem inalterados — a assimetria que impulsiona a transição clique-para-passivo é parte do design.",
+      ec_mult_title: "Mudanças de Multiplicadores",
+      ec_mult_old: "Antigo",
+      ec_mult_new: "Novo",
+      ec_table_title: "Mudanças de Preço Base por Tier (Prédios)",
+      ec_th_tier: "Tier",
+      ec_th_passive: "Passivo",
+      ec_th_clicker: "Clicker",
+      ec_th_old: "antigo",
+      ec_th_new: "novo",
+      ec_th_delta: "Δ",
+      ec_curve_title: "Custo Cumulativo de Upgrade Passivo (base 150)",
+      ec_curve_desc: "10 compras consecutivas. Antigo escala 5×, novo escala 3.5×. Eixo Y em log.",
+      ec_curve_x: "Compras",
+      ec_curve_y: "Custo (créditos)",
+      ec_insight: "No 10º upgrade passivo, o custo antigo era 1.46B créditos; o novo custo é 4.14M — 354× mais barato. A escolha do design não foi de balanceamento aritmético: o painel anterior havia mostrado que upgrades se tornam o vetor principal de progressão no mid-to-late game, e a curva antiga colocava a maioria dos jogadores fora dessa rota. A nova curva torna upgrades alcançáveis enquanto preserva a assimetria de prédios.",
+      // offline
+      of_intro: "O bônus offline estava sendo aplicado duas vezes: uma vez ao montar offlinePercentage, novamente em CalculateProduction(). Em jogos com muitos upgrades, isso compunha em até ~38.000× a CPS regular. O fix substituiu o escalonamento exponencial por linear e adicionou três limites firmes.",
+      of_diag: "Diagnóstico",
+      of_diag_text: "offlineBonus já estava embutido em offlinePercentage e era multiplicado uma segunda vez em CalculateProduction(). Sem limite, escalonamento exponencial via Mathf.Pow(2, n) sobre o número de upgrades.",
+      of_caps: "Limites Adicionados",
+      of_cap_rate: "Taxa máxima",
+      of_cap_time: "Tempo máximo",
+      of_cap_bonus: "Multiplicador máx.",
+      of_cap_rate_sub: "da CPS ativa",
+      of_cap_time_sub: "horas offline",
+      of_cap_bonus_sub: "vezes a base",
+      of_sim_title: "Recompensa Offline Simulada (5 upgrades, log Y)",
+      of_sim_desc: "Comparação do reward antigo (sem limite, dupla aplicação) vs novo (linear com limites). Linha de referência marca o teto de 8h.",
+      of_sim_x: "Horas offline",
+      of_sim_y: "Recompensa (créditos)",
+      of_insight: "O bug não era apenas matemático — alterava significativamente a economia. Um jogador deixando o app por uma noite recebia mais créditos do que tinha acumulado em horas de jogo ativo, comprimindo dramaticamente a curva de progressão de mid-game. O fix recoloca o offline como suplemento à sessão ativa em vez de substituto. Limites firmes garantem que mesmo configurações extremas de upgrade permaneçam dentro do design.",
+      // analytics
+      an_intro: "Cada evento de marco passou de ~7 parâmetros para ~33, capturando estado completo da economia (taxas de produção, multiplicadores, contadores de ad). Três eventos novos (SessionStart, AdWatched5x, AdFreeBuilding) e doze novos campos cumulativos em Stats.cs. Nomes pré-1.40 foram preservados para compatibilidade com o dashboard anterior.",
+      an_table_title: "Parâmetros por Evento",
+      an_th_event: "Evento",
+      an_th_pre: "Pré-1.40",
+      an_th_post: "Pós-1.40",
+      an_th_new: "novo",
+      an_fields_title: "Novos Campos em Stats.cs",
+      an_fields_desc: "Doze campos adicionados ao save/load via PlayerPrefs.",
+      an_session_title: "Padrão SessionStart",
+      an_session_text: "SessionStart dispara a cada abertura do app via coroutine de 2 frames (espera analyticsCollect.LateStart). Carrega tanto o estado de abertura da nova sessão quanto um snapshot da sessão anterior — escrito em PlayerPrefs no save/quit. Escolhido especificamente porque OnApplicationQuit é não-confiável em mobile force-close.",
+      an_iap_title: "Fix do IAP de Multiplicador",
+      an_iap_text: "Boost de 500% corrigido de 5f para 6f. Boosts percentuais devem ser (1 + decimal_do_boost), não o boost sozinho. Bug sutil mas observável em valores reais de jogadores.",
+      an_insight: "A expansão não foi instrumentação adicional pelo bem da instrumentação. Cada parâmetro adicionado responde a uma pergunta que o painel anterior não conseguiu — qual era o valor ativo dos multiplicadores no momento do marco? Quantos ads foram assistidos? Os contadores de ad em particular permitem analisar o impacto real da monetização em retenção e tempo de progressão.",
+      // behavior
+      bh_intro: "Três métricas observáveis no cohort pós-1.40 versus a baseline. O cohort pós é menor (n≈22 vs 220) por estar restrito à build atual.",
+      bh_chart_title: "Comparação de Mediana — Marco 1K",
+      bh_pre: "Pré-1.40",
+      bh_post: "Pós-1.40",
+      bh_metric: "Métrica",
+      bh_time_label: "Tempo até 1K (s)",
+      bh_clicks_label: "Cliques no 1K",
+      bh_buildings_label: "Prédios no 1K",
+      bh_new_metrics_title: "Métricas Pós-1.40 (sem comparação pré)",
+      bh_active_label: "Tempo ativo até 1K",
+      bh_session_label: "Sessões até 1K",
+      bh_active_sub: "mediana, no jogo",
+      bh_session_sub: "mediana, abertas",
+      bh_n_note: "Tamanhos amostrais: pré n=220 jogadores únicos no marco 1K; pós n≈22 (build estável, cohort em andamento). Medianas são escolhidas em vez de médias porque ambos os cohorts têm caudas longas.",
+      bh_insight: "O tempo até 1K subiu (194s → 360s) e os cliques aumentaram modestamente (308 → 355). O número de prédios comprados ficou essencialmente igual (13 → 12). Lido em conjunto: jogadores agora gastam mais tempo ativo e clicam mais para alcançar o primeiro marco, com comportamento de compra consistente. Isso é direcionalmente o que o rebalance de upgrade visava — uma curva de mid-game mais suave que mantém os jogadores engajados ativamente por mais tempo antes do takeover passivo. O cohort pós-1.40 é pequeno; tratar como sinal direcional, não como conclusão definitiva.",
+      // methodology
+      me_eras_title: "Limites de Era",
+      me_eras_pre: "Versões < 1.6.0 (0.2.x, 0.3.x, 1.0.x, 1.1.x, 1.2.x, 1.3.x, 1.4.0).",
+      me_eras_post: "Versões 1.6.0, 1.6.1, 1.7.0, 1.8.0, 1.8.1. Mudanças de economia já visíveis na 1.6.0.",
+      me_excl_title: "Exclusões",
+      me_excl_text: "1.8.2 (em QA, não público), test1.0 (sessões internas de dev). Nenhum impacto material em medianas.",
+      me_agg_title: "Método de Agregação",
+      me_agg_text: "Cada linha do CSV tem (VAL, PLAYERCOUNT). Linhas foram expandidas em PLAYERCOUNT observações de valor VAL antes do cálculo de medianas/quartis. Filtragem de outliers via IQR não foi aplicada nesta análise — medianas absorvem caudas naturalmente; sinalizar quando relevante.",
+      me_caveats_title: "Caveats",
+      me_caveats_text: "O cohort pós-1.40 é ~10× menor que o cohort pré (build atual estável, base de jogadores ativos menor). Resultados são direcionalmente válidos mas intervalos de confiança são amplos. Seguindo o lançamento da v1.81, a próxima janela de análise terá amostras maiores.",
+      // behavior — extended
+      bh_funnel_title: "Funil de marcos — jogadores alcançando cada tier",
+      bh_time_per_milestone: "Mediana de tempo-desde-instalação por marco",
+      bh_time_per_milestone_desc: "Valores pré para 1B/1T omitidos — o bug de persistência do timeElapsed os tornou inválidos na build legada. Eixo Y em log.",
+      bh_active_per_milestone: "Tempo de jogo ativo por marco (apenas pós-1.40)",
+      bh_active_per_milestone_desc: "activePlayTime é uma métrica introduzida na v1.70 — separa engajamento real de tempo idle/offline.",
+      // geo
+      geo_intro: "De onde vieram os jogadores em cada cohort, e como o tempo até 1K varia por país. Granularidade de país é best-effort: Unity Analytics provê códigos ISO-2 derivados do locale do dispositivo.",
+      geo_total_post: "Jogadores pós-1.40",
+      geo_kpi_sub_post: "ao longo de 1K-1T",
+      geo_total_pre: "Jogadores pré-1.40",
+      geo_kpi_sub_pre: "top-10 países mostrados",
+      geo_top_post: "Top pós-1.40",
+      geo_top_pre: "Top pré-1.40",
+      geo_post_chart: "Cohort pós-1.40",
+      geo_pre_chart: "Cohort pré-1.40 (top 10)",
+      geo_players: "Jogadores",
+      geo_time_title: "Mediana de tempo-até-1K por país (pós-1.40)",
+      geo_time_desc: "Ordenado do mais rápido. Países com um único jogador marcados como n=1 — anedótico apenas.",
+      geo_med_time: "Mediana tempo-até-1K",
+      geo_insight: "O cohort se concentra mais em BR na build pós que na pré (US+BR foi de ~35% para 74%) — provavelmente reflete quais segmentos de jogadores retornaram para a v1.81. A mediana de tempo até 1K varia significativamente por país: US é o mais rápido entre países com n>1 (~5min), BR cerca de 50% mais lento (~8min). Difícil tirar conclusões causais com este n, mas vale rastrear ao longo do tempo — diferenças por país geralmente refletem hábitos de jogo (cadência de deslocamento, dia de semana vs fim de semana) em vez de habilidade.",
+      // ads & sessions
+      ads_intro: "Dois novos streams de eventos introduzidos na v1.70: AdWatched5x (vídeo recompensado) e SessionStart. Ambos são janelas diretas para engajamento — o que era previamente visível apenas em snapshots de marcos agora é amostrado por sessão e por visualização de ad.",
+      ads_5x_title: "Visualizações de ad 5x por país (pós-1.40)",
+      ads_events: "Eventos de ad",
+      ads_total: "Total de ads 5x assistidos",
+      ads_total_sub: "pós-1.40, todos os países",
+      ads_max: "Máx por jogador",
+      ads_max_sub: "1 jogador DE, 82% do total",
+      ads_other: "Eventos de outros países",
+      ads_other_sub: "ao longo de 4 países",
+      ads_concentration: "O comportamento de assistir ads está fortemente concentrado: um único jogador alemão é responsável por 82% de todas as visualizações de ad 5x (sequência lifetimeAdCount vai de 1 → 120). Os 18% restantes se espalham por US (9%), BR (7%), GB (1%), PR (1%). Esse é um sinal útil — o boost de 5x está sendo usado como projetado (compondo sessões ativas), mas a adoção é fina e a nova alavanca de ads-como-progressão requer mais visibilidade no onboarding.",
+      sess_intro: "SessionStart dispara em cada abertura do app via padrão de coroutine de 2 frames. 27 eventos capturados no cohort pós-1.40.",
+      sess_subtitle: "Padrões de início de sessão",
+      sess_number_title: "Distribuição de número de sessão",
+      sess_days_title: "Dias desde instalação (na sessão)",
+      sess_events: "Aberturas de sessão",
+      sess_med_num: "Mediana sessão #",
+      sess_med_num_sub: "maioria dos eventos da 2ª-3ª abertura",
+      sess_med_days: "Mediana dias desde instalação",
+      sess_med_days_sub: "48% das aberturas no dia 0",
+      sess_prev_dur: "Mediana sessão anterior",
+      sess_prev_dur_sub: "rajadas curtas dominam",
+      ads_sess_insight: "Dois padrões a sinalizar. Primeiro: assistir ads é comportamento de power-user — 82% de um único jogador significa que a adoção atual não é ampla. Vale A/B testar prompts mais visíveis de 5x para alargar a base. Segundo: os dados de session-start mostram um padrão clássico de rajadas curtas — mediana de sessão anterior abaixo de 3 minutos, e a maioria das aberturas acontece nos primeiros um ou dois dias do install. Jogadores experimentam o jogo em pequenas mordidas; o mecanismo offline é o que conecta essas mordidas. Confirma a premissa de design que motivou a correção do bug offline em primeiro lugar.",
+      footer: "Jhorro Productions · Dashboard de Analytics v2 · Dados: Unity Analytics (pós-1.40)",
+    };
+
+    const ja = {
+      tab_overview: "概要",
+      tab_economy: "経済リバランス",
+      tab_offline: "オフラインバグ",
+      tab_analytics: "アナリティクス拡張",
+      tab_behavior: "プレイヤー影響",
+      tab_method: "方法論",
+      tab_geo: "地域分布",
+      tab_ads: "広告とセッション",
+      insight: "分析",
+      note: "注記",
+      pre_label: "v1.40以前",
+      post_label: "v1.40以降",
+      players: "プレイヤー",
+      median: "中央値",
+      mean: "平均",
+      ov_subtitle: "v1.40以降の変更とデータの応答",
+      ov_kpi_pre: "v1.40以前コホート",
+      ov_kpi_post: "v1.40以降コホート",
+      ov_kpi_fixes: "出荷された修正",
+      ov_kpi_events: "新イベント",
+      ov_kpi_time: "1Kまでの時間",
+      ov_kpi_pre_sub: "レガシービルド",
+      ov_kpi_post_sub: "オーバーホール後",
+      ov_kpi_fixes_sub: "v1.70 + v1.81",
+      ov_kpi_events_sub: "計装済み",
+      ov_kpi_time_sub: "中央値、+85%",
+      ov_timeline_title: "タイムライン",
+      ov_timeline_pre: "3つの既知の問題を抱えるレガシービルド：誤マップされたクリッカーアップグレードカウンター、timeElapsed の永続化欠陥、レイトゲームで通常CPSの最大約38,000倍まで膨らむオフライン生産バグ。",
+      ov_timeline_post: "v1.70のオーバーホール（経済リバランス、オフライン修正、アナリティクス拡張、IAP修正）に続いて v1.81 の安定化パス。この分析は v1.40以降コホートをベースラインと比較する。",
+      ov_insight: "前回のダッシュボードは3つの問題を診断し、特定のミッドゲームリバランスを提案した。このダッシュボードは何が出荷され、プレイヤー行動がどう応答したかを示す — 新しいビルドの小さなサンプルサイズを明確に示しながら。",
+      ec_intro: "リバランスは前回のダッシュボードが進行の壁として特定した場所、つまりアップグレードコストに焦点を当てた。アップグレード乗数が下がり（パッシブ 5× → 3.5×、クリッカー 10× → 7×）、オフラインボーナス乗数が6.7倍削減された。ビルディングの価格乗数自体（クリッカー 1.65×、パッシブ 1.25×）は変更なし — クリック→パッシブの移行を駆動する非対称性は設計の一部。",
+      ec_mult_title: "乗数の変更",
+      ec_mult_old: "旧",
+      ec_mult_new: "新",
+      ec_table_title: "ティアごとのベース価格変更（ビルディング）",
+      ec_th_tier: "ティア",
+      ec_th_passive: "パッシブ",
+      ec_th_clicker: "クリッカー",
+      ec_th_old: "旧",
+      ec_th_new: "新",
+      ec_th_delta: "Δ",
+      ec_curve_title: "パッシブアップグレード累積コスト（ベース 150）",
+      ec_curve_desc: "連続10回購入。旧 5× スケール、新 3.5× スケール。Y軸は対数。",
+      ec_curve_x: "購入回数",
+      ec_curve_y: "コスト（クレジット）",
+      ec_insight: "10回目のパッシブアップグレードで、旧コストは14.6億クレジット、新コストは414万 — 354倍安い。設計選択は算術的バランスではない：前回のダッシュボードはアップグレードがミッド〜レイトゲームで主要な進行ベクターになることを示しており、旧曲線はほとんどのプレイヤーをそのルートから外していた。新曲線はビルディングの非対称性を保ちつつアップグレードを到達可能にする。",
+      of_intro: "オフラインボーナスが二度適用されていた：一度は offlinePercentage を組み立てる際、再度 CalculateProduction() で。多くのアップグレードを持つゲームでは、これが通常CPSの最大約38,000倍まで複合した。修正は指数スケーリングを線形に置き換え、3つの厳しい上限を追加した。",
+      of_diag: "診断",
+      of_diag_text: "offlineBonus が既に offlinePercentage に組み込まれており、CalculateProduction() で2回目の乗算を受けていた。上限なし、アップグレード数に対する Mathf.Pow(2, n) による指数スケーリング。",
+      of_caps: "追加された上限",
+      of_cap_rate: "最大レート",
+      of_cap_time: "最大時間",
+      of_cap_bonus: "最大乗数",
+      of_cap_rate_sub: "アクティブCPSの",
+      of_cap_time_sub: "オフライン時間",
+      of_cap_bonus_sub: "ベースの倍数",
+      of_sim_title: "シミュレートされたオフライン報酬（5アップグレード、対数Y）",
+      of_sim_desc: "旧報酬（上限なし、二重適用）vs 新報酬（上限付き線形）の比較。参照線は8h上限を示す。",
+      of_sim_x: "オフライン時間",
+      of_sim_y: "報酬（クレジット）",
+      of_insight: "このバグは単なる数学的なものではなかった — 経済を大きく変えていた。アプリを一晩放置したプレイヤーは、何時間ものアクティブプレイで蓄積した以上のクレジットを受け取り、ミッドゲームの進行曲線を劇的に圧縮していた。修正によりオフラインはアクティブセッションの代替ではなく補完として再配置される。厳しい上限により、極端なアップグレード構成でも設計内に留まる。",
+      an_intro: "各マイルストーンイベントは約7パラメータから約33パラメータに拡張され、完全な経済状態（生産レート、乗数、広告カウンター）を捕捉。3つの新イベント（SessionStart、AdWatched5x、AdFreeBuilding）と Stats.cs の12の新累積フィールド。v1.40以前の名前は前回のダッシュボードとの互換性のため保持。",
+      an_table_title: "イベントごとのパラメータ",
+      an_th_event: "イベント",
+      an_th_pre: "v1.40以前",
+      an_th_post: "v1.40以降",
+      an_th_new: "新",
+      an_fields_title: "Stats.cs の新フィールド",
+      an_fields_desc: "PlayerPrefs を介した save/load に12フィールドが追加された。",
+      an_session_title: "SessionStart パターン",
+      an_session_text: "SessionStart はアプリ開く度に2フレームコルーチン経由で発火（analyticsCollect.LateStart を待つ）。新セッションの開始状態と前セッションのスナップショット（save/quit で PlayerPrefs に書き込み）の両方を運ぶ。OnApplicationQuit がモバイルの force-close で信頼できないため、特にこのパターンを選択。",
+      an_iap_title: "IAP 乗数修正",
+      an_iap_text: "500% ブーストを 5f から 6f に修正。パーセンテージブーストは（1 + boost_decimal）でなければならず、ブースト単独ではない。微妙だが実プレイヤー値で観察可能なバグ。",
+      an_insight: "拡張は計装のための計装ではなかった。追加された各パラメータは前回のダッシュボードが答えられなかった質問に対応する — マイルストーン時の乗数のアクティブ値は何か？何回広告が視聴されたか？特に広告カウンターは、リテンションと進行時間に対するマネタイズの実際の影響を分析することを可能にする。",
+      bh_intro: "v1.40以降コホートで観察可能な3つのメトリクス vs ベースライン。pre コホートは現在のビルドに制限されているため、post コホートはより小さい（n≈22 vs 220）。",
+      bh_chart_title: "中央値の比較 — 1K マイルストーン",
+      bh_pre: "v1.40以前",
+      bh_post: "v1.40以降",
+      bh_metric: "メトリクス",
+      bh_time_label: "1Kまでの時間（秒）",
+      bh_clicks_label: "1K でのクリック数",
+      bh_buildings_label: "1K でのビルディング数",
+      bh_new_metrics_title: "v1.40以降のメトリクス（pre 比較なし）",
+      bh_active_label: "1K までのアクティブ時間",
+      bh_session_label: "1K までのセッション数",
+      bh_active_sub: "中央値、ゲーム内",
+      bh_session_sub: "中央値、開いた回数",
+      bh_n_note: "サンプルサイズ：pre n=220 ユニークプレイヤー（1K マイルストーン）；post n≈22（安定ビルド、進行中コホート）。両コホートともロングテールがあるため、平均ではなく中央値を選択。",
+      bh_insight: "1Kまでの時間は上昇（194s → 360s）し、クリック数は控えめに増加（308 → 355）。購入されたビルディングの数は本質的に変わらず（13 → 12）。組み合わせて読むと：プレイヤーは現在、最初のマイルストーンに到達するためにより多くのアクティブ時間を費やし、より多くクリックしており、購入行動は一貫している。これはリバランスが目指していた方向性 — パッシブテイクオーバーの前にプレイヤーがアクティブに長くエンゲージできるよりスムーズなミッドゲームカーブ。v1.40以降コホートは小さい；確定的な結論ではなく方向性のシグナルとして扱う。",
+      me_eras_title: "エラ境界",
+      me_eras_pre: "バージョン < 1.6.0（0.2.x、0.3.x、1.0.x、1.1.x、1.2.x、1.3.x、1.4.0）。",
+      me_eras_post: "バージョン 1.6.0、1.6.1、1.7.0、1.8.0、1.8.1。経済変更は1.6.0時点で既に可視。",
+      me_excl_title: "除外",
+      me_excl_text: "1.8.2（QA中、非公開）、test1.0（内部 dev セッション）。中央値への重要な影響なし。",
+      me_agg_title: "集計方法",
+      me_agg_text: "各 CSV 行は (VAL, PLAYERCOUNT) を持つ。中央値/四分位の計算前に、行は値 VAL の PLAYERCOUNT 個の観測に展開された。この分析では IQR による外れ値フィルタリングは適用されていない — 中央値は自然にテールを吸収する；関連する場合はフラグを立てる。",
+      me_caveats_title: "注意事項",
+      me_caveats_text: "v1.40以降コホートは pre コホートの約1/10（現在の安定ビルド、より小さいアクティブプレイヤーベース）。結果は方向性として有効だが信頼区間は広い。v1.81 のリリース後、次の分析ウィンドウはより大きなサンプルを持つ。",
+      bh_funnel_title: "マイルストーンファネル — 各ティアに到達したプレイヤー",
+      bh_time_per_milestone: "マイルストーンごとの中央値時間（インストール以降）",
+      bh_time_per_milestone_desc: "1B/1Tの pre 値は省略 — レガシービルドの timeElapsed 永続化バグにより無効。Y軸は対数。",
+      bh_active_per_milestone: "マイルストーンごとのアクティブプレイ時間（v1.40以降のみ）",
+      bh_active_per_milestone_desc: "activePlayTime はv1.70で導入されたメトリクス — 実際のエンゲージメントとアイドル/オフライン時間を分離する。",
+      geo_intro: "各コホートでプレイヤーがどこから来ているか、また国別の1Kまでの時間の差。国の粒度はベストエフォート：Unity Analytics はデバイスロケールから派生したISO-2コードを提供。",
+      geo_total_post: "v1.40以降プレイヤー",
+      geo_kpi_sub_post: "1K-1T全体",
+      geo_total_pre: "v1.40以前プレイヤー",
+      geo_kpi_sub_pre: "上位10カ国表示",
+      geo_top_post: "v1.40以降トップ",
+      geo_top_pre: "v1.40以前トップ",
+      geo_post_chart: "v1.40以降コホート",
+      geo_pre_chart: "v1.40以前コホート（上位10）",
+      geo_players: "プレイヤー",
+      geo_time_title: "国別 1Kまでの中央値時間（v1.40以降）",
+      geo_time_desc: "速い順。単一プレイヤー国は n=1 と表示 — 逸話的のみ。",
+      geo_med_time: "1Kまでの中央値時間",
+      geo_insight: "コホートはプレビルドより post ビルドでBR寄り（US+BRが約35%から74%へ）— おそらくv1.81に戻ってきたプレイヤーセグメントの反映。1Kまでの中央値時間は国によって意味のある差：US がn>1の国の中で最速（約5分）、BRは約50%遅い（約8分）。このnでは因果関係を導けないが、時間の経過とともに追跡する価値はある — 国差は通常、スキルではなくプレイ習慣（通勤頻度、平日対週末）に起因する。",
+      ads_intro: "v1.70で導入された2つの新しいイベントストリーム：AdWatched5x（リワード動画）と SessionStart。両方ともエンゲージメントへの直接的な窓 — 以前はマイルストーンスナップショットでのみ可視だったものが、今はセッションごと、広告視聴ごとにサンプリングされる。",
+      ads_5x_title: "国別 5x 広告視聴（v1.40以降）",
+      ads_events: "広告イベント",
+      ads_total: "5x 広告視聴総数",
+      ads_total_sub: "v1.40以降、全国",
+      ads_max: "プレイヤー単位最大",
+      ads_max_sub: "1人のDEプレイヤー、総数の82%",
+      ads_other: "他国イベント",
+      ads_other_sub: "4カ国にわたって",
+      ads_concentration: "広告視聴行動は強く集中している：1人のドイツプレイヤーが全 5x リワード広告ビューの82%を占める（lifetimeAdCount のシーケンスは 1 → 120）。残りの18%は US (9%)、BR (7%)、GB (1%)、PR (1%) に分散。これは有用なシグナル — 5x ブーストは設計通り使用されている（アクティブセッションを複合）が、採用は薄く、進行レバーとしての新しい広告はオンボーディングでの可視性向上が必要。",
+      sess_intro: "SessionStart はアプリを開くたびに2フレームコルーチンパターン経由で発火。v1.40以降コホートで27イベント捕捉。",
+      sess_subtitle: "セッション開始パターン",
+      sess_number_title: "セッション番号分布",
+      sess_days_title: "インストール以降の日数（セッション時）",
+      sess_events: "セッション開き",
+      sess_med_num: "中央値セッション #",
+      sess_med_num_sub: "ほとんどのイベントは2-3回目の開きから",
+      sess_med_days: "中央値インストール以降日数",
+      sess_med_days_sub: "開きの48%は0日目",
+      sess_prev_dur: "中央値前セッション",
+      sess_prev_dur_sub: "短いバーストが支配的",
+      ads_sess_insight: "2つの注目すべきパターン。第1：広告視聴はパワーユーザー行動 — 1人から82%は現在の採用が広範でないことを意味する。より目立つ 5x プロンプトをA/Bテストして基盤を広げる価値がある。第2：セッションスタートデータは典型的な短いバーストパターンを示す — 中央値の前セッションは3分未満、ほとんどのアプリ開きはインストールの最初の1日か2日以内に発生。プレイヤーは小さく一口ずつゲームをサンプリング；オフラインメカニズムがそれらの一口を橋渡しする。最初にオフラインバグ修正を駆動した設計仮定を確認する。",
+      footer: "Jhorro Productions · アナリティクス ダッシュボード v2 · データ: Unity Analytics (v1.40以降)",
+    };
+
+    const t = (key, fallback) =>
+      lang === 'pt' ? (pt[key] || fallback)
+      : lang === 'ja' ? (ja[key] || fallback)
+      : fallback;
+
+    // ─── COMPONENTS ──────────────────────────────────────────────────────
+    const CustomTooltip = ({ active, payload, label }) => {
+      if (!active || !payload?.length) return null;
+      return (
+        <div style={{
+          background: theme.surface,
+          border: `1px solid ${theme.border}`,
+          borderRadius: 6,
+          padding: "10px 14px",
+          fontFamily: "'Geist', system-ui, sans-serif",
+          fontSize: 13,
+        }}>
+          <div style={{ color: theme.textMuted, marginBottom: 6, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 }}>{label}</div>
+          {payload.map((p, i) => (
+            <div key={i} style={{ color: p.color || theme.text, marginBottom: 2 }}>
+              <span style={{ color: theme.textMuted }}>{p.name}: </span>
+              <span style={{ color: theme.text, fontWeight: 600 }}>{typeof p.value === 'number' ? p.value.toLocaleString() : p.value}</span>
+            </div>
+          ))}
+        </div>
+      );
+    };
+
+    const InsightBox = ({ children }) => (
+      <div style={{
+        marginTop: 18,
+        padding: "12px 16px",
+        background: "rgba(168,184,122,0.06)",
+        border: `1px solid rgba(168,184,122,0.25)`,
+        borderRadius: 6,
+        fontSize: 13.5,
+        color: theme.text,
+        lineHeight: 1.55,
+      }}>
+        <span style={{ color: theme.accent, fontWeight: 600, marginRight: 8, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 }}>{t('insight', 'Insight')}</span>
+        {children}
+      </div>
+    );
+
+    const NoteBox = ({ children, color = theme.amber }) => (
+      <div style={{
+        marginTop: 12,
+        padding: "10px 14px",
+        background: `rgba(${color === theme.amber ? '212,169,90' : color === theme.red ? '201,112,112' : '126,200,200'},0.06)`,
+        border: `1px solid ${color}55`,
+        borderRadius: 6,
+        fontSize: 12.5,
+        color: theme.text,
+        lineHeight: 1.5,
+      }}>
+        <span style={{ color, fontWeight: 600, marginRight: 8, fontSize: 11, textTransform: "uppercase", letterSpacing: 1 }}>{t('note', 'Note')}</span>
+        {children}
+      </div>
+    );
+
+    const StatCard = ({ label, value, sub, accent = theme.accent }) => (
+      <div style={{
+        background: theme.surface,
+        border: `1px solid ${theme.border}`,
+        borderRadius: 8,
+        padding: "14px 16px",
+        flex: "1 1 160px",
+        minWidth: 160,
+      }}>
+        <div style={{ color: theme.textMuted, fontSize: 11, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6, fontFamily: "'Geist Mono', monospace" }}>{label}</div>
+        <div style={{ color: accent, fontSize: 24, fontWeight: 600, fontFamily: "'Instrument Serif', serif", lineHeight: 1.1 }}>{value}</div>
+        {sub && <div style={{ color: theme.textMuted, fontSize: 11, marginTop: 4 }}>{sub}</div>}
+      </div>
+    );
+
+    const SectionHeading = ({ children, sub }) => (
+      <div style={{ marginBottom: 14 }}>
+        <h2 style={{ color: theme.text, fontSize: 18, fontFamily: "'Instrument Serif', serif", fontWeight: 400, letterSpacing: 0.2 }}>{children}</h2>
+        {sub && <div style={{ color: theme.textMuted, fontSize: 13, marginTop: 4, lineHeight: 1.5 }}>{sub}</div>}
+      </div>
+    );
+
+    // ─── PANELS ──────────────────────────────────────────────────────────
+
+    function OverviewPanel() {
+      return (
+        <div>
+          <SectionHeading sub={t('ov_subtitle', "What changed after v1.40, and how the data responded")}>
+            {t('tab_overview', 'Overview')}
+          </SectionHeading>
+
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 18 }}>
+            <StatCard label={t('ov_kpi_pre', 'Pre-1.40 cohort')} value="220" sub={t('ov_kpi_pre_sub', 'legacy build')} accent={theme.cyan} />
+            <StatCard label={t('ov_kpi_post', 'After-1.40 cohort')} value="~22" sub={t('ov_kpi_post_sub', 'post-overhaul build')} accent={theme.accent} />
+            <StatCard label={t('ov_kpi_fixes', 'Fixes shipped')} value="5" sub={t('ov_kpi_fixes_sub', 'across v1.70 + v1.81')} accent={theme.text} />
+            <StatCard label={t('ov_kpi_events', 'New events')} value="3" sub={t('ov_kpi_events_sub', 'instrumented')} accent={theme.text} />
+            <StatCard label={t('ov_kpi_time', 'Time-to-1K')} value="194s → 360s" sub={t('ov_kpi_time_sub', 'median, +85%')} accent={theme.amber} />
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 4 }}>
+            <div style={{ background: theme.bg, border: `1px solid ${theme.border}`, borderRadius: 6, padding: "14px 16px" }}>
+              <div style={{ color: theme.cyan, fontSize: 11, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8, fontFamily: "'Geist Mono', monospace" }}>{t('pre_label', 'Pre-1.40')}</div>
+              <div style={{ color: theme.text, fontSize: 13, lineHeight: 1.55 }}>{t('ov_timeline_pre', "Legacy build with three known issues: mis-mapped clicker upgrade counter, timeElapsed persistence defect, and an offline production bug compounding up to ~38,000× regular CPS in late game.")}</div>
+            </div>
+            <div style={{ background: theme.bg, border: `1px solid ${theme.border}`, borderRadius: 6, padding: "14px 16px" }}>
+              <div style={{ color: theme.accent, fontSize: 11, textTransform: "uppercase", letterSpacing: 1, marginBottom: 8, fontFamily: "'Geist Mono', monospace" }}>{t('post_label', 'After-1.40')}</div>
+              <div style={{ color: theme.text, fontSize: 13, lineHeight: 1.55 }}>{t('ov_timeline_post', "v1.70 overhaul (economy rebalance, offline fix, expanded analytics, IAP fix) followed by v1.81's stability passes. This dashboard compares the aggregated after-1.40 cohort against the baseline.")}</div>
+            </div>
+          </div>
+
+          <InsightBox>{t('ov_insight', "The previous dashboard diagnosed three issues and proposed a specific mid-game rebalance. This one shows what shipped and how player behavior responded — with the smaller post-build sample size flagged plainly.")}</InsightBox>
+        </div>
+      );
+    }
+
+    function EconomyPanel() {
+      const multiData = multiplierChanges.map(m => ({
+        name: m.name,
+        old: m.old,
+        now: m.now,
+      }));
+
+      return (
+        <div>
+          <SectionHeading sub={t('ec_intro', "The rebalance focused where the previous dashboard had identified the progression wall: upgrade costs. Upgrade multipliers dropped (passive 5× → 3.5×, clicker 10× → 7×) and the offline-bonus multiplier was cut by 6.7×. The building price multipliers themselves (1.65× clicker, 1.25× passive) are unchanged — that asymmetry is what drives the click-to-passive transition by design.")}>
+            {t('tab_economy', 'Economy Rebalance')}
+          </SectionHeading>
+
+          <div style={{ marginBottom: 22 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontFamily: "'Geist Mono', monospace" }}>{t('ec_mult_title', 'Multiplier changes')}</div>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={multiData} margin={{ top: 10, right: 24, bottom: 10, left: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                <XAxis dataKey="name" tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <YAxis tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend wrapperStyle={{ fontSize: 12, color: theme.textMuted }} />
+                <Bar dataKey="old" name={t('ec_mult_old', 'Old')} fill={chartColors.old} radius={[3,3,0,0]}>
+                  <LabelList dataKey="old" position="top" fill={theme.textMuted} fontSize={11} />
+                </Bar>
+                <Bar dataKey="now" name={t('ec_mult_new', 'New')} fill={chartColors.now} radius={[3,3,0,0]}>
+                  <LabelList dataKey="now" position="top" fill={theme.textMuted} fontSize={11} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div style={{ marginBottom: 22 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontFamily: "'Geist Mono', monospace" }}>{t('ec_table_title', 'Base price changes by tier (buildings)')}</div>
+            <div style={{ overflowX: "auto" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12.5 }}>
+                <thead>
+                  <tr style={{ borderBottom: `1px solid ${theme.border}`, color: theme.textMuted }}>
+                    <th style={{ textAlign: "left", padding: "8px 10px" }}>{t('ec_th_tier', 'Tier')}</th>
+                    <th style={{ textAlign: "right", padding: "8px 10px" }}>{t('ec_th_passive', 'Passive')} {t('ec_th_old', 'old')}</th>
+                    <th style={{ textAlign: "right", padding: "8px 10px" }}>{t('ec_th_passive', 'Passive')} {t('ec_th_new', 'new')}</th>
+                    <th style={{ textAlign: "right", padding: "8px 10px" }}>{t('ec_th_delta', 'Δ')}</th>
+                    <th style={{ textAlign: "right", padding: "8px 10px" }}>{t('ec_th_clicker', 'Clicker')} {t('ec_th_old', 'old')}</th>
+                    <th style={{ textAlign: "right", padding: "8px 10px" }}>{t('ec_th_clicker', 'Clicker')} {t('ec_th_new', 'new')}</th>
+                    <th style={{ textAlign: "right", padding: "8px 10px" }}>{t('ec_th_delta', 'Δ')}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {buildingPrices.map(row => {
+                    const passDelta = row.passNew === row.passOld ? 0 : (row.passNew / row.passOld - 1) * 100;
+                    const clickDelta = row.clickNew === row.clickOld ? 0 : (row.clickNew / row.clickOld - 1) * 100;
+                    const passUnchanged = row.passOld === row.passNew;
+                    const clickUnchanged = row.clickOld === row.clickNew;
+                    return (
+                      <tr key={row.tier} style={{ borderBottom: `1px solid ${theme.border}55` }}>
+                        <td style={{ padding: "7px 10px", color: theme.text, fontWeight: 600 }}>{row.tier}</td>
+                        <td style={{ padding: "7px 10px", color: theme.textMuted, textAlign: "right" }}>{fmt(row.passOld)}</td>
+                        <td style={{ padding: "7px 10px", color: passUnchanged ? theme.textMuted : theme.text, textAlign: "right" }}>{fmt(row.passNew)}</td>
+                        <td style={{ padding: "7px 10px", color: passUnchanged ? theme.textMuted : (passDelta > 0 ? theme.amber : theme.accent), textAlign: "right", fontFamily: "'Geist Mono', monospace", fontSize: 11.5 }}>{passUnchanged ? "—" : `${passDelta > 0 ? "+" : ""}${passDelta.toFixed(0)}%`}</td>
+                        <td style={{ padding: "7px 10px", color: theme.textMuted, textAlign: "right" }}>{fmt(row.clickOld)}</td>
+                        <td style={{ padding: "7px 10px", color: clickUnchanged ? theme.textMuted : theme.text, textAlign: "right" }}>{fmt(row.clickNew)}</td>
+                        <td style={{ padding: "7px 10px", color: clickUnchanged ? theme.textMuted : (clickDelta > 0 ? theme.amber : theme.accent), textAlign: "right", fontFamily: "'Geist Mono', monospace", fontSize: 11.5 }}>{clickUnchanged ? "—" : `${clickDelta > 0 ? "+" : ""}${clickDelta.toFixed(0)}%`}</td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 4 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4, fontFamily: "'Geist Mono', monospace" }}>{t('ec_curve_title', 'Cumulative passive upgrade cost (base 150)')}</div>
+            <div style={{ color: theme.textMuted, fontSize: 11.5, marginBottom: 10 }}>{t('ec_curve_desc', '10 consecutive purchases. Old scales 5×, new scales 3.5×. Y axis log scale.')}</div>
+            <ResponsiveContainer width="100%" height={260}>
+              <LineChart data={upgradeCostCurve} margin={{ top: 10, right: 24, bottom: 10, left: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                <XAxis dataKey="n" tick={{ fill: theme.textMuted, fontSize: 12 }} label={{ value: t('ec_curve_x', 'Purchases'), position: "insideBottom", offset: -2, fill: theme.textMuted, fontSize: 11 }} />
+                <YAxis scale="log" domain={[150, 'auto']} tickFormatter={fmt} tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend wrapperStyle={{ fontSize: 12, color: theme.textMuted }} />
+                <Line type="monotone" dataKey="old" name={t('ec_mult_old', 'Old')} stroke={chartColors.old} strokeWidth={2} dot={{ r: 3 }} />
+                <Line type="monotone" dataKey="now" name={t('ec_mult_new', 'New')} stroke={chartColors.now} strokeWidth={2} dot={{ r: 3 }} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          <InsightBox>{t('ec_insight', "By the 10th passive upgrade, the old cost was 1.46B credits; the new cost is 4.14M — 354× cheaper. The design choice wasn't an arithmetic balance pass: the previous dashboard had shown that upgrades become the primary progression vector mid-to-late game, and the old curve was pricing most players out of that route. The new curve makes upgrades reachable while preserving the building-tier asymmetry.")}</InsightBox>
+        </div>
+      );
+    }
+
+    function OfflinePanel() {
+      return (
+        <div>
+          <SectionHeading sub={t('of_intro', "The offline bonus was being applied twice — once when assembling offlinePercentage, again in CalculateProduction(). On games with many upgrades, that compounded up to ~38,000× regular CPS. The fix replaced exponential scaling with linear and added three hard caps.")}>
+            {t('tab_offline', 'Offline Bug Fix')}
+          </SectionHeading>
+
+          <NoteBox color={theme.red}>
+            <span style={{ color: theme.red, fontWeight: 600, marginRight: 8 }}>{t('of_diag', 'Diagnosis')}:</span>
+            {t('of_diag_text', 'offlineBonus was already baked into offlinePercentage and was being multiplied a second time in CalculateProduction(). No cap, exponential scaling via Mathf.Pow(2, n) over the upgrade count.')}
+          </NoteBox>
+
+          <div style={{ marginTop: 20, marginBottom: 22 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontFamily: "'Geist Mono', monospace" }}>{t('of_caps', 'Caps added')}</div>
+            <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
+              <StatCard label={t('of_cap_rate', 'Max rate')} value="75%" sub={t('of_cap_rate_sub', 'of active CPS')} />
+              <StatCard label={t('of_cap_time', 'Max time')} value="8h" sub={t('of_cap_time_sub', 'offline cap')} />
+              <StatCard label={t('of_cap_bonus', 'Max multiplier')} value="2×" sub={t('of_cap_bonus_sub', 'over base')} />
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 4 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4, fontFamily: "'Geist Mono', monospace" }}>{t('of_sim_title', 'Simulated offline reward (5 upgrades, log Y)')}</div>
+            <div style={{ color: theme.textMuted, fontSize: 11.5, marginBottom: 10 }}>{t('of_sim_desc', 'Old reward (uncapped, double-applied) vs new (linear with caps). Reference line marks the 8h ceiling.')}</div>
+            <ResponsiveContainer width="100%" height={280}>
+              <LineChart data={offlineSim} margin={{ top: 10, right: 24, bottom: 16, left: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                <XAxis dataKey="h" tick={{ fill: theme.textMuted, fontSize: 12 }} label={{ value: t('of_sim_x', 'Hours offline'), position: "insideBottom", offset: -8, fill: theme.textMuted, fontSize: 11 }} />
+                <YAxis scale="log" domain={[10, 'auto']} tickFormatter={fmt} tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend wrapperStyle={{ fontSize: 12, color: theme.textMuted }} />
+                <ReferenceLine x={8} stroke={theme.amber} strokeDasharray="4 4" label={{ value: "8h cap", fill: theme.amber, fontSize: 11, position: "insideTop" }} />
+                <Line type="monotone" dataKey="pre" name={t('ec_mult_old', 'Old')} stroke={chartColors.old} strokeWidth={2} dot={false} />
+                <Line type="monotone" dataKey="post" name={t('ec_mult_new', 'New')} stroke={chartColors.now} strokeWidth={2} dot={false} />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
+
+          <InsightBox>{t('of_insight', "The bug wasn't just mathematical — it was meaningfully altering the economy. A player leaving the app overnight was receiving more credits than they had earned across hours of active play, dramatically compressing the mid-game progression curve. The fix repositions offline as a supplement to active sessions rather than a replacement. Hard caps ensure even extreme upgrade configurations stay within design.")}</InsightBox>
+        </div>
+      );
+    }
+
+    function AnalyticsPanel() {
+      return (
+        <div>
+          <SectionHeading sub={t('an_intro', "Each milestone event went from ~7 parameters to ~33, capturing full economy state (production rates, multipliers, ad counters). Three new events (SessionStart, AdWatched5x, AdFreeBuilding) and twelve new cumulative fields in Stats.cs. Pre-1.40 names were preserved for backward compatibility with the previous dashboard.")}>
+            {t('tab_analytics', 'Analytics Expansion')}
+          </SectionHeading>
+
+          <div style={{ marginBottom: 22 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontFamily: "'Geist Mono', monospace" }}>{t('an_table_title', 'Parameters per event')}</div>
+            <ResponsiveContainer width="100%" height={240}>
+              <BarChart data={eventParamCounts} margin={{ top: 10, right: 24, bottom: 10, left: 10 }} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke={theme.border} horizontal={false} />
+                <XAxis type="number" tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <YAxis dataKey="event" type="category" width={140} tick={{ fill: theme.textMuted, fontSize: 11 }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend wrapperStyle={{ fontSize: 12, color: theme.textMuted }} />
+                <Bar dataKey="pre" name={t('an_th_pre', 'Pre-1.40')} fill={chartColors.pre} radius={[0,3,3,0]}>
+                  <LabelList dataKey="pre" position="right" fill={theme.textMuted} fontSize={11} />
+                </Bar>
+                <Bar dataKey="post" name={t('an_th_post', 'After-1.40')} fill={chartColors.post} radius={[0,3,3,0]}>
+                  <LabelList dataKey="post" position="right" fill={theme.textMuted} fontSize={11} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div style={{ marginBottom: 22 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4, fontFamily: "'Geist Mono', monospace" }}>{t('an_fields_title', 'New fields in Stats.cs')}</div>
+            <div style={{ color: theme.textMuted, fontSize: 11.5, marginBottom: 10 }}>{t('an_fields_desc', 'Twelve fields added to save/load via PlayerPrefs.')}</div>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 6 }}>
+              {newStatsFields.map(f => (
+                <div key={f} style={{ background: theme.bg, border: `1px solid ${theme.border}`, borderRadius: 4, padding: "6px 10px", color: theme.accent, fontFamily: "'Geist Mono', monospace", fontSize: 11.5 }}>{f}</div>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 4 }}>
+            <div style={{ background: theme.bg, border: `1px solid ${theme.border}`, borderRadius: 6, padding: "12px 14px" }}>
+              <div style={{ color: theme.cyan, fontSize: 11, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6, fontFamily: "'Geist Mono', monospace" }}>{t('an_session_title', 'SessionStart pattern')}</div>
+              <div style={{ color: theme.text, fontSize: 12.5, lineHeight: 1.55 }}>{t('an_session_text', "SessionStart fires on each app open via a 2-frame coroutine (waits for analyticsCollect.LateStart). Carries both the new session's opening state and a snapshot of the previous session — written to PlayerPrefs at save/quit. Picked specifically because OnApplicationQuit is unreliable on mobile force-close.")}</div>
+            </div>
+            <div style={{ background: theme.bg, border: `1px solid ${theme.amber}55`, borderRadius: 6, padding: "12px 14px" }}>
+              <div style={{ color: theme.amber, fontSize: 11, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6, fontFamily: "'Geist Mono', monospace" }}>{t('an_iap_title', 'IAP multiplier fix')}</div>
+              <div style={{ color: theme.text, fontSize: 12.5, lineHeight: 1.55 }}>{t('an_iap_text', "500% boost corrected from 5f to 6f. Percentage boosts must be (1 + boost_decimal), not the boost alone. Subtle but observable in real player values.")}</div>
+            </div>
+          </div>
+
+          <InsightBox>{t('an_insight', "The expansion wasn't instrumentation for instrumentation's sake. Each parameter added answers a question the previous dashboard couldn't — what was the active multiplier value at the moment of the milestone? How many ads had been watched? The ad counters specifically enable analyzing the actual impact of monetization on retention and progression time.")}</InsightBox>
+        </div>
+      );
+    }
+
+    function BehaviorPanel() {
+      const labelMap = {
+        time1K: t('bh_time_label', 'Time-to-1K (s)'),
+        clicks1K: t('bh_clicks_label', 'Clicks at 1K'),
+        buildings1K: t('bh_buildings_label', 'Buildings at 1K'),
+      };
+      const chartData = behaviorCompare.map(d => ({ name: labelMap[d.metric], pre: d.pre, post: d.post }));
+
+      const funnelChart = milestoneFunnel.map(m => ({ milestone: m.milestone, pre: m.pre, post: m.post }));
+      const timeChart = milestoneTimes.map(m => ({
+        milestone: m.milestone,
+        pre: m.pre,
+        post: m.post,
+        preLabel: m.pre != null ? fmtSec(m.pre) : null,
+        postLabel: fmtSec(m.post),
+      }));
+      const activeChart = milestoneActiveTime.map(m => ({ milestone: m.milestone, active: m.active, label: fmtSec(m.active), n: m.n }));
+
+      return (
+        <div>
+          <SectionHeading sub={t('bh_intro', "All four credit milestones tracked across both cohorts. Headline 1K metrics first, then progression through the funnel. Post-cohort sample sizes are small at higher tiers (1B n=3, 1T n=1) — treat those as anecdotal but directionally informative.")}>
+            {t('tab_behavior', 'Player Behavior')}
+          </SectionHeading>
+
+          <div style={{ marginBottom: 22 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontFamily: "'Geist Mono', monospace" }}>{t('bh_chart_title', 'Median comparison — 1K milestone')}</div>
+            <ResponsiveContainer width="100%" height={240}>
+              <BarChart data={chartData} margin={{ top: 16, right: 24, bottom: 10, left: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                <XAxis dataKey="name" tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <YAxis tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend wrapperStyle={{ fontSize: 12, color: theme.textMuted }} />
+                <Bar dataKey="pre" name={t('bh_pre', 'Pre-1.40')} fill={chartColors.pre} radius={[3,3,0,0]}>
+                  <LabelList dataKey="pre" position="top" fill={theme.textMuted} fontSize={11} />
+                </Bar>
+                <Bar dataKey="post" name={t('bh_post', 'After-1.40')} fill={chartColors.post} radius={[3,3,0,0]}>
+                  <LabelList dataKey="post" position="top" fill={theme.textMuted} fontSize={11} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div style={{ marginBottom: 22 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontFamily: "'Geist Mono', monospace" }}>{t('bh_funnel_title', 'Milestone funnel — players reaching each tier')}</div>
+            <ResponsiveContainer width="100%" height={240}>
+              <BarChart data={funnelChart} margin={{ top: 16, right: 24, bottom: 10, left: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                <XAxis dataKey="milestone" tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <YAxis scale="log" domain={[1, 'auto']} tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend wrapperStyle={{ fontSize: 12, color: theme.textMuted }} />
+                <Bar dataKey="pre" name={t('bh_pre', 'Pre-1.40')} fill={chartColors.pre} radius={[3,3,0,0]}>
+                  <LabelList dataKey="pre" position="top" fill={theme.textMuted} fontSize={11} />
+                </Bar>
+                <Bar dataKey="post" name={t('bh_post', 'After-1.40')} fill={chartColors.post} radius={[3,3,0,0]}>
+                  <LabelList dataKey="post" position="top" fill={theme.textMuted} fontSize={11} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div style={{ marginBottom: 22 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4, fontFamily: "'Geist Mono', monospace" }}>{t('bh_time_per_milestone', 'Median time-since-install per milestone')}</div>
+            <div style={{ color: theme.textMuted, fontSize: 11.5, marginBottom: 10 }}>{t('bh_time_per_milestone_desc', '1B/1T pre values omitted — the timeElapsed persistence bug made them invalid in the legacy build. Y axis log scale.')}</div>
+            <ResponsiveContainer width="100%" height={260}>
+              <BarChart data={timeChart} margin={{ top: 16, right: 24, bottom: 10, left: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                <XAxis dataKey="milestone" tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <YAxis scale="log" domain={[100, 'auto']} tickFormatter={(v) => v >= 3600 ? `${(v/3600).toFixed(0)}h` : v >= 60 ? `${(v/60).toFixed(0)}m` : `${v}s`} tick={{ fill: theme.textMuted, fontSize: 11 }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend wrapperStyle={{ fontSize: 12, color: theme.textMuted }} />
+                <Bar dataKey="pre" name={t('bh_pre', 'Pre-1.40')} fill={chartColors.pre} radius={[3,3,0,0]} />
+                <Bar dataKey="post" name={t('bh_post', 'After-1.40')} fill={chartColors.post} radius={[3,3,0,0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div style={{ marginBottom: 22 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4, fontFamily: "'Geist Mono', monospace" }}>{t('bh_active_per_milestone', 'Active play time per milestone (after-1.40 only)')}</div>
+            <div style={{ color: theme.textMuted, fontSize: 11.5, marginBottom: 10 }}>{t('bh_active_per_milestone_desc', "activePlayTime is a v1.70-introduced metric — separates real engagement from idle/offline time.")}</div>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={activeChart} margin={{ top: 16, right: 24, bottom: 10, left: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                <XAxis dataKey="milestone" tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <YAxis tickFormatter={(v) => v >= 3600 ? `${(v/3600).toFixed(1)}h` : `${(v/60).toFixed(0)}m`} tick={{ fill: theme.textMuted, fontSize: 11 }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Bar dataKey="active" name={t('bh_active_label', 'Active time')} fill={chartColors.now} radius={[3,3,0,0]}>
+                  <LabelList dataKey="label" position="top" fill={theme.textMuted} fontSize={11} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <NoteBox color={theme.cyan}>{t('bh_n_note', 'Sample sizes per milestone (pre / post): 1K 220/22, 1M 91/9, 1B 25/3, 1T 9/1. Medians chosen over means because both cohorts have long tails. The 1B/1T post values are anecdotal at this n.')}</NoteBox>
+
+          <InsightBox>{t('bh_insight', "Time-to-1K rose ~85% (194s → 360s) and time-to-1M roughly doubled (827s → 1635s). The funnel itself is steep but consistent: ~10% of players who hit 1K reach 1M, ~13% of 1M players reach 1B in the post cohort. The single after-1.40 player who reached 1T did it in ~17 active hours but ~19 hours of real time — confirming the offline cap is doing its job (no more overnight catch-up to top tier). Direction of travel matches the design intent: smoother mid-game, more active engagement, less abuse-via-idle.")}</InsightBox>
+        </div>
+      );
+    }
+
+    function GeoPanel() {
+      const totalPost = countryDataPost.reduce((s, c) => s + c.players, 0);
+      const totalPre = countryDataPre.reduce((s, c) => s + c.players, 0);
+      const timeChart = countryTimeToK.filter(c => c.n >= 1).sort((a, b) => a.med - b.med).map(c => ({ code: c.code, med: c.med, n: c.n, label: `${fmtSec(c.med)}` }));
+
+      return (
+        <div>
+          <SectionHeading sub={t('geo_intro', "Where players are coming from in each cohort, and how time-to-1K varies by country. Country granularity is best-effort: Unity Analytics provides ISO-2 codes derived from device locale.")}>
+            {t('tab_geo', 'Geo Distribution')}
+          </SectionHeading>
+
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 22 }}>
+            <StatCard label={t('geo_total_post', 'After-1.40 players')} value={totalPost.toString()} sub={t('geo_kpi_sub_post', 'across 1K-1T milestones')} accent={theme.accent} />
+            <StatCard label={t('geo_total_pre', 'Pre-1.40 players')} value={totalPre.toString()} sub={t('geo_kpi_sub_pre', 'top-10 countries shown')} accent={theme.cyan} />
+            <StatCard label={t('geo_top_post', 'Top after-1.40')} value="US + BR" sub={`${countryDataPost[0].pct + countryDataPost[1].pct}% combined`} accent={theme.text} />
+            <StatCard label={t('geo_top_pre', 'Top pre-1.40')} value="US + DE + BR" sub="46% combined" accent={theme.text} />
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 22 }}>
+            <div>
+              <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontFamily: "'Geist Mono', monospace" }}>{t('geo_post_chart', 'After-1.40 cohort')}</div>
+              <ResponsiveContainer width="100%" height={240}>
+                <BarChart data={countryDataPost} margin={{ top: 10, right: 24, bottom: 10, left: 10 }} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" stroke={theme.border} horizontal={false} />
+                  <XAxis type="number" tick={{ fill: theme.textMuted, fontSize: 11 }} />
+                  <YAxis dataKey="code" type="category" width={40} tick={{ fill: theme.textMuted, fontSize: 11 }} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar dataKey="players" name={t('geo_players', 'Players')} fill={chartColors.post} radius={[0,3,3,0]}>
+                    <LabelList dataKey="players" position="right" fill={theme.textMuted} fontSize={11} />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div>
+              <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontFamily: "'Geist Mono', monospace" }}>{t('geo_pre_chart', 'Pre-1.40 cohort (top 10)')}</div>
+              <ResponsiveContainer width="100%" height={240}>
+                <BarChart data={countryDataPre} margin={{ top: 10, right: 24, bottom: 10, left: 10 }} layout="vertical">
+                  <CartesianGrid strokeDasharray="3 3" stroke={theme.border} horizontal={false} />
+                  <XAxis type="number" tick={{ fill: theme.textMuted, fontSize: 11 }} />
+                  <YAxis dataKey="code" type="category" width={40} tick={{ fill: theme.textMuted, fontSize: 11 }} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar dataKey="players" name={t('geo_players', 'Players')} fill={chartColors.pre} radius={[0,3,3,0]}>
+                    <LabelList dataKey="players" position="right" fill={theme.textMuted} fontSize={11} />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 4 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 4, fontFamily: "'Geist Mono', monospace" }}>{t('geo_time_title', 'Median time-to-1K by country (after-1.40)')}</div>
+            <div style={{ color: theme.textMuted, fontSize: 11.5, marginBottom: 10 }}>{t('geo_time_desc', 'Sorted fastest first. Single-player countries marked with n=1 — anecdotal only.')}</div>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={timeChart} margin={{ top: 16, right: 24, bottom: 10, left: 10 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                <XAxis dataKey="code" tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                <YAxis tickFormatter={(v) => v >= 3600 ? `${(v/3600).toFixed(1)}h` : `${(v/60).toFixed(0)}m`} tick={{ fill: theme.textMuted, fontSize: 11 }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Bar dataKey="med" name={t('geo_med_time', 'Median time-to-1K')} fill={chartColors.now} radius={[3,3,0,0]}>
+                  <LabelList dataKey="label" position="top" fill={theme.textMuted} fontSize={11} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <InsightBox>{t('geo_insight', "The cohort skews more BR-heavy in the post-build than in the pre-build (US+BR went from ~35% to 74%) — likely a reflection of which player segments returned for v1.81. Median time-to-1K varies meaningfully by country: US is fastest among countries with n>1 (~5min), BR roughly 50% slower (~8min). Hard to draw causal conclusions at this n, but worth tracking over time — country differences usually trace back to play habits (commuting cadence, weekday vs weekend) rather than skill.")}</InsightBox>
+        </div>
+      );
+    }
+
+    function AdsSessionsPanel() {
+      const adChart = adByCountry.map(c => ({ code: c.code, events: c.events, label: `${c.events} (${c.pct}%)` }));
+
+      return (
+        <div>
+          <SectionHeading sub={t('ads_intro', "Two new event streams introduced in v1.70: AdWatched5x (rewarded video) and SessionStart. Both are direct windows into engagement — what was previously visible only at milestone snapshots is now sampled per session and per ad watch.")}>
+            {t('tab_ads', 'Ads & Sessions')}
+          </SectionHeading>
+
+          <div style={{ marginBottom: 22 }}>
+            <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontFamily: "'Geist Mono', monospace" }}>{t('ads_5x_title', '5x ad watches by country (after-1.40)')}</div>
+            <ResponsiveContainer width="100%" height={220}>
+              <BarChart data={adChart} margin={{ top: 16, right: 24, bottom: 10, left: 10 }} layout="vertical">
+                <CartesianGrid strokeDasharray="3 3" stroke={theme.border} horizontal={false} />
+                <XAxis type="number" tick={{ fill: theme.textMuted, fontSize: 11 }} />
+                <YAxis dataKey="code" type="category" width={40} tick={{ fill: theme.textMuted, fontSize: 11 }} />
+                <Tooltip content={<CustomTooltip />} />
+                <Bar dataKey="events" name={t('ads_events', 'Ad events')} fill={chartColors.post} radius={[0,3,3,0]}>
+                  <LabelList dataKey="label" position="right" fill={theme.textMuted} fontSize={11} />
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 22 }}>
+            <StatCard label={t('ads_total', 'Total 5x ads watched')} value="146" sub={t('ads_total_sub', 'after-1.40, all countries')} accent={theme.accent} />
+            <StatCard label={t('ads_max', 'Single-player max')} value="120" sub={t('ads_max_sub', '1 DE player, 82% of total')} accent={theme.amber} />
+            <StatCard label={t('ads_other', 'Other-country events')} value="26" sub={t('ads_other_sub', 'across 4 countries')} accent={theme.text} />
+          </div>
+
+          <NoteBox color={theme.amber}>{t('ads_concentration', 'Ad-watch behavior is heavily concentrated: a single German player accounts for 82% of all 5x reward-ad views (lifetimeAdCount sequence runs 1 → 120). The remaining 18% spreads across US (9%), BR (7%), GB (1%), PR (1%). This is a useful signal — the 5x boost is being used as designed (compounding active sessions), but adoption is thin and the new ads-as-progression-lever requires more onboarding visibility.')}</NoteBox>
+
+          <div style={{ marginTop: 24 }}>
+            <SectionHeading sub={t('sess_intro', 'SessionStart fires on every app open via the 2-frame coroutine pattern. 27 events captured in the after-1.40 cohort.')}>
+              {t('sess_subtitle', 'Session start patterns')}
+            </SectionHeading>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 22 }}>
+            <div>
+              <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontFamily: "'Geist Mono', monospace" }}>{t('sess_number_title', 'Session number distribution')}</div>
+              <ResponsiveContainer width="100%" height={220}>
+                <BarChart data={sessionNumberHist} margin={{ top: 16, right: 24, bottom: 10, left: 10 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                  <XAxis dataKey="n" tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                  <YAxis tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar dataKey="count" name={t('sess_events', 'Session opens')} fill={chartColors.post} radius={[3,3,0,0]}>
+                    <LabelList dataKey="count" position="top" fill={theme.textMuted} fontSize={11} />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+            <div>
+              <div style={{ color: theme.textMuted, fontSize: 12, textTransform: "uppercase", letterSpacing: 1, marginBottom: 10, fontFamily: "'Geist Mono', monospace" }}>{t('sess_days_title', 'Days since install (at session)')}</div>
+              <ResponsiveContainer width="100%" height={220}>
+                <BarChart data={daysSinceInstallHist} margin={{ top: 16, right: 24, bottom: 10, left: 10 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke={theme.border} />
+                  <XAxis dataKey="bucket" tick={{ fill: theme.textMuted, fontSize: 11 }} />
+                  <YAxis tick={{ fill: theme.textMuted, fontSize: 12 }} />
+                  <Tooltip content={<CustomTooltip />} />
+                  <Bar dataKey="count" name={t('sess_events', 'Session opens')} fill={chartColors.cyan || theme.cyan} radius={[3,3,0,0]}>
+                    <LabelList dataKey="count" position="top" fill={theme.textMuted} fontSize={11} />
+                  </Bar>
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", marginBottom: 4 }}>
+            <StatCard label={t('sess_med_num', 'Median session #')} value="3" sub={t('sess_med_num_sub', 'most events from 2nd-3rd open')} accent={theme.cyan} />
+            <StatCard label={t('sess_med_days', 'Median days-since-install')} value="1" sub={t('sess_med_days_sub', '48% of opens on day 0')} accent={theme.cyan} />
+            <StatCard label={t('sess_prev_dur', 'Median prev session')} value="2.7 min" sub={t('sess_prev_dur_sub', 'short bursts dominate')} accent={theme.cyan} />
+          </div>
+
+          <InsightBox>{t('ads_sess_insight', "Two patterns worth flagging. First: ad watching is a power-user behavior — 82% from one player means current adoption isn't broad. Worth A/B testing more visible 5x prompts to widen the base. Second: the session-start data shows a classic short-burst pattern — median previous session is under 3 minutes, and most app opens happen within the first day or two of install. Players sample the game in quick bites; the offline mechanic is what bridges those bites. Confirms the design assumption that drove the offline-bug fix in the first place.")}</InsightBox>
+        </div>
+      );
+    }
+
+    function MethodPanel() {
+      return (
+        <div>
+          <SectionHeading>{t('tab_method', 'Methodology')}</SectionHeading>
+
+          <div style={{ display: "grid", gap: 12 }}>
+            <div style={{ background: theme.bg, border: `1px solid ${theme.border}`, borderRadius: 6, padding: "12px 14px" }}>
+              <div style={{ color: theme.accent, fontSize: 11, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6, fontFamily: "'Geist Mono', monospace" }}>{t('me_eras_title', 'Era boundaries')}</div>
+              <div style={{ color: theme.text, fontSize: 13, lineHeight: 1.6 }}>
+                <div><span style={{ color: theme.cyan, fontWeight: 600 }}>{t('pre_label', 'Pre-1.40')}: </span>{t('me_eras_pre', 'Versions <1.6.0 (0.2.x, 0.3.x, 1.0.x, 1.1.x, 1.2.x, 1.3.x, 1.4.0).')}</div>
+                <div style={{ marginTop: 4 }}><span style={{ color: theme.accent, fontWeight: 600 }}>{t('post_label', 'After-1.40')}: </span>{t('me_eras_post', 'Versions 1.6.0, 1.6.1, 1.7.0, 1.8.0, 1.8.1. Economy changes were already live in 1.6.0.')}</div>
+              </div>
+            </div>
+
+            <div style={{ background: theme.bg, border: `1px solid ${theme.border}`, borderRadius: 6, padding: "12px 14px" }}>
+              <div style={{ color: theme.amber, fontSize: 11, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6, fontFamily: "'Geist Mono', monospace" }}>{t('me_excl_title', 'Exclusions')}</div>
+              <div style={{ color: theme.text, fontSize: 13, lineHeight: 1.6 }}>{t('me_excl_text', '1.8.2 (in QA, not public), test1.0 (internal dev sessions). No material impact on medians.')}</div>
+            </div>
+
+            <div style={{ background: theme.bg, border: `1px solid ${theme.border}`, borderRadius: 6, padding: "12px 14px" }}>
+              <div style={{ color: theme.purple, fontSize: 11, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6, fontFamily: "'Geist Mono', monospace" }}>{t('me_agg_title', 'Aggregation method')}</div>
+              <div style={{ color: theme.text, fontSize: 13, lineHeight: 1.6 }}>{t('me_agg_text', 'Each CSV row carries (VAL, PLAYERCOUNT). Rows were expanded into PLAYERCOUNT observations of value VAL before computing medians/quartiles. IQR outlier filtering was not applied for this analysis — medians absorb tails naturally; flag where relevant.')}</div>
+            </div>
+
+            <div style={{ background: theme.bg, border: `1px solid ${theme.border}`, borderRadius: 6, padding: "12px 14px" }}>
+              <div style={{ color: theme.red, fontSize: 11, textTransform: "uppercase", letterSpacing: 1, marginBottom: 6, fontFamily: "'Geist Mono', monospace" }}>{t('me_caveats_title', 'Caveats')}</div>
+              <div style={{ color: theme.text, fontSize: 13, lineHeight: 1.6 }}>{t('me_caveats_text', "The after-1.40 cohort is ~10× smaller than the pre cohort (current stable build, smaller active player base). Results are directionally valid but confidence intervals are wide. Following v1.81's release, the next analysis window will have larger samples.")}</div>
+            </div>
+          </div>
+        </div>
+      );
+    }
+
+    // ─── DASHBOARD ───────────────────────────────────────────────────────
+    const tabs = [
+      { id: "overview", label: t('tab_overview', 'Overview') },
+      { id: "economy", label: t('tab_economy', 'Economy Rebalance') },
+      { id: "offline", label: t('tab_offline', 'Offline Bug Fix') },
+      { id: "analytics", label: t('tab_analytics', 'Analytics Expansion') },
+      { id: "behavior", label: t('tab_behavior', 'Player Behavior') },
+      { id: "geo", label: t('tab_geo', 'Geo Distribution') },
+      { id: "ads", label: t('tab_ads', 'Ads & Sessions') },
+      { id: "method", label: t('tab_method', 'Methodology') },
+    ];
+
+    function Dashboard() {
+      const [activeTab, setActiveTab] = useState("overview");
+
+      const panels = {
+        overview: <OverviewPanel />,
+        economy: <EconomyPanel />,
+        offline: <OfflinePanel />,
+        analytics: <AnalyticsPanel />,
+        behavior: <BehaviorPanel />,
+        geo: <GeoPanel />,
+        ads: <AdsSessionsPanel />,
+        method: <MethodPanel />,
+      };
+
+      return (
+        <div style={{
+          background: theme.bg,
+          fontFamily: "'Geist', system-ui, -apple-system, sans-serif",
+          color: theme.text,
+          padding: "20px 16px",
+        }}>
+          <div style={{
+            display: "flex",
+            gap: 4,
+            marginBottom: 20,
+            flexWrap: "wrap",
+            borderBottom: `1px solid ${theme.border}`,
+            paddingBottom: 1,
+          }}>
+            {tabs.map(tab => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                style={{
+                  background: activeTab === tab.id ? theme.surfaceHover : "transparent",
+                  border: "none",
+                  borderBottom: activeTab === tab.id ? `2px solid ${theme.accent}` : "2px solid transparent",
+                  padding: "7px 14px",
+                  color: activeTab === tab.id ? theme.text : theme.textMuted,
+                  fontSize: 12,
+                  fontWeight: activeTab === tab.id ? 600 : 400,
+                  cursor: "pointer",
+                  borderRadius: "6px 6px 0 0",
+                  transition: "all 0.15s",
+                }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          <div style={{
+            background: theme.surface,
+            border: `1px solid ${theme.border}`,
+            borderRadius: 8,
+            padding: "20px 16px",
+          }}>
+            {panels[activeTab]}
+          </div>
+
+          <div style={{
+            marginTop: 16,
+            fontSize: 11,
+            color: theme.textMuted,
+            textAlign: "center",
+          }}>
+            {t('footer', "Jhorro Productions · Analytics Dashboard v2 · Data: Unity Analytics (after-1.40)")}
+          </div>
+        </div>
+      );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById("root"));
+    root.render(<Dashboard />);
+  </script>
+</body>
+</html>

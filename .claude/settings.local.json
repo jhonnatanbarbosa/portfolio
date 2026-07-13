@@ -1,7 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(grep -n \"^    ja: {$\" /d/GitHub/GitHub/portfolio/index.html)"
-    ]
-  }
-}

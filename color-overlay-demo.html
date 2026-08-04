@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hue-overlay demo · thumbnail harmonizer</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #161619;
+    --surface: #1d1d21;
+    --surface-hover: #232328;
+    --border: #2c2c32;
+    --text: #dddbd6;
+    --text-mid: #a09e97;
+    --text-dim: #918f89;
+
+    /* ── the knobs the controls drive ── */
+    --accent: #a8b87a;
+    --accent-rgb: 168,184,122;
+    --tint: 0.55;         /* overlay opacity at rest        */
+    --hover-tint: 0;      /* overlay opacity on hover       */
+    --blend: color;       /* mix-blend-mode                 */
+    --sat: 0.75;          /* saturation of media at rest    */
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Geist', -apple-system, sans-serif;
+    background: var(--bg); color: var(--text);
+    line-height: 1.55; font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    padding-bottom: 4rem;
+  }
+  a { color: var(--accent); }
+
+  /* ─────────────── CONTROL BAR ─────────────── */
+  .controls {
+    position: sticky; top: 0; z-index: 10;
+    background: rgba(22,22,25,0.94);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px clamp(1rem, 3vw, 2rem);
+  }
+  .controls-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: flex; flex-wrap: wrap; align-items: flex-end; gap: 18px 26px;
+  }
+  .ctl { display: flex; flex-direction: column; gap: 6px; }
+  .ctl > label {
+    font-family: 'Geist Mono', monospace; font-size: 0.62rem;
+    text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-dim);
+  }
+  .ctl .val { color: var(--accent); }
+
+  input[type=color] {
+    width: 54px; height: 32px; padding: 0; border: 1px solid var(--border);
+    border-radius: 6px; background: none; cursor: pointer;
+  }
+  input[type=range] { width: 150px; accent-color: var(--accent); cursor: pointer; }
+  select {
+    background: var(--surface-hover); color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 8px; font-family: 'Geist', sans-serif; font-size: 0.8rem; cursor: pointer;
+  }
+  .presets { display: flex; gap: 6px; }
+  .sw { width: 24px; height: 24px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.16); cursor: pointer; background: var(--c); transition: transform .15s ease; }
+  .sw:hover { transform: scale(1.12); }
+  .check { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: var(--text-mid); }
+  .check input { width: 16px; height: 16px; accent-color: var(--accent); }
+
+  /* ─────────────── PAGE HEADER ─────────────── */
+  .head { max-width: 1100px; margin: 2rem auto 1.4rem; padding: 0 clamp(1rem,3vw,2rem); }
+  .head h1 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.5rem; }
+  .head p { color: var(--text-mid); font-size: 0.9rem; margin-top: 0.35rem; max-width: 64ch; }
+  .head .hint { color: var(--text-dim); font-size: 0.8rem; margin-top: 0.5rem; }
+
+  /* ─────────────── PROJECT CARDS ─────────────── */
+  .cards { max-width: 1100px; margin: 0 auto; padding: 0 clamp(1rem,3vw,2rem); }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 6px; overflow: hidden; margin-bottom: 0.85rem;
+    display: grid; grid-template-columns: 280px 1fr;
+    transition: transform .25s cubic-bezier(0.22,1,0.36,1), box-shadow .25s ease, border-color .25s ease;
+  }
+  .card:hover {
+    transform: translateY(-2px);
+    border-color: rgba(var(--accent-rgb),0.5);
+    box-shadow: 0 4px 32px rgba(var(--accent-rgb),0.08), 0 1px 8px rgba(0,0,0,0.3);
+  }
+
+  /* ── THE TREATMENT (solution #4) ── */
+  .thumb {
+    position: relative;
+    isolation: isolate;              /* keep the blend contained to the thumb */
+    min-height: 168px;
+    background: var(--surface-hover);
+    border-right: 1px solid var(--border);
+    overflow: hidden;
+  }
+  .thumb video, .thumb img {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    filter: saturate(var(--sat));
+    transition: filter .35s ease;
+  }
+  .thumb::after {                    /* the accent-hue overlay */
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background: rgb(var(--accent-rgb));
+    mix-blend-mode: var(--blend);
+    opacity: var(--tint);
+    transition: opacity .35s ease;
+    z-index: 1;
+  }
+  .card:hover .thumb::after { opacity: var(--hover-tint); }
+  .card:hover .thumb video, .card:hover .thumb img { filter: none; }
+
+  .body { padding: 1.1rem 1.35rem; display: flex; flex-direction: column; justify-content: center; }
+  .body h2 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.15rem; margin-bottom: 0.15rem; }
+  .body .k { font-family: 'Geist Mono', monospace; font-size: 0.66rem; color: var(--text-dim); letter-spacing: 0.05em; }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.7rem; }
+  .tag { font-size: 0.68rem; color: var(--text-dim); border: 1px solid var(--border); border-radius: 4px; padding: 0.25rem 0.55rem; }
+
+  /* ─────────────── CSS READOUT ─────────────── */
+  .readout { max-width: 1100px; margin: 2rem auto 0; padding: 0 clamp(1rem,3vw,2rem); }
+  .readout h3 { font-family: 'Geist Mono', monospace; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-dim); margin-bottom: 0.6rem; }
+  .code-wrap { position: relative; }
+  pre {
+    background: #131316; border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px; overflow-x: auto;
+    font-family: 'Geist Mono', monospace; font-size: 0.78rem; line-height: 1.6; color: #cfcdc7;
+  }
+  .copy {
+    position: absolute; top: 10px; right: 10px;
+    background: var(--surface-hover); color: var(--text); border: 1px solid var(--border);
+    border-radius: 6px; padding: 5px 10px; font-size: 0.72rem; cursor: pointer;
+  }
+  .copy:hover { border-color: rgba(var(--accent-rgb),0.5); }
+
+  @media (max-width: 640px) {
+    .card { grid-template-columns: 1fr; }
+    .thumb { min-height: 200px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <div class="controls-inner">
+    <div class="ctl">
+      <label>Accent <span class="val" id="hexVal">#a8b87a</span></label>
+      <div style="display:flex;align-items:center;gap:10px">
+        <input type="color" id="color" value="#a8b87a">
+        <div class="presets" id="presets">
+          <button class="sw" style="--c:#a8b87a" data-c="#a8b87a" title="Sage (default)"></button>
+          <button class="sw" style="--c:#e0a458" data-c="#e0a458" title="Amber"></button>
+          <button class="sw" style="--c:#5fb0c9" data-c="#5fb0c9" title="Cyan"></button>
+          <button class="sw" style="--c:#8a9be0" data-c="#8a9be0" title="Periwinkle"></button>
+          <button class="sw" style="--c:#c97fb0" data-c="#c97fb0" title="Magenta"></button>
+          <button class="sw" style="--c:#d17a5f" data-c="#d17a5f" title="Terracotta"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ctl">
+      <label>Tint strength <span class="val" id="tintVal">55%</span></label>
+      <input type="range" id="tint" min="0" max="100" value="55">
+    </div>
+
+    <div class="ctl">
+      <label>At-rest saturation <span class="val" id="satVal">75%</span></label>
+      <input type="range" id="sat" min="0" max="100" value="75">
+    </div>
+
+    <div class="ctl">
+      <label>Blend mode</label>
+      <select id="blend">
+        <option value="color">color — recolor to accent hue (recommended)</option>
+        <option value="hue">hue</option>
+        <option value="saturation">saturation</option>
+        <option value="luminosity">luminosity</option>
+        <option value="soft-light">soft-light</option>
+        <option value="overlay">overlay</option>
+        <option value="multiply">multiply</option>
+        <option value="normal">normal — flat colour wash</option>
+      </select>
+    </div>
+
+    <div class="ctl">
+      <label>Behaviour</label>
+      <label class="check"><input type="checkbox" id="hover" checked> reveal true colour on hover</label>
+    </div>
+  </div>
+</div>
+
+<div class="head">
+  <h1>Hue-overlay demo — taming chromatic chaos</h1>
+  <p>Your 5 lead projects with the <strong>#4 treatment</strong>: every thumbnail is tinted toward one accent hue at rest, so the set reads as a unified whole. Hover a card to reveal the game's true colours.</p>
+  <p class="hint">Tweak the accent and watch all five harmonise at once. Set <em>Tint strength</em> to 0% to see the raw chaos you started with. Copy the tuned CSS at the bottom.</p>
+</div>
+
+<div class="cards">
+
+  <div class="card">
+    <div class="thumb">
+      <video autoplay muted loop playsinline><source src="media/01optimizedVideo-Cyberpunk.mp4" type="video/mp4"></video>
+    </div>
+    <div class="body">
+      <span class="k">Shipped · 2025</span>
+      <h2>Idle Cyberpunk City Clicker</h2>
+      <div class="tags"><span class="tag">Economy Design</span><span class="tag">Unity Analytics</span><span class="tag">AdMob / IAP</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <video autoplay muted loop playsinline><source src="media/02optimizedVideo-IdleKingdom.mp4" type="video/mp4"></video>
+    </div>
+    <div class="body">
+      <span class="k">Shipped · 2024</span>
+      <h2>Idle Kingdom Builder</h2>
+      <div class="tags"><span class="tag">Economy Design</span><span class="tag">Progression Curves</span><span class="tag">First Ship</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <video autoplay muted loop playsinline><source src="media/010optimizedVideo-Guardians1.mp4" type="video/mp4"></video>
+    </div>
+    <div class="body">
+      <span class="k">Graduation · 2023</span>
+      <h2>Guardian's Falls — Wounds</h2>
+      <div class="tags"><span class="tag">Scope Management</span><span class="tag">Parkour Mechanics</span><span class="tag">Team Leadership</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <video autoplay muted loop playsinline><source src="media/04optimizedVideo-Beastsofagony.mp4" type="video/mp4"></video>
+    </div>
+    <div class="body">
+      <span class="k">Game Jam · 9 days · 2023</span>
+      <h2>Beasts of Agony: Souls-like Boss Fight</h2>
+      <div class="tags"><span class="tag">Combat Systems</span><span class="tag">Rapid Prototyping</span><span class="tag">Award Winner</span></div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="thumb">
+      <video autoplay muted loop playsinline><source src="media/05optimizedVideo-Bagre.mp4" type="video/mp4"></video>
+    </div>
+    <div class="body">
+      <span class="k">Student · 2022</span>
+      <h2>Operação Bagre Noturno</h2>
+      <div class="tags"><span class="tag">Stealth Action</span><span class="tag">Level Design</span><span class="tag">Narrative</span></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="readout">
+  <h3>CSS for your real cards — copy into style.css</h3>
+  <div class="code-wrap">
+    <button class="copy" id="copyBtn">Copy</button>
+    <pre id="cssOut"></pre>
+  </div>
+</div>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var color = document.getElementById('color');
+  var hexVal = document.getElementById('hexVal');
+  var tint = document.getElementById('tint');
+  var tintVal = document.getElementById('tintVal');
+  var sat = document.getElementById('sat');
+  var satVal = document.getElementById('satVal');
+  var blend = document.getElementById('blend');
+  var hover = document.getElementById('hover');
+  var cssOut = document.getElementById('cssOut');
+  var copyBtn = document.getElementById('copyBtn');
+
+  function hexToRgb(hex) {
+    hex = hex.replace('#', '');
+    if (hex.length === 3) hex = hex.split('').map(function (c) { return c + c; }).join('');
+    var n = parseInt(hex, 16);
+    return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+  }
+
+  function render() {
+    var hex = color.value;
+    var rgb = hexToRgb(hex).join(',');
+    var tintF = (tint.value / 100).toFixed(2);
+    var satF = (sat.value / 100).toFixed(2);
+    var bmode = blend.value;
+    var revealHover = hover.checked;
+
+    root.style.setProperty('--accent', hex);
+    root.style.setProperty('--accent-rgb', rgb);
+    root.style.setProperty('--tint', tintF);
+    root.style.setProperty('--sat', satF);
+    root.style.setProperty('--blend', bmode);
+    root.style.setProperty('--hover-tint', revealHover ? '0' : tintF);
+
+    hexVal.textContent = hex;
+    tintVal.textContent = tint.value + '%';
+    satVal.textContent = sat.value + '%';
+
+    cssOut.textContent = buildCss(rgb, tintF, satF, bmode, revealHover);
+  }
+
+  function buildCss(rgb, tintF, satF, bmode, revealHover) {
+    var lines = [];
+    lines.push('.project-thumb {');
+    lines.push('  position: relative;');
+    lines.push('  isolation: isolate;            /* contain the blend to the thumbnail */');
+    lines.push('}');
+    lines.push('');
+    if (satF !== '1.00') {
+      lines.push('.project-thumb img,');
+      lines.push('.project-thumb video {');
+      lines.push('  filter: saturate(' + satF + ');');
+      lines.push('  transition: filter .35s ease;');
+      lines.push('}');
+      lines.push('');
+    }
+    lines.push('.project-thumb::after {          /* accent-hue overlay */');
+    lines.push('  content: ""; position: absolute; inset: 0;');
+    lines.push('  pointer-events: none; z-index: 1;');
+    lines.push('  background: rgb(' + rgb + ');   /* = var(--accent) */');
+    lines.push('  mix-blend-mode: ' + bmode + ';');
+    lines.push('  opacity: ' + tintF + ';');
+    lines.push('  transition: opacity .35s ease;');
+    lines.push('}');
+    if (revealHover) {
+      lines.push('');
+      lines.push('.project-card:hover .project-thumb::after { opacity: 0; }');
+      if (satF !== '1.00') {
+        lines.push('.project-card:hover .project-thumb img,');
+        lines.push('.project-card:hover .project-thumb video { filter: none; }');
+      }
+    }
+    lines.push('');
+    lines.push('/* Tip: since the overlay reads rgb(--accent), wiring it to');
+    lines.push('   var(--accent-rgb) lets the palette picker tune it live. */');
+    return lines.join('\n');
+  }
+
+  [color, tint, sat, blend, hover].forEach(function (el) {
+    el.addEventListener('input', render);
+    el.addEventListener('change', render);
+  });
+  document.getElementById('presets').addEventListener('click', function (e) {
+    var b = e.target.closest('[data-c]'); if (!b) return;
+    color.value = b.getAttribute('data-c'); render();
+  });
+  copyBtn.addEventListener('click', function () {
+    var text = cssOut.textContent, done = function () { copyBtn.textContent = 'Copied'; setTimeout(function () { copyBtn.textContent = 'Copy'; }, 1200); };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(done).catch(done);
+    else { var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (e) {} document.body.removeChild(t); done(); }
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>

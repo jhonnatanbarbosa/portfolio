@@ -552,6 +552,13 @@ section + section { border-top: 1px solid var(--border-soft); }
   display: block;
 }
 
+/* Thumbnails are a second way into the project modal */
+.project-thumb.is-clickable { cursor: pointer; }
+.project-thumb.is-clickable:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -3px;
+}
+
 .project-card:nth-child(1) .project-thumb {
   background: radial-gradient(ellipse at 30% 50%, rgba(var(--accent-rgb),0.08) 0%, transparent 65%), var(--surface-hover);
 }

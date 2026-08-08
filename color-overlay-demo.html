@@ -11,6 +11,7 @@
     --surface: #1d1d21;
     --surface-hover: #232328;
     --border: #2c2c32;
+    --border-soft: #232328;
     --text: #dddbd6;
     --text-mid: #a09e97;
     --text-dim: #918f89;
@@ -18,10 +19,17 @@
     /* ── the knobs the controls drive ── */
     --accent: #a8b87a;
     --accent-rgb: 168,184,122;
-    --tint: 0.55;         /* overlay opacity at rest        */
-    --hover-tint: 0;      /* overlay opacity on hover       */
-    --blend: color;       /* mix-blend-mode                 */
-    --sat: 0.75;          /* saturation of media at rest    */
+    --accent-dim: #79855a;
+    --accent2: #a8b87a;         /* equals --accent while in single mode */
+    --accent2-rgb: 168,184,122;
+    --accent2-dim: #79855a;
+
+    --ov-a: rgb(168,184,122);   /* overlay on odd cards  */
+    --ov-b: rgb(168,184,122);   /* overlay on even cards */
+    --tint: 0.55;               /* overlay opacity at rest  */
+    --hover-tint: 0;            /* overlay opacity on hover */
+    --blend: color;             /* mix-blend-mode           */
+    --sat: 0.75;                /* saturation of media at rest */
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -32,7 +40,7 @@
     -webkit-font-smoothing: antialiased;
     padding-bottom: 4rem;
   }
-  a { color: var(--accent); }
+  a { color: var(--accent); text-decoration: none; }
 
   /* ─────────────── CONTROL BAR ─────────────── */
   .controls {
@@ -47,11 +55,13 @@
     display: flex; flex-wrap: wrap; align-items: flex-end; gap: 18px 26px;
   }
   .ctl { display: flex; flex-direction: column; gap: 6px; }
+  .ctl[hidden] { display: none; }
   .ctl > label {
     font-family: 'Geist Mono', monospace; font-size: 0.62rem;
     text-transform: uppercase; letter-spacing: 0.09em; color: var(--text-dim);
   }
   .ctl .val { color: var(--accent); }
+  .ctl .val2 { color: var(--accent2); }
 
   input[type=color] {
     width: 54px; height: 32px; padding: 0; border: 1px solid var(--border);
@@ -72,15 +82,16 @@
   /* ─────────────── PAGE HEADER ─────────────── */
   .head { max-width: 1100px; margin: 2rem auto 1.4rem; padding: 0 clamp(1rem,3vw,2rem); }
   .head h1 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.5rem; }
-  .head p { color: var(--text-mid); font-size: 0.9rem; margin-top: 0.35rem; max-width: 64ch; }
+  .head p { color: var(--text-mid); font-size: 0.9rem; margin-top: 0.35rem; max-width: 68ch; }
   .head .hint { color: var(--text-dim); font-size: 0.8rem; margin-top: 0.5rem; }
+  .head .back { font-family: 'Geist Mono', monospace; font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; }
 
   /* ─────────────── PROJECT CARDS ─────────────── */
   .cards { max-width: 1100px; margin: 0 auto; padding: 0 clamp(1rem,3vw,2rem); }
   .card {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: 6px; overflow: hidden; margin-bottom: 0.85rem;
-    display: grid; grid-template-columns: 280px 1fr;
+    display: grid; grid-template-columns: 300px 1fr;
     transition: transform .25s cubic-bezier(0.22,1,0.36,1), box-shadow .25s ease, border-color .25s ease;
   }
   .card:hover {
@@ -88,12 +99,16 @@
     border-color: rgba(var(--accent-rgb),0.5);
     box-shadow: 0 4px 32px rgba(var(--accent-rgb),0.08), 0 1px 8px rgba(0,0,0,0.3);
   }
+  .card:nth-of-type(even):hover {
+    border-color: rgba(var(--accent2-rgb),0.5);
+    box-shadow: 0 4px 32px rgba(var(--accent2-rgb),0.08), 0 1px 8px rgba(0,0,0,0.3);
+  }
 
   /* ── THE TREATMENT (solution #4) ── */
   .thumb {
     position: relative;
     isolation: isolate;              /* keep the blend contained to the thumb */
-    min-height: 168px;
+    min-height: 210px;
     background: var(--surface-hover);
     border-right: 1px solid var(--border);
     overflow: hidden;
@@ -106,20 +121,102 @@
   }
   .thumb::after {                    /* the accent-hue overlay */
     content: ""; position: absolute; inset: 0; pointer-events: none;
-    background: rgb(var(--accent-rgb));
+    background: var(--ov-a);
     mix-blend-mode: var(--blend);
     opacity: var(--tint);
     transition: opacity .35s ease;
     z-index: 1;
   }
+  .card:nth-of-type(even) .thumb::after { background: var(--ov-b); }
   .card:hover .thumb::after { opacity: var(--hover-tint); }
   .card:hover .thumb video, .card:hover .thumb img { filter: none; }
 
-  .body { padding: 1.1rem 1.35rem; display: flex; flex-direction: column; justify-content: center; }
-  .body h2 { font-family: 'Instrument Serif', serif; font-weight: 400; font-size: 1.15rem; margin-bottom: 0.15rem; }
-  .body .k { font-family: 'Geist Mono', monospace; font-size: 0.66rem; color: var(--text-dim); letter-spacing: 0.05em; }
-  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.7rem; }
-  .tag { font-size: 0.68rem; color: var(--text-dim); border: 1px solid var(--border); border-radius: 4px; padding: 0.25rem 0.55rem; }
+  /* ── CARD BODY (mirrors the real .project-card) ── */
+  .body { padding: 1.15rem 1.4rem; display: flex; flex-direction: column; justify-content: center; }
+
+  .top-row {
+    display: flex; justify-content: space-between;
+    align-items: baseline; margin-bottom: 0.2rem;
+    flex-wrap: wrap; gap: 0.4rem;
+  }
+  .name { font-family: 'Instrument Serif', serif; font-size: 1.02rem; font-weight: 400; }
+
+  .badge {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.62rem; color: var(--accent2);
+    background: rgba(var(--accent2-rgb),0.08);
+    border: 1px solid rgba(var(--accent2-rgb),0.32);
+    padding: 0.1rem 0.45rem; border-radius: 3px;
+  }
+
+  .bridge {
+    font-family: 'Geist Mono', monospace;
+    font-size: 0.72rem; color: var(--accent);
+    line-height: 1.5; margin: 0.15rem 0 0.55rem;
+    padding-left: 0.6rem; border-left: 2px solid var(--accent);
+    opacity: 0.88;
+  }
+
+  .desc { color: var(--text-mid); font-size: 0.84rem; margin-bottom: 0.65rem; line-height: 1.55; }
+  .desc mark {
+    background: rgba(var(--accent-rgb),0.14);
+    color: var(--accent);
+    padding: 0 0.2em; border-radius: 2px;
+  }
+
+  .meta-row { display: flex; flex-wrap: wrap; gap: 0.2rem 1.1rem; font-size: 0.78rem; margin-bottom: 0.6rem; }
+  .meta-pair { display: flex; gap: 0.3rem; }
+  .meta-pair .ml { color: var(--text-dim); }
+  .meta-pair .mv { color: var(--text); font-weight: 500; }
+
+  .tags { display: flex; flex-wrap: wrap; gap: 0.25rem; }
+  .tag {
+    font-size: 0.66rem; font-weight: 500; color: var(--text-dim);
+    background: rgba(255,255,255,0.03);
+    border: 1px solid var(--border);
+    padding: 0.12rem 0.5rem; border-radius: 3px;
+  }
+  .tag.hot {
+    color: var(--accent2);
+    border-color: rgba(var(--accent2-rgb),0.34);
+    background: rgba(var(--accent2-rgb),0.07);
+  }
+
+  .actions {
+    margin-top: 0.7rem; padding-top: 0.6rem;
+    border-top: 1px solid var(--border-soft);
+    display: flex; flex-wrap: wrap; gap: 0.55rem 1.2rem; align-items: center;
+    font-size: 0.78rem; font-weight: 500;
+  }
+  .actions a { color: var(--accent); transition: letter-spacing .2s ease; }
+  .actions a:hover { letter-spacing: 0.01em; }
+  .btn-primary {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.4rem 0.9rem; border-radius: 6px;
+    background: rgba(var(--accent-rgb),0.08);
+    color: var(--accent); font-weight: 600;
+    border: 1px solid var(--accent-dim);
+    transition: transform .15s ease, box-shadow .2s ease, background .2s ease, border-color .2s ease, color .2s ease;
+  }
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    background: var(--accent); color: var(--bg);
+    border-color: var(--accent);
+    box-shadow: 0 6px 18px rgba(var(--accent-rgb),0.22);
+  }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 0.45rem;
+    padding: 0.4rem 0.9rem; border-radius: 6px;
+    color: var(--accent2);
+    border: 1px solid rgba(var(--accent2-rgb),0.34);
+    background: rgba(var(--accent2-rgb),0.06);
+    transition: transform .15s ease, background .2s ease, border-color .2s ease;
+  }
+  .btn-ghost:hover {
+    transform: translateY(-1px);
+    background: rgba(var(--accent2-rgb),0.14);
+    border-color: var(--accent2);
+  }
 
   /* ─────────────── CSS READOUT ─────────────── */
   .readout { max-width: 1100px; margin: 2rem auto 0; padding: 0 clamp(1rem,3vw,2rem); }
@@ -137,7 +234,7 @@
   }
   .copy:hover { border-color: rgba(var(--accent-rgb),0.5); }
 
-  @media (max-width: 640px) {
+  @media (max-width: 720px) {
     .card { grid-template-columns: 1fr; }
     .thumb { min-height: 200px; }
   }
@@ -148,10 +245,18 @@
 <div class="controls">
   <div class="controls-inner">
     <div class="ctl">
+      <label>Palette mode</label>
+      <select id="mode">
+        <option value="single">Single accent</option>
+        <option value="dual">Dual accent (black + 2 colours)</option>
+      </select>
+    </div>
+
+    <div class="ctl">
       <label>Accent <span class="val" id="hexVal">#a8b87a</span></label>
       <div style="display:flex;align-items:center;gap:10px">
         <input type="color" id="color" value="#a8b87a">
-        <div class="presets" id="presets">
+        <div class="presets" data-target="color">
           <button class="sw" style="--c:#a8b87a" data-c="#a8b87a" title="Sage (default)"></button>
           <button class="sw" style="--c:#e0a458" data-c="#e0a458" title="Amber"></button>
           <button class="sw" style="--c:#5fb0c9" data-c="#5fb0c9" title="Cyan"></button>
@@ -160,6 +265,34 @@
           <button class="sw" style="--c:#d17a5f" data-c="#d17a5f" title="Terracotta"></button>
         </div>
       </div>
+    </div>
+
+    <div class="ctl" id="ctlAccent2" hidden>
+      <label>Accent 2 <span class="val2" id="hexVal2">#5fb0c9</span></label>
+      <div style="display:flex;align-items:center;gap:10px">
+        <input type="color" id="color2" value="#5fb0c9">
+        <div class="presets" data-target="color2">
+          <button class="sw" style="--c:#5fb0c9" data-c="#5fb0c9" title="Cyan"></button>
+          <button class="sw" style="--c:#e0a458" data-c="#e0a458" title="Amber"></button>
+          <button class="sw" style="--c:#a8b87a" data-c="#a8b87a" title="Sage"></button>
+          <button class="sw" style="--c:#8a9be0" data-c="#8a9be0" title="Periwinkle"></button>
+          <button class="sw" style="--c:#c97fb0" data-c="#c97fb0" title="Magenta"></button>
+          <button class="sw" style="--c:#d17a5f" data-c="#d17a5f" title="Terracotta"></button>
+        </div>
+      </div>
+    </div>
+
+    <div class="ctl" id="ctlPair" hidden>
+      <label>How the two mix</label>
+      <select id="pair">
+        <option value="gradient">Gradient across each thumbnail</option>
+        <option value="alternate">Alternate: one colour per card</option>
+      </select>
+    </div>
+
+    <div class="ctl" id="ctlAngle" hidden>
+      <label>Gradient angle <span class="val" id="angleVal">135°</span></label>
+      <input type="range" id="angle" min="0" max="360" value="135">
     </div>
 
     <div class="ctl">
@@ -175,14 +308,14 @@
     <div class="ctl">
       <label>Blend mode</label>
       <select id="blend">
-        <option value="color">color — recolor to accent hue (recommended)</option>
+        <option value="color">color: recolor to accent hue (recommended)</option>
         <option value="hue">hue</option>
         <option value="saturation">saturation</option>
         <option value="luminosity">luminosity</option>
         <option value="soft-light">soft-light</option>
         <option value="overlay">overlay</option>
         <option value="multiply">multiply</option>
-        <option value="normal">normal — flat colour wash</option>
+        <option value="normal">normal: flat colour wash</option>
       </select>
     </div>
 
@@ -194,72 +327,150 @@
 </div>
 
 <div class="head">
-  <h1>Hue-overlay demo — taming chromatic chaos</h1>
-  <p>Your 5 lead projects with the <strong>#4 treatment</strong>: every thumbnail is tinted toward one accent hue at rest, so the set reads as a unified whole. Hover a card to reveal the game's true colours.</p>
-  <p class="hint">Tweak the accent and watch all five harmonise at once. Set <em>Tint strength</em> to 0% to see the raw chaos you started with. Copy the tuned CSS at the bottom.</p>
+  <h1>Hue-overlay demo: taming chromatic chaos</h1>
+  <p>The 5 lead projects with the <strong>#4 treatment</strong>. Every thumbnail is tinted toward the accent hue at rest, so the set reads as one palette instead of five competing ones. Hover a card to reveal the game's true colours.</p>
+  <p class="hint">The card bodies carry the same badges, highlight text, and buttons as the real page, so you can see what a colour does to the whole component and not just to the artwork. Set <em>Tint strength</em> to 0% to see the raw chaos you started with, then copy the tuned CSS at the bottom.</p>
+  <p class="hint back"><a href="index.html">← back to the portfolio</a></p>
 </div>
 
 <div class="cards">
 
-  <div class="card">
+  <article class="card">
     <div class="thumb">
       <video autoplay muted loop playsinline><source src="media/01optimizedVideo-Cyberpunk.mp4" type="video/mp4"></video>
     </div>
     <div class="body">
-      <span class="k">Shipped · 2025</span>
-      <h2>Idle Cyberpunk City Clicker</h2>
-      <div class="tags"><span class="tag">Economy Design</span><span class="tag">Unity Analytics</span><span class="tag">AdMob / IAP</span></div>
+      <div class="top-row">
+        <span class="name">Idle Cyberpunk City Clicker: Economy &amp; Analytics</span>
+        <span class="badge">Shipped · 2025</span>
+      </div>
+      <p class="desc">I instrumented Unity Analytics to snapshot player state at 4 milestones, which surfaced two economy bugs and a timer persistence defect. <mark>600+ organic downloads</mark> and a <mark>4.2/5 rating</mark> with no marketing spend.</p>
+      <div class="meta-row">
+        <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer &amp; Developer (Solo)</span></div>
+        <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity 6</span></div>
+        <div class="meta-pair"><span class="ml">Platform</span><span class="mv">Android</span></div>
+      </div>
+      <div class="tags">
+        <span class="tag hot">Economy Design</span><span class="tag">Progression Tuning</span><span class="tag">Unity Analytics</span><span class="tag">AdMob / IAP</span>
+      </div>
+      <div class="actions">
+        <a href="index.html#cyberpunk-analytics" target="_blank" rel="noopener">Analytics case study →</a>
+        <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener">Google Play →</a>
+        <a class="btn-primary" href="index.html#projects" target="_blank" rel="noopener">View details →</a>
+        <a class="btn-ghost" href="docs/GDD_IdleCyberpunkCityClicker_JhonnatanBarbosa.pdf" target="_blank" rel="noopener">Full GDD →</a>
+      </div>
     </div>
-  </div>
+  </article>
 
-  <div class="card">
+  <article class="card">
     <div class="thumb">
       <video autoplay muted loop playsinline><source src="media/02optimizedVideo-IdleKingdom.mp4" type="video/mp4"></video>
     </div>
     <div class="body">
-      <span class="k">Shipped · 2024</span>
-      <h2>Idle Kingdom Builder</h2>
-      <div class="tags"><span class="tag">Economy Design</span><span class="tag">Progression Curves</span><span class="tag">First Ship</span></div>
+      <div class="top-row">
+        <span class="name">Idle Kingdom Builder: First Shipped Economy</span>
+        <span class="badge">Shipped · 2024</span>
+      </div>
+      <p class="desc">My first published idle game. I designed the core loop and economy from scratch, using Cookie Clicker's formulas as a reference and tuning them toward a slower pace. <mark>1000+ organic downloads</mark>.</p>
+      <div class="meta-row">
+        <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer &amp; Developer (Solo)</span></div>
+        <div class="meta-pair"><span class="ml">Engine</span><span class="mv">Unity 2022</span></div>
+        <div class="meta-pair"><span class="ml">Duration</span><span class="mv">6 months</span></div>
+      </div>
+      <div class="tags">
+        <span class="tag hot">Economy Design</span><span class="tag">Progression Curves</span><span class="tag">Monetization</span><span class="tag">First Ship</span>
+      </div>
+      <div class="actions">
+        <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener">Google Play →</a>
+        <a class="btn-primary" href="index.html#projects" target="_blank" rel="noopener">View details →</a>
+        <a class="btn-ghost" href="docs/GDD_IdleKingdomBuilder_JhonnatanBarbosa.pdf" target="_blank" rel="noopener">Full GDD →</a>
+      </div>
     </div>
-  </div>
+  </article>
 
-  <div class="card">
+  <article class="card">
     <div class="thumb">
       <video autoplay muted loop playsinline><source src="media/010optimizedVideo-Guardians1.mp4" type="video/mp4"></video>
     </div>
     <div class="body">
-      <span class="k">Graduation · 2023</span>
-      <h2>Guardian's Falls — Wounds</h2>
-      <div class="tags"><span class="tag">Scope Management</span><span class="tag">Parkour Mechanics</span><span class="tag">Team Leadership</span></div>
+      <div class="top-row">
+        <span class="name">Guardian's Falls: Wounds</span>
+        <span class="badge">Graduation · 2023</span>
+      </div>
+      <p class="bridge">This project taught me the scope management principles I later applied to shipping my solo idle games on time.</p>
+      <p class="desc">2.5D Metroidvania developed as a graduation project at PUC-SP. I led the scope cuts needed to ship a playable vertical slice with a <mark>team of 6</mark> inside academic deadlines.</p>
+      <div class="meta-row">
+        <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer → Developer / Producer</span></div>
+        <div class="meta-pair"><span class="ml">Team</span><span class="mv">6</span></div>
+        <div class="meta-pair"><span class="ml">Duration</span><span class="mv">1 Year</span></div>
+      </div>
+      <div class="tags">
+        <span class="tag hot">Scope Management</span><span class="tag">Production</span><span class="tag">Parkour Mechanics</span><span class="tag">Team Leadership</span>
+      </div>
+      <div class="actions">
+        <a href="index.html#guardians-case-study" target="_blank" rel="noopener">Case study →</a>
+        <a href="https://hanada1nonly.itch.io/guardians-fall-wounds" target="_blank" rel="noopener">Play on itch.io →</a>
+        <a class="btn-primary" href="index.html#projects" target="_blank" rel="noopener">View details →</a>
+      </div>
     </div>
-  </div>
+  </article>
 
-  <div class="card">
+  <article class="card">
     <div class="thumb">
       <video autoplay muted loop playsinline><source src="media/04optimizedVideo-Beastsofagony.mp4" type="video/mp4"></video>
     </div>
     <div class="body">
-      <span class="k">Game Jam · 9 days · 2023</span>
-      <h2>Beasts of Agony: Souls-like Boss Fight</h2>
-      <div class="tags"><span class="tag">Combat Systems</span><span class="tag">Rapid Prototyping</span><span class="tag">Award Winner</span></div>
+      <div class="top-row">
+        <span class="name">Beasts of Agony: Souls-like Boss Fight</span>
+        <span class="badge">Game Jam · 9 days · 2023</span>
+      </div>
+      <p class="bridge">The clearest example of me building real-time combat architecture and animation state machines against a hard deadline.</p>
+      <p class="desc">I designed and programmed the core fighting system: hitboxes, animation trees, life/death state, and combat balancing. It won <mark>Best Art at PUCJam 2023</mark>.</p>
+      <div class="meta-row">
+        <div class="meta-pair"><span class="ml">Role</span><span class="mv">Designer, Programmer &amp; Producer</span></div>
+        <div class="meta-pair"><span class="ml">Team</span><span class="mv">7</span></div>
+        <div class="meta-pair"><span class="ml">Duration</span><span class="mv">9 Days</span></div>
+      </div>
+      <div class="tags">
+        <span class="tag hot">Combat Systems</span><span class="tag">Game Jam</span><span class="tag">Rapid Prototyping</span><span class="tag">Award Winner</span>
+      </div>
+      <div class="actions">
+        <a href="https://hanada1nonly.itch.io/beasts-of-agony" target="_blank" rel="noopener">Play on itch.io →</a>
+        <a class="btn-primary" href="index.html#projects" target="_blank" rel="noopener">View details →</a>
+      </div>
     </div>
-  </div>
+  </article>
 
-  <div class="card">
+  <article class="card">
     <div class="thumb">
       <video autoplay muted loop playsinline><source src="media/05optimizedVideo-Bagre.mp4" type="video/mp4"></video>
     </div>
     <div class="body">
-      <span class="k">Student · 2022</span>
-      <h2>Operação Bagre Noturno</h2>
-      <div class="tags"><span class="tag">Stealth Action</span><span class="tag">Level Design</span><span class="tag">Narrative</span></div>
+      <div class="top-row">
+        <span class="name">Operação Bagre Noturno: Stealth Action Comedy</span>
+        <span class="badge">Game Jam · 2 weeks · 2024</span>
+      </div>
+      <p class="desc">Stealth-action game set in an alternate 2031 Brazil. I designed the level layout, the core stealth and shooting mechanics, and the narrative. Built for <mark>CtrlAltJam#3</mark> with a team of 4.</p>
+      <div class="meta-row">
+        <div class="meta-pair"><span class="ml">Role</span><span class="mv">Game Designer, Producer &amp; 3D Artist</span></div>
+        <div class="meta-pair"><span class="ml">Team</span><span class="mv">4</span></div>
+        <div class="meta-pair"><span class="ml">Duration</span><span class="mv">2 Weeks</span></div>
+      </div>
+      <div class="tags">
+        <span class="tag hot">Level Design</span><span class="tag">Stealth Mechanics</span><span class="tag">Narrative Design</span><span class="tag">3D Art</span>
+      </div>
+      <div class="actions">
+        <a href="https://jhorro.itch.io/operacao-bagre-noturno" target="_blank" rel="noopener">Play on itch.io →</a>
+        <a class="btn-primary" href="index.html#projects" target="_blank" rel="noopener">View details →</a>
+        <a class="btn-ghost" href="docs/GDD_bagrenoturno.pdf" target="_blank" rel="noopener">Full GDD →</a>
+      </div>
     </div>
-  </div>
+  </article>
 
 </div>
 
 <div class="readout">
-  <h3>CSS for your real cards — copy into style.css</h3>
+  <h3>CSS for your real cards: copy into style.css</h3>
   <div class="code-wrap">
     <button class="copy" id="copyBtn">Copy</button>
     <pre id="cssOut"></pre>
@@ -269,8 +480,14 @@
 <script>
 (function () {
   var root = document.documentElement;
+  var mode = document.getElementById('mode');
   var color = document.getElementById('color');
+  var color2 = document.getElementById('color2');
   var hexVal = document.getElementById('hexVal');
+  var hexVal2 = document.getElementById('hexVal2');
+  var pair = document.getElementById('pair');
+  var angle = document.getElementById('angle');
+  var angleVal = document.getElementById('angleVal');
   var tint = document.getElementById('tint');
   var tintVal = document.getElementById('tintVal');
   var sat = document.getElementById('sat');
@@ -279,6 +496,9 @@
   var hover = document.getElementById('hover');
   var cssOut = document.getElementById('cssOut');
   var copyBtn = document.getElementById('copyBtn');
+  var ctlAccent2 = document.getElementById('ctlAccent2');
+  var ctlPair = document.getElementById('ctlPair');
+  var ctlAngle = document.getElementById('ctlAngle');
 
   function hexToRgb(hex) {
     hex = hex.replace('#', '');
@@ -286,40 +506,90 @@
     var n = parseInt(hex, 16);
     return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
   }
+  function toHex(n) { return Math.max(0, Math.min(255, Math.round(n))).toString(16).padStart(2, '0'); }
+  function darken(hex, f) { var c = hexToRgb(hex); return '#' + toHex(c[0] * f) + toHex(c[1] * f) + toHex(c[2] * f); }
+  function isHex(v) { return /^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(v || ''); }
+
+  // The palette picker on the portfolio hands its accent over in the query string.
+  (function seedFromUrl() {
+    var q = new URLSearchParams(location.search);
+    var a = q.get('accent'), b = q.get('accent2');
+    if (isHex(a)) color.value = a.toLowerCase();
+    if (isHex(b)) { color2.value = b.toLowerCase(); mode.value = 'dual'; }
+  })();
 
   function render() {
-    var hex = color.value;
-    var rgb = hexToRgb(hex).join(',');
+    var dual = mode.value === 'dual';
+    var hex1 = color.value;
+    var hex2 = dual ? color2.value : hex1;
+    var rgb1 = hexToRgb(hex1).join(',');
+    var rgb2 = hexToRgb(hex2).join(',');
     var tintF = (tint.value / 100).toFixed(2);
     var satF = (sat.value / 100).toFixed(2);
     var bmode = blend.value;
     var revealHover = hover.checked;
+    var gradient = dual && pair.value === 'gradient';
 
-    root.style.setProperty('--accent', hex);
-    root.style.setProperty('--accent-rgb', rgb);
+    ctlAccent2.hidden = !dual;
+    ctlPair.hidden = !dual;
+    ctlAngle.hidden = !gradient;
+
+    var ovA, ovB;
+    if (gradient) {
+      ovA = ovB = 'linear-gradient(' + angle.value + 'deg, rgb(' + rgb1 + '), rgb(' + rgb2 + '))';
+    } else {
+      ovA = 'rgb(' + rgb1 + ')';
+      ovB = 'rgb(' + rgb2 + ')';
+    }
+
+    root.style.setProperty('--accent', hex1);
+    root.style.setProperty('--accent-rgb', rgb1);
+    root.style.setProperty('--accent-dim', darken(hex1, 0.72));
+    root.style.setProperty('--accent2', hex2);
+    root.style.setProperty('--accent2-rgb', rgb2);
+    root.style.setProperty('--accent2-dim', darken(hex2, 0.72));
+    root.style.setProperty('--ov-a', ovA);
+    root.style.setProperty('--ov-b', ovB);
     root.style.setProperty('--tint', tintF);
     root.style.setProperty('--sat', satF);
     root.style.setProperty('--blend', bmode);
     root.style.setProperty('--hover-tint', revealHover ? '0' : tintF);
 
-    hexVal.textContent = hex;
+    hexVal.textContent = hex1;
+    hexVal2.textContent = hex2;
+    angleVal.textContent = angle.value + '°';
     tintVal.textContent = tint.value + '%';
     satVal.textContent = sat.value + '%';
 
-    cssOut.textContent = buildCss(rgb, tintF, satF, bmode, revealHover);
+    cssOut.textContent = buildCss({
+      dual: dual, gradient: gradient, angle: angle.value,
+      hex1: hex1, hex2: hex2, rgb1: rgb1, rgb2: rgb2,
+      tintF: tintF, satF: satF, bmode: bmode, revealHover: revealHover
+    });
   }
 
-  function buildCss(rgb, tintF, satF, bmode, revealHover) {
+  function buildCss(o) {
     var lines = [];
+    lines.push(':root {');
+    lines.push('  --accent: ' + o.hex1 + ';');
+    lines.push('  --accent-rgb: ' + o.rgb1 + ';');
+    lines.push('  --accent-dim: ' + darken(o.hex1, 0.72) + ';');
+    if (o.dual) {
+      lines.push('  --accent2: ' + o.hex2 + ';');
+      lines.push('  --accent2-rgb: ' + o.rgb2 + ';');
+      lines.push('  --accent2-dim: ' + darken(o.hex2, 0.72) + ';');
+    }
+    lines.push('}');
+    lines.push('');
     lines.push('.project-thumb {');
     lines.push('  position: relative;');
     lines.push('  isolation: isolate;            /* contain the blend to the thumbnail */');
     lines.push('}');
     lines.push('');
-    if (satF !== '1.00') {
+    if (o.satF !== '1.00') {
       lines.push('.project-thumb img,');
       lines.push('.project-thumb video {');
-      lines.push('  filter: saturate(' + satF + ');');
+      lines.push('  filter: saturate(' + o.satF + ');');
       lines.push('  transition: filter .35s ease;');
       lines.push('}');
       lines.push('');
@@ -327,32 +597,56 @@
     lines.push('.project-thumb::after {          /* accent-hue overlay */');
     lines.push('  content: ""; position: absolute; inset: 0;');
     lines.push('  pointer-events: none; z-index: 1;');
-    lines.push('  background: rgb(' + rgb + ');   /* = var(--accent) */');
-    lines.push('  mix-blend-mode: ' + bmode + ';');
-    lines.push('  opacity: ' + tintF + ';');
+    if (o.gradient) {
+      lines.push('  background: linear-gradient(' + o.angle + 'deg,');
+      lines.push('              rgb(var(--accent-rgb)), rgb(var(--accent2-rgb)));');
+    } else {
+      lines.push('  background: rgb(var(--accent-rgb));');
+    }
+    lines.push('  mix-blend-mode: ' + o.bmode + ';');
+    lines.push('  opacity: ' + o.tintF + ';');
     lines.push('  transition: opacity .35s ease;');
     lines.push('}');
-    if (revealHover) {
+    if (o.dual && !o.gradient) {
+      lines.push('');
+      lines.push('/* second accent takes every other card */');
+      lines.push('.project-card:nth-of-type(even) .project-thumb::after {');
+      lines.push('  background: rgb(var(--accent2-rgb));');
+      lines.push('}');
+    }
+    if (o.revealHover) {
       lines.push('');
       lines.push('.project-card:hover .project-thumb::after { opacity: 0; }');
-      if (satF !== '1.00') {
+      if (o.satF !== '1.00') {
         lines.push('.project-card:hover .project-thumb img,');
         lines.push('.project-card:hover .project-thumb video { filter: none; }');
       }
     }
+    if (o.dual) {
+      lines.push('');
+      lines.push('/* Where the second accent shows up in the card body */');
+      lines.push('.project-badge {');
+      lines.push('  color: var(--accent2);');
+      lines.push('  background: rgba(var(--accent2-rgb),0.08);');
+      lines.push('  border-color: rgba(var(--accent2-rgb),0.32);');
+      lines.push('}');
+    }
     lines.push('');
-    lines.push('/* Tip: since the overlay reads rgb(--accent), wiring it to');
-    lines.push('   var(--accent-rgb) lets the palette picker tune it live. */');
+    lines.push('/* Tip: the overlay reads var(--accent-rgb), so the dev palette');
+    lines.push('   picker in index.html retunes it live without a rebuild. */');
     return lines.join('\n');
   }
 
-  [color, tint, sat, blend, hover].forEach(function (el) {
+  [mode, color, color2, pair, angle, tint, sat, blend, hover].forEach(function (el) {
     el.addEventListener('input', render);
     el.addEventListener('change', render);
   });
-  document.getElementById('presets').addEventListener('click', function (e) {
-    var b = e.target.closest('[data-c]'); if (!b) return;
-    color.value = b.getAttribute('data-c'); render();
+  document.querySelectorAll('.presets').forEach(function (group) {
+    group.addEventListener('click', function (e) {
+      var b = e.target.closest('[data-c]'); if (!b) return;
+      document.getElementById(group.getAttribute('data-target')).value = b.getAttribute('data-c');
+      render();
+    });
   });
   copyBtn.addEventListener('click', function () {
     var text = cssOut.textContent, done = function () { copyBtn.textContent = 'Copied'; setTimeout(function () { copyBtn.textContent = 'Copy'; }, 1200); };

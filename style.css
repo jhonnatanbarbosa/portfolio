@@ -253,6 +253,24 @@ nav .nav-links a {
 }
 nav .nav-links a:hover { color: var(--text); }
 
+/* Contact sits in the nav as a pill so it reads as an invitation,
+   not just another anchor in the list */
+nav .nav-links a.nav-contact {
+  color: var(--accent);
+  background: rgba(var(--accent-rgb),0.09);
+  border: 1px solid rgba(var(--accent-rgb),0.32);
+  border-radius: 999px;
+  padding: 0.3rem 0.8rem;
+  margin: -0.3rem 0;
+  transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+nav .nav-links a.nav-contact:hover {
+  background: rgba(var(--accent-rgb),0.16);
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+nav .nav-links a.nav-contact.active::after { display: none; }
+
 /* ── Nav active state (set via JS IntersectionObserver) ── */
 nav .nav-links a.active {
   color: var(--accent);
@@ -358,6 +376,18 @@ nav .nav-links a.active::after {
   background: rgba(var(--accent-rgb),0.04);
   text-decoration: none;
   transform: translateY(-1px);
+}
+
+/* Address shown in full up top — no hunting for it at the bottom */
+.intro-links a.intro-email {
+  color: var(--accent);
+  border-color: rgba(var(--accent-rgb),0.35);
+  background: rgba(var(--accent-rgb),0.06);
+}
+.intro-links a.intro-email:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb),0.12);
 }
 
 /* ── TIP ─────────────────────────────────────────────────── */
@@ -1003,17 +1033,57 @@ section + section { border-top: 1px solid var(--border-soft); }
 }
 
 /* ── CONTACT ─────────────────────────────────────────────── */
-.contact-panel { margin-top: 0.9rem; max-width: 760px; }
+/* The whole section reads as one lit panel — it's the last thing on
+   the page, so it has to say "I'm here, email me" without scrolling
+   past it. Accent-tinted card + oversized CTA carry that weight. */
+.contact-panel {
+  position: relative;
+  margin-top: 1.1rem;
+  padding: clamp(1.4rem, 3vw, 2.1rem) clamp(1.2rem, 3vw, 2.2rem);
+  border: 1px solid rgba(var(--accent-rgb),0.28);
+  border-radius: 14px;
+  background:
+    radial-gradient(ellipse at 8% 0%, rgba(var(--accent-rgb),0.10) 0%, transparent 62%),
+    linear-gradient(180deg, var(--surface-hover) 0%, var(--surface) 100%);
+  box-shadow: var(--shadow-glow);
+  overflow: hidden;
+}
+/* Accent hairline across the top edge */
+.contact-panel::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--accent) 0%, var(--accent-dim) 40%, transparent 100%);
+  opacity: 0.85;
+}
+
+.contact-status {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.11em;
+  color: var(--accent);
+  background: rgba(var(--accent-rgb),0.08);
+  border: 1px solid rgba(var(--accent-rgb),0.24);
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem 0.3rem 0.6rem;
+}
+
+.contact-headline {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(1.45rem, 3vw, 1.95rem);
+  font-weight: 400; line-height: 1.15; letter-spacing: -0.015em;
+  color: var(--text);
+  margin: 0.9rem 0 0.55rem;
+  text-shadow: 0 0 40px rgba(var(--accent-rgb),0.10);
+}
 
 .contact-intro {
   color: var(--text-mid);
-  font-size: 0.92rem;
+  font-size: 1rem;
   line-height: 1.65;
-  margin-bottom: 1.15rem;
-  max-width: 62ch;
+  max-width: 58ch;
 }
 
-/* Live "available" dot beside the section aside */
+/* Live "available" dot inside the status pill */
 #contact .section-aside { display: inline-flex; align-items: center; gap: 0.45rem; }
 .contact-avail-dot {
   width: 7px; height: 7px; border-radius: 50%;
@@ -1027,39 +1097,93 @@ section + section { border-top: 1px solid var(--border-soft); }
   100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb),0); }
 }
 
+.contact-top { display: grid; gap: 1.4rem; }
+
+.contact-actions {
+  display: flex; flex-wrap: wrap; align-items: stretch;
+  gap: 0.7rem;
+}
+
+/* Wide screens: pitch on the left, the ask on the right at eye level */
+@media (min-width: 900px) {
+  .contact-top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 2.5rem;
+  }
+  .contact-actions { flex-direction: column; align-items: stretch; }
+}
+
 /* Primary email CTA */
 .contact-cta {
-  display: inline-flex; align-items: center; gap: 0.85rem;
+  display: inline-flex; align-items: center; gap: 0.9rem;
   background: var(--accent); color: var(--bg);
-  border: 1px solid var(--accent); border-radius: 8px;
-  padding: 0.7rem 1rem 0.7rem 0.85rem;
+  border: 1px solid var(--accent); border-radius: 10px;
+  padding: 0.85rem 1.3rem 0.85rem 1.1rem;
   text-decoration: none;
-  box-shadow: 0 6px 18px rgba(var(--accent-rgb),0.18);
+  box-shadow: 0 8px 22px rgba(var(--accent-rgb),0.22);
+  animation: cta-breathe 3.4s ease-in-out infinite;
   transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), box-shadow 0.25s ease;
+}
+/* Slow glow so the eye lands here first; stops the moment it's hovered */
+@keyframes cta-breathe {
+  0%, 100% { box-shadow: 0 8px 22px rgba(var(--accent-rgb),0.20); }
+  50%      { box-shadow: 0 8px 30px rgba(var(--accent-rgb),0.38); }
 }
 .contact-cta:hover {
   text-decoration: none;
   transform: translateY(-2px);
-  box-shadow: 0 10px 26px rgba(var(--accent-rgb),0.28);
+  animation: none;
+  box-shadow: 0 12px 30px rgba(var(--accent-rgb),0.34);
 }
 .contact-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .contact-cta .cta-icon { display: inline-flex; flex-shrink: 0; }
 .contact-cta .cta-text { display: flex; flex-direction: column; line-height: 1.25; }
 .contact-cta .cta-label {
   font-family: 'Geist Mono', monospace;
-  font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.09em;
-  opacity: 0.72;
+  font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.1em;
+  opacity: 0.75;
 }
-.contact-cta .cta-value { font-size: 0.9rem; font-weight: 600; }
-.contact-cta .cta-arrow { display: inline-flex; margin-left: 0.25rem; transition: transform 0.2s ease; }
+.contact-cta .cta-value { font-size: 1.02rem; font-weight: 600; letter-spacing: -0.005em; }
+.contact-cta .cta-arrow { display: inline-flex; margin-left: 0.35rem; transition: transform 0.2s ease; }
 .contact-cta:hover .cta-arrow { transform: translateX(3px); }
+
+/* Copy-to-clipboard, for people who write mail somewhere else */
+.contact-copy {
+  display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem;
+  font-family: inherit; font-size: 0.85rem; font-weight: 500;
+  color: var(--text-mid); cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--border); border-radius: 10px;
+  padding: 0.85rem 1.1rem;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.contact-copy:hover {
+  color: var(--text); border-color: var(--accent-dim);
+  background: rgba(var(--accent-rgb),0.05);
+  transform: translateY(-2px);
+}
+.contact-copy:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.contact-copy .copy-icon { display: inline-flex; flex-shrink: 0; }
+.contact-copy.copied {
+  color: var(--accent);
+  border-color: rgba(var(--accent-rgb),0.45);
+  background: rgba(var(--accent-rgb),0.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-cta { animation: none; }
+  .contact-avail-dot { animation: none; }
+}
 
 /* Secondary contact cards */
 .contact-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 0.6rem;
-  margin-top: 1.1rem;
+  margin-top: 1.6rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
 }
 .contact-item {
   display: flex; align-items: center; gap: 0.7rem;
@@ -1396,6 +1520,7 @@ footer {
   .project-card { grid-template-columns: 220px 1fr; }
   .cs-grid { grid-template-columns: repeat(2, 1fr); }
   .additional-grid { grid-template-columns: 1fr 1fr; }
+  .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* ── MOBILE (≤720px) ─────────────────────────────────────── */
@@ -1433,6 +1558,16 @@ footer {
   nav .nav-links a.active::after { display: none; }
   nav .nav-links a.active { border-left: 2px solid var(--accent); }
   nav .nav-links li:last-child a { border-bottom: none; }
+
+  /* Pill styling doesn't fit the dropdown — keep only the accent color */
+  nav .nav-links a.nav-contact {
+    background: none;
+    border: none;
+    border-bottom: 1px solid var(--border-soft);
+    border-radius: 0;
+    margin: 0;
+    padding: 0.65rem clamp(1.25rem, 3vw, 3rem);
+  }
 
   /* Layout collapses */
   .intro { grid-template-columns: 1fr; }
@@ -1493,8 +1628,10 @@ footer {
   .cs-grid { grid-template-columns: 1fr; }
   .additional-grid { grid-template-columns: 1fr; }
   .contact-grid { grid-template-columns: 1fr; }
+  .contact-actions { flex-direction: column; align-items: stretch; }
   .contact-cta { width: 100%; }
-  .contact-intro { font-size: 0.88rem; }
+  .contact-copy { width: 100%; }
+  .contact-intro { font-size: 0.94rem; }
 
   .dashboard-embed iframe { height: 440px; }
 
@@ -1954,11 +2091,19 @@ footer {
   /* Reset card backgrounds */
   .project-card, .cs-card, .takeaway-card, .doc-item,
   .mechanic-spotlight, .additional-item, .about-layout,
-  .contact-item, .scope-table, .pd-detail-card {
+  .contact-item, .contact-panel, .scope-table, .pd-detail-card {
     background: #fff !important;
     border: 1px solid #ccc !important;
     box-shadow: none !important;
     break-inside: avoid;
+  }
+
+  .contact-copy { display: none !important; }
+  .contact-cta {
+    animation: none !important;
+    background: #fff !important;
+    color: #111 !important;
+    border: 1px solid #4a6a2a !important;
   }
 
   /* No hover effects */

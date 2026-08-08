@@ -2634,14 +2634,15 @@ if (trackedSections.length && 'IntersectionObserver' in window) {
   .palette-fab:hover { transform: translateY(-2px) scale(1.05); }
   .palette-fab-swatch {
     width: 22px; height: 22px; border-radius: 50%;
-    background: conic-gradient(#e0a458,#a8b87a,#5fb0c9,#8a9be0,#c97fb0,#d17a5f,#e0a458);
+    background: conic-gradient(var(--accent), var(--accent2), var(--accent));
     box-shadow: inset 0 0 0 2px rgba(0,0,0,0.35);
   }
   .palette-panel {
-    position: absolute; right: 0; bottom: 58px; width: 236px; padding: 14px;
+    position: absolute; right: 0; bottom: 58px; width: 268px; padding: 14px;
+    max-height: min(78vh, 660px); overflow-y: auto; overscroll-behavior: contain;
     background: #1a1a1e; color: #dddbd6; border: 1px solid #2c2c32; border-radius: 12px;
     box-shadow: 0 16px 48px rgba(0,0,0,0.55);
-    display: flex; flex-direction: column; gap: 12px;
+    display: flex; flex-direction: column; gap: 11px;
   }
   .palette-panel[hidden] { display: none; }
   .palette-head { display: flex; justify-content: space-between; align-items: center; }
@@ -2662,6 +2663,25 @@ if (trackedSections.length && 'IntersectionObserver' in window) {
   .palette-link { display: block; width: 100%; text-align: center; text-decoration: none; }
   .palette-link:hover { color: #fff; text-decoration: none; }
   .palette-note { font-size: 0.62rem; color: #6c6a65; text-align: center; margin: 0; }
+  /* ── hue-overlay controls (moved in from color-overlay-demo.html) ── */
+  .palette-ctl { display: flex; flex-direction: column; gap: 5px; }
+  .palette-ctl[hidden] { display: none; }
+  .palette-sub {
+    font-family: 'Geist Mono', monospace; font-size: 0.6rem;
+    text-transform: uppercase; letter-spacing: 0.08em; color: #918f89;
+    display: flex; justify-content: space-between; align-items: baseline; gap: 8px;
+  }
+  .palette-val { color: var(--accent); }
+  .palette-val2 { color: var(--accent2); }
+  .palette-panel input[type=range] { width: 100%; accent-color: var(--accent); cursor: pointer; }
+  .palette-panel select {
+    width: 100%; background: #232328; color: #dddbd6;
+    border: 1px solid #2c2c32; border-radius: 6px; padding: 5px 7px;
+    font-family: 'Geist', sans-serif; font-size: 0.74rem; cursor: pointer;
+  }
+  .palette-check { display: flex; align-items: center; gap: 8px; font-size: 0.74rem; color: #a09e97; cursor: pointer; }
+  .palette-check input { width: 14px; height: 14px; accent-color: var(--accent); }
+  .palette-sep { height: 1px; background: #2c2c32; border: 0; margin: 1px 0; }
   @media (max-width: 560px) { .palette-dock { right: 12px; bottom: 12px; } }
 </style>
 <div class="palette-dock" id="paletteDock">
@@ -2674,35 +2694,111 @@ if (trackedSections.length && 'IntersectionObserver' in window) {
       <button class="palette-x" id="paletteClose" aria-label="Close">✕</button>
     </div>
     <label class="palette-row">
-      <span class="palette-label">Accent</span>
-      <input type="color" id="paletteInput" value="#a8b87a">
+      <span class="palette-label">Accent 1</span>
+      <input type="color" id="paletteInput" value="#ffccec">
     </label>
-    <div class="palette-presets" id="palettePresets">
-      <button class="palette-swatch" data-color="#a8b87a" style="--sw:#a8b87a" title="Sage (default)"></button>
+    <div class="palette-presets" data-target="paletteInput">
+      <button class="palette-swatch" data-color="#ffccec" style="--sw:#ffccec" title="Pink (default)"></button>
+      <button class="palette-swatch" data-color="#a8b87a" style="--sw:#a8b87a" title="Sage (previous)"></button>
       <button class="palette-swatch" data-color="#e0a458" style="--sw:#e0a458" title="Amber"></button>
       <button class="palette-swatch" data-color="#5fb0c9" style="--sw:#5fb0c9" title="Cyan"></button>
       <button class="palette-swatch" data-color="#8a9be0" style="--sw:#8a9be0" title="Periwinkle"></button>
-      <button class="palette-swatch" data-color="#c97fb0" style="--sw:#c97fb0" title="Magenta"></button>
       <button class="palette-swatch" data-color="#d17a5f" style="--sw:#d17a5f" title="Terracotta"></button>
     </div>
-    <div class="palette-hexrow">
-      <code class="palette-hex" id="paletteHex">#a8b87a</code>
-      <button class="palette-copy" id="paletteCopy">Copy</button>
+
+    <label class="palette-row">
+      <span class="palette-label">Accent 2</span>
+      <input type="color" id="paletteInput2" value="#b78ed2">
+    </label>
+    <div class="palette-presets" data-target="paletteInput2">
+      <button class="palette-swatch" data-color="#b78ed2" style="--sw:#b78ed2" title="Lilac (default)"></button>
+      <button class="palette-swatch" data-color="#c97fb0" style="--sw:#c97fb0" title="Magenta"></button>
+      <button class="palette-swatch" data-color="#8a9be0" style="--sw:#8a9be0" title="Periwinkle"></button>
+      <button class="palette-swatch" data-color="#5fb0c9" style="--sw:#5fb0c9" title="Cyan"></button>
+      <button class="palette-swatch" data-color="#a8b87a" style="--sw:#a8b87a" title="Sage"></button>
+      <button class="palette-swatch" data-color="#e0a458" style="--sw:#e0a458" title="Amber"></button>
     </div>
-    <button class="palette-reset" id="paletteReset">Reset to default</button>
-    <a class="palette-link" id="paletteDemoLink" href="color-overlay-demo.html" target="_blank" rel="noopener">Hue overlay demo →</a>
-    <p class="palette-note">Testing tool — remove before launch</p>
+
+    <hr class="palette-sep">
+    <span class="palette-title">Hue overlay</span>
+
+    <div class="palette-ctl">
+      <label class="palette-sub" for="huePair">How the two mix</label>
+      <select id="huePair">
+        <option value="gradient">Gradient across each thumb</option>
+        <option value="alternate">Alternate: one colour per card</option>
+      </select>
+    </div>
+
+    <div class="palette-ctl" id="hueAngleCtl">
+      <label class="palette-sub" for="hueAngle">Gradient angle <span class="palette-val" id="hueAngleVal">135°</span></label>
+      <input type="range" id="hueAngle" min="0" max="360" value="135">
+    </div>
+
+    <div class="palette-ctl">
+      <label class="palette-sub" for="hueTint">Tint strength <span class="palette-val" id="hueTintVal">69%</span></label>
+      <input type="range" id="hueTint" min="0" max="100" value="69">
+    </div>
+
+    <div class="palette-ctl">
+      <label class="palette-sub" for="hueSat">At-rest saturation <span class="palette-val2" id="hueSatVal">67%</span></label>
+      <input type="range" id="hueSat" min="0" max="100" value="67">
+    </div>
+
+    <div class="palette-ctl">
+      <label class="palette-sub" for="hueBlend">Blend mode</label>
+      <select id="hueBlend">
+        <option value="color">color — recolor to accent hue</option>
+        <option value="hue">hue</option>
+        <option value="saturation">saturation</option>
+        <option value="luminosity">luminosity</option>
+        <option value="soft-light">soft-light</option>
+        <option value="overlay">overlay</option>
+        <option value="multiply">multiply</option>
+        <option value="normal">normal — flat colour wash</option>
+      </select>
+    </div>
+
+    <label class="palette-check"><input type="checkbox" id="hueHover" checked> reveal true colour on hover</label>
+
+    <hr class="palette-sep">
+    <div class="palette-hexrow">
+      <code class="palette-hex" id="paletteHex">#ffccec → #b78ed2</code>
+    </div>
+    <button class="palette-copy" id="paletteCopy">Copy CSS for style.css</button>
+    <button class="palette-reset" id="paletteReset">Reset to defaults</button>
+    <a class="palette-link" id="paletteDemoLink" href="color-overlay-demo.html" target="_blank" rel="noopener">Standalone demo page →</a>
+    <p class="palette-note">Applies to the 5 Selected Projects thumbs.<br>Testing tool — remove before launch</p>
   </div>
 </div>
 <script>
 (function () {
-  var DEFAULT = '#a8b87a';
+  // These must mirror the committed values in style.css :root — Reset works by
+  // stripping the inline overrides and letting the stylesheet show through.
+  var DEFAULTS = {
+    accent: '#ffccec', accent2: '#b78ed2',
+    pair: 'gradient', angle: 135, tint: 69, sat: 67,
+    blend: 'color', hover: true
+  };
+  var STORE = 'portfolio-hue-v1';
+  var LEGACY = 'portfolio-accent';   // single-accent key from the sage-era picker
+
   var root = document.documentElement;
   var fab = document.getElementById('paletteFab');
   var panel = document.getElementById('palettePanel');
   var input = document.getElementById('paletteInput');
+  var input2 = document.getElementById('paletteInput2');
+  var pair = document.getElementById('huePair');
+  var angle = document.getElementById('hueAngle');
+  var angleCtl = document.getElementById('hueAngleCtl');
+  var angleVal = document.getElementById('hueAngleVal');
+  var tint = document.getElementById('hueTint');
+  var tintVal = document.getElementById('hueTintVal');
+  var sat = document.getElementById('hueSat');
+  var satVal = document.getElementById('hueSatVal');
+  var blend = document.getElementById('hueBlend');
+  var hover = document.getElementById('hueHover');
   var hexEl = document.getElementById('paletteHex');
-  var presets = document.getElementById('palettePresets');
   var copyBtn = document.getElementById('paletteCopy');
   var resetBtn = document.getElementById('paletteReset');
   var closeBtn = document.getElementById('paletteClose');
@@ -2718,39 +2814,139 @@ if (trackedSections.length && 'IntersectionObserver' in window) {
   function toHex(n) { return Math.max(0, Math.min(255, Math.round(n))).toString(16).padStart(2, '0'); }
   function darken(hex, f) { var c = hexToRgb(hex); return '#' + toHex(c[0] * f) + toHex(c[1] * f) + toHex(c[2] * f); }
 
-  function apply(hex) {
-    var c = hexToRgb(hex);
-    root.style.setProperty('--accent', hex);
-    root.style.setProperty('--accent-rgb', c[0] + ',' + c[1] + ',' + c[2]);
-    root.style.setProperty('--accent-dim', darken(hex, 0.72));
-    input.value = hex;
-    hexEl.textContent = hex;
-    // Carry the current accent over so the demo opens on the same colour
-    if (demoLink) demoLink.href = 'color-overlay-demo.html?accent=' + encodeURIComponent(hex);
+  function readUI() {
+    return {
+      accent: input.value, accent2: input2.value,
+      pair: pair.value, angle: +angle.value, tint: +tint.value, sat: +sat.value,
+      blend: blend.value, hover: hover.checked
+    };
   }
-  function save(hex) { try { localStorage.setItem('portfolio-accent', hex); } catch (e) {} }
+  function writeUI(s) {
+    input.value = s.accent; input2.value = s.accent2;
+    pair.value = s.pair; angle.value = s.angle;
+    tint.value = s.tint; sat.value = s.sat;
+    blend.value = s.blend; hover.checked = s.hover;
+  }
 
-  try { var saved = localStorage.getItem('portfolio-accent'); if (saved) apply(saved); } catch (e) {}
+  function apply(s) {
+    var r1 = hexToRgb(s.accent).join(',');
+    var r2 = hexToRgb(s.accent2).join(',');
+    var gradient = s.pair === 'gradient';
+    var tintF = (s.tint / 100).toFixed(2);
+    var ovA = gradient
+      ? 'linear-gradient(' + s.angle + 'deg, rgb(' + r1 + '), rgb(' + r2 + '))'
+      : 'rgb(' + r1 + ')';
+
+    root.style.setProperty('--accent', s.accent);
+    root.style.setProperty('--accent-rgb', r1);
+    root.style.setProperty('--accent-dim', darken(s.accent, 0.72));
+    root.style.setProperty('--accent2', s.accent2);
+    root.style.setProperty('--accent2-rgb', r2);
+    root.style.setProperty('--accent2-dim', darken(s.accent2, 0.72));
+    root.style.setProperty('--ov-angle', s.angle + 'deg');
+    root.style.setProperty('--ov-a', ovA);
+    root.style.setProperty('--ov-b', gradient ? ovA : 'rgb(' + r2 + ')');
+    root.style.setProperty('--ov-tint', tintF);
+    root.style.setProperty('--ov-sat', (s.sat / 100).toFixed(2));
+    root.style.setProperty('--ov-blend', s.blend);
+    root.style.setProperty('--ov-hover-tint', s.hover ? '0' : tintF);
+
+    readouts(s);
+  }
+
+  // Readouts only — no custom properties touched, so this can run on the
+  // default path where we deliberately let style.css drive.
+  function readouts(s) {
+    angleCtl.hidden = s.pair !== 'gradient';
+    angleVal.textContent = s.angle + '°';
+    tintVal.textContent = s.tint + '%';
+    satVal.textContent = s.sat + '%';
+    hexEl.textContent = s.accent + ' → ' + s.accent2;
+    if (demoLink) {
+      demoLink.href = 'color-overlay-demo.html?accent=' + encodeURIComponent(s.accent) +
+                      '&accent2=' + encodeURIComponent(s.accent2);
+    }
+  }
+
+  function buildCss(s) {
+    var r1 = hexToRgb(s.accent).join(',');
+    var r2 = hexToRgb(s.accent2).join(',');
+    var gradient = s.pair === 'gradient';
+    var tintF = (s.tint / 100).toFixed(2);
+    var L = [];
+    L.push(':root {');
+    L.push('  --accent: ' + s.accent + ';');
+    L.push('  --accent-dim: ' + darken(s.accent, 0.72) + ';');
+    L.push('  --accent-rgb: ' + r1 + ';');
+    L.push('  --accent2: ' + s.accent2 + ';');
+    L.push('  --accent2-dim: ' + darken(s.accent2, 0.72) + ';');
+    L.push('  --accent2-rgb: ' + r2 + ';');
+    L.push('');
+    L.push('  --ov-angle: ' + s.angle + 'deg;');
+    L.push('  --ov-tint: ' + tintF + ';');
+    L.push('  --ov-hover-tint: ' + (s.hover ? '0' : tintF) + ';');
+    L.push('  --ov-sat: ' + (s.sat / 100).toFixed(2) + ';');
+    L.push('  --ov-blend: ' + s.blend + ';');
+    if (gradient) {
+      L.push('  --ov-a: linear-gradient(var(--ov-angle), rgb(var(--accent-rgb)), rgb(var(--accent2-rgb)));');
+      L.push('  --ov-b: var(--ov-a);');
+    } else {
+      L.push('  --ov-a: rgb(var(--accent-rgb));');
+      L.push('  --ov-b: rgb(var(--accent2-rgb));');
+    }
+    L.push('}');
+    return L.join('\n');
+  }
+
+  function sync() { var s = readUI(); apply(s); save(s); }
+  function save(s) { try { localStorage.setItem(STORE, JSON.stringify(s)); } catch (e) {} }
+
+  // Load saved tuning. On a first run under the new panel, drop the legacy
+  // single-accent key so the page opens on the committed style.css palette
+  // rather than resurrecting whatever accent was last tested.
+  (function restore() {
+    var saved = null;
+    try { saved = JSON.parse(localStorage.getItem(STORE) || 'null'); } catch (e) {}
+    if (!saved) { try { localStorage.removeItem(LEGACY); } catch (e) {} }
+    var s = {};
+    Object.keys(DEFAULTS).forEach(function (k) {
+      s[k] = (saved && saved[k] !== undefined) ? saved[k] : DEFAULTS[k];
+    });
+    writeUI(s);
+    if (saved) apply(s); else readouts(s);
+  })();
 
   fab.addEventListener('click', function () { panel.hidden = !panel.hidden; });
   closeBtn.addEventListener('click', function () { panel.hidden = true; });
-  input.addEventListener('input', function () { apply(input.value); save(input.value); });
-  presets.addEventListener('click', function (e) {
-    var btn = e.target.closest('[data-color]'); if (!btn) return;
-    var c = btn.getAttribute('data-color'); apply(c); save(c);
+
+  [input, input2, pair, angle, tint, sat, blend, hover].forEach(function (el) {
+    el.addEventListener('input', sync);
+    el.addEventListener('change', sync);
   });
+
+  document.querySelectorAll('.palette-presets[data-target]').forEach(function (group) {
+    group.addEventListener('click', function (e) {
+      var btn = e.target.closest('[data-color]'); if (!btn) return;
+      document.getElementById(group.getAttribute('data-target')).value = btn.getAttribute('data-color');
+      sync();
+    });
+  });
+
+  var copyLabel = copyBtn.textContent;   // captured once, so a double-click can't stick on "Copied"
   copyBtn.addEventListener('click', function () {
-    var text = hexEl.textContent, done = function () { copyBtn.textContent = 'Copied'; setTimeout(function () { copyBtn.textContent = 'Copy'; }, 1200); };
+    var text = buildCss(readUI());
+    var done = function () { copyBtn.textContent = 'Copied'; setTimeout(function () { copyBtn.textContent = copyLabel; }, 1200); };
     if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(done).catch(done); }
     else { var t = document.createElement('textarea'); t.value = text; document.body.appendChild(t); t.select(); try { document.execCommand('copy'); } catch (e) {} document.body.removeChild(t); done(); }
   });
+
   resetBtn.addEventListener('click', function () {
-    try { localStorage.removeItem('portfolio-accent'); } catch (e) {}
-    root.style.removeProperty('--accent');
-    root.style.removeProperty('--accent-rgb');
-    root.style.removeProperty('--accent-dim');
-    input.value = DEFAULT; hexEl.textContent = DEFAULT;
-    if (demoLink) demoLink.href = 'color-overlay-demo.html?accent=' + encodeURIComponent(DEFAULT);
+    try { localStorage.removeItem(STORE); localStorage.removeItem(LEGACY); } catch (e) {}
+    ['--accent', '--accent-rgb', '--accent-dim', '--accent2', '--accent2-rgb', '--accent2-dim',
+     '--ov-angle', '--ov-a', '--ov-b', '--ov-tint', '--ov-hover-tint', '--ov-sat', '--ov-blend']
+      .forEach(function (p) { root.style.removeProperty(p); });
+    writeUI(DEFAULTS);
+    readouts(DEFAULTS);
   });
 })();
 </script>

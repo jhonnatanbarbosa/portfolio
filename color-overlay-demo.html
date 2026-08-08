@@ -17,19 +17,19 @@
     --text-dim: #918f89;
 
     /* ── the knobs the controls drive ── */
-    --accent: #a8b87a;
-    --accent-rgb: 168,184,122;
-    --accent-dim: #79855a;
-    --accent2: #a8b87a;         /* equals --accent while in single mode */
-    --accent2-rgb: 168,184,122;
-    --accent2-dim: #79855a;
+    --accent: #ffccec;
+    --accent-rgb: 255,204,236;
+    --accent-dim: #b893aa;
+    --accent2: #b78ed2;
+    --accent2-rgb: 183,142,210;
+    --accent2-dim: #846697;
 
-    --ov-a: rgb(168,184,122);   /* overlay on odd cards  */
-    --ov-b: rgb(168,184,122);   /* overlay on even cards */
-    --tint: 0.55;               /* overlay opacity at rest  */
+    --ov-a: linear-gradient(135deg, rgb(255,204,236), rgb(183,142,210));
+    --ov-b: var(--ov-a);
+    --tint: 0.69;               /* overlay opacity at rest  */
     --hover-tint: 0;            /* overlay opacity on hover */
     --blend: color;             /* mix-blend-mode           */
-    --sat: 0.75;                /* saturation of media at rest */
+    --sat: 0.67;                /* saturation of media at rest */
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -248,16 +248,16 @@
       <label>Palette mode</label>
       <select id="mode">
         <option value="single">Single accent</option>
-        <option value="dual">Dual accent (black + 2 colours)</option>
+        <option value="dual" selected>Dual accent (2 colours)</option>
       </select>
     </div>
 
     <div class="ctl">
-      <label>Accent <span class="val" id="hexVal">#a8b87a</span></label>
+      <label>Accent <span class="val" id="hexVal">#ffccec</span></label>
       <div style="display:flex;align-items:center;gap:10px">
-        <input type="color" id="color" value="#a8b87a">
+        <input type="color" id="color" value="#ffccec">
         <div class="presets" data-target="color">
-          <button class="sw" style="--c:#a8b87a" data-c="#a8b87a" title="Sage (default)"></button>
+          <button class="sw" style="--c:#ffccec" data-c="#ffccec" title="Pink (default)"></button>
           <button class="sw" style="--c:#e0a458" data-c="#e0a458" title="Amber"></button>
           <button class="sw" style="--c:#5fb0c9" data-c="#5fb0c9" title="Cyan"></button>
           <button class="sw" style="--c:#8a9be0" data-c="#8a9be0" title="Periwinkle"></button>
@@ -268,11 +268,11 @@
     </div>
 
     <div class="ctl" id="ctlAccent2" hidden>
-      <label>Accent 2 <span class="val2" id="hexVal2">#5fb0c9</span></label>
+      <label>Accent 2 <span class="val2" id="hexVal2">#b78ed2</span></label>
       <div style="display:flex;align-items:center;gap:10px">
-        <input type="color" id="color2" value="#5fb0c9">
+        <input type="color" id="color2" value="#b78ed2">
         <div class="presets" data-target="color2">
-          <button class="sw" style="--c:#5fb0c9" data-c="#5fb0c9" title="Cyan"></button>
+          <button class="sw" style="--c:#b78ed2" data-c="#b78ed2" title="Lilac (default)"></button>
           <button class="sw" style="--c:#e0a458" data-c="#e0a458" title="Amber"></button>
           <button class="sw" style="--c:#a8b87a" data-c="#a8b87a" title="Sage"></button>
           <button class="sw" style="--c:#8a9be0" data-c="#8a9be0" title="Periwinkle"></button>
@@ -296,13 +296,13 @@
     </div>
 
     <div class="ctl">
-      <label>Tint strength <span class="val" id="tintVal">55%</span></label>
-      <input type="range" id="tint" min="0" max="100" value="55">
+      <label>Tint strength <span class="val" id="tintVal">69%</span></label>
+      <input type="range" id="tint" min="0" max="100" value="69">
     </div>
 
     <div class="ctl">
-      <label>At-rest saturation <span class="val" id="satVal">75%</span></label>
-      <input type="range" id="sat" min="0" max="100" value="75">
+      <label>At-rest saturation <span class="val" id="satVal">67%</span></label>
+      <input type="range" id="sat" min="0" max="100" value="67">
     </div>
 
     <div class="ctl">
@@ -574,66 +574,33 @@
     lines.push('  --accent: ' + o.hex1 + ';');
     lines.push('  --accent-rgb: ' + o.rgb1 + ';');
     lines.push('  --accent-dim: ' + darken(o.hex1, 0.72) + ';');
-    if (o.dual) {
-      lines.push('  --accent2: ' + o.hex2 + ';');
-      lines.push('  --accent2-rgb: ' + o.rgb2 + ';');
-      lines.push('  --accent2-dim: ' + darken(o.hex2, 0.72) + ';');
-    }
-    lines.push('}');
+    // Always emitted: --ov-* below references --accent2-rgb even in single mode,
+    // where hex2 just mirrors hex1.
+    lines.push('  --accent2: ' + o.hex2 + ';');
+    lines.push('  --accent2-rgb: ' + o.rgb2 + ';');
+    lines.push('  --accent2-dim: ' + darken(o.hex2, 0.72) + ';');
     lines.push('');
-    lines.push('.project-thumb {');
-    lines.push('  position: relative;');
-    lines.push('  isolation: isolate;            /* contain the blend to the thumbnail */');
-    lines.push('}');
-    lines.push('');
-    if (o.satF !== '1.00') {
-      lines.push('.project-thumb img,');
-      lines.push('.project-thumb video {');
-      lines.push('  filter: saturate(' + o.satF + ');');
-      lines.push('  transition: filter .35s ease;');
-      lines.push('}');
-      lines.push('');
-    }
-    lines.push('.project-thumb::after {          /* accent-hue overlay */');
-    lines.push('  content: ""; position: absolute; inset: 0;');
-    lines.push('  pointer-events: none; z-index: 1;');
+    lines.push('  --ov-angle: ' + o.angle + 'deg;');
+    lines.push('  --ov-tint: ' + o.tintF + ';');
+    lines.push('  --ov-hover-tint: ' + (o.revealHover ? '0' : o.tintF) + ';');
+    lines.push('  --ov-sat: ' + o.satF + ';');
+    lines.push('  --ov-blend: ' + o.bmode + ';');
     if (o.gradient) {
-      lines.push('  background: linear-gradient(' + o.angle + 'deg,');
-      lines.push('              rgb(var(--accent-rgb)), rgb(var(--accent2-rgb)));');
+      lines.push('  --ov-a: linear-gradient(var(--ov-angle), rgb(var(--accent-rgb)), rgb(var(--accent2-rgb)));');
+      lines.push('  --ov-b: var(--ov-a);');
     } else {
-      lines.push('  background: rgb(var(--accent-rgb));');
+      lines.push('  --ov-a: rgb(var(--accent-rgb));');
+      lines.push('  --ov-b: rgb(var(--accent2-rgb));');
     }
-    lines.push('  mix-blend-mode: ' + o.bmode + ';');
-    lines.push('  opacity: ' + o.tintF + ';');
-    lines.push('  transition: opacity .35s ease;');
     lines.push('}');
-    if (o.dual && !o.gradient) {
-      lines.push('');
-      lines.push('/* second accent takes every other card */');
-      lines.push('.project-card:nth-of-type(even) .project-thumb::after {');
-      lines.push('  background: rgb(var(--accent2-rgb));');
-      lines.push('}');
-    }
-    if (o.revealHover) {
-      lines.push('');
-      lines.push('.project-card:hover .project-thumb::after { opacity: 0; }');
-      if (o.satF !== '1.00') {
-        lines.push('.project-card:hover .project-thumb img,');
-        lines.push('.project-card:hover .project-thumb video { filter: none; }');
-      }
-    }
-    if (o.dual) {
-      lines.push('');
-      lines.push('/* Where the second accent shows up in the card body */');
-      lines.push('.project-badge {');
-      lines.push('  color: var(--accent2);');
-      lines.push('  background: rgba(var(--accent2-rgb),0.08);');
-      lines.push('  border-color: rgba(var(--accent2-rgb),0.32);');
-      lines.push('}');
-    }
     lines.push('');
-    lines.push('/* Tip: the overlay reads var(--accent-rgb), so the dev palette');
-    lines.push('   picker in index.html retunes it live without a rebuild. */');
+    lines.push('/* The rules that consume these already live in style.css, under');
+    lines.push('   "HUE OVERLAY" — they hang off .project-thumb::before and are');
+    lines.push('   scoped to .project-card:not(.wip-layout), so Dead Saints Parade');
+    lines.push('   keeps its own colours. Paste only the :root block above.');
+    lines.push('');
+    lines.push('   The dev palette dock on index.html drives these same variables');
+    lines.push('   live, so you can tune on the real page before committing. */');
     return lines.join('\n');
   }
 

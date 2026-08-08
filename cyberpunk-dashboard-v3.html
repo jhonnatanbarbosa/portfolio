@@ -40,20 +40,25 @@
       border: "#2c2c32",
       text: "#dddbd6",
       textMuted: "#a09e97",
-      accent: "#a8b87a",
-      accentDim: "#7a8a55",
+      accent: "#ffccec",
+      accentDim: "#b893aa",
+      accent2: "#b78ed2",
       cyan: "#7ec8c8",
       amber: "#d4a95a",
       red: "#c97070",
       purple: "#a78bfa",
     };
 
+    // Series colours stay distinct on purpose: `pre` vs `post` and `old` vs `now`
+    // are read side by side, and two neighbouring pinks would be hard to tell
+    // apart at chart scale. Swap `pre`/`line` to theme.accent2 for a fully
+    // two-accent dashboard if legibility allows.
     const chartColors = {
       pre: "#7ec8c8",
-      post: "#a8b87a",
+      post: "#ffccec",
       old: "#c97070",
-      now: "#a8b87a",
-      bar: "#a8b87a",
+      now: "#ffccec",
+      bar: "#ffccec",
       line: "#7ec8c8",
     };
 

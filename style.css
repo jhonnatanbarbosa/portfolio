@@ -13,9 +13,14 @@
   --text: #dddbd6;
   --text-mid: #a09e97;
   --text-dim: #918f89;
-  --accent: #a8b87a;
-  --accent-dim: #7a8a55;
-  --accent-rgb: 168,184,122;          /* accent as an RGB triple so rgba(var(--accent-rgb), a) can be recolored live */
+  /* Two-accent palette. --accent leads; --accent2 is the companion hue that
+     used to be a set of one-off blues/ambers scattered through this file. */
+  --accent: #ffccec;
+  --accent-dim: #b893aa;
+  --accent-rgb: 255,204,236;          /* accent as an RGB triple so rgba(var(--accent-rgb), a) can be recolored live */
+  --accent2: #b78ed2;
+  --accent2-dim: #846697;
+  --accent2-rgb: 183,142,210;
   --page-max: 1440px;                 /* max content width — widened from 1140px to fill more of large displays */
   --note-bg: rgba(var(--accent-rgb),0.06);
   --note-border: rgba(var(--accent-rgb),0.25);
@@ -36,7 +41,7 @@ img, video, iframe, table { max-width: 100%; }
   top: 0; left: 0;
   width: 0%;
   height: 2px;
-  background: linear-gradient(90deg, var(--accent-dim), var(--accent), rgba(140,160,210,0.7));
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent), rgba(var(--accent2-rgb),0.7));
   z-index: 100;
   pointer-events: none;
   transition: width 0.05s linear;
@@ -88,7 +93,7 @@ body::before {
 body::after {
   width: 500px; height: 500px;
   bottom: 10%; right: -140px;
-  background: radial-gradient(circle, rgba(140,160,210,0.035) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(var(--accent2-rgb),0.035) 0%, transparent 70%);
 }
 
 /* Constrain glow blobs on mobile to prevent overflow */
@@ -426,7 +431,7 @@ section + section { border-top: 1px solid var(--border-soft); }
   position: absolute;
   top: 80px; right: -220px;
   width: 350px; height: 350px;
-  background: radial-gradient(circle, rgba(140,160,210,0.03) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(var(--accent2-rgb),0.03) 0%, transparent 70%);
   pointer-events: none;
   filter: blur(60px);
   z-index: -1;
@@ -501,9 +506,9 @@ section + section { border-top: 1px solid var(--border-soft); }
   background: conic-gradient(
     from var(--border-angle, 0deg),
     var(--accent-dim),
-    rgba(140,160,210,0.5),
+    rgba(var(--accent2-rgb),0.55),
     var(--accent),
-    rgba(210,170,120,0.4),
+    var(--accent2-dim),
     var(--accent-dim)
   );
   -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
@@ -534,7 +539,7 @@ section + section { border-top: 1px solid var(--border-soft); }
   min-height: 160px;
   position: relative;
 }
-/* Gradient edge blend on thumbnails */
+/* Gradient edge blend on thumbnails — z-index 2 keeps it above the hue overlay */
 .project-thumb::after {
   content: '';
   position: absolute;
@@ -542,7 +547,7 @@ section + section { border-top: 1px solid var(--border-soft); }
   width: 40%; height: 100%;
   background: linear-gradient(90deg, transparent 0%, rgba(29,29,33,0.4) 100%);
   pointer-events: none;
-  z-index: 1;
+  z-index: 2;
 }
 .project-thumb img,
 .project-thumb video {
@@ -559,20 +564,70 @@ section + section { border-top: 1px solid var(--border-soft); }
   outline-offset: -3px;
 }
 
+/* ── HUE OVERLAY ─────────────────────────────────────────────
+   Five games, five clashing key arts. Tinting each thumbnail toward the
+   accent hue at rest makes the set read as one palette; hovering a card
+   drops the overlay and restores the game's true colours.
+
+   Scoped to the Selected Projects cards only. Dead Saints Parade
+   (.wip-layout) keeps its own colours — it's the headline project, and the
+   small media elsewhere on the page is left alone too.
+
+   The knobs below are what the dev palette dock drives live. */
+:root {
+  --ov-angle: 135deg;
+  --ov-tint: 0.69;                    /* overlay opacity at rest */
+  --ov-hover-tint: 0;                 /* overlay opacity on hover — 0 reveals true colour */
+  --ov-sat: 0.67;                     /* media saturation at rest */
+  --ov-blend: color;
+  --ov-a: linear-gradient(var(--ov-angle), rgb(var(--accent-rgb)), rgb(var(--accent2-rgb)));
+  --ov-b: var(--ov-a);                /* differs from --ov-a only in alternate mode */
+}
+
+.project-card:not(.wip-layout) .project-thumb {
+  isolation: isolate;                 /* contain the blend to the thumbnail */
+}
+.project-card:not(.wip-layout) .project-thumb::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: var(--ov-a);
+  mix-blend-mode: var(--ov-blend);
+  opacity: var(--ov-tint);
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+.project-card:not(.wip-layout):nth-of-type(even) .project-thumb::before {
+  background: var(--ov-b);
+}
+.project-card:not(.wip-layout) .project-thumb img,
+.project-card:not(.wip-layout) .project-thumb video {
+  filter: saturate(var(--ov-sat));
+  transition: filter 0.35s ease;
+}
+.project-card:not(.wip-layout):hover .project-thumb::before {
+  opacity: var(--ov-hover-tint);
+}
+.project-card:not(.wip-layout):hover .project-thumb img,
+.project-card:not(.wip-layout):hover .project-thumb video {
+  filter: none;
+}
+
 .project-card:nth-child(1) .project-thumb {
   background: radial-gradient(ellipse at 30% 50%, rgba(var(--accent-rgb),0.08) 0%, transparent 65%), var(--surface-hover);
 }
 .project-card:nth-child(2) .project-thumb {
-  background: radial-gradient(ellipse at 70% 40%, rgba(140,160,210,0.07) 0%, transparent 65%), var(--surface-hover);
+  background: radial-gradient(ellipse at 70% 40%, rgba(var(--accent2-rgb),0.07) 0%, transparent 65%), var(--surface-hover);
 }
 .project-card:nth-child(3) .project-thumb {
-  background: radial-gradient(ellipse at 50% 60%, rgba(210,170,120,0.07) 0%, transparent 65%), var(--surface-hover);
+  background: radial-gradient(ellipse at 50% 60%, rgba(var(--accent-rgb),0.07) 0%, transparent 65%), var(--surface-hover);
 }
 .project-card:nth-child(4) .project-thumb {
-  background: radial-gradient(ellipse at 40% 35%, rgba(190,130,160,0.07) 0%, transparent 65%), var(--surface-hover);
+  background: radial-gradient(ellipse at 40% 35%, rgba(var(--accent2-rgb),0.07) 0%, transparent 65%), var(--surface-hover);
 }
 .project-card:nth-child(5) .project-thumb {
-  background: radial-gradient(ellipse at 60% 55%, rgba(120,180,170,0.07) 0%, transparent 65%), var(--surface-hover);
+  background: radial-gradient(ellipse at 60% 55%, rgba(var(--accent-rgb),0.07) 0%, transparent 65%), var(--surface-hover);
 }
 
 .project-body { padding: 1.15rem 1.4rem; display: flex; flex-direction: column; justify-content: center; }
@@ -2078,7 +2133,7 @@ footer {
     --text: #111;
     --text-mid: #333;
     --text-dim: #666;
-    --accent: #4a6a2a;
+    --accent: #5f3d78;
     --border: #ccc;
   }
 
@@ -2110,7 +2165,7 @@ footer {
     animation: none !important;
     background: #fff !important;
     color: #111 !important;
-    border: 1px solid #4a6a2a !important;
+    border: 1px solid #5f3d78 !important;
   }
 
   /* No hover effects */
@@ -2127,7 +2182,7 @@ footer {
   .doc-item > .doc-type { display: inline-block !important; }
 
   /* Ensure links are visible */
-  a { color: #4a6a2a !important; text-decoration: underline; }
+  a { color: #5f3d78 !important; text-decoration: underline; }
   a[href^="http"]::after {
     content: " (" attr(href) ")";
     font-size: 8pt;

@@ -142,7 +142,7 @@
           <span class="project-badge" data-i18n="p1_badge">Shipped · 2025</span>
         </div>
         <p class="project-desc" data-i18n="p1_desc">
-          I built this on what I learned from Idle Kingdom Builder: deeper progression tiers and a monetization layer using reward ads and IAP. I instrumented Unity Analytics to snapshot player state at 4 milestones, which surfaced two economy bugs and a timer persistence defect. All three fixes shipped in v1.70. It has 600+ organic downloads and a 4.2/5 rating with no marketing spend, a median session around 6 minutes, and a top 10% of players who average 15 minutes or more.
+          I built this on what I learned from Idle Kingdom Builder: deeper progression tiers and a monetization layer using reward ads and IAP. I instrumented Unity Analytics to snapshot player state at 4 milestones, which surfaced two economy bugs and a timer persistence defect. Five fixes went out across v1.70 and v1.81, and the July 2026 data pull measures what they did. It has 600+ organic downloads and a 4.2/5 rating with no marketing spend, a median session around 6 minutes, and a top 10% of players who average 15 minutes or more.
         </p>
         <div class="meta-row">
           <div class="meta-pair"><span class="ml" data-i18n="label_role">Role</span><span class="mv" data-i18n="p1_role">Designer & Developer (Solo)</span></div>
@@ -548,7 +548,7 @@
   <section id="cyberpunk-analytics">
     <div class="section-header">
       <h2 class="section-title" data-i18n="cs_cyber_title">Case Study: Idle Cyberpunk City Clicker</h2>
-      <span class="section-aside" data-i18n="cs_cyber_aside">220 tracked players · pre-1.70 build · 4 milestone snapshots</span>
+      <span class="section-aside" data-i18n="cs_cyber_aside">220 players before the overhaul · 36 after · 7 tracked events · July 2026 pull</span>
     </div>
 
     <div class="cs-grid reveal-stagger">
@@ -559,18 +559,18 @@
       </div>
       <div class="cs-card reveal">
         <div class="cs-label" data-i18n="cs_label_02">02 · Process</div>
-        <h3 data-i18n="cs_cyber_02_h">Milestone-based analytics on a budget</h3>
-        <p data-i18n="cs_cyber_02_p">I was working inside the free Unity Analytics tier, so the goal was maximum information from the fewest possible event sends. I designed 4 snapshot events tied to credit milestones (1K, 1M, 1B, 1T). Each one captures buildings, upgrades, click/passive ratio, and time elapsed per player.</p>
+        <h3 data-i18n="cs_cyber_02_h">Milestone snapshots, then a wider net</h3>
+        <p data-i18n="cs_cyber_02_p">The free Unity Analytics tier limits how much you can send, so the first pass was 4 snapshot events tied to credit milestones (1K, 1M, 1B, 1T), about 7 parameters each. After the fixes I widened it: the same events now carry around 33 parameters, plus SessionStart, AdWatched5x and AdFreeBuilding. The old event names stayed, so the pre-1.40 build still works as a baseline.</p>
       </div>
       <div class="cs-card reveal">
         <div class="cs-label" data-i18n="cs_label_03">03 · Findings</div>
-        <h3 data-i18n="cs_cyber_03_h">Economy validates, bugs surface</h3>
-        <p data-i18n="cs_cyber_03_p">The click-to-passive transition behaved as designed. The data also caught a tracking bug inflating clicker counts (a variable naming mistake), and a timer persistence defect at higher milestones that was producing invalid readings.</p>
+        <h3 data-i18n="cs_cyber_03_h">Economy validates, three bugs surface</h3>
+        <p data-i18n="cs_cyber_03_p">The click-to-passive transition behaved as designed. The data also caught a clicker counter mapped to the wrong variable, and a timeElapsed persistence defect that invalidated the higher milestones. The expensive one was offline production: offlinePercentage already included the bonus and CalculateProduction() multiplied it a second time, which compounded to roughly 38,000× normal CPS on late-game saves. Leaving the app overnight paid better than playing it.</p>
       </div>
       <div class="cs-card reveal">
         <div class="cs-label" data-i18n="cs_label_04">04 · Outcome</div>
-        <h3 data-i18n="cs_cyber_04_h">3 fixes shipped in v1.70</h3>
-        <p data-i18n="cs_cyber_04_p">I corrected the analytics instrumentation, adjusted the passive upgrade multiplier from 5× to 3.5×, and added session persistence. The next analysis cycle will have clean data for a before/after comparison.</p>
+        <h3 data-i18n="cs_cyber_04_h">Five fixes, then a second read</h3>
+        <p data-i18n="cs_cyber_04_p">v1.70 and v1.81 carried five fixes: corrected instrumentation, timer persistence, an offline rewrite with hard ceilings on rate, window and multiplier, rebalanced upgrade multipliers (passive 3.5×, clicker 7×), and an IAP boost that was off by one. In July 2026 I pulled the data again and read 36 post-overhaul Android players against the frozen 220-player baseline.</p>
       </div>
     </div>
 
@@ -588,20 +588,23 @@
     <!-- What I'd Change Next -->
     <div class="cs-retro reveal">
       <div class="cs-retro-label" data-i18n="cs_label_05">05 · What I'd change next</div>
-      <h3 class="cs-retro-title" data-i18n="cs_cyber_05_h">Knowing what the data showed</h3>
+      <h3 class="cs-retro-title" data-i18n="cs_cyber_05_h">What the second read changed</h3>
       <div class="cs-retro-body">
         <p data-i18n="cs_cyber_05_p1">
-          The steepest drop in the funnel is 1M → 1B, at 73%. That wall lines up with passive upgrade costs scaling faster than player earning power. The multiplier jump from mid-tier to late-tier buildings is too aggressive. The next iteration targets a smoother mid-game curve: passive multiplier from 5× to 3.5×, clicker multiplier from 10× to 7×.
+          The opening curve landed where I wanted it. Time to the first milestone rose 85% (194s to 360s) and clicks rose about 30% (302 to 394), while buildings bought held flat at 13 and 12. Players spend longer and click more without changing what they buy. The mid-game overshot, though. Median time to 1M went from 824s to 3,503s, a little over 4×, further than I was aiming for. Upgrades are at least doing their job now: 14 owned at 1M against 10 before, and clicker upgrades went from 0 to 6, since the old counter never recorded any.
         </p>
         <p data-i18n="cs_cyber_05_p2">
-          I would also revisit upgrade discoverability. 52% of players had zero upgrades at the 1K milestone. That means the UI isn't surfacing them early enough. A subtle prompt or visual cue the first time a player can afford an upgrade should shift that ratio without being intrusive.
+          The wall moved too. My earlier read was that 1M → 1B was the choke point, a 73% drop. In the new cohort that step converts better than it used to, 27% to 38%, and the one that slipped is 1K → 1M, 42% down to 36%. So the next tuning pass belongs earlier in the curve than I thought. I'm holding that loosely: the post cohort is 36 players at 1K and thins to one by 1T, so the far end is anecdote rather than measurement.
+        </p>
+        <p data-i18n="cs_cyber_05_p3">
+          Monetization and retention only became visible with the new events. Rewarded video has 175 views and a single German player accounts for 120 of them. That same player holds the 1T record and had watched 111 ads by the time they got there, so ads hold up as a progression route at the far end. The median player reaches 1K having watched none. Session opens have also stopped clustering at install: days 8 to 24 carry 58% of them against 19% in the first two days. There is a returning core now, and that is who the next ad-pacing test should target.
         </p>
       </div>
     </div>
 
     <!--<div class="tip">
       <strong>Process artifact —</strong>
-      This interactive dashboard is built from real Unity Analytics data (220 players, pre-1.70).
+      This interactive dashboard is built from real Unity Analytics data (220 players pre-1.40, 36 after the overhaul).
       It demonstrates data-driven design thinking: identifying issues, validating the economy
       model, and shipping concrete fixes based on evidence.
       The learning arc from IKB (no analytics) → Cyberpunk (instrumented) is the real story here.
@@ -1004,20 +1007,20 @@
           <div class="pd-metric"><div class="val">600+</div><div class="lbl" data-i18n="pd1_m1">Organic Downloads</div></div>
           <div class="pd-metric"><div class="val">4.2/5</div><div class="lbl" data-i18n="pd1_m2">Play Store Rating</div></div>
           <div class="pd-metric"><div class="val">~6 min</div><div class="lbl" data-i18n="pd1_m3">Median Session</div></div>
-          <div class="pd-metric"><div class="val">220</div><div class="lbl" data-i18n="pd1_m4">Tracked Players</div></div>
+          <div class="pd-metric"><div class="val">220 / 36</div><div class="lbl" data-i18n="pd1_m4">Tracked Players (pre / post)</div></div>
         </div>
-        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_contribution">My Contribution</div><p data-i18n="pd1_contrib">I designed and developed it solo, concept to launch, building on lessons from Idle Kingdom Builder: a wider core loop, deeper progression tiers, and a monetization layer using reward ads and IAP. I instrumented Unity Analytics to snapshot player state at 4 milestones, which surfaced two economy bugs and a timer persistence defect. All three fixes shipped in v1.70.</p></div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_contribution">My Contribution</div><p data-i18n="pd1_contrib">I designed and developed it solo, concept to launch, building on lessons from Idle Kingdom Builder: a wider core loop, deeper progression tiers, and a monetization layer using reward ads and IAP. I instrumented Unity Analytics to snapshot player state at 4 milestones, which surfaced two economy bugs and a timer persistence defect. Five fixes shipped across v1.70 and v1.81, and I re-measured the economy against the pre-overhaul baseline afterwards.</p></div>
         <div class="pd-divider"></div>
         <div class="pd-section"><div class="pd-section-label" data-i18n="pd_decisions">Key Design Decisions</div>
           <div class="pd-details-grid">
             <div class="pd-detail-card"><h3 data-i18n="pd1_d1h">4-Pillar Economy</h3><p data-i18n="pd1_d1p">Passive, Clicker, Offline, and Ascension buildings each open a different progression path, and each one rewards a different playstyle without spelling it out.</p></div>
-            <div class="pd-detail-card"><h3 data-i18n="pd1_d2h">Budget Analytics</h3><p data-i18n="pd1_d2p">I designed 4 snapshot events to get the most data possible under Unity Analytics' free tier. Each captures buildings, upgrades, click/passive ratio, and time elapsed at that milestone.</p></div>
+            <div class="pd-detail-card"><h3 data-i18n="pd1_d2h">Budget Analytics</h3><p data-i18n="pd1_d2p">I designed 4 snapshot events to get the most data possible under Unity Analytics' free tier. Each captures buildings, upgrades, click/passive ratio, and time elapsed at that milestone. The post-overhaul version carries about 33 parameters per event instead of 7, plus session and ad tracking.</p></div>
             <div class="pd-detail-card"><h3 data-i18n="pd1_d3h">Price Asymmetry</h3><p data-i18n="pd1_d3p">Clicker buildings scale at 1.65×. Passive buildings scale at 1.25×. That drives the click-to-passive transition mechanically, without any explicit tutorialization.</p></div>
             <div class="pd-detail-card"><h3 data-i18n="pd1_d4h">Non-Intrusive Monetization</h3><p data-i18n="pd1_d4p">Reward ads are opt-in only. Banner ads stay peripheral. One review summed it up: "non-intrusive ads, a lot of rewards and a clean UI."</p></div>
           </div>
         </div>
         <div class="pd-divider"></div>
-        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_retro">What I'd Do Differently</div><p data-i18n="pd1_retro">The 1M → 1B funnel drops 73%. Mid-tier passive upgrade costs scale too aggressively. Reducing the multiplier from 5× to 3.5× is the next iteration target. 52% of players had zero upgrades at the 1K milestone, which tells me the UI isn't surfacing them early enough.</p></div>
+        <div class="pd-section"><div class="pd-section-label" data-i18n="pd_retro">What I'd Do Differently</div><p data-i18n="pd1_retro">The rebalance did what I wanted at the opening and overshot in the middle: time to 1M is now a little over 4× what it was. The choke point moved with it, from 1M → 1B to 1K → 1M, so the next pass belongs earlier in the curve. Rewarded ads are still one power user rather than a habit, and I would spend that iteration on the pacing that gets ordinary players to try them.</p></div>
         <div class="pd-divider"></div>
         <div class="pd-tags">
           <span class="pd-tag" data-i18n="tag_economy">Economy Design</span><span class="pd-tag" data-i18n="tag_progression">Progression Tuning</span><span class="pd-tag">Unity Analytics</span><span class="pd-tag">AdMob / IAP</span><span class="pd-tag" data-i18n="tag_datadriven">Data-Driven Iteration</span><span class="pd-tag" data-i18n="pdtag_idle">Idle Mechanics</span><span class="pd-tag" data-i18n="pdtag_prestige">Prestige Systems</span><span class="pd-tag" data-i18n="pdtag_mux">Mobile UX</span>
@@ -1272,7 +1275,7 @@ en: {
   // ── Project 1: Cyberpunk ──
   p1_name: "Idle Cyberpunk City Clicker: Economy & Analytics",
   p1_badge: "Shipped · 2025",
-  p1_desc: "I built this on what I learned from Idle Kingdom Builder: deeper progression tiers and a monetization layer using reward ads and IAP. I instrumented Unity Analytics to snapshot player state at 4 milestones, which surfaced two economy bugs and a timer persistence defect. All three fixes shipped in v1.70. It has 600+ organic downloads and a 4.2/5 rating with no marketing spend, a median session around 6 minutes, and a top 10% of players who average 15 minutes or more.",
+  p1_desc: "I built this on what I learned from Idle Kingdom Builder: deeper progression tiers and a monetization layer using reward ads and IAP. I instrumented Unity Analytics to snapshot player state at 4 milestones, which surfaced two economy bugs and a timer persistence defect. Five fixes went out across v1.70 and v1.81, and the July 2026 data pull measures what they did. It has 600+ organic downloads and a 4.2/5 rating with no marketing spend, a median session around 6 minutes, and a top 10% of players who average 15 minutes or more.",
   p1_role: "Designer & Developer (Solo)",
   p1_duration: "6 months",
   p1_link_case: "Analytics case study →",
@@ -1342,7 +1345,7 @@ en: {
 
   // ── Cyberpunk Case Study ──
   cs_cyber_title: "Case Study: Idle Cyberpunk City Clicker",
-  cs_cyber_aside: "220 tracked players · pre-1.70 build · 4 milestone snapshots",
+  cs_cyber_aside: "220 players before the overhaul · 36 after · 7 tracked events · July 2026 pull",
   cs_label_01: "01 · Problem",
   cs_label_02: "02 · Process",
   cs_label_03: "03 · Findings",
@@ -1350,15 +1353,16 @@ en: {
   cs_label_05: "05 · What I'd change next",
   cs_cyber_01_h: "Flying blind after the first game",
   cs_cyber_01_p: "Idle Kingdom Builder shipped with 1000+ downloads and solid reviews, but no analytics pipeline. I had no visibility into where players dropped off, or why. Cyberpunk City was growing steadily and had the same blind spot. I needed a way to see inside the player journey without blowing the budget.",
-  cs_cyber_02_h: "Milestone-based analytics on a budget",
-  cs_cyber_02_p: "I was working inside the free Unity Analytics tier, so the goal was maximum information from the fewest possible event sends. I designed 4 snapshot events tied to credit milestones (1K, 1M, 1B, 1T). Each one captures buildings, upgrades, click/passive ratio, and time elapsed per player.",
-  cs_cyber_03_h: "Economy validates, bugs surface",
-  cs_cyber_03_p: "The click-to-passive transition behaved as designed. The data also caught a tracking bug inflating clicker counts (a variable naming mistake), and a timer persistence defect at higher milestones that was producing invalid readings.",
-  cs_cyber_04_h: "3 fixes shipped in v1.70",
-  cs_cyber_04_p: "I corrected the analytics instrumentation, adjusted the passive upgrade multiplier from 5× to 3.5×, and added session persistence. The next analysis cycle will have clean data for a before/after comparison.",
-  cs_cyber_05_h: "Knowing what the data showed",
-  cs_cyber_05_p1: "The steepest drop in the funnel is 1M → 1B, at 73%. That wall lines up with passive upgrade costs scaling faster than player earning power. The multiplier jump from mid-tier to late-tier buildings is too aggressive. The next iteration targets a smoother mid-game curve: passive multiplier from 5× to 3.5×, clicker multiplier from 10× to 7×.",
-  cs_cyber_05_p2: "I would also revisit upgrade discoverability. 52% of players had zero upgrades at the 1K milestone. That means the UI isn't surfacing them early enough. A subtle prompt or visual cue the first time a player can afford an upgrade should shift that ratio without being intrusive.",
+  cs_cyber_02_h: "Milestone snapshots, then a wider net",
+  cs_cyber_02_p: "The free Unity Analytics tier limits how much you can send, so the first pass was 4 snapshot events tied to credit milestones (1K, 1M, 1B, 1T), about 7 parameters each. After the fixes I widened it: the same events now carry around 33 parameters, plus SessionStart, AdWatched5x and AdFreeBuilding. The old event names stayed, so the pre-1.40 build still works as a baseline.",
+  cs_cyber_03_h: "Economy validates, three bugs surface",
+  cs_cyber_03_p: "The click-to-passive transition behaved as designed. The data also caught a clicker counter mapped to the wrong variable, and a timeElapsed persistence defect that invalidated the higher milestones. The expensive one was offline production: offlinePercentage already included the bonus and CalculateProduction() multiplied it a second time, which compounded to roughly 38,000× normal CPS on late-game saves. Leaving the app overnight paid better than playing it.",
+  cs_cyber_04_h: "Five fixes, then a second read",
+  cs_cyber_04_p: "v1.70 and v1.81 carried five fixes: corrected instrumentation, timer persistence, an offline rewrite with hard ceilings on rate, window and multiplier, rebalanced upgrade multipliers (passive 3.5×, clicker 7×), and an IAP boost that was off by one. In July 2026 I pulled the data again and read 36 post-overhaul Android players against the frozen 220-player baseline.",
+  cs_cyber_05_h: "What the second read changed",
+  cs_cyber_05_p1: "The opening curve landed where I wanted it. Time to the first milestone rose 85% (194s to 360s) and clicks rose about 30% (302 to 394), while buildings bought held flat at 13 and 12. Players spend longer and click more without changing what they buy. The mid-game overshot, though. Median time to 1M went from 824s to 3,503s, a little over 4×, further than I was aiming for. Upgrades are at least doing their job now: 14 owned at 1M against 10 before, and clicker upgrades went from 0 to 6, since the old counter never recorded any.",
+  cs_cyber_05_p2: "The wall moved too. My earlier read was that 1M → 1B was the choke point, a 73% drop. In the new cohort that step converts better than it used to, 27% to 38%, and the one that slipped is 1K → 1M, 42% down to 36%. So the next tuning pass belongs earlier in the curve than I thought. I'm holding that loosely: the post cohort is 36 players at 1K and thins to one by 1T, so the far end is anecdote rather than measurement.",
+  cs_cyber_05_p3: "Monetization and retention only became visible with the new events. Rewarded video has 175 views and a single German player accounts for 120 of them. That same player holds the 1T record and had watched 111 ads by the time they got there, so ads hold up as a progression route at the far end. The median player reaches 1K having watched none. Session opens have also stopped clustering at install: days 8 to 24 carry 58% of them against 19% in the first two days. There is a returning core now, and that is who the next ad-pacing test should target.",
 
   // ── Dashboard ──
   dashboard_label: "Interactive Analytics Dashboard · Built from real Unity Analytics data",
@@ -1505,17 +1509,17 @@ en: {
   pd1_m1: "Organic Downloads",
   pd1_m2: "Play Store Rating",
   pd1_m3: "Median Session",
-  pd1_m4: "Tracked Players",
-  pd1_contrib: "I designed and developed it solo, concept to launch, building on lessons from Idle Kingdom Builder: a wider core loop, deeper progression tiers, and a monetization layer using reward ads and IAP. I instrumented Unity Analytics to snapshot player state at 4 milestones, which surfaced two economy bugs and a timer persistence defect. All three fixes shipped in v1.70.",
+  pd1_m4: "Tracked Players (pre / post)",
+  pd1_contrib: "I designed and developed it solo, concept to launch, building on lessons from Idle Kingdom Builder: a wider core loop, deeper progression tiers, and a monetization layer using reward ads and IAP. I instrumented Unity Analytics to snapshot player state at 4 milestones, which surfaced two economy bugs and a timer persistence defect. Five fixes shipped across v1.70 and v1.81, and I re-measured the economy against the pre-overhaul baseline afterwards.",
   pd1_d1h: "4-Pillar Economy",
   pd1_d1p: "Passive, Clicker, Offline, and Ascension buildings each open a different progression path, and each one rewards a different playstyle without spelling it out.",
   pd1_d2h: "Budget Analytics",
-  pd1_d2p: "I designed 4 snapshot events to get the most data possible under Unity Analytics' free tier. Each captures buildings, upgrades, click/passive ratio, and time elapsed at that milestone.",
+  pd1_d2p: "I designed 4 snapshot events to get the most data possible under Unity Analytics' free tier. Each captures buildings, upgrades, click/passive ratio, and time elapsed at that milestone. The post-overhaul version carries about 33 parameters per event instead of 7, plus session and ad tracking.",
   pd1_d3h: "Price Asymmetry",
   pd1_d3p: "Clicker buildings scale at 1.65×. Passive buildings scale at 1.25×. That drives the click-to-passive transition mechanically, without any explicit tutorialization.",
   pd1_d4h: "Non-Intrusive Monetization",
   pd1_d4p: "Reward ads are opt-in only. Banner ads stay peripheral. One review summed it up: \"non-intrusive ads, a lot of rewards and a clean UI.\"",
-  pd1_retro: "The 1M → 1B funnel drops 73%. Mid-tier passive upgrade costs scale too aggressively. Reducing the multiplier from 5× to 3.5× is the next iteration target. 52% of players had zero upgrades at the 1K milestone, which tells me the UI isn't surfacing them early enough.",
+  pd1_retro: "The rebalance did what I wanted at the opening and overshot in the middle: time to 1M is now a little over 4× what it was. The choke point moved with it, from 1M → 1B to 1K → 1M, so the next pass belongs earlier in the curve. Rewarded ads are still one power user rather than a habit, and I would spend that iteration on the pacing that gets ordinary players to try them.",
 
   // ── Modal 2: Kingdom Builder ──
   pd2_title: "Idle Kingdom Builder",
@@ -1671,7 +1675,7 @@ pt: {
   // ── Project 1: Cyberpunk ──
   p1_name: "Idle Cyberpunk City Clicker: Economia e Analytics",
   p1_badge: "Lançado · 2025",
-  p1_desc: "Construído em cima do que aprendi com o Idle Kingdom Builder. Camadas de progressão mais profundas e uma camada de monetização com reward ads e IAP. Instrumentei o Unity Analytics pra capturar o estado do jogador em 4 marcos. Isso expôs dois bugs de economia e um defeito de persistência de timer. Três correções foram pra v1.70. Mais de 600 downloads orgânicos, nota 4,2/5, sem gasto em marketing. A sessão mediana é de cerca de 6 minutos. Os 10% melhores jogadores passam em média mais de 15 min.",
+  p1_desc: "Construído em cima do que aprendi com o Idle Kingdom Builder. Camadas de progressão mais profundas e uma camada de monetização com reward ads e IAP. Instrumentei o Unity Analytics pra capturar o estado do jogador em 4 marcos. Isso expôs dois bugs de economia e um defeito de persistência de timer. Cinco correções saíram entre a v1.70 e a v1.81, e os dados de julho de 2026 medem o que elas fizeram. Mais de 600 downloads orgânicos, nota 4,2/5, sem gasto em marketing. A sessão mediana é de cerca de 6 minutos. Os 10% melhores jogadores passam em média mais de 15 min.",
   p1_role: "Designer e Desenvolvedor (Solo)",
   p1_duration: "6 meses",
   p1_link_case: "Estudo de caso de analytics →",
@@ -1741,7 +1745,7 @@ pt: {
 
   // ── Cyberpunk Case Study ──
   cs_cyber_title: "Estudo de Caso: Idle Cyberpunk City Clicker",
-  cs_cyber_aside: "220 jogadores monitorados · build pré-1.70 · 4 snapshots de marco",
+  cs_cyber_aside: "220 jogadores antes da reformulação · 36 depois · 7 eventos monitorados · dados de julho de 2026",
   cs_label_01: "01 · Problema",
   cs_label_02: "02 · Processo",
   cs_label_03: "03 · Descobertas",
@@ -1749,15 +1753,16 @@ pt: {
   cs_label_05: "05 · O que eu mudaria",
   cs_cyber_01_h: "Voando às cegas depois do primeiro jogo",
   cs_cyber_01_p: "O Idle Kingdom Builder saiu com mais de 1000 downloads e avaliações sólidas, mas sem pipeline de analytics. Eu não tinha visibilidade de onde os jogadores desistiam, nem por quê. O Cyberpunk City estava crescendo de forma constante e tinha o mesmo ponto cego. Eu precisava de um jeito de enxergar dentro da jornada do jogador sem estourar o orçamento.",
-  cs_cyber_02_h: "Analytics por marcos, com orçamento apertado",
-  cs_cyber_02_p: "Informação máxima com o menor número de eventos enviados. Eu estava trabalhando dentro do tier gratuito do Unity Analytics. Desenhei 4 eventos de snapshot atrelados a marcos de crédito (1K, 1M, 1B, 1T). Cada um captura prédios, upgrades, razão de clique/passivo e tempo decorrido por jogador.",
-  cs_cyber_03_h: "Economia se valida, bugs aparecem",
-  cs_cyber_03_p: "A transição de clique pra passivo se comportou como projetada. Os dados também pegaram um bug de tracking inflando as contagens do clicker (um erro de nome de variável) e um defeito de persistência de timer nos marcos mais altos que estava gerando leituras inválidas.",
-  cs_cyber_04_h: "3 correções entregues na v1.70",
-  cs_cyber_04_p: "Corrigi a instrumentação de analytics, ajustei o multiplicador dos upgrades passivos de 5× pra 3,5× e adicionei persistência de sessão. O próximo ciclo de análise vai ter dados limpos pra uma comparação antes/depois.",
-  cs_cyber_05_h: "Sabendo o que os dados mostraram",
-  cs_cyber_05_p1: "A maior queda no funil é de 1M pra 1B, com 73%. Essa parede bate com o custo dos upgrades passivos escalando mais rápido que o poder de ganho do jogador. O salto do multiplicador dos prédios mid-tier pros late-tier é agressivo demais. A próxima iteração mira numa curva de mid-game mais suave: multiplicador passivo de 5× pra 3,5×, multiplicador do clicker de 10× pra 7×.",
-  cs_cyber_05_p2: "Eu também revisitaria a descoberta dos upgrades. 52% dos jogadores estavam sem nenhum upgrade no marco de 1K. Isso quer dizer que a UI não está destacando eles cedo o bastante. Um prompt sutil ou dica visual na primeira vez que o jogador consegue pagar um upgrade deveria mudar essa proporção sem ser invasivo.",
+  cs_cyber_02_h: "Snapshots por marco, depois uma rede mais ampla",
+  cs_cyber_02_p: "O tier gratuito do Unity Analytics limita quanto você pode enviar, então a primeira passada foram 4 eventos de snapshot atrelados a marcos de crédito (1K, 1M, 1B, 1T), com cerca de 7 parâmetros cada. Depois das correções eu ampliei: os mesmos eventos hoje carregam uns 33 parâmetros, mais SessionStart, AdWatched5x e AdFreeBuilding. Os nomes antigos dos eventos ficaram, então a build pré-1.40 continua servindo de baseline.",
+  cs_cyber_03_h: "Economia se valida, três bugs aparecem",
+  cs_cyber_03_p: "A transição de clique pra passivo se comportou como projetada. Os dados também pegaram um contador de clicker apontado pra variável errada e um defeito de persistência do timeElapsed que invalidava os marcos mais altos. O caro foi a produção offline: o offlinePercentage já incluía o bônus e o CalculateProduction() multiplicava de novo, o que compunha pra algo por volta de 38.000× o CPS normal em saves de late-game. Deixar o app fechado à noite pagava melhor que jogar.",
+  cs_cyber_04_h: "Cinco correções e uma segunda leitura",
+  cs_cyber_04_p: "A v1.70 e a v1.81 levaram cinco correções: instrumentação corrigida, persistência de timer, reescrita do offline com tetos duros em taxa, janela e multiplicador, multiplicadores de upgrade rebalanceados (passivo 3,5×, clicker 7×) e um boost de IAP que estava errado por um. Em julho de 2026 puxei os dados de novo e li 36 jogadores Android pós-reformulação contra o baseline congelado de 220.",
+  cs_cyber_05_h: "O que a segunda leitura mudou",
+  cs_cyber_05_p1: "A curva de abertura ficou onde eu queria. O tempo até o primeiro marco subiu 85% (194s pra 360s) e os cliques subiram uns 30% (302 pra 394), enquanto os prédios comprados ficaram estáveis em 13 e 12. Os jogadores passam mais tempo e clicam mais sem mudar o que compram. Só que o mid-game passou do ponto. A mediana de tempo até 1M foi de 824s pra 3.503s, um pouco mais de 4×, mais longe do que eu mirava. Os upgrades pelo menos estão cumprindo o papel deles agora: 14 no marco de 1M contra 10 antes, e os upgrades de clicker foram de 0 pra 6, já que o contador antigo nunca registrou nenhum.",
+  cs_cyber_05_p2: "A parede também mudou de lugar. Minha leitura anterior era que 1M → 1B era o gargalo, com queda de 73%. No cohort novo esse passo converte melhor do que convertia, 27% pra 38%, e o que caiu foi o 1K → 1M, de 42% pra 36%. Ou seja, a próxima passada de tuning é mais cedo na curva do que eu imaginava. E eu seguro isso sem apertar: o cohort pós tem 36 jogadores em 1K e afina pra um em 1T, então a ponta de cima é anedota, não medição.",
+  cs_cyber_05_p3: "Monetização e retenção só ficaram visíveis com os eventos novos. O vídeo com recompensa tem 175 visualizações e um único jogador alemão responde por 120 delas. Esse mesmo jogador é o dono do recorde de 1T e tinha assistido 111 anúncios quando chegou lá, então o anúncio se sustenta como rota de progressão na ponta de cima. O jogador mediano chega em 1K sem ter assistido nenhum. As aberturas de sessão também pararam de se concentrar na instalação: os dias 8 a 24 respondem por 58% delas, contra 19% nos dois primeiros dias. Existe um núcleo que volta agora, e é nele que eu quero mirar o próximo teste de ritmo dos anúncios.",
 
   // ── Dashboard ──
   dashboard_label: "Dashboard Interativo de Analytics · Construído com dados reais do Unity Analytics",
@@ -1904,17 +1909,17 @@ pt: {
   pd1_m1: "Downloads Orgânicos",
   pd1_m2: "Nota no Play Store",
   pd1_m3: "Sessão Mediana",
-  pd1_m4: "Jogadores Monitorados",
-  pd1_contrib: "Design e desenvolvimento solo, do conceito ao lançamento. Construído em cima das lições do Idle Kingdom Builder. Core loop expandido, camadas de progressão mais profundas e uma camada de monetização com reward ads e IAP. Instrumentei o Unity Analytics pra capturar o estado do jogador em 4 marcos. Isso expôs dois bugs de economia e um defeito de persistência de timer. Três correções foram pra v1.70.",
+  pd1_m4: "Jogadores Monitorados (pré / pós)",
+  pd1_contrib: "Design e desenvolvimento solo, do conceito ao lançamento. Construído em cima das lições do Idle Kingdom Builder. Core loop expandido, camadas de progressão mais profundas e uma camada de monetização com reward ads e IAP. Instrumentei o Unity Analytics pra capturar o estado do jogador em 4 marcos. Isso expôs dois bugs de economia e um defeito de persistência de timer. Cinco correções saíram entre a v1.70 e a v1.81, e depois eu remedi a economia contra o baseline anterior à reformulação.",
   pd1_d1h: "Economia de 4 Pilares",
   pd1_d1p: "Prédios Passivos, Clicker, Offline e de Ascensão oferecem caminhos distintos de progressão. Cada um empurra um estilo de jogo diferente de forma mecânica.",
   pd1_d2h: "Analytics com Orçamento Apertado",
-  pd1_d2p: "Desenhei 4 eventos de snapshot pra extrair o máximo de dados possível dentro do tier gratuito do Unity Analytics. Cada um captura prédios, upgrades, razão de clique/passivo e tempo decorrido naquele marco.",
+  pd1_d2p: "Desenhei 4 eventos de snapshot pra extrair o máximo de dados possível dentro do tier gratuito do Unity Analytics. Cada um captura prédios, upgrades, razão de clique/passivo e tempo decorrido naquele marco. A versão pós-reformulação carrega uns 33 parâmetros por evento em vez de 7, mais o tracking de sessão e de anúncios.",
   pd1_d3h: "Assimetria de Preço",
   pd1_d3p: "Prédios clicker escalam em 1,65×. Prédios passivos escalam em 1,25×. Isso conduz a transição de clique pra passivo de forma mecânica, sem nenhum tutorial explícito.",
   pd1_d4h: "Monetização Não Invasiva",
   pd1_d4p: "Reward ads são opt-in. Banner ads ficam na periferia. Uma avaliação resumiu assim: \"anúncios não invasivos, muitas recompensas e uma UI limpa.\"",
-  pd1_retro: "O funil de 1M → 1B perde 73%. Os custos de upgrade passivo mid-tier escalam agressivos demais. Reduzir o multiplicador de 5× pra 3,5× é o próximo alvo de iteração. 52% dos jogadores estavam com zero upgrades no marco de 1K, o que me diz que a UI não está destacando eles cedo o bastante.",
+  pd1_retro: "O rebalanceamento fez o que eu queria na abertura e passou do ponto no meio: o tempo até 1M hoje é um pouco mais de 4× o que era. O gargalo se mexeu junto, de 1M → 1B pra 1K → 1M, então a próxima passada é mais cedo na curva. Os reward ads ainda são um power user e não um hábito, e eu gastaria essa iteração no ritmo que faz o jogador comum experimentar.",
 
   // ── Modal 2: Kingdom Builder ──
   pd2_title: "Idle Kingdom Builder",
@@ -2058,7 +2063,7 @@ ja: {
   // ── Project 1: Cyberpunk ──
   p1_name: "Idle Cyberpunk City Clicker:経済設計とアナリティクス",
   p1_badge: "リリース済 · 2025",
-  p1_desc: "Idle Kingdom Builderで得た学びを土台に制作しました。より深い進行階層と、リワード広告およびアプリ内課金による収益化レイヤーを追加。Unity Analyticsを実装し、4つのマイルストーンでプレイヤーの状態をスナップショット取得できるようにしました。その結果、経済バグ2件とタイマー永続化の不具合1件が判明し、3つの修正をv1.70で反映。マーケティング費ゼロで、オーガニックダウンロード600以上、評価4.2/5を獲得。セッションの中央値は約6分、上位10%のプレイヤーは平均15分以上プレイしています。",
+  p1_desc: "Idle Kingdom Builderで得た学びを土台に制作しました。より深い進行階層と、リワード広告およびアプリ内課金による収益化レイヤーを追加。Unity Analyticsを実装し、4つのマイルストーンでプレイヤーの状態をスナップショット取得できるようにしました。その結果、経済バグ2件とタイマー永続化の不具合1件が判明し、v1.70とv1.81にまたがる5件の修正を反映。2026年7月のデータで、その効果を計測しています。マーケティング費ゼロで、オーガニックダウンロード600以上、評価4.2/5を獲得。セッションの中央値は約6分、上位10%のプレイヤーは平均15分以上プレイしています。",
   p1_role: "デザイナー兼開発者(個人制作)",
   p1_duration: "6ヶ月",
   p1_link_case: "アナリティクスのケーススタディ →",
@@ -2128,7 +2133,7 @@ ja: {
 
   // ── Cyberpunk Case Study ──
   cs_cyber_title: "ケーススタディ:Idle Cyberpunk City Clicker",
-  cs_cyber_aside: "追跡プレイヤー220人 · v1.70以前のビルド · 4マイルストーンのスナップショット",
+  cs_cyber_aside: "改修前220人 · 改修後36人 · 追跡イベント7種 · 2026年7月時点のデータ",
   cs_label_01: "01 · 課題",
   cs_label_02: "02 · プロセス",
   cs_label_03: "03 · 発見",
@@ -2136,15 +2141,16 @@ ja: {
   cs_label_05: "05 · 次に改善したいこと",
   cs_cyber_01_h: "初作の後、手探りの状態",
   cs_cyber_01_p: "Idle Kingdom Builderはダウンロード1000以上と好評なレビューを獲得してリリースしましたが、アナリティクスのパイプラインがありませんでした。プレイヤーがどこで、なぜ離脱しているのかが見えない状態でした。Cyberpunk Cityは順調に伸びていましたが、同じ死角を抱えていました。予算を膨らませずにプレイヤーの旅路を可視化する手段が必要でした。",
-  cs_cyber_02_h: "限られた予算で実現するマイルストーン単位のアナリティクス",
-  cs_cyber_02_p: "イベント送信数を最小限に抑えつつ、得られる情報は最大化する。Unity Analyticsの無料プラン内で動かす必要がありました。そこでクレジットのマイルストーン(1K、1M、1B、1T)に紐づけた4つのスナップショットイベントを設計。各イベントで建物、アップグレード、クリック/パッシブ比率、プレイヤーごとの経過時間を取得するようにしました。",
-  cs_cyber_03_h: "経済は妥当、しかしバグが浮上",
-  cs_cyber_03_p: "クリックからパッシブへの移行は設計通りに機能していました。一方でデータは、クリッカー数を過大にカウントしていたトラッキングバグ(変数名のミス)と、上位マイルストーンで不正な値を出していたタイマー永続化の不具合も捕らえました。",
-  cs_cyber_04_h: "v1.70で3つの修正をリリース",
-  cs_cyber_04_p: "アナリティクスの計測を修正し、パッシブアップグレードの倍率を5×から3.5×へ調整、さらにセッションの永続化を追加しました。次の分析サイクルでは、クリーンなデータを使って改修前後の比較ができる見込みです。",
-  cs_cyber_05_h: "データが示したことを踏まえて",
-  cs_cyber_05_p1: "ファネルで最も急な落ち込みは1M → 1Bの73%です。この壁は、パッシブアップグレードのコストがプレイヤーの収益力よりも速く伸びている箇所と一致しています。中階層から後階層の建物への倍率の跳ね上がりが大きすぎる、ということです。次のイテレーションでは、ミッドゲームの曲線をより滑らかにすることを狙います。パッシブ倍率を5×から3.5×へ、クリッカー倍率を10×から7×へ調整する予定です。",
-  cs_cyber_05_p2: "アップグレードの気づきやすさも見直したいと思っています。1Kのマイルストーン時点で、52%のプレイヤーがアップグレードを一つも取っていませんでした。これはUIが早い段階でアップグレードを十分に目立たせていないことの表れです。プレイヤーが初めてアップグレードを購入できるタイミングで、控えめなプロンプトやビジュアル上のヒントを出すだけでも、煩わしさを与えずにこの比率を改善できるはずです。",
+  cs_cyber_02_h: "マイルストーンのスナップショット、そして計測範囲の拡張",
+  cs_cyber_02_p: "Unity Analyticsの無料プランには送信量の上限があるため、最初はクレジットのマイルストーン(1K、1M、1B、1T)に紐づけた4つのスナップショットイベント、各7パラメータ程度から始めました。修正を入れた後に範囲を広げ、同じイベントが今では33パラメータほどを運び、SessionStart、AdWatched5x、AdFreeBuildingも追加しています。イベント名は従来のまま残したので、v1.40以前のビルドは今もベースラインとして機能します。",
+  cs_cyber_03_h: "経済は妥当、バグが3件浮上",
+  cs_cyber_03_p: "クリックからパッシブへの移行は設計通りに機能していました。一方でデータは、誤った変数を参照していたクリッカーのカウンタと、上位マイルストーンの値を無効にしていたtimeElapsedの永続化の不具合も捕らえました。代償が大きかったのはオフライン生産です。offlinePercentageの時点でボーナスが含まれているのに、CalculateProduction()がもう一度掛けていたため、後半のセーブデータでは通常CPSの約38,000倍まで膨れ上がっていました。アプリを一晩閉じておく方が、遊ぶより実入りが良かったわけです。",
+  cs_cyber_04_h: "5つの修正、そして2度目の計測",
+  cs_cyber_04_p: "v1.70とv1.81で5件の修正を入れました。計測の修正、タイマーの永続化、レート・時間枠・倍率それぞれに上限を設けたオフライン処理の書き直し、アップグレード倍率の再調整(パッシブ3.5×、クリッカー7×)、そして1つずれていたIAPのブーストです。2026年7月に改めてデータを取得し、改修後のAndroidプレイヤー36人を、凍結した220人のベースラインと突き合わせて読み解きました。",
+  cs_cyber_05_h: "2度目の計測で変わったこと",
+  cs_cyber_05_p1: "序盤の曲線は狙い通りに収まりました。最初のマイルストーンまでの時間は85%増(194秒→360秒)、クリック数は約30%増(302→394)、一方で購入した建物は13と12でほぼ横ばいです。プレイヤーは買うものを変えないまま、より長く遊び、より多くクリックするようになりました。ただしミッドゲームは行き過ぎました。1Mまでの中央値は824秒から3,503秒へ、4倍を少し超える伸びで、狙っていたところより遠いです。アップグレードは少なくとも役割を果たすようになりました。1M時点の所持数は以前の10に対して14、クリッカーのアップグレードは0から6です。旧カウンタは1件も記録できていませんでした。",
+  cs_cyber_05_p2: "壁の位置も動きました。以前の私の読みでは、ボトルネックは1M → 1Bで、落ち込みは73%でした。新しいコホートではその段の通過率がむしろ改善し(27%→38%)、下がったのは1K → 1Mの方です(42%→36%)。次のチューニングは、思っていたより手前の区間ということになります。ただしこれは強く握らずに置いています。改修後のコホートは1K時点で36人、1Tでは1人まで細るので、上端は測定ではなく逸話です。",
+  cs_cyber_05_p3: "収益化とリテンションは、新しいイベントを入れて初めて見えるようになった領域です。リワード動画の視聴は175回で、うち120回はドイツの1人のプレイヤーによるものです。同じプレイヤーが1Tの記録保持者でもあり、到達時点で111本の広告を視聴していました。曲線の上端では、広告が進行ルートとして成立しているということです。一方で中央値のプレイヤーは、1本も見ないまま1Kに到達しています。セッションの起動もインストール直後に集中しなくなりました。8日目から24日目が全体の58%を占め、最初の2日間は19%です。戻ってくる中核層が生まれており、次の広告ペーシングのテストはそこに狙いを定めたいと考えています。",
 
   // ── Dashboard ──
   dashboard_label: "インタラクティブなアナリティクスダッシュボード · 実際のUnity Analyticsデータから構築",
@@ -2291,17 +2297,17 @@ ja: {
   pd1_m1: "オーガニックDL数",
   pd1_m2: "Play Store評価",
   pd1_m3: "セッション中央値",
-  pd1_m4: "追跡プレイヤー数",
-  pd1_contrib: "企画から公開まで個人で設計・開発しました。Idle Kingdom Builderからの学びをベースに、コアループの拡張、より深い進行階層、そしてリワード広告とアプリ内課金によるマネタイズレイヤーを追加。Unity Analyticsを実装し、4つのマイルストーンでプレイヤー状態のスナップショットを取得できるようにしました。その結果、経済バグ2件とタイマー永続化の不具合1件が明らかになり、3つの修正をv1.70で反映しました。",
+  pd1_m4: "追跡プレイヤー数(改修前 / 後)",
+  pd1_contrib: "企画から公開まで個人で設計・開発しました。Idle Kingdom Builderからの学びをベースに、コアループの拡張、より深い進行階層、そしてリワード広告とアプリ内課金によるマネタイズレイヤーを追加。Unity Analyticsを実装し、4つのマイルストーンでプレイヤー状態のスナップショットを取得できるようにしました。その結果、経済バグ2件とタイマー永続化の不具合1件が明らかになり、v1.70とv1.81にまたがる5件の修正を反映。その後、改修前のベースラインと突き合わせて経済を計測し直しました。",
   pd1_d1h: "4本柱の経済",
   pd1_d1p: "パッシブ、クリッカー、オフライン、アセンションの各建物が、それぞれ異なる進行ルートを提供します。それぞれがメカニクス面から違うプレイスタイルをそっと後押しする仕組みです。",
   pd1_d2h: "低予算のアナリティクス",
-  pd1_d2p: "Unity Analyticsの無料プランの範囲内で、できる限り多くのデータを引き出すために4つのスナップショットイベントを設計しました。各イベントで建物、アップグレード、クリック/パッシブ比率、マイルストーンまでの経過時間を取得しています。",
+  pd1_d2p: "Unity Analyticsの無料プランの範囲内で、できる限り多くのデータを引き出すために4つのスナップショットイベントを設計しました。各イベントで建物、アップグレード、クリック/パッシブ比率、マイルストーンまでの経過時間を取得しています。改修後の版では1イベントあたりのパラメータが7から33程度になり、セッションと広告の計測も加わりました。",
   pd1_d3h: "価格の非対称性",
   pd1_d3p: "クリッカー建物は1.65倍でスケールし、パッシブ建物は1.25倍でスケールします。この差が、明示的なチュートリアルなしに、クリックからパッシブへの移行をメカニクスとして自然に引き起こします。",
   pd1_d4h: "非侵襲的なマネタイズ",
   pd1_d4p: "リワード広告はオプトインのみ、バナー広告は画面の周辺に抑えています。あるレビューの言葉が象徴的でした。「邪魔にならない広告、豊富な報酬、そしてすっきりしたUI」というものです。",
-  pd1_retro: "1M → 1Bのファネルで73%が離脱しています。中階層のパッシブアップグレードのコストが、スケールとして攻めすぎているのが原因です。倍率を5×から3.5×へ下げるのが次のイテレーションのターゲットです。また、1Kのマイルストーン時点で52%のプレイヤーがアップグレードを一つも持っていませんでした。UIが早い段階でアップグレードを十分に目立たせられていない、ということです。",
+  pd1_retro: "再調整は序盤では狙い通りに効き、中盤では行き過ぎました。1Mまでの時間は以前の4倍を少し超えています。ボトルネックもそれに合わせて1M → 1Bから1K → 1Mへ移ったので、次の調整はより手前の区間です。リワード広告は依然として一部のヘビーユーザーのもので、習慣にはなっていません。次のイテレーションは、一般的なプレイヤーが試してみたくなるペース配分に充てるつもりです。",
 
   // ── Modal 2: Kingdom Builder ──
   pd2_title: "Idle Kingdom Builder",

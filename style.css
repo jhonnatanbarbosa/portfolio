@@ -70,12 +70,23 @@ body {
   background-image:
     radial-gradient(circle, rgba(var(--accent-rgb),0.045) 1px, transparent 1px);
   background-size: 28px 28px;
-  background-attachment: fixed;
   position: relative;
   overflow-x: hidden;
 }
 
-/* ── Ambient glow blobs — fixed in viewport, sit behind everything ── */
+/* A fixed-attachment background defeats the fast scroll path on Android and
+   repaints the full viewport every frame. Keep the effect on pointer devices
+   only; on touch the grid just scrolls with the page. */
+@media (hover: hover) and (pointer: fine) {
+  body { background-attachment: fixed; }
+}
+
+/* ── Ambient glow blobs — fixed in viewport, sit behind everything ──
+   No filter: blur() here on purpose. These are 4.5%-alpha radial gradients
+   that already fade to transparent at 70%, so the blur added almost nothing
+   visually while forcing a composited layer roughly 3x the blur radius on
+   each side — tens of MB of GPU texture that pushed mobile tile memory over
+   budget. The gradient stops below are widened to recover the softness. */
 body::before,
 body::after {
   content: '';
@@ -83,20 +94,31 @@ body::after {
   border-radius: 50%;
   pointer-events: none;
   z-index: 0;
-  filter: blur(100px);
 }
 body::before {
-  width: 600px; height: 600px;
-  top: -120px; left: -180px;
-  background: radial-gradient(circle, rgba(var(--accent-rgb),0.045) 0%, transparent 70%);
+  width: 700px; height: 700px;
+  top: -160px; left: -220px;
+  background: radial-gradient(circle, rgba(var(--accent-rgb),0.05) 0%, rgba(var(--accent-rgb),0.02) 45%, transparent 75%);
 }
 body::after {
-  width: 500px; height: 500px;
-  bottom: 10%; right: -140px;
-  background: radial-gradient(circle, rgba(var(--accent2-rgb),0.035) 0%, transparent 70%);
+  width: 600px; height: 600px;
+  bottom: 8%; right: -180px;
+  background: radial-gradient(circle, rgba(var(--accent2-rgb),0.04) 0%, rgba(var(--accent2-rgb),0.015) 45%, transparent 75%);
 }
 
-/* Constrain glow blobs on mobile to prevent overflow */
+/* Constrain glow blobs below desktop widths. This threshold has to clear
+   tablets too — a Tab S9 reports ~800px wide in portrait and ~1280 in
+   landscape, so a 720px cutoff left it running the full-size desktop blobs. */
+@media (max-width: 1400px) {
+  body::before {
+    width: 420px; height: 420px;
+    top: -110px; left: -140px;
+  }
+  body::after {
+    width: 360px; height: 360px;
+    bottom: 5%; right: -110px;
+  }
+}
 @media (max-width: 720px) {
   body::before {
     width: 320px; height: 320px;
@@ -415,35 +437,34 @@ nav .nav-links a.active::after {
 section { padding: 2.5rem 0; position: relative; z-index: 1; }
 section + section { border-top: 1px solid var(--border-soft); }
 
-/* Ambient section glows — visible on wide screens behind content */
+/* Ambient section glows — visible on wide screens behind content.
+   Same reasoning as the body blobs: 3%-alpha gradients that already fade out,
+   so the blur is carried by the gradient stops instead of a filter layer. */
 #projects::before {
   content: '';
   position: absolute;
   top: 40px; left: -280px;
-  width: 400px; height: 400px;
-  background: radial-gradient(circle, rgba(var(--accent-rgb),0.03) 0%, transparent 70%);
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(var(--accent-rgb),0.035) 0%, rgba(var(--accent-rgb),0.015) 45%, transparent 75%);
   pointer-events: none;
-  filter: blur(60px);
   z-index: -1;
 }
 #cyberpunk-analytics::before {
   content: '';
   position: absolute;
   top: 80px; right: -220px;
-  width: 350px; height: 350px;
-  background: radial-gradient(circle, rgba(var(--accent2-rgb),0.03) 0%, transparent 70%);
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(var(--accent2-rgb),0.035) 0%, rgba(var(--accent2-rgb),0.015) 45%, transparent 75%);
   pointer-events: none;
-  filter: blur(60px);
   z-index: -1;
 }
 #about::before {
   content: '';
   position: absolute;
   bottom: 0; left: -200px;
-  width: 300px; height: 300px;
-  background: radial-gradient(circle, rgba(210,170,120,0.025) 0%, transparent 70%);
+  width: 360px; height: 360px;
+  background: radial-gradient(circle, rgba(210,170,120,0.03) 0%, rgba(210,170,120,0.012) 45%, transparent 75%);
   pointer-events: none;
-  filter: blur(60px);
   z-index: -1;
 }
 
@@ -519,16 +540,28 @@ section + section { border-top: 1px solid var(--border-soft); }
   transition: opacity 0.4s ease;
   pointer-events: none;
   z-index: 2;
-  animation: border-rotate 4s linear infinite;
 }
 
-.project-card:hover::before {
-  opacity: 1;
-}
-.project-card:hover {
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
-  border-color: transparent;
+/* The rotation animates a registered custom property, which Chrome cannot
+   composite — every frame is a style recalc + conic-gradient repaint + mask
+   composite, per card. Running it while the border is invisible was pinning
+   the main thread and starving the compositor on mobile GPUs (blank tiles on
+   tablets). It only ever shows on hover, so only run it on hover, and only
+   where hover exists. */
+@media (hover: hover) {
+  .project-card:hover::before {
+    opacity: 1;
+    animation: border-rotate 4s linear infinite;
+  }
+  /* Scoped alongside the gradient it depends on: border-color goes transparent
+     because the rotating ::before takes over as the border. On touch, where a
+     tap can leave :hover latched and ::before never fades in, that would just
+     erase the card outline. */
+  .project-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-glow);
+    border-color: transparent;
+  }
 }
 
 .project-thumb {
@@ -1654,7 +1687,7 @@ footer {
   .about-layout { grid-template-columns: 1fr; }
   .about-photo { width: 90px; height: 110px; }
 
-  .dashboard-embed iframe { height: 560px; }
+  .dashboard-embed iframe { height: 620px; }
 
   .section-header { flex-direction: column; gap: 0.25rem; }
 
@@ -1695,7 +1728,10 @@ footer {
   .contact-copy { width: 100%; }
   .contact-intro { font-size: 0.94rem; }
 
-  .dashboard-embed iframe { height: 440px; }
+  /* The dashboard keeps its own grouped nav and stacks to one column below
+     700px, but it still needs vertical room — a chart plus the text that
+     explains it does not fit in 440px. */
+  .dashboard-embed iframe { height: 560px; }
 
   .tools-row {
     flex-direction: column;

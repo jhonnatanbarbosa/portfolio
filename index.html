@@ -47,32 +47,45 @@
 </head>
 <body>
 
-<!-- ── LANGUAGE SELECTOR OVERLAY ──────────────────────── -->
-<div class="lang-overlay" id="langOverlay">
-  <div class="lang-modal">
-    <h2>Welcome · Bem-vindo</h2>
-    <p>Choose your language · Escolha seu idioma</p>
-    <div class="lang-buttons">
-      <button class="lang-btn" onclick="setLanguage('en')">
-        <span class="flag">🇺🇸</span>
-        English
-        <span class="label">English</span>
-      </button>
-      <button class="lang-btn" onclick="setLanguage('pt')">
-        <span class="flag">🇧🇷</span>
-        Português
-        <span class="label">Brasileiro</span>
-      </button>
-      <button class="lang-btn" onclick="setLanguage('ja')">
-        <span class="flag">🇯🇵</span>
-        日本語
-        <span class="label">Japanese</span>
-      </button>
-    </div>
-  </div>
-</div>
-
 <div class="scroll-progress" aria-hidden="true"></div>
+
+<!-- Flags as inline SVG rather than emoji: Windows ships no glyphs for regional-indicator
+     pairs, so 🇺🇸/🇧🇷/🇯🇵 collapse to bare letters there while rendering fine on mobile.
+     Drawn once as symbols and referenced with <use>, so swapping the nav flag is a single
+     href change. -->
+<svg class="flag-sprite" aria-hidden="true" focusable="false"><defs>
+  <symbol id="flag-en" viewBox="0 0 20 15">
+    <rect width="20" height="15" fill="#fff"/>
+    <g fill="#b22234">
+      <rect width="20" height="1.154" y="0"/>
+      <rect width="20" height="1.154" y="2.308"/>
+      <rect width="20" height="1.154" y="4.615"/>
+      <rect width="20" height="1.154" y="6.923"/>
+      <rect width="20" height="1.154" y="9.231"/>
+      <rect width="20" height="1.154" y="11.538"/>
+      <rect width="20" height="1.154" y="13.846"/>
+    </g>
+    <rect width="8.6" height="8.077" fill="#3c3b6e"/>
+    <g fill="#fff">
+      <circle cx="1.3" cy="1.55" r="0.42"/><circle cx="3.2" cy="1.55" r="0.42"/>
+      <circle cx="5.1" cy="1.55" r="0.42"/><circle cx="7.0" cy="1.55" r="0.42"/>
+      <circle cx="2.25" cy="4.0" r="0.42"/><circle cx="4.15" cy="4.0" r="0.42"/>
+      <circle cx="6.05" cy="4.0" r="0.42"/>
+      <circle cx="1.3" cy="6.45" r="0.42"/><circle cx="3.2" cy="6.45" r="0.42"/>
+      <circle cx="5.1" cy="6.45" r="0.42"/><circle cx="7.0" cy="6.45" r="0.42"/>
+    </g>
+  </symbol>
+  <symbol id="flag-pt" viewBox="0 0 20 15">
+    <rect width="20" height="15" fill="#009b3a"/>
+    <path d="M10 1.5 18.3 7.5 10 13.5 1.7 7.5Z" fill="#fedf00"/>
+    <circle cx="10" cy="7.5" r="3.4" fill="#002776"/>
+    <path d="M7.15 6.65Q10 11.5 12.85 6.65" fill="none" stroke="#fff" stroke-width="0.85"/>
+  </symbol>
+  <symbol id="flag-ja" viewBox="0 0 20 15">
+    <rect width="20" height="15" fill="#fff"/>
+    <circle cx="10" cy="7.5" r="4.1" fill="#bc002d"/>
+  </symbol>
+</defs></svg>
 
 <nav>
   <div class="nav-inner">
@@ -92,10 +105,36 @@
       <li><a href="jhorro-productions.html" data-i18n="nav_studio">Jhorro Productions</a></li>
       <li><a href="#contact" class="nav-contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
-    <button class="lang-toggle" onclick="toggleLanguage()" id="langToggle" aria-label="Switch language">
-      <span class="flag-small" id="toggleFlag">🇺🇸</span>
-      <span id="toggleLabel">EN</span>
-    </button>
+    <!-- Each option carries its flag plus its name written in its own language, so a
+         visitor who reads no English still has a legible way out. -->
+    <div class="lang-switch" id="langSwitch">
+      <button class="lang-trigger" id="langTrigger" type="button"
+              aria-haspopup="true" aria-expanded="false" aria-controls="langMenu"
+              aria-label="Change language · Mudar idioma · 言語を変更">
+        <svg class="lang-flag" id="langFlag" aria-hidden="true" focusable="false"><use href="#flag-en"/></svg>
+        <span class="lang-code" id="langCode">EN</span>
+        <svg class="lang-caret" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M6 9.5l6 6 6-6"/>
+        </svg>
+      </button>
+      <div class="lang-menu" id="langMenu" role="menu" aria-label="Language · Idioma · 言語" hidden>
+        <button type="button" role="menuitemradio" aria-checked="true" class="lang-option" data-lang="en">
+          <svg class="lang-flag" aria-hidden="true" focusable="false"><use href="#flag-en"/></svg>
+          <span class="lang-native">English</span>
+          <svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        </button>
+        <button type="button" role="menuitemradio" aria-checked="false" class="lang-option" data-lang="pt">
+          <svg class="lang-flag" aria-hidden="true" focusable="false"><use href="#flag-pt"/></svg>
+          <span class="lang-native">Português</span>
+          <svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        </button>
+        <button type="button" role="menuitemradio" aria-checked="false" class="lang-option" data-lang="ja">
+          <svg class="lang-flag" aria-hidden="true" focusable="false"><use href="#flag-ja"/></svg>
+          <span class="lang-native">日本語</span>
+          <svg class="lang-check" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+        </button>
+      </div>
+    </div>
   </div>
 </nav>
 
@@ -2453,11 +2492,10 @@ ja: {
 // ── LANGUAGE STATE ──────────────────────────────────────
 let currentLang = 'en';
 const langMeta = {
-  en: { flag: '🇺🇸', label: 'EN', htmlLang: 'en' },
-  pt: { flag: '🇧🇷', label: 'PT', htmlLang: 'pt-BR' },
-  ja: { flag: '🇯🇵', label: 'JA', htmlLang: 'ja' },
+  en: { code: 'EN', htmlLang: 'en' },
+  pt: { code: 'PT', htmlLang: 'pt-BR' },
+  ja: { code: 'JA', htmlLang: 'ja' },
 };
-const langCycle = ['en', 'pt', 'ja'];
 
 function applyLanguage(lang) {
   currentLang = lang;
@@ -2465,27 +2503,54 @@ function applyLanguage(lang) {
   if (!dict) return;
   document.querySelectorAll('[data-i18n]').forEach(el => {
     const key = el.getAttribute('data-i18n');
-    if (dict[key]) el.textContent = dict[key];
+    // Keys a dictionary hasn't translated yet fall back to the English source
+    // captured on load, so a partial pass can't leave the previous language behind.
+    const text = dict[key] || el.dataset.i18nDefault;
+    if (text) el.textContent = text;
   });
   const meta = langMeta[lang] || langMeta.en;
   document.documentElement.lang = meta.htmlLang;
-  document.getElementById('toggleFlag').textContent = meta.flag;
-  document.getElementById('toggleLabel').textContent = meta.label;
+  document.getElementById('langCode').textContent = meta.code;
+  const navFlag = document.querySelector('#langFlag use');
+  if (navFlag) navFlag.setAttribute('href', '#flag-' + lang);
+  document.querySelectorAll('.lang-option').forEach(opt => {
+    opt.setAttribute('aria-checked', String(opt.dataset.lang === lang));
+  });
 }
 
 function setLanguage(lang) {
   localStorage.setItem('portfolio-lang', lang);
   applyLanguage(lang);
-  const overlay = document.getElementById('langOverlay');
-  overlay.classList.add('hidden');
-  setTimeout(() => overlay.classList.remove('visible'), 400);
 }
 
-function toggleLanguage() {
-  const idx = langCycle.indexOf(currentLang);
-  const next = langCycle[(idx + 1) % langCycle.length];
-  localStorage.setItem('portfolio-lang', next);
-  applyLanguage(next);
+// ── Language menu (open/close, keyboard, outside click) ──
+function openLangMenu() {
+  const menu = document.getElementById('langMenu');
+  const trigger = document.getElementById('langTrigger');
+  if (!menu || !trigger) return;
+  // A close still animating has a pending timer that would re-hide the menu
+  // right after we reopen it.
+  clearTimeout(menu._hideTimer);
+  menu.hidden = false;
+  menu.offsetHeight;  // force layout so the transition has a start state to animate from
+  menu.classList.add('open');
+  trigger.setAttribute('aria-expanded', 'true');
+}
+
+function closeLangMenu(refocus) {
+  const menu = document.getElementById('langMenu');
+  const trigger = document.getElementById('langTrigger');
+  if (!menu || !trigger) return;
+  menu.classList.remove('open');
+  trigger.setAttribute('aria-expanded', 'false');
+  clearTimeout(menu._hideTimer);
+  menu._hideTimer = setTimeout(() => { menu.hidden = true; }, 180);
+  if (refocus) trigger.focus();
+}
+
+function langMenuIsOpen() {
+  const trigger = document.getElementById('langTrigger');
+  return !!trigger && trigger.getAttribute('aria-expanded') === 'true';
 }
 
 // ── COPY EMAIL TO CLIPBOARD ──────────────────────────────
@@ -2551,18 +2616,71 @@ document.addEventListener('DOMContentLoaded', function() {
     el.dataset.i18nDefault = el.textContent;
   });
 
-  const overlay = document.getElementById('langOverlay');
+  // The site is English-first: nothing is shown on load, and a visitor stays in
+  // English until they pick otherwise. Only a stored choice changes that.
   const saved = localStorage.getItem('portfolio-lang');
+  if (saved && langMeta[saved]) applyLanguage(saved);
 
-  if (saved && langMeta[saved]) {
-    // Returning visitor — apply saved language, hide popup
-    applyLanguage(saved);
-  } else {
-    // First visit — show popup
-    if (overlay) {
-      overlay.classList.add('visible');
-      overlay.classList.remove('hidden');
-    }
+  const langSwitch = document.getElementById('langSwitch');
+  const langTrigger = document.getElementById('langTrigger');
+  const langMenu = document.getElementById('langMenu');
+
+  if (langSwitch && langTrigger && langMenu) {
+    langTrigger.addEventListener('click', e => {
+      e.stopPropagation();
+      langMenuIsOpen() ? closeLangMenu(false) : openLangMenu();
+    });
+
+    const options = Array.from(langMenu.querySelectorAll('.lang-option'));
+
+    options.forEach((opt, i) => {
+      opt.addEventListener('click', () => {
+        setLanguage(opt.dataset.lang);
+        closeLangMenu(true);
+      });
+      // Arrow keys walk the menu; Home/End jump to either end.
+      opt.addEventListener('keydown', e => {
+        if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+          e.preventDefault();
+          const step = e.key === 'ArrowDown' ? 1 : -1;
+          options[(i + step + options.length) % options.length].focus();
+        } else if (e.key === 'Home') {
+          e.preventDefault(); options[0].focus();
+        } else if (e.key === 'End') {
+          e.preventDefault(); options[options.length - 1].focus();
+        }
+      });
+    });
+
+    // Down-arrow on the closed trigger opens the menu and lands on the first item.
+    langTrigger.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!langMenuIsOpen()) openLangMenu();
+        const target = e.key === 'ArrowDown' ? options[0] : options[options.length - 1];
+        requestAnimationFrame(() => target && target.focus());
+      }
+    });
+
+    document.addEventListener('click', e => {
+      if (langMenuIsOpen() && !langSwitch.contains(e.target)) closeLangMenu(false);
+    });
+
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && langMenuIsOpen()) closeLangMenu(true);
+    });
+
+    // Tabbing out of the menu should close it the same way clicking away does.
+    langSwitch.addEventListener('focusout', () => {
+      requestAnimationFrame(() => {
+        if (langMenuIsOpen() && !langSwitch.contains(document.activeElement)) closeLangMenu(false);
+      });
+    });
+
+    // A menu left hanging open while the page scrolls away looks broken.
+    window.addEventListener('scroll', () => {
+      if (langMenuIsOpen()) closeLangMenu(false);
+    }, { passive: true });
   }
 
   // Project thumbnails open the same modal as the "View details" link.

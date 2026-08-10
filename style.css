@@ -1444,12 +1444,15 @@ body.modal-open .contact-dock {
   font-family: 'Geist Mono', monospace;
   font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.085em;
   opacity: 0.72;
+  /* Always one line. Without this the pill shrinks to the email's width and
+     the status folds onto a second row, which grows the whole dock by a line */
+  white-space: nowrap;
 }
 .contact-dock .cd-dot {
   width: 6px; height: 6px; border-radius: 50%;
   background: currentColor; flex-shrink: 0;
 }
-.contact-dock .cd-value { font-size: 1rem; font-weight: 600; letter-spacing: -0.005em; }
+.contact-dock .cd-value { font-size: 1rem; font-weight: 600; letter-spacing: -0.005em; white-space: nowrap; }
 
 .contact-dock .cd-div {
   width: 1px; height: 27px; flex-shrink: 0;
@@ -1487,6 +1490,24 @@ body.modal-open .contact-dock {
 }
 .contact-dock .cd-copy.copied .cd-ico-copy { display: none; }
 .contact-dock .cd-copy.copied .cd-ico-check { display: inline-flex; }
+
+/* Small tablets / large phones: the status line is still worth showing, but
+   it's the first thing to run short of room. Trim the type and the chrome so
+   the label keeps its single line instead of pushing the dock to two rows.
+   Longer translations ("Disponível para novas vagas") set the width here. */
+@media (max-width: 760px) {
+  .contact-dock {
+    gap: 0.4rem;
+    padding: 0.44rem 0.52rem 0.44rem 0.48rem;
+  }
+  .contact-dock .cd-primary { padding: 0.5rem 0.95rem 0.5rem 0.75rem; gap: 0.55rem; }
+  .contact-dock .cd-label { font-size: 0.58rem; letter-spacing: 0.045em; }
+  .contact-dock .cd-value { font-size: 0.95rem; }
+  .contact-dock .cd-btn { width: 38px; height: 38px; }
+  .contact-dock svg { width: 18px; height: 18px; }
+  .contact-dock .cd-lead svg { width: 21px; height: 21px; }
+  .contact-dock .cd-div { height: 25px; margin: 0 0.1rem; }
+}
 
 /* The dock is wide at full size — step it down before it hits the viewport
    edges rather than letting it wrap */

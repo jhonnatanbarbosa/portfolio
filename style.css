@@ -757,6 +757,9 @@ section + section { border-top: 1px solid var(--border-soft); }
 }
 .project-card.wip-layout .project-thumb {
   aspect-ratio: 16 / 9;
+  /* 16:9 across a 1440px card is 800px of video before a single word of copy.
+     Cap it and let object-fit crop — the banner still reads as a banner. */
+  max-height: min(48vh, 400px);
   min-height: 0;
   width: 100%;
   border-right: none;
@@ -816,21 +819,22 @@ section + section { border-top: 1px solid var(--border-soft); }
   box-shadow: 0 0 8px rgba(var(--accent-rgb),0.3);
 }
 
-.wip-columns {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 0.8rem 1.8rem;
-  margin-top: 0.85rem;
-}
 .wip-column-label {
   font-family: 'Geist Mono', monospace;
   font-size: 0.62rem;
   color: var(--text-dim);
   text-transform: uppercase;
   letter-spacing: 0.06em;
-  margin-bottom: 0.5rem;
+  margin: 0.9rem 0 0.5rem;
   padding-bottom: 0.35rem;
   border-bottom: 1px solid var(--border-soft);
+}
+
+/* The board runs in two columns on desktop so eight items cost four rows */
+.wip-milestones.wip-board {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.3rem 1.6rem;
 }
 .wip-milestones {
   display: flex;
@@ -870,6 +874,63 @@ section + section { border-top: 1px solid var(--border-soft); }
 }
 .wip-milestone.active { color: var(--text); }
 
+/* ── Shipped systems: collapsed receipts ──
+   Twenty-two done items are proof of work, not reading material. They sit
+   behind a summary row and open as chips, so the default card height is
+   governed by what's still in flight. */
+.wip-shipped {
+  margin-top: 0.9rem;
+  border-top: 1px solid var(--border-soft);
+}
+.wip-shipped > summary {
+  display: flex; align-items: center; gap: 0.5rem;
+  list-style: none;
+  cursor: pointer;
+  padding: 0.55rem 0 0;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-dim);
+  transition: color 0.2s ease;
+}
+.wip-shipped > summary::-webkit-details-marker { display: none; }
+.wip-shipped > summary:hover { color: var(--text-mid); }
+.wip-shipped > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+.wip-shipped .ws-count {
+  font-size: 0.72rem; font-weight: 500;
+  color: var(--accent);
+  background: rgba(var(--accent-rgb),0.08);
+  border: 1px solid rgba(var(--accent-rgb),0.22);
+  border-radius: 4px;
+  padding: 0.05rem 0.4rem;
+}
+.wip-shipped .ws-chev {
+  display: inline-flex; margin-left: auto;
+  transition: transform 0.25s ease;
+}
+.wip-shipped[open] .ws-chev { transform: rotate(180deg); }
+
+.wip-chips {
+  display: flex; flex-wrap: wrap; gap: 0.3rem;
+  margin-top: 0.7rem;
+}
+.wip-chip {
+  display: inline-flex; align-items: center; gap: 0.35rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.66rem;
+  color: var(--text-mid);
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+  padding: 0.16rem 0.5rem;
+}
+.wip-chip::before {
+  content: '✓';
+  font-size: 0.6rem;
+  color: var(--accent);
+}
+
 .wip-updated {
   font-family: 'Geist Mono', monospace;
   font-size: 0.66rem;
@@ -889,7 +950,7 @@ section + section { border-top: 1px solid var(--border-soft); }
 }
 
 @media (max-width: 760px) {
-  .wip-columns { grid-template-columns: 1fr; gap: 1rem; }
+  .wip-milestones.wip-board { grid-template-columns: 1fr; gap: 0.3rem; }
 }
 
 /* ── CASE STUDY ──────────────────────────────────────────── */
@@ -1317,6 +1378,144 @@ section + section { border-top: 1px solid var(--border-soft); }
 .contact-item .ci-value {
   font-size: 0.85rem; color: var(--text);
   overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+/* ── FLOATING CONTACT DOCK ───────────────────────────────
+   The contact panel lives at the bottom of a long page. This is the same
+   offer, pinned: it slides up once the intro has scrolled away, and slides
+   back down over #contact so the two never say the same thing at once.
+   Visibility is driven by JS (.show) — see the dock block in index.html. */
+.contact-dock {
+  position: fixed;
+  left: 50%;
+  bottom: calc(1rem + env(safe-area-inset-bottom, 0px));
+  z-index: 60;
+  display: flex; align-items: center; gap: 0.48rem;
+  max-width: calc(100vw - 1.5rem);
+  padding: 0.48rem 0.6rem 0.48rem 0.52rem;
+  border-radius: 999px;
+  background: rgba(29,29,33,0.88);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(var(--accent-rgb),0.22);
+  box-shadow: 0 12px 36px rgba(0,0,0,0.45), 0 2px 8px rgba(0,0,0,0.3);
+  /* Parked below the fold until .show — transform keeps it off the compositor's
+     critical path, so the slide never fights the scroll handler */
+  transform: translate(-50%, calc(100% + 1.6rem));
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.45s cubic-bezier(0.22,1,0.36,1), opacity 0.3s ease;
+}
+.contact-dock.show {
+  transform: translate(-50%, 0);
+  opacity: 1;
+  pointer-events: auto;
+}
+/* A modal owns the screen while it's open */
+body.modal-open .contact-dock {
+  transform: translate(-50%, calc(100% + 1.6rem));
+  opacity: 0;
+  pointer-events: none;
+}
+
+.contact-dock .cd-primary {
+  display: inline-flex; align-items: center; gap: 0.65rem;
+  background: var(--accent); color: var(--bg);
+  border-radius: 999px;
+  padding: 0.5rem 1.1rem 0.5rem 0.85rem;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.contact-dock .cd-primary:hover {
+  text-decoration: none;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(var(--accent-rgb),0.35);
+}
+.contact-dock .cd-primary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+/* Icons carry viewBoxes, so sizing them here overrides the width/height
+   attributes in the markup and keeps every glyph on one scale */
+.contact-dock svg { width: 19px; height: 19px; }
+.contact-dock .cd-lead svg { width: 22px; height: 22px; }
+
+.contact-dock .cd-lead { display: inline-flex; flex-shrink: 0; }
+.contact-dock .cd-text { display: flex; flex-direction: column; line-height: 1.25; }
+.contact-dock .cd-label {
+  display: inline-flex; align-items: center; gap: 0.32rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.64rem; text-transform: uppercase; letter-spacing: 0.085em;
+  opacity: 0.72;
+}
+.contact-dock .cd-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: currentColor; flex-shrink: 0;
+}
+.contact-dock .cd-value { font-size: 1rem; font-weight: 600; letter-spacing: -0.005em; }
+
+.contact-dock .cd-div {
+  width: 1px; height: 27px; flex-shrink: 0;
+  background: var(--border);
+  margin: 0 0.18rem;
+}
+
+.contact-dock .cd-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 41px; height: 41px; flex-shrink: 0;
+  border-radius: 50%;
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text-mid);
+  cursor: pointer; text-decoration: none;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.contact-dock .cd-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+  background: rgba(var(--accent-rgb),0.08);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
+.contact-dock .cd-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Copy button swaps to a check for two seconds — copyEmail() adds .copied */
+.contact-dock .cd-ico-copy,
+.contact-dock .cd-ico-check { display: inline-flex; }
+.contact-dock .cd-ico-check { display: none; }
+.contact-dock .cd-copy.copied {
+  color: var(--accent);
+  border-color: rgba(var(--accent-rgb),0.45);
+  background: rgba(var(--accent-rgb),0.1);
+}
+.contact-dock .cd-copy.copied .cd-ico-copy { display: none; }
+.contact-dock .cd-copy.copied .cd-ico-check { display: inline-flex; }
+
+/* The dock is wide at full size — step it down before it hits the viewport
+   edges rather than letting it wrap */
+@media (max-width: 580px) {
+  .contact-dock {
+    gap: 0.35rem;
+    padding: 0.4rem 0.45rem;
+    bottom: calc(0.7rem + env(safe-area-inset-bottom, 0px));
+  }
+  /* Only the address survives — the status line is the first thing to go */
+  .contact-dock .cd-label { display: none; }
+  .contact-dock .cd-primary { padding: 0.5rem 0.88rem 0.5rem 0.7rem; gap: 0.5rem; }
+  .contact-dock .cd-value { font-size: 0.9rem; }
+  .contact-dock .cd-btn { width: 36px; height: 36px; }
+  .contact-dock svg { width: 18px; height: 18px; }
+  .contact-dock .cd-lead svg { width: 20px; height: 20px; }
+  .contact-dock .cd-div { margin: 0; height: 24px; }
+}
+@media (max-width: 400px) {
+  /* Email + copy + LinkedIn is the useful minimum on a small phone */
+  .contact-dock .cd-btn:nth-last-child(-n+2) { display: none; }
+  .contact-dock .cd-btn { width: 34px; height: 34px; }
+  .contact-dock .cd-value { font-size: 0.85rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-dock { transition: opacity 0.2s ease; }
+  .contact-dock .cd-primary:hover,
+  .contact-dock .cd-btn:hover { transform: none; }
 }
 
 /* ── ADDITIONAL WORK GRID ────────────────────────────────── */
@@ -2183,8 +2382,13 @@ footer {
 
   /* Hide interactive/nav elements */
   nav, .scroll-progress, .lang-overlay, .lang-toggle,
-  .pd-overlay, .nav-toggle, .doc-preview,
+  .pd-overlay, .nav-toggle, .doc-preview, .contact-dock,
   .dashboard-embed, iframe { display: none !important; }
+
+  /* The shipped-systems list is forced open for print (see beforeprint in
+     index.html) — the toggle row itself has nothing to say on paper */
+  .wip-shipped > summary { display: none !important; }
+  .wip-shipped { border-top: none !important; }
 
   /* Reset card backgrounds */
   .project-card, .cs-card, .takeaway-card, .doc-item,

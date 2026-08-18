@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Case Study — Dead Saints Parade: Systems Design</title>
+<meta name="description" content="How the systems of Dead Saints Parade were scoped, tuned, and refused — an immersive sim built solo in Unity.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ═══════════════════════════════════════════════════════════
+   Dead Saints Parade — systems design case study
+   Same pattern as the portfolio case studies and dsp-gdd.html:
+   Instrument Serif / Geist / Geist Mono, dark surfaces, mono
+   uppercase labels, gilt accent for this project.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --bg: #161619;
+  --surface: #1d1d21;
+  --surface-hover: #232328;
+  --border: #2c2c32;
+  --border-soft: #232327;
+  --text: #dddbd6;
+  --text-mid: #a09e97;
+  --text-dim: #6e6d68;
+
+  --accent: #c4a86a;
+  --accent-dim: #8a7440;
+  --accent-rgb: 196,168,106;
+  --accent2: #7e8fa8;
+  --accent2-rgb: 126,143,168;
+
+  --note-bg: rgba(var(--accent-rgb),0.06);
+  --note-border: rgba(var(--accent-rgb),0.28);
+
+  /* Status palette — reserved, always paired with a text label. */
+  --st-done: #7aab8b;
+  --st-wip: #8ca0d2;
+  --st-none: #c4736e;
+  --st-warn: #c9b36a;
+
+  --page-max: 1000px;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; scroll-padding-top: 20px; }
+
+body {
+  font-family:'Geist', -apple-system, sans-serif;
+  background: var(--bg); color: var(--text);
+  line-height:1.55; -webkit-font-smoothing:antialiased;
+  font-size:13.5px;
+  background-image: radial-gradient(circle, rgba(var(--accent-rgb),0.04) 1px, transparent 1px);
+  background-size: 28px 28px;
+  overflow-x:hidden;
+}
+@media (hover:hover) and (pointer:fine) { body { background-attachment: fixed; } }
+
+img, svg, table { max-width:100%; }
+::selection { background: var(--accent); color: var(--bg); }
+a { color: var(--accent); text-decoration:none; }
+a:hover { text-decoration:underline; }
+
+.scroll-progress {
+  position:fixed; top:0; left:0; width:0%; height:2px;
+  background: linear-gradient(90deg, var(--accent-dim), var(--accent), rgba(var(--accent2-rgb),0.8));
+  z-index:120; pointer-events:none; transition: width 0.05s linear;
+  box-shadow: 0 0 8px rgba(var(--accent-rgb),0.3);
+}
+
+.page { max-width: var(--page-max); margin:0 auto; padding: 0 2rem; }
+
+/* ── BACK LINK ─────────────────────────────────────────── */
+.back-link {
+  display:inline-flex; align-items:center; gap:0.3rem;
+  font-size:0.78rem; color: var(--text-dim); font-weight:500;
+  padding: 1.25rem 0 0; transition: color 0.15s;
+}
+.back-link:hover { color: var(--accent); text-decoration:none; }
+
+/* ── CASE HEADER ───────────────────────────────────────── */
+.case-header { padding: 1.5rem 0 1.75rem; border-bottom:1px solid var(--border-soft); }
+.label {
+  font-family:'Geist Mono', monospace; font-size:0.62rem; color: var(--accent);
+  text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.45rem;
+}
+.case-header h1 {
+  font-family:'Instrument Serif', serif; font-size:2rem; font-weight:400;
+  line-height:1.15; margin-bottom:0.55rem; letter-spacing:-0.01em;
+}
+.case-header .subtitle {
+  color: var(--text-mid); font-size:0.9rem; max-width:660px; line-height:1.65;
+}
+.meta-strip {
+  display:flex; flex-wrap:wrap; gap:0.3rem 1.4rem; font-size:0.78rem;
+  margin-top:1.1rem; padding-top:0.9rem; border-top:1px solid var(--border-soft);
+}
+.meta-strip .ml { color: var(--text-dim); }
+.meta-strip .mv { color: var(--text); font-weight:500; }
+
+/* ── SECTIONS ──────────────────────────────────────────── */
+section { padding: 2rem 0; }
+section + section { border-top:1px solid var(--border-soft); }
+
+.section-label {
+  font-family:'Geist Mono', monospace; font-size:0.6rem; color: var(--accent);
+  text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.28rem;
+}
+.section-title {
+  font-family:'Instrument Serif', serif; font-size:1.45rem; font-weight:400;
+  margin-bottom:0.4rem; line-height:1.2;
+}
+.section-desc { color: var(--text-mid); font-size:0.85rem; max-width:660px; line-height:1.65; }
+
+h3.sub {
+  font-family:'Instrument Serif', serif; font-size:1.02rem; font-weight:400;
+  margin: 1.7rem 0 0.45rem; line-height:1.25;
+}
+p.body { font-size:0.84rem; color: var(--text-mid); line-height:1.7; max-width:680px; margin-bottom:0.65rem; }
+p.body strong { color: var(--text); font-weight:500; }
+p.body em { color: var(--text); font-style:italic; }
+.ref {
+  font-family:'Geist Mono', monospace; font-size:0.62rem;
+  color: var(--text-dim); margin-left:0.3rem;
+}
+
+code {
+  font-family:'Geist Mono', monospace; font-size:0.88em;
+  background: var(--surface-hover); border:1px solid var(--border-soft);
+  border-radius:3px; padding:0.05em 0.3em; color: var(--text-mid);
+}
+pre {
+  background: var(--surface); border:1px solid var(--border);
+  border-radius:6px; padding: 0.8rem 1rem; margin: 0.8rem 0;
+  overflow-x:auto; font-family:'Geist Mono', monospace;
+  font-size:0.72rem; line-height:1.7; color: var(--text-mid);
+}
+pre .c { color: var(--text-dim); }
+pre .hl { color: var(--accent); }
+
+/* ── NOTES ─────────────────────────────────────────────── */
+.tip {
+  background: var(--note-bg); border-left:2px solid var(--note-border);
+  padding: 0.75rem 1rem; margin: 1rem 0; font-size:0.8rem;
+  color: var(--text-mid); line-height:1.65; max-width:680px;
+}
+.tip .k {
+  font-family:'Geist Mono', monospace; font-size:0.6rem; color: var(--accent);
+  text-transform:uppercase; letter-spacing:0.07em; display:block; margin-bottom:0.3rem;
+}
+.tip strong { color: var(--text); font-weight:600; }
+
+/* the "we said no" callout — the spine of this case study */
+.refusal {
+  background: linear-gradient(180deg, rgba(var(--accent-rgb),0.05), rgba(var(--accent-rgb),0.015));
+  border:1px solid var(--accent-dim); border-radius:6px;
+  padding: 1rem 1.15rem; margin: 1.1rem 0; max-width:720px;
+}
+.refusal .k {
+  font-family:'Geist Mono', monospace; font-size:0.6rem; color: var(--accent);
+  text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.4rem;
+}
+.refusal h4 {
+  font-family:'Instrument Serif', serif; font-size:1.05rem; font-weight:400;
+  margin-bottom:0.35rem; line-height:1.3;
+}
+.refusal p { font-size:0.81rem; color: var(--text-mid); line-height:1.7; margin-bottom:0.4rem; }
+.refusal p:last-child { margin-bottom:0; }
+.refusal .because {
+  font-size:0.76rem; color: var(--accent); padding-top:0.5rem;
+  border-top:1px solid rgba(var(--accent-rgb),0.18); margin-top:0.6rem;
+}
+
+/* ── GRIDS / CARDS ─────────────────────────────────────── */
+.grid { display:grid; gap:0.6rem; margin: 1rem 0; }
+.grid-2 { grid-template-columns: repeat(2,1fr); }
+.grid-3 { grid-template-columns: repeat(3,1fr); }
+.grid-4 { grid-template-columns: repeat(4,1fr); }
+
+.card {
+  background: var(--surface); border:1px solid var(--border);
+  border-radius:6px; padding: 0.9rem 1rem;
+}
+.card .card-label {
+  font-family:'Geist Mono', monospace; font-size:0.6rem; color: var(--accent);
+  text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.35rem;
+}
+.card h4 {
+  font-family:'Instrument Serif', serif; font-size:0.95rem; font-weight:400;
+  margin-bottom:0.3rem; line-height:1.25;
+}
+.card p { font-size:0.78rem; color: var(--text-mid); line-height:1.55; }
+
+/* ── TABLES ────────────────────────────────────────────── */
+.tbl-wrap { overflow-x:auto; margin: 0.9rem 0; }
+table.tbl { width:100%; border-collapse:collapse; font-size:0.79rem; min-width: 460px; }
+table.tbl th {
+  text-align:left; font-family:'Geist Mono', monospace; font-size:0.57rem;
+  color: var(--accent); text-transform:uppercase; letter-spacing:0.08em;
+  padding: 0.5rem 0.7rem; border-bottom:1px solid var(--border);
+  background: var(--surface); font-weight:500; white-space:nowrap;
+}
+table.tbl td {
+  padding: 0.55rem 0.7rem; border-bottom:1px solid var(--border-soft);
+  vertical-align:top; line-height:1.55; color: var(--text-mid);
+}
+table.tbl td.key { color: var(--text); font-weight:500; white-space:nowrap; }
+table.tbl td.num { font-family:'Geist Mono', monospace; color: var(--text); }
+table.tbl tr.hi td { background: rgba(var(--accent-rgb),0.05); }
+table.tbl.center td:not(:first-child), table.tbl.center th:not(:first-child) { text-align:center; }
+
+.badge {
+  display:inline-block; font-family:'Geist Mono', monospace;
+  font-size:0.55rem; padding:0.12rem 0.4rem; border-radius:3px;
+  text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap;
+}
+.badge.done { background: rgba(122,171,139,0.08); border:1px solid rgba(122,171,139,0.32); color: var(--st-done); }
+.badge.wip  { background: rgba(140,160,210,0.08); border:1px solid rgba(140,160,210,0.32); color: var(--st-wip); }
+.badge.none { background: rgba(196,115,110,0.08); border:1px solid rgba(196,115,110,0.32); color: var(--st-none); }
+.badge.high { background: rgba(196,115,110,0.08); border:1px solid rgba(196,115,110,0.32); color: var(--st-none); }
+.badge.med  { background: rgba(201,179,106,0.08); border:1px solid rgba(201,179,106,0.32); color: var(--st-warn); }
+
+/* ── PRIORITY RAIL ─────────────────────────────────────── */
+.prio { display:flex; gap:0.4rem; margin: 1rem 0; flex-wrap:wrap; }
+.prio-item {
+  flex:1; min-width:140px; background: var(--surface);
+  border:1px solid var(--border); border-radius:6px; padding: 0.7rem 0.85rem;
+}
+.prio-item .rank {
+  font-family:'Geist Mono', monospace; font-size:0.55rem; color: var(--accent);
+  text-transform:uppercase; letter-spacing:0.07em; margin-bottom:0.25rem;
+}
+.prio-item .pname { font-size:0.8rem; color: var(--text); font-weight:500; line-height:1.3; }
+.prio-item:first-child { border-color: var(--accent-dim); background: var(--note-bg); }
+
+/* ── FIGURE / SVG ──────────────────────────────────────── */
+figure {
+  background: var(--surface); border:1px solid var(--border);
+  border-radius:6px; padding: 1.1rem 1rem 0.85rem; margin: 1.1rem 0;
+}
+/* cap the width — the labels are absolute px in the viewBox, so letting the
+   figure fill a 1000px column scales 9px mono type up to ~17px */
+figure svg { display:block; width:100%; max-width:560px; height:auto; margin:0 auto; }
+figcaption {
+  font-size:0.74rem; color: var(--text-dim); line-height:1.6;
+  margin-top:0.85rem; padding-top:0.7rem; border-top:1px solid var(--border-soft);
+}
+figcaption strong { color: var(--text-mid); font-weight:500; }
+.svg-label { font-family:'Geist Mono', monospace; font-size:9px; fill: var(--text-dim); letter-spacing:0.04em; }
+.svg-label.hi { fill: var(--accent); }
+.svg-label.b { fill: var(--text-mid); }
+
+/* ── PLAYGROUND ────────────────────────────────────────── */
+.pg {
+  background: var(--surface); border:1px solid var(--accent-dim);
+  border-radius:6px; padding: 1rem 1.15rem 1.15rem; margin: 1.2rem 0;
+}
+.pg-head {
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:0.75rem; flex-wrap:wrap; margin-bottom:0.85rem;
+  padding-bottom:0.7rem; border-bottom:1px solid var(--border-soft);
+}
+.pg-head .k {
+  font-family:'Geist Mono', monospace; font-size:0.6rem; color: var(--accent);
+  text-transform:uppercase; letter-spacing:0.08em;
+}
+.pg-head .hint { font-size:0.73rem; color: var(--text-dim); }
+
+.pg-ctl { margin-bottom:0.8rem; }
+.pg-ctl > .cl {
+  font-family:'Geist Mono', monospace; font-size:0.57rem; color: var(--text-dim);
+  text-transform:uppercase; letter-spacing:0.07em; margin-bottom:0.35rem;
+}
+.opts { display:flex; flex-wrap:wrap; gap:0.3rem; }
+.opt {
+  font-family:'Geist Mono', monospace; font-size:0.62rem;
+  padding: 0.28rem 0.6rem; border-radius:4px; cursor:pointer;
+  border:1px solid var(--border); background: var(--bg);
+  color: var(--text-mid); letter-spacing:0.03em;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.opt:hover { border-color: var(--accent-dim); color: var(--text); }
+.opt[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); background: var(--note-bg); }
+.opt:focus-visible { outline:2px solid var(--accent-dim); outline-offset:1px; }
+
+.slider-row { display:flex; align-items:center; gap:0.85rem; }
+input[type=range] {
+  -webkit-appearance:none; appearance:none; flex:1; min-width:0;
+  height:3px; background: var(--border); border-radius:2px; outline:none; cursor:pointer;
+}
+input[type=range]::-webkit-slider-thumb {
+  -webkit-appearance:none; appearance:none; width:15px; height:15px;
+  border-radius:50%; background: var(--accent); border:2px solid var(--bg); cursor:pointer;
+}
+input[type=range]::-moz-range-thumb {
+  width:13px; height:13px; border-radius:50%;
+  background: var(--accent); border:2px solid var(--bg); cursor:pointer;
+}
+input[type=range]:focus-visible { outline:2px solid var(--accent-dim); outline-offset:4px; }
+.slider-val {
+  font-family:'Geist Mono', monospace; font-size:0.72rem; color: var(--accent);
+  min-width:88px; text-align:right;
+}
+
+.pg-body { display:grid; grid-template-columns: 210px minmax(0,1fr); gap:1.25rem; align-items:center; margin-top:1rem; }
+/* the dial isn't inside a <figure>, so it needs its own sizing — without this
+   it collapses to the UA default once the playground stacks */
+.dial-wrap { min-width:0; }
+#dial { display:block; width:100%; max-width:210px; height:auto; margin:0 auto; }
+.readouts { display:grid; grid-template-columns: repeat(2,1fr); gap:0.5rem; }
+.ro {
+  background: var(--bg); border:1px solid var(--border);
+  border-radius:5px; padding: 0.6rem 0.75rem;
+}
+.ro .rl {
+  font-family:'Geist Mono', monospace; font-size:0.54rem; color: var(--text-dim);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.2rem; line-height:1.35;
+}
+.ro .rv {
+  font-family:'Instrument Serif', serif; font-size:1.3rem; color: var(--text); line-height:1.1;
+}
+.ro .rv.acc { color: var(--accent); }
+.ro .rd { font-size:0.68rem; color: var(--text-dim); margin-top:0.15rem; }
+
+.hud {
+  font-family:'Geist Mono', monospace; font-size:0.68rem; line-height:1.9;
+  background: var(--bg); border:1px solid var(--border); border-radius:5px;
+  padding: 0.7rem 0.85rem; margin-top:0.85rem; color: var(--text-dim);
+  overflow-x:auto; white-space:nowrap;
+}
+.hud .v { color: var(--text); }
+.hud .out { color: var(--accent); }
+.hud .zero { color: var(--st-done); }
+
+.radius-bar {
+  margin-top:0.75rem; height:14px; background: var(--bg);
+  border:1px solid var(--border); border-radius:4px; overflow:hidden; position:relative;
+}
+.radius-bar .fill {
+  height:100%; background: linear-gradient(90deg, rgba(var(--accent-rgb),0.5), var(--accent));
+  transition: width 0.18s ease; border-radius: 0 3px 3px 0;
+}
+.radius-scale {
+  display:flex; justify-content:space-between;
+  font-family:'Geist Mono', monospace; font-size:0.58rem;
+  color: var(--text-dim); margin-top:0.25rem;
+}
+
+/* ── TIMELINE (decision log) ───────────────────────────── */
+.timeline { border-left:1px solid var(--border); margin: 1rem 0 0 0.35rem; padding-left:1.15rem; }
+.tl-item { position:relative; padding-bottom:1.05rem; }
+.tl-item::before {
+  content:''; position:absolute; left:calc(-1.15rem - 4px); top:5px;
+  width:7px; height:7px; border-radius:50%;
+  background: var(--accent-dim); border:2px solid var(--bg);
+}
+.tl-item.key::before { background: var(--accent); }
+.tl-date {
+  font-family:'Geist Mono', monospace; font-size:0.58rem; color: var(--text-dim);
+  text-transform:uppercase; letter-spacing:0.06em; margin-bottom:0.2rem;
+}
+.tl-what { font-size:0.82rem; color: var(--text); font-weight:500; line-height:1.45; margin-bottom:0.15rem; }
+.tl-why { font-size:0.77rem; color: var(--text-mid); line-height:1.6; }
+.tl-why .lead { color: var(--accent-dim); font-family:'Geist Mono', monospace; font-size:0.62rem; text-transform:uppercase; letter-spacing:0.05em; }
+
+/* ── STATUS BOARD ──────────────────────────────────────── */
+.stat-row { display:grid; grid-template-columns: repeat(4,1fr); gap:0.6rem; margin: 1rem 0 0.9rem; }
+.stat { background: var(--surface); border:1px solid var(--border); border-radius:6px; padding: 0.8rem 0.95rem; }
+.stat .num { font-family:'Instrument Serif', serif; font-size:1.7rem; line-height:1; color: var(--text); margin-bottom:0.2rem; }
+.stat .cap { font-family:'Geist Mono', monospace; font-size:0.56rem; color: var(--text-dim); text-transform:uppercase; letter-spacing:0.07em; line-height:1.4; }
+.stat .dot { width:7px; height:7px; border-radius:50%; display:inline-block; margin-right:0.35rem; vertical-align:middle; }
+
+.meter { display:flex; gap:2px; height:26px; margin:0.35rem 0 0.5rem; border-radius:4px; overflow:hidden; }
+.meter .seg {
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Geist Mono', monospace; font-size:0.6rem; color: var(--bg);
+  font-weight:500; min-width:0; overflow:hidden; border-radius:2px;
+}
+.meter .seg.done { background: var(--st-done); }
+.meter .seg.wip { background: var(--st-wip); }
+.meter-legend { display:flex; flex-wrap:wrap; gap:0.25rem 1.1rem; font-size:0.72rem; color: var(--text-dim); margin-bottom:0.9rem; }
+.meter-legend span { display:flex; align-items:center; gap:0.35rem; }
+.meter-legend i { width:9px; height:9px; border-radius:2px; display:inline-block; font-style:normal; }
+
+.filters { display:flex; flex-wrap:wrap; gap:0.35rem; margin: 1rem 0 0.75rem; padding-top:0.9rem; border-top:1px solid var(--border-soft); }
+.filter-btn {
+  font-family:'Geist Mono', monospace; font-size:0.62rem;
+  padding:0.3rem 0.65rem; border-radius:4px; cursor:pointer;
+  border:1px solid var(--border); background: var(--surface);
+  color: var(--text-mid); text-transform:uppercase; letter-spacing:0.05em;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.filter-btn:hover { border-color: var(--accent-dim); color: var(--text); }
+.filter-btn[aria-pressed="true"] { border-color: var(--accent-dim); color: var(--accent); background: var(--note-bg); }
+.filter-btn .n { color: var(--text-dim); margin-left:0.35rem; }
+
+.sys-list { display:grid; grid-template-columns: repeat(2,1fr); gap:0.4rem; }
+.sys {
+  display:flex; align-items:flex-start; gap:0.6rem;
+  background: var(--surface); border:1px solid var(--border);
+  border-radius:5px; padding:0.55rem 0.75rem;
+}
+.sys[hidden] { display:none; }
+.sys .badge { flex-shrink:0; margin-top:0.12rem; }
+.sys .sys-name { font-size:0.79rem; color: var(--text); font-weight:500; line-height:1.35; }
+.sys .sys-note { font-size:0.72rem; color: var(--text-dim); line-height:1.5; margin-top:0.15rem; }
+
+/* ── MATRIX ────────────────────────────────────────────── */
+table.matrix { font-size:0.72rem; min-width: 620px; }
+table.matrix th { font-size:0.53rem; padding:0.5rem 0.4rem; text-align:center; }
+table.matrix th:first-child { text-align:left; }
+table.matrix td { padding:0.45rem 0.4rem; text-align:center; font-family:'Geist Mono', monospace; font-size:0.65rem; }
+table.matrix td:first-child { text-align:left; font-family:'Geist', sans-serif; font-size:0.76rem; color: var(--text); font-weight:500; white-space:nowrap; }
+table.matrix td.on { color: var(--accent); background: rgba(var(--accent-rgb),0.06); }
+table.matrix td.off { color: var(--border); }
+
+/* ── TAKEAWAYS ─────────────────────────────────────────── */
+.takeaway { background: var(--surface); border:1px solid var(--border); border-radius:6px; padding: 0.95rem 1.1rem; }
+.takeaway h4 { font-family:'Instrument Serif', serif; font-size:0.95rem; font-weight:400; margin-bottom:0.3rem; line-height:1.3; }
+.takeaway p { font-size:0.78rem; color: var(--text-mid); line-height:1.6; }
+
+/* ── FOOTER ────────────────────────────────────────────── */
+.case-footer {
+  padding: 1.3rem 0 2.5rem; border-top:1px solid var(--border-soft);
+  font-size:0.74rem; color: var(--text-dim);
+  display:flex; justify-content:space-between; gap:1rem; flex-wrap:wrap;
+}
+
+/* ── REVEAL ────────────────────────────────────────────── */
+.reveal { opacity:0; transform: translateY(16px);
+  transition: opacity 0.55s cubic-bezier(0.22,1,0.36,1), transform 0.55s cubic-bezier(0.22,1,0.36,1); }
+.reveal.visible { opacity:1; transform:none; }
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity:1; transform:none; transition:none; }
+  html { scroll-behavior:auto; }
+  .radius-bar .fill { transition:none; }
+}
+
+/* ── RESPONSIVE ────────────────────────────────────────── */
+@media (max-width: 820px) {
+  .page { padding: 0 1.25rem; }
+  .case-header h1 { font-size:1.7rem; }
+  .grid-4, .grid-3 { grid-template-columns: repeat(2,1fr); }
+  .stat-row { grid-template-columns: repeat(2,1fr); }
+  .sys-list { grid-template-columns: 1fr; }
+  .pg-body { grid-template-columns: 1fr; gap:1rem; }
+  .pg-body .dial-wrap { max-width:210px; margin:0 auto; }
+}
+@media (max-width: 520px) {
+  .grid-4, .grid-3, .grid-2 { grid-template-columns: 1fr; }
+  .readouts { grid-template-columns: 1fr 1fr; }
+  .case-footer { flex-direction:column; gap:0.3rem; }
+  .slider-val { min-width:76px; font-size:0.68rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="scroll-progress" id="progress"></div>
+
+<div class="page">
+  <a href="index.html" class="back-link">← Back to projects</a>
+
+  <!-- ══════════════════════════════════════════════════════
+       HEADER
+       ══════════════════════════════════════════════════════ -->
+  <div class="case-header">
+    <div class="label">Case Study · Systems Design</div>
+    <h1>Dead Saints Parade</h1>
+    <p class="subtitle">
+      A third-person immersive sim stealth game, built solo in Unity. You play a fragile spy
+      in a Gothic-Victorian city where information is the weapon and being seen is the fail
+      state. This is a case study about scope: which systems earned depth, which were refused,
+      and the rule used to decide.
+    </p>
+
+    <div class="meta-strip">
+      <div><span class="ml">Role </span><span class="mv">Game Director · Technical Game Designer · Sole Developer</span></div>
+      <div><span class="ml">Team </span><span class="mv">1, plus a part-time support programmer</span></div>
+      <div><span class="ml">Engine </span><span class="mv">Unity 6.3 · C#</span></div>
+      <div><span class="ml">Scope </span><span class="mv">~2–3 hr · 3 linked regions · ~45–55 scenes</span></div>
+      <div><span class="ml">Platform </span><span class="mv">PC + Steam Deck</span></div>
+      <div><span class="ml">Status </span><span class="mv">15 of 18 systems complete · demo Feb 2027</span></div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       01 — SUMMARY
+       ══════════════════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="grid grid-4">
+      <div class="card">
+        <div class="card-label">01 · Problem</div>
+        <h4>The genre wants breadth I can't afford</h4>
+        <p>Immersive sims earn their reputation through systemic depth — the reason to play is
+           that systems collide in ways nobody scripted. One developer cannot build breadth.
+           Every system has to justify its slot, and "it would be cool" is not a justification.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">02 · Process</div>
+        <h4>Make the pillars adjudicate</h4>
+        <p>Four pillars, plus an explicit priority order for when they conflict. Scope arguments
+           stop being about taste and start resolving by rule. Everything that survives gets
+           tuned with real numbers, exposed on ScriptableObjects so tuning never needs code.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">03 · Solution</div>
+        <h4>Four systems deep, the rest shallow</h4>
+        <p>Depth concentrated in cover, lockpicking, guard perception, and sound propagation —
+           the four that carry the stealth loop. Everything else is built to the minimum that
+           serves them. 18 named systems, 15 complete.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">04 · Outcome</div>
+        <h4>Systems done, content next</h4>
+        <p>The vertical slice's systems are complete and tuned. Combat, dialogue, and the Canvas
+           UI pass remain. Steam Next Fest demo targeted for Feb 2027, full release Q2 2027.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       02 — THE RULE
+       ══════════════════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-label">The Rule</div>
+    <h2 class="section-title">Four Pillars, and What Happens When They Fight</h2>
+    <p class="section-desc">
+      Most projects list pillars. Fewer say what happens when two of them want opposite things.
+      That second part is where the pillars actually do work — without it, a pillar list is
+      decoration you can argue your way around.
+    </p>
+
+    <div class="prio">
+      <div class="prio-item"><div class="rank">1 · beats everything</div><div class="pname">Vulnerability</div></div>
+      <div class="prio-item"><div class="rank">2</div><div class="pname">Tactical Stealth</div></div>
+      <div class="prio-item"><div class="rank">4</div><div class="pname">Information as Power</div></div>
+      <div class="prio-item"><div class="rank">3 · yields</div><div class="pname">Non-Linear Exploration</div></div>
+    </div>
+
+    <p class="body">
+      Read as <strong>1 &gt; 2 &gt; 4 &gt; 3</strong>. Vulnerability wins outright: any feature
+      that lets the player shortcut stealth is cut regardless of how good it feels in isolation.
+      Information-richness beats exploration convenience: a long detour to reach a document is
+      preferred over auto-collecting it.
+    </p>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-label">Cut by rule 1</div>
+        <h4>Bullet-time combat</h4>
+        <p>Fun, genre-adjacent, and a direct shortcut past the stealth layer. Cut without
+           debate because Pillar 1 outranks everything it would have served.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Cut by rule 4 &gt; 3</div>
+        <h4>Auto-collect on documents</h4>
+        <p>Would have smoothed exploration and cost the game its central act — going to the
+           thing, and reading it. Exploration convenience yields to information.</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="k">Why this is the first section</span>
+      Every remaining decision on this page is downstream of that ordering. The cover system's
+      corner behaviour, the hard cap on lockpick skill, and the refusal to let walls fully block
+      sound are all the same rule applied three times.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       03 — COVER
+       ══════════════════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-label">System 01 · Complete</div>
+    <h2 class="section-title">Cover — Designing a Refusal<span class="ref">§7.4</span></h2>
+    <p class="section-desc">
+      Cover is the primary defensive tool, and the system I'd point at first. Not because of the
+      raycasts — because of the feature it deliberately doesn't have.
+    </p>
+
+    <h3 class="sub">Automatic, not button-activated</h3>
+    <p class="body">
+      Walk toward a wall and the player snaps into cover after <strong>4 frames</strong> of
+      sustained contact — about 66 ms at 60 fps. There is no cover button. The whole point is to
+      remove a button press from the moment where the player's attention is most expensive.
+      The 4-frame requirement is what stops single-frame flicker from a glancing wall.
+    </p>
+
+    <figure>
+      <svg viewBox="0 14 420 158" role="img" aria-label="Top-down diagram of the cover detection fan: five rays at 0, plus and minus 30, and plus and minus 60 degrees from player forward, cast 0.7 metres toward a wall, with the player held at a 0.42 metre standoff.">
+        <!-- wall -->
+        <rect x="50" y="44" width="320" height="12" fill="#2c2c32" stroke="#3a3a42" stroke-width="1"/>
+        <text x="52" y="36" class="svg-label b">WALL</text>
+
+        <!-- rays -->
+        <g stroke-width="1.2" fill="none">
+          <line x1="210" y1="98" x2="210" y2="28" stroke="#c4a86a" opacity="0.85"/>
+          <line x1="210" y1="98" x2="245" y2="37.4" stroke="#c4a86a" opacity="0.85"/>
+          <line x1="210" y1="98" x2="175" y2="37.4" stroke="#c4a86a" opacity="0.85"/>
+          <line x1="210" y1="98" x2="270.6" y2="63" stroke="#7e8fa8" opacity="0.55" stroke-dasharray="3 3"/>
+          <line x1="210" y1="98" x2="149.4" y2="63" stroke="#7e8fa8" opacity="0.55" stroke-dasharray="3 3"/>
+        </g>
+
+        <!-- angle labels -->
+        <text x="214" y="26" class="svg-label hi">0°</text>
+        <text x="249" y="34" class="svg-label hi">+30°</text>
+        <text x="152" y="34" class="svg-label hi">−30°</text>
+        <text x="275" y="62" class="svg-label">+60°</text>
+        <text x="108" y="62" class="svg-label">−60°</text>
+
+        <!-- standoff -->
+        <line x1="140" y1="56" x2="140" y2="98" stroke="#6e6d68" stroke-width="1" stroke-dasharray="2 2"/>
+        <line x1="136" y1="56" x2="144" y2="56" stroke="#6e6d68" stroke-width="1"/>
+        <line x1="136" y1="98" x2="144" y2="98" stroke="#6e6d68" stroke-width="1"/>
+        <text x="86" y="82" class="svg-label b">0.42 m</text>
+
+        <!-- player -->
+        <circle cx="210" cy="98" r="9" fill="#1d1d21" stroke="#c4a86a" stroke-width="2"/>
+        <text x="196" y="122" class="svg-label hi">PLAYER</text>
+
+        <!-- range arc -->
+        <path d="M 150 63 A 70 70 0 0 1 270.6 63" fill="none" stroke="#3a3a42" stroke-width="1" stroke-dasharray="2 3"/>
+        <text x="286" y="98" class="svg-label">0.7 m range</text>
+
+        <!-- tangent -->
+        <g>
+          <line x1="60" y1="140" x2="130" y2="140" stroke="#7e8fa8" stroke-width="1.2"/>
+          <polygon points="130,140 124,137 124,143" fill="#7e8fa8"/>
+          <line x1="60" y1="140" x2="60" y2="140" stroke="#7e8fa8"/>
+          <text x="60" y="158" class="svg-label b">wallTangent = Cross(CoverNormal, up)</text>
+        </g>
+      </svg>
+      <figcaption>
+        <strong>Detection.</strong> A 5-ray fan at 0°, ±30° and ±60° from player forward, cast
+        0.7 m from chest height. Walls must be vertical, so floors and ceilings are rejected.
+        Approach angle must be under 60° — running parallel past a wall won't trigger cover.
+        Once in, a magnetic standoff holds the player at 0.42 m, far enough to avoid controller
+        penetration, close enough to read as contact.
+      </figcaption>
+    </figure>
+
+    <h3 class="sub">Wall-tangent movement, no special cases</h3>
+    <p class="body">
+      Camera-relative input is projected onto the wall's tangent, so the control mapping falls
+      out of the geometry instead of being authored per wall:
+    </p>
+
+<pre>wallTangent   = Cross(CoverNormal, Vector3.up).normalized
+worldInput    = camRight × input.x + camForward × input.y
+tangentSlide  = Dot(worldInput, wallTangent)</pre>
+
+    <p class="body">
+      A wall facing the camera slides with A/D. A wall on the player's left slides with W/S.
+      Any arbitrary angle works with no branches, which is the difference between a system and
+      a pile of cases.
+    </p>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Parameter</th><th>Value</th><th>Purpose</th></tr></thead>
+        <tbody>
+          <tr><td class="key">Walk speed in cover</td><td class="num">1.5 m/s</td><td>Slower than normal walk; sprint disabled</td></tr>
+          <tr><td class="key">Magnetic standoff</td><td class="num">0.42 m</td><td>Controller radius + 0.1, corrective nudge at speed 10</td></tr>
+          <tr><td class="key">Rotation slerp</td><td class="num">10</td><td>Player rotates to face away from the wall</td></tr>
+          <tr><td class="key">Footstep interval</td><td class="num">0.45 m</td><td>Lateral travel; feeds AI hearing at 1 m radius</td></tr>
+          <tr><td class="key">Exit threshold</td><td class="num">dot &gt; 0.65</td><td>~49° into the wall — deliberate exits only</td></tr>
+          <tr><td class="key">Snap-in delay</td><td class="num">4 frames</td><td>≈66 ms at 60 fps; kills flicker</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="refusal">
+      <div class="k">The refusal</div>
+      <h4>Corners don't wrap, and that's the feature</h4>
+      <p>
+        Nearly every third-person cover system lets you round an outer corner with a button —
+        the character slides around, the camera follows, you're on the new wall. It feels good.
+        It was built and it is not in the game.
+      </p>
+      <p>
+        In DSP the system commits to one wall. At an outer corner the peek camera looks around
+        it, but the body stays clamped at the edge. To get onto the next wall the player has to
+        push away from the current one and re-engage — a deliberate act, taken while exposed.
+      </p>
+      <p class="because">
+        Because free auto-wrap glides the player blindly into space they haven't looked at yet.
+        That is a shortcut past observation, and Pillar 1 outranks the comfort it would buy.
+      </p>
+    </div>
+
+    <p class="body">
+      Inside corners had the opposite problem — the fan would alternate between two surfaces and
+      jitter. That's fixed by normal-locking (<code>NormalLockDot</code>), which keeps the player
+      committed to the original wall. Same principle: one wall at a time, always known.
+    </p>
+
+    <h3 class="sub">What it costs, stated plainly</h3>
+    <p class="body">
+      No cover-to-cover dash. No scripted corner turn. No vaulting over cover. Peek uses
+      <code>FindObjectsByType</code> to save and restore the scene camera, which allocates.
+      Single-surface tracking only, so genuinely complex geometry can still break it. These are
+      known and written down rather than discovered later.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       04 — LOCKPICKING PLAYGROUND
+       ══════════════════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-label">System 02 · Complete</div>
+    <h2 class="section-title">Lockpicking — Tuning a Curve That Can't Trivialise Itself<span class="ref">§10.4</span></h2>
+    <p class="section-desc">
+      A pick-and-turn minigame across five tiers. The design problem isn't the minigame, it's the
+      progression: character skill has to matter without ever letting a maxed player skip the
+      thing they're maxed at. Drag the slider and watch the sweet spot widen — then look at how
+      little it widens on a Master lock.
+    </p>
+
+    <div class="pg">
+      <div class="pg-head">
+        <span class="k">Live — lockpick tuning model</span>
+        <span class="hint">Every value below is computed from the shipped formulas.</span>
+      </div>
+
+      <div class="pg-ctl">
+        <div class="cl">Lock tier</div>
+        <div class="opts" id="tierOpts" role="group" aria-label="Lock tier">
+          <button class="opt" data-tier="0" aria-pressed="false">Simple</button>
+          <button class="opt" data-tier="1" aria-pressed="false">Standard</button>
+          <button class="opt" data-tier="2" aria-pressed="false">Advanced</button>
+          <button class="opt" data-tier="3" aria-pressed="false">Expert</button>
+          <button class="opt" data-tier="4" aria-pressed="true">Master</button>
+        </div>
+      </div>
+
+      <div class="pg-ctl">
+        <div class="cl">Finesse stat</div>
+        <div class="slider-row">
+          <input type="range" id="finesse" min="0" max="100" value="0" step="1"
+                 aria-label="Finesse stat, 0 to 100 percent">
+          <span class="slider-val" id="finesseVal">level 1 · 0%</span>
+        </div>
+      </div>
+
+      <div class="pg-body">
+        <div class="dial-wrap">
+          <svg viewBox="0 0 210 210" role="img" id="dial"
+               aria-label="Lock cylinder dial showing the sweet-spot arc at the current tier and Finesse level.">
+            <circle cx="105" cy="105" r="82" fill="none" stroke="#2c2c32" stroke-width="1"/>
+            <circle cx="105" cy="105" r="62" fill="none" stroke="#232327" stroke-width="1"/>
+            <!-- tick marks every 30 deg -->
+            <g stroke="#2c2c32" stroke-width="1">
+              <line x1="105" y1="23" x2="105" y2="31"/>
+              <line x1="176" y1="64" x2="169" y2="68"/>
+              <line x1="176" y1="146" x2="169" y2="142"/>
+              <line x1="105" y1="187" x2="105" y2="179"/>
+              <line x1="34" y1="146" x2="41" y2="142"/>
+              <line x1="34" y1="64" x2="41" y2="68"/>
+            </g>
+            <!-- baseline (skill 0) arc, ghost -->
+            <path id="arcBase" d="" fill="none" stroke="#8a7440" stroke-width="11" opacity="0.35"/>
+            <!-- current arc -->
+            <path id="arcNow" d="" fill="none" stroke="#c4a86a" stroke-width="11"/>
+            <!-- pick needle -->
+            <line x1="105" y1="105" x2="105" y2="43" stroke="#dddbd6" stroke-width="1.5"/>
+            <circle cx="105" cy="105" r="4" fill="#dddbd6"/>
+            <text x="105" y="14" text-anchor="middle" class="svg-label b">SWEET SPOT</text>
+          </svg>
+        </div>
+
+        <div>
+          <div class="readouts">
+            <div class="ro">
+              <div class="rl">Sweet-spot arc</div>
+              <div class="rv acc" id="roArc">3.0°</div>
+              <div class="rd" id="roArcD">half-width 1.5°</div>
+            </div>
+            <div class="ro">
+              <div class="rl">Pick break speed</div>
+              <div class="rv" id="roBrk">65</div>
+              <div class="rd">HP/s at max error</div>
+            </div>
+            <div class="ro">
+              <div class="rl">Worst-case break</div>
+              <div class="rv" id="roTime">1.5 s</div>
+              <div class="rd">from 100 pick HP</div>
+            </div>
+            <div class="ro">
+              <div class="rl">Finesse XP on success</div>
+              <div class="rv" id="roXp">50</div>
+              <div class="rd" id="roShare">0.8% of the dial</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+<pre><span class="c">// pick degradation — runs every frame while tension is applied</span>
+damage = baseBreakSpeed × breakMultiplier × skillReduction × dt
+
+breakMultiplier = lerp(0.3, 1.0, errorNormalised)   <span class="c">// 0.3 at the edge of the sweet spot</span>
+skillReduction  = lerp(1.0, 0.5, PlayerSkillLevel)  <span class="c">// halves at max Finesse</span>
+
+<span class="c">// cylinder rotation limit — quadratic falloff, so near-misses still turn</span>
+rotationError = clamp01((angularError − halfWidth) / (90 − halfWidth))
+maxRotation   = (1 − rotationError²) × 90°</pre>
+
+    <div class="tbl-wrap">
+      <table class="tbl center">
+        <thead>
+          <tr><th>Tier</th><th>Arc @ skill 0</th><th>Arc @ skill 1</th><th>Break speed</th><th>Worst case</th><th>XP</th></tr>
+        </thead>
+        <tbody id="tierTable">
+          <tr data-t="0"><td class="key">Simple</td><td class="num">30°</td><td class="num">38°</td><td class="num">15</td><td class="num">6.7 s</td><td class="num">10</td></tr>
+          <tr data-t="1"><td class="key">Standard</td><td class="num">20°</td><td class="num">28°</td><td class="num">22</td><td class="num">4.5 s</td><td class="num">15</td></tr>
+          <tr data-t="2"><td class="key">Advanced</td><td class="num">12°</td><td class="num">20°</td><td class="num">32</td><td class="num">3.1 s</td><td class="num">20</td></tr>
+          <tr data-t="3"><td class="key">Expert</td><td class="num">6°</td><td class="num">14°</td><td class="num">45</td><td class="num">2.2 s</td><td class="num">30</td></tr>
+          <tr data-t="4" class="hi"><td class="key">Master</td><td class="num">3°</td><td class="num">11°</td><td class="num">65</td><td class="num">1.5 s</td><td class="num">50</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="body">
+      Pick HP is a flat <strong>100</strong> at every tier. Difficulty scales through break
+      <em>speed</em>, never durability — so a hard lock punishes imprecision rather than
+      patience, and the player's relationship with a lock is always "am I on the spot", not
+      "do I have enough resource".
+    </p>
+
+    <div class="refusal">
+      <div class="k">The refusal</div>
+      <h4>The skill cap is deliberately too small to matter</h4>
+      <p>
+        Finesse adds 4° per side. At maximum, a Master lock goes from a 3° arc to an 11° arc —
+        3% of the dial. A fully-levelled player still has to find the sweet spot by hand, still
+        breaks picks, still feels the lock.
+      </p>
+      <p class="because">
+        Because progression here is parameter-space, not permission. Stats make existing
+        mechanics easier to execute; they never unlock a bypass. That's the line between an
+        immersive sim and an RPG with a lockpicking skill.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       05 — PERCEPTION
+       ══════════════════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-label">System 03 · Complete</div>
+    <h2 class="section-title">Perception — Seeing versus Noticing<span class="ref">§12.2</span></h2>
+    <p class="section-desc">
+      A guard's eye is two cones, not one. That single split is what produces the genre's
+      signature moment: the cone sweeps toward you, and you freeze instead of running.
+    </p>
+
+    <figure>
+      <svg viewBox="0 75 420 185" role="img" aria-label="Top-down diagram of a guard's two vision cones: an inner 60 degree cone reaching 15 metres that detects any player, and an outer 120 degree cone reaching 8 metres that detects only moving players.">
+        <!-- outer cone: +/-60deg, r=80 -->
+        <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="#7e8fa8" opacity="0.10"/>
+        <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="none" stroke="#7e8fa8" stroke-width="1" opacity="0.45"/>
+        <!-- inner cone: +/-30deg, r=150 -->
+        <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="#c4a86a" opacity="0.12"/>
+        <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="none" stroke="#c4a86a" stroke-width="1" opacity="0.6"/>
+
+        <!-- guard -->
+        <circle cx="210" cy="225" r="8" fill="#1d1d21" stroke="#dddbd6" stroke-width="2"/>
+        <text x="210" y="246" text-anchor="middle" class="svg-label b">GUARD · eye 1.6 m</text>
+
+        <!-- labels -->
+        <text x="292" y="100" class="svg-label hi">INNER 60° / 15 m</text>
+        <text x="292" y="112" class="svg-label">detects any player</text>
+        <text x="286" y="176" class="svg-label b">OUTER 120° / 8 m</text>
+        <text x="286" y="188" class="svg-label">moving players only</text>
+
+        <!-- still player, well inside the outer cone (45° of the 60° half-angle) -->
+        <circle cx="180" cy="196" r="5" fill="#7aab8b"/>
+        <text x="86" y="199" class="svg-label" style="fill:#7aab8b">STILL → unseen</text>
+
+        <!-- moving player in inner cone -->
+        <circle cx="240" cy="130" r="5" fill="#c4736e"/>
+        <text x="250" y="133" class="svg-label" style="fill:#c4736e">MOVING → seen</text>
+      </svg>
+      <figcaption>
+        <strong>Two zones.</strong> The inner cone detects a player whether or not they're
+        moving. The outer cone only registers movement above a threshold — a stationary player
+        in peripheral vision is invisible, and even when it does fire, peripheral detection
+        fills suspicion at <strong>40%</strong> of the normal rate. It's a vague sense, not a
+        sighting. After a cone check passes, 1–3 raycasts to centre-mass, head and feet confirm
+        line of sight; any clear ray counts, which stops a head poking over cover from being a
+        false negative.
+      </figcaption>
+    </figure>
+
+    <h3 class="sub">Shadow is a hard gate, not a modifier</h3>
+    <p class="body">
+      Below a light level of <strong>0.2</strong> the guard cannot see the player at all, at any
+      range. Above it, light is remapped to 0–1 and raised to an exponent of 2.0, so 50% light
+      gives 25% detection speed. The quadratic is doing real work: it makes the difference
+      between "dim" and "dark" feel like a cliff rather than a slope, which is what makes
+      extinguishing a single candle a tactical act.
+    </p>
+
+    <p class="body">
+      All five inputs — distance, angle, light, movement, posture — multiply into one
+      <code>combinedMult</code>, which maps linearly onto a fill time between 0.5 s (worst case)
+      and 5 s (best case). Every threshold lives on a <code>GuardData</code> ScriptableObject, so
+      a Nervous Guard in the Catacombs is an asset, not a subclass.
+    </p>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Scenario</th><th>Time to Alert</th></tr></thead>
+        <tbody>
+          <tr><td>Standing, full light, centre of cone, close range</td><td class="num">~0.5 s</td></tr>
+          <tr><td>Crouching, dim light (0.4), edge of cone, far range</td><td class="num">~5 s+</td></tr>
+          <tr><td>Moving, peripheral cone only</td><td class="num">~12 s</td></tr>
+          <tr><td>Still, below the light threshold, any range</td><td class="num">never</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       06 — SOUND PLAYGROUND
+       ══════════════════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-label">System 04 · Complete</div>
+    <h2 class="section-title">Sound — Four Terms, One Radius<span class="ref">§17.5</span></h2>
+    <p class="section-desc">
+      Sound is global where vision is local, and that asymmetry is what makes the two systems
+      reward different play. Every noise the player makes runs through the same four-term model
+      before a guard ever hears it. Build a scenario below.
+    </p>
+
+    <div class="pg">
+      <div class="pg-head">
+        <span class="k">Live — sound propagation model</span>
+        <span class="hint">Output mirrors the in-engine debug HUD, line for line.</span>
+      </div>
+
+      <div class="pg-ctl">
+        <div class="cl">Movement — raw radius</div>
+        <div class="opts" id="moveOpts" role="group" aria-label="Movement state">
+          <button class="opt" data-v="1.5" aria-pressed="false">Crouch · 1.5 m</button>
+          <button class="opt" data-v="4" aria-pressed="true">Walk · 4 m</button>
+          <button class="opt" data-v="12" aria-pressed="false">Run · 12 m</button>
+        </div>
+      </div>
+
+      <div class="pg-ctl">
+        <div class="cl">Surface underfoot — multiplies at source</div>
+        <div class="opts" id="surfOpts" role="group" aria-label="Surface type">
+          <button class="opt" data-v="0.5" aria-pressed="false">Carpet ×0.5</button>
+          <button class="opt" data-v="1" aria-pressed="true">Stone ×1.0</button>
+          <button class="opt" data-v="1.2" aria-pressed="false">Marble ×1.2</button>
+          <button class="opt" data-v="1.4" aria-pressed="false">Gravel ×1.4</button>
+          <button class="opt" data-v="2.5" aria-pressed="false">Metal grate ×2.5</button>
+        </div>
+      </div>
+
+      <div class="pg-ctl">
+        <div class="cl">Ambient masking — subtracts metres at the origin</div>
+        <div class="opts" id="maskOpts" role="group" aria-label="Masking source">
+          <button class="opt" data-v="0" aria-pressed="true">None</button>
+          <button class="opt" data-v="2" aria-pressed="false">Fountain −2</button>
+          <button class="opt" data-v="3" aria-pressed="false">Crowd −3</button>
+          <button class="opt" data-v="4" aria-pressed="false">Rain −4</button>
+          <button class="opt" data-v="5" aria-pressed="false">Organ −5</button>
+          <button class="opt" data-v="10" aria-pressed="false">Stacked, capped −10</button>
+        </div>
+      </div>
+
+      <div class="pg-ctl">
+        <div class="cl">Wall between you and the guard — multiplies suspicion</div>
+        <div class="opts" id="occOpts" role="group" aria-label="Occluder material">
+          <button class="opt" data-v="1" aria-pressed="true">Clear ×1.0</button>
+          <button class="opt" data-v="0.85" aria-pressed="false">Iron grate ×0.85</button>
+          <button class="opt" data-v="0.8" aria-pressed="false">Curtain ×0.8</button>
+          <button class="opt" data-v="0.5" aria-pressed="false">Wood ×0.5</button>
+          <button class="opt" data-v="0.2" aria-pressed="false">Stone wall ×0.2</button>
+        </div>
+      </div>
+
+      <div class="hud" id="soundHud"></div>
+
+      <div class="radius-bar"><div class="fill" id="radFill" style="width:33%"></div></div>
+      <div class="radius-scale"><span>0 m</span><span>effective radius</span><span>12 m</span></div>
+      <p style="font-size:0.76rem;color:var(--text-dim);line-height:1.6;margin-top:0.7rem;" id="soundNote"></p>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="card">
+        <div class="card-label">Decision · masking</div>
+        <h4>Subtract from radius, not suspicion</h4>
+        <p>Masking removes metres from the sound before dispatch. A crouched player (1.5 m) in
+           rain (−4 m) produces a radius of zero and the event is never dispatched at all. A
+           running player still leaks 8 m. Falloff stays distance-based and consistent.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Decision · measurement point</div>
+        <h4>Measured at the origin, not the listener</h4>
+        <p>Masking is sampled where the sound is made. The player is rewarded for
+           <em>positioning themselves</em> next to the organ before acting — not for the guard
+           happening to stand near it.</p>
+      </div>
+    </div>
+
+    <div class="refusal">
+      <div class="k">The refusal</div>
+      <h4>Walls muffle. Walls never block.</h4>
+      <p>
+        The cheap version of this system is a boolean: line of sight to the listener, or silence.
+        It's faster, and it would have made stone walls into perfect soundproofing.
+      </p>
+      <p>
+        Instead every material is a multiplier — stone 0.2×, wood 0.5×, curtain 0.8× — and a
+        pistol shot at a 50 m radius still punches meaningful suspicion through cathedral stone.
+      </p>
+      <p class="because">
+        Because "firing a weapon is always a disaster" is a contract with the player. A hard
+        block would make guards deaf behind cover and quietly turn the pistol into a safe option
+        in the exact rooms where it should be the worst one.
+      </p>
+    </div>
+
+    <p class="body">
+      The honest limitation: occlusion is a single raycast, so a thin pillar between source and
+      listener blocks as if it were a wall. Multi-sampling to head, torso and feet fixes it at
+      3× the raycast cost, and it's deferred until vertical-slice tuning shows it actually
+      matters on a Steam Deck.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       07 — MATRIX
+       ══════════════════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-label">Systems Thinking</div>
+    <h2 class="section-title">What Feeds What<span class="ref">§13</span></h2>
+    <p class="section-desc">
+      Read row → column. The point of the table isn't the individual cells; it's the two columns
+      on the right. Almost every player action, whatever system it starts in, eventually expresses
+      itself as a change in one guard's suspicion value.
+    </p>
+
+    <div class="tbl-wrap">
+      <table class="tbl matrix">
+        <thead>
+          <tr><th></th><th>Cover</th><th>Interact</th><th>Sound</th><th>Light</th><th>Journal</th><th>Inventory</th><th>Progression</th><th>AI Senses</th><th>AI State</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Player Movement</td><td class="on">emits</td><td class="on">reads</td><td class="on">emits</td><td class="on">reads</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td></tr>
+          <tr><td>Cover</td><td class="off">·</td><td class="on">blocks</td><td class="on">reads</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="on">blocks LOS</td><td class="off">·</td></tr>
+          <tr><td>Lockpicking</td><td class="off">·</td><td class="off">·</td><td class="on">emits*</td><td class="off">·</td><td class="off">·</td><td class="on">uses</td><td class="on">→ Finesse</td><td class="off">·</td><td class="off">·</td></tr>
+          <tr><td>Interaction</td><td class="off">·</td><td class="off">·</td><td class="on">emits</td><td class="on">toggles</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td></tr>
+          <tr><td>Documents / Obs.</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="on">writes</td><td class="on">reads</td><td class="on">→ Acuity</td><td class="off">·</td><td class="off">·</td></tr>
+          <tr><td>Sound Propagation</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="on">reads</td><td class="off">·</td></tr>
+          <tr><td>Guard Coordinator</td><td class="off">·</td><td class="off">·</td><td class="on">shouts</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="off">·</td><td class="on">writes bb</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="body" style="font-size:0.75rem;color:var(--text-dim);">
+      * Lockpick noise is wired but not yet emitting — the <code>OnPickBroken</code> event exists
+      and Sound Propagation will subscribe at ~6 m. Empty cells are either unwired or not
+      meaningful; they're left blank rather than invented.
+    </p>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       08 — RISK REGISTER
+       ══════════════════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-label">Production</div>
+    <h2 class="section-title">Risk Register<span class="ref">§19</span></h2>
+    <p class="section-desc">
+      Kept because a solo project fails from the production side more often than the design side,
+      and because a mitigation you wrote down before the risk landed is worth more than one you
+      improvised after.
+    </p>
+
+    <div class="tbl-wrap">
+      <table class="tbl">
+        <thead><tr><th>Risk</th><th>Severity</th><th>Mitigation</th></tr></thead>
+        <tbody>
+          <tr><td class="key">Solo dev burnout</td><td><span class="badge high">High</span></td><td>Single-doc workflow; aggressive asset reuse; cut ruthlessly</td></tr>
+          <tr><td class="key">Player can't find clues to progress</td><td><span class="badge high">High</span></td><td>Clue-density targets per area; always at least one golden-path clue per critical lock</td></tr>
+          <tr><td class="key">Scope creep on narrative</td><td><span class="badge high">High</span></td><td>Vertical slice locked; other regions reuse its structural template</td></tr>
+          <tr><td class="key">OnGUI → Canvas migration slips</td><td><span class="badge med">Medium</span></td><td>Rendering decoupled in every system; can ship beta on placeholder UI</td></tr>
+          <tr><td class="key">Sound propagation perf on Steam Deck</td><td><span class="badge med">Medium</span></td><td>Start with single-ray occlusion; profile early</td></tr>
+          <tr><td class="key">Save/load complexity</td><td><span class="badge med">Medium</span></td><td>Definitions already live on ScriptableObjects; only runtime instances need serialising</td></tr>
+          <tr><td class="key">AI feels "solved" once routes are known</td><td><span class="badge med">Medium</span></td><td>Coordinator's dynamic role assignment reshuffles each encounter</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tip">
+      <span class="k">Note</span>
+      The first mitigation is why the design documentation is one file instead of a GDD plus
+      five FDDs plus an art bible. Maintaining cross-references between documents cost more than
+      the structure returned, for a team of one.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       09 — DECISION LOG
+       ══════════════════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-label">Reasoning Over Time</div>
+    <h2 class="section-title">Decision Log<span class="ref">§27</span></h2>
+    <p class="section-desc">
+      A running record of what was decided and why. Reversals aren't deleted — they're struck
+      through with the reason. Ten entries selected from the log; the rule is that every one has
+      to name the pillar or constraint it serves.
+    </p>
+
+    <div class="timeline">
+      <div class="tl-item key">
+        <div class="tl-date">2026-03</div>
+        <div class="tl-what">Health is punitive — 3 HP, no regeneration</div>
+        <div class="tl-why"><span class="lead">Why</span> Vulnerability pillar. Everything downstream assumes the player dies in two or three hits.</div>
+      </div>
+      <div class="tl-item key">
+        <div class="tl-date">2026-03</div>
+        <div class="tl-what">Cover is automatic, not button-activated</div>
+        <div class="tl-why"><span class="lead">Why</span> Removes friction at the exact moment the player's attention is most expensive.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-03</div>
+        <div class="tl-what">Progression is use-based; no skill points, no allocation screen</div>
+        <div class="tl-why"><span class="lead">Why</span> Immersive-sim parameter-space rather than an RPG bypass. You never stop playing to spend.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-03</div>
+        <div class="tl-what">Clues are author-defined at asset-creation time, not parsed from prose at runtime</div>
+        <div class="tl-why"><span class="lead">Why</span> Narrative keeps total control over what counts as actionable. No ambiguity about what the player was supposed to catch.</div>
+      </div>
+      <div class="tl-item key">
+        <div class="tl-date">2026-03</div>
+        <div class="tl-what">Wall occlusion is a partial muffle, never a hard block</div>
+        <div class="tl-why"><span class="lead">Why</span> Preserves the "weapons are always a disaster" contract. A hard block would make guards deaf behind cover.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-03</div>
+        <div class="tl-what">Masking subtracts from radius, not from suspicion</div>
+        <div class="tl-why"><span class="lead">Why</span> Keeps falloff consistently distance-based, and keeps loud things loud even inside a masking zone.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-03</div>
+        <div class="tl-what">Cinematic inspection mode is opt-in per observation, not the default</div>
+        <div class="tl-why"><span class="lead">Why</span> Most observations stay ambient and cheap to author. Cinematic attention has to be earned by the beat.</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">2026-04</div>
+        <div class="tl-what">Consolidated one GDD; retired the modular GDD + FDD + manual ecosystem</div>
+        <div class="tl-why"><span class="lead">Why</span> Maintenance cost of cross-referencing exceeded the value it returned for a single author.</div>
+      </div>
+      <div class="tl-item key">
+        <div class="tl-date">2026-04-25</div>
+        <div class="tl-what">Kept the Informant archetype in vertical-slice scope, against the source plan's advice</div>
+        <div class="tl-why"><span class="lead">Why</span> More stealth-verb variety in the demo, at an accepted cost of roughly 2.5 extra days of engineering. Written down as a cost, not as an assumption.</div>
+      </div>
+      <div class="tl-item key">
+        <div class="tl-date">2026-05-01</div>
+        <div class="tl-what">Player actions persist across scene re-entry; enemies always reset to patrol</div>
+        <div class="tl-why"><span class="lead">Why</span> Doors, taken items, snuffed candles and read documents all persist, so consequence stays on the player. <code>EnemyController</code> is deliberately excluded from save data so a reload never drops you back into an alert spiral.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       10 — STATUS
+       ══════════════════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-label">Where It Actually Is</div>
+    <h2 class="section-title">Implementation Status<span class="ref">§1.8</span></h2>
+    <p class="section-desc">
+      Mirrored from the repo's <code>README.md</code>, June 2026. Listed in full — including
+      what isn't built — because "done" is only a useful word if it's used precisely.
+    </p>
+
+    <div class="stat-row">
+      <div class="stat"><div class="num">18</div><div class="cap">Named systems</div></div>
+      <div class="stat"><div class="num"><span class="dot" style="background:var(--st-done)"></span>15</div><div class="cap">Complete</div></div>
+      <div class="stat"><div class="num"><span class="dot" style="background:var(--st-wip)"></span>3</div><div class="cap">In progress</div></div>
+      <div class="stat"><div class="num"><span class="dot" style="background:var(--st-none)"></span>3</div><div class="cap">Not started<br>(outside the 18)</div></div>
+    </div>
+
+    <div class="meter" role="img" aria-label="Of 18 named systems, 15 are complete and 3 are in progress.">
+      <div class="seg done" style="flex:15">15 complete</div>
+      <div class="seg wip" style="flex:3">3 WIP</div>
+    </div>
+    <div class="meter-legend">
+      <span><i style="background:var(--st-done)"></i> Complete</span>
+      <span><i style="background:var(--st-wip)"></i> In progress</span>
+      <span><i style="background:repeating-linear-gradient(135deg,var(--st-none) 0 3px,rgba(196,115,110,0.55) 3px 6px)"></i> Not started</span>
+    </div>
+
+    <div class="filters" role="group" aria-label="Filter systems by state">
+      <button class="filter-btn" data-filter="all" aria-pressed="true">All <span class="n">21</span></button>
+      <button class="filter-btn" data-filter="done" aria-pressed="false">Complete <span class="n">15</span></button>
+      <button class="filter-btn" data-filter="wip" aria-pressed="false">In progress <span class="n">3</span></button>
+      <button class="filter-btn" data-filter="none" aria-pressed="false">Not started <span class="n">3</span></button>
+    </div>
+
+    <div class="sys-list" id="sysList">
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Cover</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Lockpicking</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Single-guard AI</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Multi-guard coordination</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Light &amp; shadow detection</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Sound propagation</div><div class="sys-note">Four-term model, surface types, wall occlusion, masking, debug HUD.</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Contextual interaction</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Inventory</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Health &amp; damage</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Journal &amp; observations</div><div class="sys-note">Includes RE4-style inspection mode.</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Character progression</div><div class="sys-note">Use-based stats.</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Extended player controller</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Steam integration</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Debug infrastructure — tier 1</div></div></div>
+      <div class="sys" data-state="done"><span class="badge done">Done</span><div><div class="sys-name">Debug infrastructure — tier 2</div></div></div>
+      <div class="sys" data-state="wip"><span class="badge wip">WIP</span><div><div class="sys-name">Distraction / throwables</div><div class="sys-note">Phases 1–2 shipped and verified; deliberately on hold until combat or the Canvas UI pass.</div></div></div>
+      <div class="sys" data-state="wip"><span class="badge wip">WIP</span><div><div class="sys-name">Save / load + scene transitions</div><div class="sys-note">6 of 10 phases. Pending: Steam Cloud routing, settings split, difficulty gates, migration table.</div></div></div>
+      <div class="sys" data-state="wip"><span class="badge wip">WIP</span><div><div class="sys-name">Analytics collection</div><div class="sys-note">Event plan locked; accumulator not built, so no events fire yet.</div></div></div>
+      <div class="sys" data-state="none"><span class="badge none">Not started</span><div><div class="sys-name">Combat</div><div class="sys-note">Dagger stealth-kill foundation fully specced, not yet in-engine.</div></div></div>
+      <div class="sys" data-state="none"><span class="badge none">Not started</span><div><div class="sys-name">NPC dialogue</div></div></div>
+      <div class="sys" data-state="none"><span class="badge none">Not started</span><div><div class="sys-name">Influence stat</div><div class="sys-note">No XP source wired yet.</div></div></div>
+    </div>
+
+    <div class="tip">
+      <span class="k">Stated plainly</span>
+      All current UI is placeholder OnGUI; the Canvas pass is scheduled as Phase C. Every system
+      above was built with rendering decoupled from logic specifically so that swap is a
+      render-layer change and nothing else.
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════════════
+       11 — TAKEAWAYS
+       ══════════════════════════════════════════════════════ -->
+  <section class="reveal">
+    <div class="section-label">What I'd Carry Forward</div>
+    <h2 class="section-title">Takeaways</h2>
+    <div class="grid grid-3">
+      <div class="takeaway">
+        <h4>Rank the pillars, or they're decoration</h4>
+        <p>Four pillars told me what the game was. The priority order told me what to cut. The
+           second one did all the work, and it's the part most pillar lists skip.</p>
+      </div>
+      <div class="takeaway">
+        <h4>Cap the stats below the point of trivialisation</h4>
+        <p>Max Finesse moves a Master lock from 3° to 11° of a 360° dial. Designing the cap first
+           and the curve second is what kept progression from eating the mechanic it rewards.</p>
+      </div>
+      <div class="takeaway">
+        <h4>Write the limitation down when you make it</h4>
+        <p>Single-ray occlusion, no corner wrap, no vaulting. Each was a known trade at the time,
+           recorded with its reason. None of them turned into a surprise six months later.</p>
+      </div>
+    </div>
+
+    <div class="tip">
+      <span class="k">Deeper</span>
+      This case study covers four systems. The full design document — pillars, boundaries,
+      competitive analysis and the rest — is
+      <a href="dsp-gdd.html">available as an interactive doc</a>.
+    </div>
+  </section>
+
+  <footer class="case-footer">
+    <div>Dead Saints Parade · Unity 6.3 · Steam Q2 2027</div>
+    <div>Jhonnatan C. Barbosa</div>
+  </footer>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* ── scroll progress ─────────────────────────────────── */
+  var bar = document.getElementById('progress');
+  function onScroll() {
+    var h = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.width = (h > 0 ? (window.scrollY / h) * 100 : 0) + '%';
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* ── reveal ──────────────────────────────────────────── */
+  var obs = new IntersectionObserver(function (es) {
+    es.forEach(function (e) {
+      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
+    });
+  }, { rootMargin: '0px 0px -6% 0px', threshold: 0.04 });
+  document.querySelectorAll('.reveal').forEach(function (el) { obs.observe(el); });
+
+  /* helper: exclusive button group -> calls cb(value, button) */
+  function group(id, cb) {
+    var root = document.getElementById(id);
+    if (!root) return;
+    root.addEventListener('click', function (e) {
+      var btn = e.target.closest('.opt');
+      if (!btn) return;
+      root.querySelectorAll('.opt').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      cb(btn);
+    });
+  }
+
+  /* ══ LOCKPICK PLAYGROUND ═══════════════════════════════ */
+  var TIERS = [
+    { name: 'Simple',   half: 15,  brk: 15, xp: 10 },
+    { name: 'Standard', half: 10,  brk: 22, xp: 15 },
+    { name: 'Advanced', half: 6,   brk: 32, xp: 20 },
+    { name: 'Expert',   half: 3,   brk: 45, xp: 30 },
+    { name: 'Master',   half: 1.5, brk: 65, xp: 50 }
+  ];
+  var SKILL_BONUS_HALF = 4;   // degrees added to EACH side at skill 1.0
+  var PICK_HP = 100;
+  var BREAK_AT_MAX_SKILL = 0.5;
+
+  var tierIdx = 4, skill = 0;
+  var elArc = document.getElementById('roArc'),
+      elArcD = document.getElementById('roArcD'),
+      elBrk = document.getElementById('roBrk'),
+      elTime = document.getElementById('roTime'),
+      elXp = document.getElementById('roXp'),
+      elShare = document.getElementById('roShare'),
+      elFin = document.getElementById('finesse'),
+      elFinVal = document.getElementById('finesseVal'),
+      arcNow = document.getElementById('arcNow'),
+      arcBase = document.getElementById('arcBase');
+
+  // arc centred on "up", spanning +/- halfDeg, radius r about (105,105)
+  function arcPath(halfDeg, r) {
+    var a = halfDeg * Math.PI / 180;
+    var x1 = 105 + r * Math.sin(-a), y1 = 105 - r * Math.cos(-a);
+    var x2 = 105 + r * Math.sin(a),  y2 = 105 - r * Math.cos(a);
+    var large = (halfDeg * 2 > 180) ? 1 : 0;
+    return 'M ' + x1.toFixed(2) + ' ' + y1.toFixed(2) +
+           ' A ' + r + ' ' + r + ' 0 ' + large + ' 1 ' + x2.toFixed(2) + ' ' + y2.toFixed(2);
+  }
+
+  function renderLock() {
+    var t = TIERS[tierIdx];
+    var half = t.half + SKILL_BONUS_HALF * skill;
+    var total = half * 2;
+    var brk = t.brk * (1 - (1 - BREAK_AT_MAX_SKILL) * skill);
+    var time = PICK_HP / brk;
+
+    elArc.textContent = total.toFixed(1) + '°';
+    elArcD.textContent = 'half-width ' + half.toFixed(1) + '° · base ' + (t.half * 2) + '°';
+    elBrk.textContent = brk.toFixed(1);
+    elTime.textContent = time.toFixed(1) + ' s';
+    elXp.textContent = t.xp;
+    elShare.textContent = (total / 360 * 100).toFixed(1) + '% of the dial';
+
+    arcNow.setAttribute('d', arcPath(half, 72));
+    arcBase.setAttribute('d', arcPath(t.half, 72));
+
+    document.querySelectorAll('#tierTable tr').forEach(function (tr) {
+      tr.classList.toggle('hi', Number(tr.dataset.t) === tierIdx);
+    });
+  }
+
+  group('tierOpts', function (btn) { tierIdx = Number(btn.dataset.tier); renderLock(); });
+
+  elFin.addEventListener('input', function () {
+    skill = Number(elFin.value) / 100;
+    // stats are level 1-10; show the level the slider corresponds to
+    elFinVal.textContent = 'level ' + Math.round(1 + skill * 9) + ' · ' + elFin.value + '%';
+    renderLock();
+  });
+  renderLock();
+
+  /* ══ SOUND PLAYGROUND ══════════════════════════════════ */
+  var snd = { move: 4, surf: 1, mask: 0, occ: 1 };
+  var hud = document.getElementById('soundHud'),
+      radFill = document.getElementById('radFill'),
+      sndNote = document.getElementById('soundNote');
+
+  function pad(s, n) { s = String(s); while (s.length < n) s += ' '; return s; }
+
+  function renderSound() {
+    var afterSurf = snd.move * snd.surf;
+    var eff = Math.max(0, afterSurf - snd.mask);
+
+    var line =
+      '<span class="v">Footstep</span>  raw ' + snd.move.toFixed(1) +
+      '  <span class="v">surf×' + snd.surf.toFixed(2) + '</span> = ' + afterSurf.toFixed(1) +
+      '  <span class="v">mask−' + snd.mask.toFixed(1) + '</span> = ' + eff.toFixed(1) +
+      '  <span class="v">occ×' + snd.occ.toFixed(2) + '</span> → ';
+
+    if (eff <= 0) {
+      line += '<span class="zero">not dispatched</span>';
+      sndNote.innerHTML = 'Effective radius is <strong style="color:var(--st-done)">0 m</strong> — ' +
+        'the masking swallowed the sound entirely and <code>AISoundSystem</code> never dispatches ' +
+        'the event. No guard can hear it at any distance.';
+    } else {
+      line += '<span class="out">' + eff.toFixed(1) + ' m @ ×' + snd.occ.toFixed(2) + '</span>';
+      sndNote.innerHTML = 'A guard inside <strong style="color:var(--accent)">' + eff.toFixed(1) +
+        ' m</strong> registers it, with suspicion scaled by distance and then multiplied by ' +
+        '<strong>' + snd.occ.toFixed(2) + '×</strong> for whatever is in the way.';
+    }
+
+    hud.innerHTML = line;
+    radFill.style.width = Math.min(100, (eff / 12) * 100) + '%';
+  }
+
+  group('moveOpts', function (b) { snd.move = Number(b.dataset.v); renderSound(); });
+  group('surfOpts', function (b) { snd.surf = Number(b.dataset.v); renderSound(); });
+  group('maskOpts', function (b) { snd.mask = Number(b.dataset.v); renderSound(); });
+  group('occOpts',  function (b) { snd.occ  = Number(b.dataset.v); renderSound(); });
+  renderSound();
+
+  /* ══ STATUS FILTER ═════════════════════════════════════ */
+  var sysItems = Array.prototype.slice.call(document.querySelectorAll('#sysList .sys'));
+  document.querySelectorAll('.filter-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var f = btn.dataset.filter;
+      document.querySelectorAll('.filter-btn').forEach(function (b) {
+        b.setAttribute('aria-pressed', String(b === btn));
+      });
+      sysItems.forEach(function (el) {
+        el.hidden = !(f === 'all' || el.dataset.state === f);
+      });
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

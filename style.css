@@ -65,7 +65,10 @@ body {
   color: var(--text);
   line-height: 1.55;
   -webkit-font-smoothing: antialiased;
-  font-size: 13.5px;
+  /* Governs the elements that inherit rather than declare a rem size:
+     .about-text, .doc-desc, .ai-role and bare p/li/td. Those are the
+     long-form reading surfaces, and 13.5px was too small for them. */
+  font-size: 15px;
   /* ── Dot grid pattern fills the blank background ── */
   background-image:
     radial-gradient(circle, rgba(var(--accent-rgb),0.045) 1px, transparent 1px);
@@ -602,9 +605,12 @@ section + section { border-top: 1px solid var(--border-soft); }
    accent hue at rest makes the set read as one palette; hovering a card
    drops the overlay and restores the game's true colours.
 
-   Scoped to the Selected Projects cards only. Dead Saints Parade
-   (.wip-layout) keeps its own colours — it's the headline project, and the
-   small media elsewhere on the page is left alone too.
+   Scoped to the Selected Projects cards only; small media elsewhere on the
+   page is left alone. The :not(.wip-layout) guards date from when Dead Saints
+   Parade used the stacked variant and sat outside the palette. It now leads
+   the section as an ordinary card and takes the overlay like the rest, so the
+   guards currently match everything. They are kept because .wip-layout below
+   is still a usable stacked layout for any future headline project.
 
    The knobs below are what the dev palette dock drives live. */
 :root {
@@ -991,6 +997,16 @@ section + section { border-top: 1px solid var(--border-soft); }
   font-size: 0.78rem; color: var(--text-mid); line-height: 1.5;
 }
 
+/* The outcome card promises three principles that live further down the page,
+   past the scope table and the dash-strike spotlight they depend on. */
+.cs-card-link {
+  display: inline-block;
+  margin-top: 0.5rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+}
+
 .media-placeholder {
   background: var(--surface);
   border: 1px dashed var(--border);
@@ -1238,6 +1254,18 @@ section + section { border-top: 1px solid var(--border-soft); }
   line-height: 1.65;
   max-width: 58ch;
 }
+
+/* A recruiter reading from another continent needs this before they invest in
+   scheduling a call, not after. */
+.contact-location {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  margin-top: 0.7rem;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  color: var(--text-dim);
+}
+.contact-location svg { flex-shrink: 0; opacity: 0.8; }
 
 /* Live "available" dot inside the status pill */
 #contact .section-aside { display: inline-flex; align-items: center; gap: 0.45rem; }
@@ -1707,6 +1735,15 @@ body.modal-open .contact-dock {
   -webkit-overflow-scrolling: touch;
   margin: 0 -1rem;
   padding: 0 1rem;
+  /* Four columns of prose never fit a phone, so this one keeps scrolling
+     sideways rather than stacking. The shadow says so: it rides on
+     background-attachment: scroll, so it appears only while there is still
+     table to the right and fades out at the end. Without it the Status
+     column — the point of the table — is simply invisible on a phone. */
+  background:
+    linear-gradient(to left, var(--bg) 45%, rgba(0,0,0,0)) right center / 52px 100% no-repeat,
+    linear-gradient(to left, rgba(0,0,0,0.55), rgba(0,0,0,0)) right center / 28px 100% no-repeat;
+  background-attachment: local, scroll;
 }
 
 @media (max-width: 640px) {
@@ -1935,7 +1972,7 @@ footer {
 
 /* ── SMALL PHONE (≤480px) ────────────────────────────────── */
 @media (max-width: 480px) {
-  body { font-size: 13px; }
+  body { font-size: 14px; }
 
   .intro { padding: 2rem 0 2.25rem; }
   .intro h1 { font-size: 1.4rem; }
@@ -2471,4 +2508,229 @@ footer {
 
   /* Reveal all elements (no scroll animations) */
   .reveal { opacity: 1 !important; transform: none !important; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   DEAD SAINTS PARADE — SYSTEM DEEP-DIVES
+   Ported from the long-form case study. Both files use the same
+   token names, so these rules carry over unchanged.
+   ═══════════════════════════════════════════════════════════ */
+
+/* DSP leads Selected Projects, so it needs to look chosen rather than
+   merely first. */
+.project-card.is-flagship {
+  border-color: var(--accent-dim);
+  box-shadow: var(--shadow-glow);
+}
+.flagship-flag {
+  display: inline-block;
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.58rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.5rem;
+}
+
+/* The systems deep-dive is a different kind of content from the card list
+   above it, and at the default 1.15rem section title the transition was easy
+   to scroll straight past. Give this one a real opening edge. */
+.section-header.is-major {
+  margin-top: 4.5rem;
+  padding-top: 1.7rem;
+  border-top: 1px solid var(--border);
+  align-items: flex-end;
+}
+.section-heading-group { display: flex; flex-direction: column; gap: 0.35rem; }
+.section-eyebrow {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.section-header.is-major .section-title {
+  font-size: 1.9rem;
+  line-height: 1.1;
+}
+
+.dsp-systems { margin-top: 1.1rem; }
+
+/* Direct-child paragraphs carry the rule narration. The lead and the closing
+   note are qualified on the same selector so they keep their own treatment
+   rather than losing the cascade to a more specific sibling rule. */
+.dsp-systems > p {
+  font-size: 0.85rem;
+  color: var(--text-mid);
+  line-height: 1.7;
+  max-width: 74ch;
+  margin-top: 0.8rem;
+}
+.dsp-systems > p.dsp-intro {
+  font-size: 0.9rem;
+  color: var(--text);
+  margin-top: 0;
+}
+.dsp-systems > p.dsp-rule-note {
+  border-left: 2px solid var(--accent-dim);
+  padding-left: 0.9rem;
+  color: var(--text-dim);
+  margin-top: 1.3rem;
+}
+.dsp-rule-h {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1.3rem;
+  font-weight: 400;
+  line-height: 1.2;
+  margin-top: 1.9rem;
+}
+/* The two worked examples: features that lost an argument to a higher pillar. */
+.dsp-cuts {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.6rem;
+  margin: 1.2rem 0;
+}
+.dsp-cut {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 0.85rem 1rem;
+}
+.dsp-cut .k {
+  font-family: 'Geist Mono', monospace;
+  font-size: 0.56rem;
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.3rem;
+}
+.dsp-cut h4 {
+  font-family: 'Instrument Serif', serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.25;
+  margin-bottom: 0.3rem;
+}
+.dsp-cut p {
+  font-size: 0.78rem;
+  color: var(--text-mid);
+  line-height: 1.6;
+}
+
+/* Priority rail: the rule both systems below are applications of. */
+.prio { display: flex; gap: 0.4rem; margin: 1rem 0 0.4rem; flex-wrap: wrap; }
+.prio-item {
+  flex: 1; min-width: 140px; background: var(--surface);
+  border: 1px solid var(--border); border-radius: 6px; padding: 0.7rem 0.85rem;
+}
+.prio-item .rank {
+  font-family: 'Geist Mono', monospace; font-size: 0.55rem; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 0.25rem;
+}
+.prio-item .pname { font-size: 0.8rem; color: var(--text); font-weight: 500; line-height: 1.3; }
+.prio-item:first-child { border-color: var(--accent-dim); background: var(--note-bg); }
+
+.dsp-system {
+  border-top: 1px solid var(--border);
+  padding-top: 1.5rem;
+  margin-top: 1.6rem;
+}
+.dsp-system-label {
+  font-family: 'Geist Mono', monospace; font-size: 0.6rem; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 0.3rem;
+}
+.dsp-system h3 {
+  font-family: 'Instrument Serif', serif; font-size: 1.28rem; font-weight: 400;
+  line-height: 1.2; margin-bottom: 0.5rem;
+}
+.dsp-system p {
+  font-size: 0.82rem; color: var(--text-mid); line-height: 1.7;
+  max-width: 74ch; margin-bottom: 0.8rem;
+}
+.dsp-system code, .dsp-system figcaption code {
+  font-family: 'Geist Mono', monospace; font-size: 0.92em; color: var(--text);
+}
+
+.tbl-wrap { overflow-x: auto; margin: 0.9rem 0 1.1rem; }
+table.tbl { width: 100%; border-collapse: collapse; font-size: 0.78rem; min-width: 460px; }
+table.tbl th {
+  text-align: left; font-family: 'Geist Mono', monospace; font-size: 0.57rem;
+  color: var(--accent); text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--border);
+  background: var(--surface); font-weight: 500; white-space: nowrap;
+}
+table.tbl td {
+  padding: 0.55rem 0.7rem; border-bottom: 1px solid var(--border-soft);
+  vertical-align: top; line-height: 1.55; color: var(--text-mid);
+}
+table.tbl td.key { color: var(--text); font-weight: 500; }
+table.tbl td.num { font-family: 'Geist Mono', monospace; color: var(--text); white-space: nowrap; }
+
+/* The "I built it and said no" callout. */
+.refusal {
+  background: linear-gradient(180deg, rgba(var(--accent-rgb),0.05), rgba(var(--accent-rgb),0.015));
+  border: 1px solid var(--accent-dim); border-radius: 6px;
+  padding: 1rem 1.15rem; margin: 1.1rem 0; max-width: 760px;
+}
+.refusal .k {
+  font-family: 'Geist Mono', monospace; font-size: 0.6rem; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 0.4rem;
+}
+.refusal h4 {
+  font-family: 'Instrument Serif', serif; font-size: 1.05rem; font-weight: 400;
+  margin-bottom: 0.35rem; line-height: 1.3;
+}
+.refusal p {
+  font-size: 0.81rem; color: var(--text-mid); line-height: 1.7;
+  margin-bottom: 0.4rem; max-width: none;
+}
+.refusal p:last-child { margin-bottom: 0; }
+.refusal .because {
+  font-size: 0.76rem; color: var(--accent); padding-top: 0.5rem;
+  border-top: 1px solid rgba(var(--accent-rgb),0.18); margin-top: 0.6rem;
+}
+
+.dsp-system figure {
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: 6px; padding: 1.1rem 1rem 0.85rem; margin: 1.1rem 0;
+}
+/* Labels are absolute px inside the viewBox, so an unbounded figure scales
+   9px mono type past 17px on a wide column. */
+.dsp-system figure svg { display: block; width: 100%; max-width: 560px; height: auto; margin: 0 auto; }
+.dsp-system figcaption {
+  font-size: 0.74rem; color: var(--text-dim); line-height: 1.6;
+  margin-top: 0.85rem; padding-top: 0.7rem; border-top: 1px solid var(--border-soft);
+}
+.dsp-system figcaption strong { color: var(--text-mid); font-weight: 500; }
+.svg-label { font-family: 'Geist Mono', monospace; font-size: 9px; fill: var(--text-dim); letter-spacing: 0.04em; }
+.svg-label.hi { fill: var(--accent); }
+.svg-label.b { fill: var(--text-mid); }
+
+@media (max-width: 640px) {
+  .prio-item { min-width: 100%; }
+  .dsp-system h3 { font-size: 1.12rem; }
+  .dsp-cuts { grid-template-columns: 1fr; }
+  .section-header.is-major { margin-top: 3rem; padding-top: 1.2rem; }
+  .section-header.is-major .section-title { font-size: 1.45rem; }
+
+  /* The tuning tables are 460px wide at minimum, so on a phone the last
+     column used to sit outside the scroll container with nothing to say it
+     was there. Stack each row instead: parameter, then value, then what the
+     value buys. The header row carries no information once the rows read
+     top-to-bottom, so it goes. */
+  .tbl-wrap { overflow-x: visible; }
+  table.tbl { min-width: 0; }
+  table.tbl thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  table.tbl, table.tbl tbody, table.tbl tr, table.tbl td { display: block; width: 100%; }
+  table.tbl tr {
+    padding: 0.6rem 0 0.65rem;
+    border-bottom: 1px solid var(--border-soft);
+  }
+  table.tbl tr:last-child { border-bottom: none; }
+  table.tbl td {
+    padding: 0; border-bottom: none; font-size: 0.82rem;
+  }
+  table.tbl td.key { font-size: 0.88rem; margin-bottom: 0.1rem; }
+  table.tbl td.num { color: var(--accent); margin-bottom: 0.22rem; }
 }

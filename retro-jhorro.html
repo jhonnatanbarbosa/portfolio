@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jhorro Productions · Official Site</title>
+<meta name="description" content="Jhorro Productions is an independent studio, developer and publisher of Dead Saints Parade, a third-person stealth immersive sim coming to PC and Steam Deck in 2027.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="jhorro%20productions%20logo%202/export/svg/jhorro-symbol-white.svg">
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   Jhorro Productions, early-2000s skin.
+
+   Same scope as the current studio page — intro, one game, footer —
+   wearing period chrome: a fixed centred frame, a beveled wordmark
+   plate, gradient title bars, Verdana, hard 1px borders, underlined
+   links. Palette is the studio's own grey/white/black rather than the
+   portfolio's pink, so the two retro pages read as two sites by the
+   same hand instead of one site twice.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --paper:     #0b0b0d;   /* outside the frame */
+  --frame:     #131316;   /* the frame itself */
+  --panel:     #17171a;   /* panel body */
+  --sunken:    #0b0b0d;   /* screenshot mount */
+
+  --bar-top:   #33333a;   /* title bars */
+  --bar-bot:   #1a1a1e;
+
+  --line:      #2b2b30;
+  --line-soft: #1e1e22;
+  --bevel-hi:  rgba(241,239,233,0.10);
+  --bevel-lo:  #000;
+
+  --ink:       #f1efe9;
+  --mut:       rgba(241,239,233,0.58);
+  --dim:       rgba(241,239,233,0.40);
+
+  --ui:      Verdana, Geneva, Tahoma, "DejaVu Sans", sans-serif;
+  --display: Georgia, "Times New Roman", Times, serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+/* Nothing in 2002 had a border radius. */
+*, *::before, *::after { border-radius: 0; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 12px; }
+
+body {
+  font-family: var(--ui);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  /* Stand-in for the tiled GIF background, at an alpha low enough to
+     stay out of the way. */
+  background-image:
+    repeating-linear-gradient(45deg,  rgba(241,239,233,0.016) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(-45deg, rgba(241,239,233,0.016) 0 1px, transparent 1px 4px);
+  padding: 14px 12px 40px;
+  -webkit-text-size-adjust: 100%;
+}
+
+img, video { display: block; max-width: 100%; }
+
+/* Underlined links with a distinct visited colour, both of which modern
+   design talked itself out of and the period did not. */
+a { color: var(--ink); text-decoration: underline; }
+a:visited { color: var(--mut); }
+a:hover, a:focus-visible { color: #fff; background: rgba(241,239,233,0.10); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+::selection { background: var(--ink); color: var(--paper); }
+
+.skip-link { position: absolute; left: -9999px; top: 0; padding: 8px 14px; background: var(--panel); border: 1px solid var(--ink); z-index: 50; }
+.skip-link:focus { left: 8px; top: 8px; }
+
+/* ── FRAME ───────────────────────────────────────────────── */
+.site {
+  max-width: 820px;
+  margin: 0 auto;
+  background: var(--frame);
+  border: 1px solid var(--line);
+  box-shadow:
+    inset 1px 1px 0 var(--bevel-hi),
+    inset -1px -1px 0 var(--bevel-lo),
+    0 0 0 3px #08080a,
+    0 8px 28px rgba(0,0,0,0.6);
+}
+
+/* ── BANNER ──────────────────────────────────────────────── */
+.banner {
+  padding: 26px 20px 20px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 70% 100% at 50% 0%, #1e1e22, transparent 70%),
+    linear-gradient(180deg, #16161a, #101013);
+  border-bottom: 1px solid var(--line);
+}
+/* Mark and wordmark as one horizontal lockup, which is how the studio's
+   own logo files are drawn. */
+.lockup { display: flex; align-items: center; justify-content: center; gap: 14px; }
+.mark { width: 44px; height: 44px; flex-shrink: 0; }
+.wordmark { width: min(360px, 74%); height: auto; }
+.banner-sub {
+  display: block;
+  margin-top: 9px;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mut);
+  text-shadow: 0 1px 0 #000;
+}
+
+/* ── STATUS BAR ──────────────────────────────────────────── */
+.statusbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 16px;
+  padding: 5px 10px;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--mut);
+  background: linear-gradient(180deg, var(--bar-top), var(--bar-bot));
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgba(241,239,233,0.10), inset 0 -1px 0 var(--bevel-lo);
+}
+.statusbar b { color: var(--ink); font-weight: 700; }
+.sb-spacer { flex: 1 1 auto; }
+
+/* ── NAV ─────────────────────────────────────────────────── */
+.mainnav { display: flex; flex-wrap: wrap; background: #111114; border-bottom: 1px solid var(--line); }
+.mainnav a {
+  flex: 1 1 auto;
+  padding: 7px 12px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-right: 1px solid var(--line-soft);
+}
+.mainnav a:last-child { border-right: 0; }
+.mainnav a:hover, .mainnav a:focus-visible { color: #fff; background: linear-gradient(180deg, #2e2e34, #1b1b1f); }
+.mainnav a.is-cta { background: linear-gradient(180deg, #3a3a42, #202025); }
+
+/* ── PANELS ──────────────────────────────────────────────── */
+main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: inset 1px 1px 0 var(--bevel-hi), inset -1px -1px 0 var(--bevel-lo);
+}
+.panel-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px 10px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #000;
+  background: linear-gradient(180deg, var(--bar-top), var(--bar-bot));
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgba(241,239,233,0.12);
+}
+.panel-title > * { min-width: 0; }
+.panel-title .aside { font-size: 9px; font-weight: 400; letter-spacing: 0.04em; text-transform: none; color: var(--mut); text-align: right; }
+.panel-body { padding: 12px; }
+.panel-body > * + * { margin-top: 10px; }
+.panel-body p { color: rgba(241,239,233,0.78); }
+
+/* ── INTRO ───────────────────────────────────────────────── */
+.lede { font-size: 13px; line-height: 1.65; }
+.lede b { color: var(--ink); }
+
+.actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--ink);
+  background: linear-gradient(180deg, #2a2a30, #17171b);
+  border: 1px solid #3d3d45;
+  box-shadow: inset 1px 1px 0 rgba(241,239,233,0.14), inset -1px -1px 0 rgba(0,0,0,0.6);
+}
+.btn:hover, .btn:focus-visible { color: #fff; background: linear-gradient(180deg, #36363e, #202026); }
+.btn.is-primary { color: #0b0b0d; background: linear-gradient(180deg, #efece6, #b9b6b0); border-color: #fff; }
+.btn.is-primary:hover, .btn.is-primary:focus-visible { color: #0b0b0d; background: linear-gradient(180deg, #fff, #d5d2cc); }
+.btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+/* ── GAME ────────────────────────────────────────────────── */
+/* Sunken screenshot mount with a caption strip, the way every site of
+   the period framed its media. */
+.shot { padding: 4px; background: var(--sunken); border: 1px solid var(--line); box-shadow: inset 1px 1px 0 var(--bevel-lo); }
+.shot video { width: 100%; border: 1px solid #000; }
+.shot-cap { padding: 4px 2px 0; font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dim); }
+
+.status { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.status::before {
+  content: ''; width: 7px; height: 7px;
+  background: var(--ink);
+  box-shadow: 0 0 6px rgba(241,239,233,0.8);
+  animation: blink 1.6s steps(1, end) infinite;
+}
+@keyframes blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.25; } }
+
+.game-title { font-family: var(--display); font-size: 22px; line-height: 1.15; margin-top: 3px; }
+.game-genre { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mut); margin-top: 2px; }
+
+/* Meta table — alternating rows are the single most period thing a
+   table can do. */
+.meta { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+.meta th, .meta td { padding: 4px 8px; text-align: left; border: 1px solid var(--line-soft); vertical-align: top; }
+.meta th { width: 96px; font-size: 9px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
+.meta tbody tr:nth-child(odd) { background: rgba(241,239,233,0.03); }
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.site-foot {
+  padding: 10px 12px;
+  text-align: center;
+  font-size: 10px;
+  color: var(--dim);
+  background: #111114;
+  border-top: 1px solid var(--line);
+}
+.site-foot p + p { margin-top: 4px; }
+.site-foot a { color: var(--mut); }
+.site-foot .foot-nav a { margin: 0 5px; }
+
+/* ── RESPONSIVE / MOTION ─────────────────────────────────── */
+@media (max-width: 620px) {
+  body { padding: 0 0 24px; }
+  .site { border-left: 0; border-right: 0; box-shadow: none; }
+  .banner { padding: 18px 12px 15px; }
+  .banner-sub { font-size: 9px; letter-spacing: 0.14em; }
+  .lockup { flex-direction: column; gap: 9px; }
+  .wordmark { width: 88%; }
+  .mainnav a { font-size: 10px; padding: 7px 9px; }
+  .statusbar { font-size: 9px; gap: 0 10px; }
+  .sb-hide-sm { display: none; }
+  .game-title { font-size: 19px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .status::before { animation: none; }
+}
+
+@media print {
+  body { background: #fff; color: #000; padding: 0; }
+  .site { border: 0; box-shadow: none; }
+  .statusbar, .mainnav { display: none; }
+  a { color: #000; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="site">
+
+  <!-- ── BANNER ─────────────────────────────────────────── -->
+  <header class="banner">
+   <div class="lockup">
+    <!-- The Watcher: a figure with a keyhole cut out of it, inside a diamond. -->
+    <svg class="mark" viewBox="0 0 100 100" role="img" aria-label="Jhorro Productions logo">
+      <polygon points="50,5 95,50 50,95 5,50" fill="none" stroke="#f1efe9" stroke-width="3" stroke-linejoin="miter"/>
+      <mask id="kh" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+        <rect x="0" y="0" width="100" height="100" fill="#fff"/>
+        <path d="M34 41 Q50 30 66 41 Q50 52 34 41 Z" fill="#000"/>
+        <ellipse cx="50" cy="41" rx="2.5" ry="4.6" fill="#fff"/>
+      </mask>
+      <g mask="url(#kh)">
+        <circle cx="50" cy="41" r="18" fill="#f1efe9"/>
+        <path d="M46 53 L40.5 78 L59.5 78 L54 53 Z" fill="#f1efe9"/>
+      </g>
+    </svg>
+
+    <svg class="wordmark" viewBox="0 0 420 44" role="img" aria-label="Jhorro Productions">
+      <defs>
+        <linearGradient id="wm" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0"    stop-color="#ffffff"/>
+          <stop offset="0.48" stop-color="#f1efe9"/>
+          <stop offset="0.52" stop-color="#b6b3ad"/>
+          <stop offset="1"    stop-color="#6e6c68"/>
+        </linearGradient>
+      </defs>
+      <!-- Offset dark copy behind the fill is the whole emboss trick. -->
+      <text x="211" y="32" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+            font-size="26" font-weight="700" letter-spacing="4" fill="#000">JHORRO PRODUCTIONS</text>
+      <text x="210" y="30" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+            font-size="26" font-weight="700" letter-spacing="4" fill="url(#wm)">JHORRO PRODUCTIONS</text>
+    </svg>
+   </div>
+
+    <span class="banner-sub">Independent Studio · Est. 2024 · Brazil</span>
+  </header>
+
+  <!-- ── STATUS BAR ─────────────────────────────────────── -->
+  <div class="statusbar">
+    <span>Developer &amp; publisher of <b>Dead Saints Parade</b></span>
+    <span class="sb-spacer"></span>
+    <span class="sb-hide-sm"><b id="clock">&nbsp;</b></span>
+  </div>
+
+  <nav class="mainnav" aria-label="Main">
+    <a href="#dead-saints-parade">Dead Saints Parade</a>
+    <a href="retro.html">Portfolio</a>
+    <a class="is-cta" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">Wishlist on Steam</a>
+  </nav>
+
+  <main id="main">
+
+    <!-- ── INTRO ────────────────────────────────────────── -->
+    <section class="panel">
+      <h2 class="panel-title"><span>The Studio</span><span class="aside">Est. 2024 · Brazil</span></h2>
+      <div class="panel-body">
+        <p class="lede">
+          An independent game studio building systems-driven games. Everything here currently goes into
+          <b>Dead Saints Parade</b>, a third-person stealth immersive sim for PC and Steam Deck,
+          developed and published in-house.
+        </p>
+        <div class="actions">
+          <a class="btn is-primary" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.98 2C6.65 2 2.28 6.13 2 11.4l5.36 2.22a3.04 3.04 0 0 1 1.7-.53l2.39-3.46v-.05a4.05 4.05 0 1 1 4.05 4.05h-.1l-3.4 2.43c0 .03.01.06.01.09a3.05 3.05 0 1 1-6.06-.55L2.5 13.6A10 10 0 1 0 11.98 2zM8.6 17.6l-1.23-.5a2.29 2.29 0 0 0 4.2-1.27 2.29 2.29 0 0 0-2.3-2.29c-.27 0-.53.05-.78.14l1.27.53a1.69 1.69 0 1 1-1.3 3.11l.14.28zm9.16-7.49a2.7 2.7 0 1 0-5.4 0 2.7 2.7 0 0 0 5.4 0zm-4.72 0a2.03 2.03 0 1 1 4.06 0 2.03 2.03 0 0 1-4.06 0z"/></svg>
+            Wishlist on Steam →
+          </a>
+          <a class="btn" href="retro.html">Designer's Portfolio</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── DEAD SAINTS PARADE ───────────────────────────── -->
+    <section class="panel" id="dead-saints-parade">
+      <h2 class="panel-title"><span>Dead Saints Parade</span><span class="aside">01 · First Title</span></h2>
+      <div class="panel-body">
+
+        <div class="shot">
+          <video autoplay muted loop playsinline aria-label="Dead Saints Parade third-person stealth immersive sim gameplay">
+            <source src="media/project4141UpdateApril.mp4" type="video/mp4">
+            <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+          </video>
+          <div class="shot-cap">April build · pre-alpha footage</div>
+        </div>
+
+        <div>
+          <span class="status">In Development · Demo Feb 2027 · Release Q2 2027</span>
+          <div class="game-title">Dead Saints Parade</div>
+          <div class="game-genre">Third-Person Stealth Immersive Sim · PC &amp; Steam Deck · Unity 6</div>
+        </div>
+
+        <p>
+          You are a fragile spy inside a decaying Gothic-Victorian world where combat is lethal in both
+          directions and information is the real weapon. Guards coordinate, light and sound betray you,
+          civilians talk, and everything you observe becomes leverage. The tension comes from those
+          systems reacting to each other rather than from scripted moments. It takes after Thief,
+          Dishonored, Metal Gear Solid, and Gloomwood.
+        </p>
+
+        <table class="meta">
+          <tbody>
+            <tr><th>Genre</th><td>Third-person stealth immersive sim, single-player</td></tr>
+            <tr><th>Platform</th><td>PC (Windows) · Steam Deck</td></tr>
+            <tr><th>Engine</th><td>Unity 6</td></tr>
+            <tr><th>Developer</th><td>Jhorro Productions</td></tr>
+            <tr><th>Publisher</th><td>Jhorro Productions</td></tr>
+            <tr><th>Release</th><td>Demo February 2027 · Full release Q2 2027</td></tr>
+          </tbody>
+        </table>
+
+        <div class="actions">
+          <a class="btn is-primary" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.98 2C6.65 2 2.28 6.13 2 11.4l5.36 2.22a3.04 3.04 0 0 1 1.7-.53l2.39-3.46v-.05a4.05 4.05 0 1 1 4.05 4.05h-.1l-3.4 2.43c0 .03.01.06.01.09a3.05 3.05 0 1 1-6.06-.55L2.5 13.6A10 10 0 1 0 11.98 2zM8.6 17.6l-1.23-.5a2.29 2.29 0 0 0 4.2-1.27 2.29 2.29 0 0 0-2.3-2.29c-.27 0-.53.05-.78.14l1.27.53a1.69 1.69 0 1 1-1.3 3.11l.14.28zm9.16-7.49a2.7 2.7 0 1 0-5.4 0 2.7 2.7 0 0 0 5.4 0zm-4.72 0a2.03 2.03 0 1 1 4.06 0 2.03 2.03 0 0 1-4.06 0z"/></svg>
+            Wishlist on Steam →
+          </a>
+          <a class="btn" href="retro.html#dead-saints-parade">Development status →</a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-foot">
+    <p>© Jhorro Productions · The Watcher, watching through the keyhole.</p>
+    <p class="foot-nav">
+      <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>|<a href="retro.html">Jhonnatan Barbosa · Game Designer</a>|<a href="privacy-policy.html">Privacy</a>
+    </p>
+    <p>Best viewed at 1024×768.</p>
+  </footer>
+
+</div>
+
+<script>
+// The period header strip showed the visitor their own clock.
+// Format matches: DD-MM-YY HH:MM AM.
+(function () {
+  var el = document.getElementById('clock');
+  if (!el) return;
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick() {
+    var d = new Date(), h = d.getHours(), ampm = h < 12 ? 'AM' : 'PM';
+    h = h % 12 || 12;
+    el.textContent = pad(d.getDate()) + '-' + pad(d.getMonth() + 1) + '-' +
+                     String(d.getFullYear()).slice(2) + ' ' + pad(h) + ':' + pad(d.getMinutes()) + ' ' + ampm;
+  }
+  tick();
+  setInterval(tick, 30000);
+})();
+</script>
+
+</body>
+</html>

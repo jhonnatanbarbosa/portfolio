@@ -1,0 +1,1322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jhonnatan Barbosa · Game Designer</title>
+<meta name="description" content="Game designer portfolio: data-driven systems, economy design, and gameplay. 5+ years shipping 12+ titles across mobile, PC, and web. Statistics background with real analytics case studies.">
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="stylesheet" href="retro.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- Flags as inline SVG rather than emoji: Windows ships no glyphs for regional-indicator
+     pairs, so the flag emoji collapse to bare letters there. -->
+<svg class="flag-sprite" aria-hidden="true" focusable="false"><defs>
+  <symbol id="flag-en" viewBox="0 0 20 15">
+    <rect width="20" height="15" fill="#fff"/>
+    <g fill="#b22234">
+      <rect width="20" height="1.154" y="0"/><rect width="20" height="1.154" y="2.308"/>
+      <rect width="20" height="1.154" y="4.615"/><rect width="20" height="1.154" y="6.923"/>
+      <rect width="20" height="1.154" y="9.231"/><rect width="20" height="1.154" y="11.538"/>
+      <rect width="20" height="1.154" y="13.846"/>
+    </g>
+    <rect width="8.6" height="8.077" fill="#3c3b6e"/>
+  </symbol>
+  <symbol id="flag-pt" viewBox="0 0 20 15">
+    <rect width="20" height="15" fill="#009b3a"/>
+    <path d="M10 1.5 18.3 7.5 10 13.5 1.7 7.5Z" fill="#fedf00"/>
+    <circle cx="10" cy="7.5" r="3.4" fill="#002776"/>
+  </symbol>
+  <symbol id="flag-ja" viewBox="0 0 20 15">
+    <rect width="20" height="15" fill="#fff"/>
+    <circle cx="10" cy="7.5" r="4.1" fill="#bc002d"/>
+  </symbol>
+</defs></svg>
+
+<div class="site">
+
+  <!-- ══════════════════════════════════════════════════════
+       BANNER — art strip behind the wordmark plate.
+       The five screenshots are desaturated and re-tinted in CSS so
+       unrelated projects read as one montage, which is exactly what
+       the period fansite banners were doing with their key art.
+       ══════════════════════════════════════════════════════ -->
+  <header class="banner">
+    <div class="banner-art" aria-hidden="true">
+      <img src="media/modal-cyberpunk1.png" alt="" loading="eager">
+      <img src="media/modal-guardians1.png" alt="" loading="eager">
+      <img src="media/modal-beast1.png" alt="" loading="eager">
+      <img src="media/modal-bagre.png" alt="" loading="eager">
+      <img src="media/modal-king1.png" alt="" loading="eager">
+    </div>
+    <div class="banner-plate">
+      <svg class="wordmark" viewBox="0 0 460 52" role="img" aria-label="Jhonnatan Barbosa">
+        <defs>
+          <linearGradient id="wm" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0"    stop-color="#fff4fb"/>
+            <stop offset="0.48" stop-color="#ffccec"/>
+            <stop offset="0.52" stop-color="#c99cd8"/>
+            <stop offset="1"    stop-color="#8a5c9e"/>
+          </linearGradient>
+        </defs>
+        <!-- Offset dark copy behind the fill is the whole emboss trick. -->
+        <text x="230" y="37" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+              font-size="30" font-weight="700" letter-spacing="5" fill="#0a0710">JHONNATAN BARBOSA</text>
+        <text x="229" y="35" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+              font-size="30" font-weight="700" letter-spacing="5" fill="url(#wm)">JHONNATAN BARBOSA</text>
+      </svg>
+      <span class="banner-sub" data-i18n="footer_tagline">Game Designer: Data-Driven Systems and Gameplay</span>
+    </div>
+  </header>
+
+  <!-- ══════════════════════════════════════════════════════
+       STATUS BAR — the reference pages' "Pageviews / date" strip.
+       The odometer counts shipped titles instead of invented traffic.
+       ══════════════════════════════════════════════════════ -->
+  <div class="statusbar">
+    <span class="sb-item">
+      Titles shipped:
+      <span class="odo" aria-label="12"><span>0</span><span>0</span><span>0</span><span>1</span><span>2</span></span>
+    </span>
+    <span class="sb-item sb-hide-sm">Online since <b>2020</b></span>
+    <span class="sb-item sb-hide-sm">Based in <b>São Paulo, BR</b></span>
+    <span class="sb-spacer"></span>
+    <span class="sb-item lang-pills" role="group" aria-label="Language · Idioma · 言語">
+      <button type="button" class="lang-option is-current" role="radio" aria-checked="true" data-lang="en">
+        <svg aria-hidden="true" focusable="false"><use href="#flag-en"/></svg>EN
+      </button>
+      <button type="button" class="lang-option" role="radio" aria-checked="false" data-lang="pt">
+        <svg aria-hidden="true" focusable="false"><use href="#flag-pt"/></svg>PT
+      </button>
+      <button type="button" class="lang-option" role="radio" aria-checked="false" data-lang="ja">
+        <svg aria-hidden="true" focusable="false"><use href="#flag-ja"/></svg>JA
+      </button>
+    </span>
+    <span class="sb-item"><b id="sbClock">&nbsp;</b></span>
+  </div>
+
+  <nav class="mainnav" aria-label="Main">
+    <a href="#index">Index</a>
+    <a href="#projects" data-i18n="nav_projects">Projects</a>
+    <a href="#systems">Systems</a>
+    <a href="#cyberpunk-analytics" data-i18n="nav_casestudy">Case Study</a>
+    <a href="#documents" data-i18n="nav_documents">Documents</a>
+    <a href="#about" data-i18n="nav_about">About</a>
+    <a href="retro-jhorro.html" data-i18n="nav_studio">Jhorro Productions</a>
+    <a href="#contact" class="is-cta" data-i18n="nav_contact">Contact</a>
+  </nav>
+
+  <div class="crumb">
+    <a href="#index">Jhonnatan Barbosa</a><span class="sep">»</span>Index
+  </div>
+
+  <div class="layout">
+
+    <!-- ══════════════════════════════════════════════════════
+         LEFT RAIL — the "Games" index every fansite led with
+         ══════════════════════════════════════════════════════ -->
+    <aside class="col col-left" aria-label="Site index">
+
+      <section class="panel panel-side">
+        <h2 class="panel-title">Games</h2>
+        <div class="panel-body">
+          <ul class="linklist">
+            <li><a href="#dead-saints-parade">Dead Saints Parade <span class="tag-new">WIP</span></a></li>
+            <li><a href="#p-cyberpunk">Idle Cyberpunk City</a></li>
+            <li><a href="#p-kingdom">Idle Kingdom Builder</a></li>
+            <li><a href="#p-guardians">Guardian's Falls</a></li>
+            <li><a href="#p-beasts">Beasts of Agony</a></li>
+            <li><a href="#p-bagre">Operação Bagre Noturno</a></li>
+            <li class="ll-head">FoxTales Studios</li>
+            <li><a href="#additional">Coal</a></li>
+            <li><a href="#additional">Maldição de Netuno</a></li>
+            <li><a href="#additional">Nárkissos</a></li>
+            <li><a href="#additional">Riddles of the Sands</a></li>
+            <li><a href="#additional">Mega-Racing</a></li>
+            <li><a href="#additional">Technical Difficulties</a></li>
+            <li><a href="#additional">Donkey Sonic</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="panel panel-side">
+        <h2 class="panel-title">Sections</h2>
+        <div class="panel-body">
+          <ul class="linklist">
+            <li><a href="#index">Index</a></li>
+            <li><a href="#projects" data-i18n="sec_projects">Selected Projects</a></li>
+            <li><a href="#systems" data-i18n="sec_wip">Currently Working On</a></li>
+            <li><a href="#board">Demo Progress</a></li>
+            <li><a href="#additional">FoxTales Studios</a></li>
+            <li><a href="#cyberpunk-analytics">Analytics Case Study</a></li>
+            <li><a href="#guardians-case-study">Scope Case Study</a></li>
+            <li><a href="#documents" data-i18n="sec_documents">Design Documents</a></li>
+            <li><a href="#about" data-i18n="sec_about">About</a></li>
+            <li><a href="#contact" data-i18n="sec_contact">Contact</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="panel panel-side">
+        <h2 class="panel-title">Downloads</h2>
+        <div class="panel-body">
+          <ul class="linklist">
+            <li><a href="docs/CV_Jhonnatan_Barbosa_Game_Designer.pdf" target="_blank" rel="noopener" data-i18n="link_resume">Resume (PDF)</a></li>
+            <li><a href="#documents">All design documents<span class="ll-sub">GDDs · QDDs · LDDs · tests</span></a></li>
+            <li><a href="cyberpunk-dashboard-v3.html" target="_blank" rel="noopener">Analytics dashboard</a></li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- The reference layouts all carried a "Hosted by" badge down here.
+           This one happens to be true. -->
+      <section class="panel panel-side">
+        <h2 class="panel-title">Host</h2>
+        <div class="panel-body" style="text-align:center">
+          <span class="btn88 b-joke" style="margin:0 auto">DEBIAN&nbsp;VPS<br>+ CADDY</span>
+        </div>
+      </section>
+
+    </aside>
+
+    <!-- ══════════════════════════════════════════════════════
+         CENTRE COLUMN
+         ══════════════════════════════════════════════════════ -->
+    <main class="col col-main" id="main">
+
+      <!-- ── INDEX / welcome post ─────────────────────────── -->
+      <section class="panel" id="index">
+        <div class="plate">
+          <h2>Index</h2>
+          <span class="plate-sub" data-i18n="nav_role">Game Designer</span>
+        </div>
+        <div class="panel-body">
+          <article class="post">
+            <div class="post-head">
+              <span class="post-title" data-i18n="hero_title">Game Designer: Data-Driven Systems and Gameplay</span>
+              <span class="post-byline">Posted by <a href="#about">Jho</a> · 08.14.26</span>
+            </div>
+            <div class="post-body">
+              <p data-i18n="hero_desc">I design game systems and then use player data to fix them. Over 5 years across mobile, PC, and web: 2 commercial releases, a graduation thesis, and more than 10 student and jam projects. I came into design from statistics, which is why I iterate with spreadsheets and analytics.</p>
+              <div class="post-links">
+                <a href="docs/CV_Jhonnatan_Barbosa_Game_Designer.pdf" target="_blank" rel="noopener" data-i18n="link_resume">Resume (PDF)</a>
+                <a href="https://linkedin.com/in/jhonnatanbarbosa" target="_blank" rel="noopener">LinkedIn</a>
+                <a href="retro-jhorro.html" data-i18n="link_studio">Jhorro Productions</a>
+                <a href="mailto:jho@jhorro.com">jho@jhorro.com</a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <!-- ── SELECTED PROJECTS ────────────────────────────── -->
+      <section class="panel" id="projects">
+        <h2 class="panel-title">
+          <span data-i18n="sec_projects">Selected Projects</span>
+          <span class="pt-aside">6 entries</span>
+        </h2>
+        <div class="panel-body">
+
+          <!-- Dead Saints Parade — the only commercial PC title, so it leads. -->
+          <article class="post is-flagship" id="dead-saints-parade">
+            <div class="post-head">
+              <span class="post-title">Dead Saints Parade</span>
+              <span class="post-badge is-live" data-i18n="wip_badge">● In Development · Target 2027</span>
+              <span class="post-byline" data-i18n="wip_flagship">Current focus · Jhorro Productions</span>
+            </div>
+            <div class="post-body">
+              <div class="shot">
+                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Dead Saints Parade third-person stealth immersive sim gameplay">
+                  <source src="media/project4141UpdateApril.mp4" type="video/mp4">
+                  <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+                </video>
+                <div class="shot-cap">Dead Saints Parade · April build</div>
+              </div>
+              <p class="post-lead" data-i18n="wip_bridge">A third-person stealth immersive sim from Jhorro Productions. The tension comes from systems reacting to each other, not from scripted moments. Announced for PC and Steam Deck, with full release in Q2 2027.</p>
+              <p data-i18n="wip_desc">My biggest project so far, and the first commercial title Jhorro Productions is developing and publishing in-house. Thief, Dishonored, Metal Gear Solid, and Gloomwood are the clear references. The player is a spy in a Gothic-Victorian city where information is the best weapon and combat kills the spy about as fast as the guard. The systems core is done. Right now I'm building the cathedral levels, the second combat slice, and Steam Deck input.</p>
+              <table class="meta">
+                <tbody>
+                  <tr><th data-i18n="label_role">Role</th><td data-i18n="wip_role">Designer &amp; Developer (Solo)</td></tr>
+                  <tr><th data-i18n="label_engine">Engine</th><td>Unity 6.3</td></tr>
+                  <tr><th data-i18n="label_platform">Platform</th><td data-i18n="wip_platform">PC · Steam Deck</td></tr>
+                  <tr><th data-i18n="wip_label_target">Target</th><td data-i18n="wip_target">Demo Feb 2027 · Release Q2 2027</td></tr>
+                </tbody>
+              </table>
+              <div class="tags">
+                <span class="tag" data-i18n="wip_tag_immersive">Immersive Sim</span>
+                <span class="tag" data-i18n="wip_tag_stealth">Stealth Systems</span>
+                <span class="tag" data-i18n="wip_tag_ai">AI State Machines</span>
+                <span class="tag" data-i18n="wip_tag_coord">Multi-Guard Coordination</span>
+                <span class="tag">Unity 6</span>
+                <span class="tag" data-i18n="wip_tag_commercial">Commercial Release</span>
+                <span class="tag">Steam</span>
+              </div>
+              <div class="post-links">
+                <a class="btn-primary" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11.98 2C6.65 2 2.28 6.13 2 11.4l5.36 2.22a3.04 3.04 0 0 1 1.7-.53l2.39-3.46v-.05a4.05 4.05 0 1 1 4.05 4.05h-.1l-3.4 2.43c0 .03.01.06.01.09a3.05 3.05 0 1 1-6.06-.55L2.5 13.6A10 10 0 1 0 11.98 2zM8.6 17.6l-1.23-.5a2.29 2.29 0 0 0 4.2-1.27 2.29 2.29 0 0 0-2.3-2.29c-.27 0-.53.05-.78.14l1.27.53a1.69 1.69 0 1 1-1.3 3.11l.14.28zm9.16-7.49a2.7 2.7 0 1 0-5.4 0 2.7 2.7 0 0 0 5.4 0zm-4.72 0a2.03 2.03 0 1 1 4.06 0 2.03 2.03 0 0 1-4.06 0z"/></svg>
+                  <span data-i18n="wip_steam_link">Wishlist on Steam →</span>
+                </a>
+                <a href="#systems" data-i18n="wip_link_systems">How two of these systems work →</a>
+                <span style="color:var(--rt-faint)" data-i18n="wip_updated">Last updated: July 2026</span>
+              </div>
+            </div>
+          </article>
+
+          <!-- Idle Cyberpunk City Clicker -->
+          <article class="post" id="p-cyberpunk">
+            <div class="post-head">
+              <span class="post-title" data-i18n="p1_name">Idle Cyberpunk City Clicker: Economy &amp; Analytics</span>
+              <span class="post-badge" data-i18n="p1_badge">Shipped · 2025</span>
+              <span class="post-byline">Android · Solo</span>
+            </div>
+            <div class="post-body">
+              <div class="shot">
+                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Cyberpunk City Clicker gameplay showing neon cityscape and upgrade UI"><source src="media/01optimizedVideo-Cyberpunk.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
+              </div>
+              <p data-i18n="p1_desc">I built this on what I learned from Idle Kingdom Builder: deeper progression tiers and a monetization layer using reward ads and IAP. I instrumented Unity Analytics to snapshot player state at 4 milestones, which surfaced two economy bugs and a timer persistence defect. Five fixes went out across v1.70 and v1.81, and the July 2026 data pull measures what they did. It has 600+ organic downloads and a 4.2/5 rating with no marketing spend, a median session around 6 minutes, and a top 10% of players who average 15 minutes or more.</p>
+              <table class="meta">
+                <tbody>
+                  <tr><th data-i18n="label_role">Role</th><td data-i18n="p1_role">Designer &amp; Developer (Solo)</td></tr>
+                  <tr><th data-i18n="label_engine">Engine</th><td>Unity 6</td></tr>
+                  <tr><th data-i18n="label_platform">Platform</th><td>Android</td></tr>
+                  <tr><th data-i18n="label_duration">Duration</th><td data-i18n="p1_duration">6 months</td></tr>
+                </tbody>
+              </table>
+              <div class="tags">
+                <span class="tag" data-i18n="tag_economy">Economy Design</span>
+                <span class="tag" data-i18n="tag_progression">Progression Tuning</span>
+                <span class="tag">Unity Analytics</span>
+                <span class="tag">AdMob / IAP</span>
+                <span class="tag" data-i18n="tag_datadriven">Data-Driven Iteration</span>
+              </div>
+
+              <details class="spoiler">
+                <summary data-i18n="link_details">View details →</summary>
+                <div class="spoiler-body">
+                  <p class="post-lead" data-i18n="pd1_tagline">An idle clicker set in a dystopian cyberpunk metropolis. Players earn credits to expand their city through passive income, active clicking, and deeper progression tiers. The whole loop is instrumented with real analytics.</p>
+                  <div class="metrics">
+                    <div class="metric"><div class="val">600+</div><div class="lbl" data-i18n="pd1_m1">Organic Downloads</div></div>
+                    <div class="metric"><div class="val">4.2/5</div><div class="lbl" data-i18n="pd1_m2">Play Store Rating</div></div>
+                    <div class="metric"><div class="val">~6 min</div><div class="lbl" data-i18n="pd1_m3">Median Session</div></div>
+                    <div class="metric"><div class="val">220 / 36</div><div class="lbl" data-i18n="pd1_m4">Tracked Players (pre / post)</div></div>
+                  </div>
+                  <div class="card"><span class="k" data-i18n="pd_contribution">My Contribution</span><p data-i18n="pd1_contrib">I designed and developed it solo, concept to launch, building on lessons from Idle Kingdom Builder: a wider core loop, deeper progression tiers, and a monetization layer using reward ads and IAP. I instrumented Unity Analytics to snapshot player state at 4 milestones, which surfaced two economy bugs and a timer persistence defect. Five fixes shipped across v1.70 and v1.81, and I re-measured the economy against the pre-overhaul baseline afterwards.</p></div>
+                  <div class="cards is-quad">
+                    <div class="card"><h4 data-i18n="pd1_d1h">4-Pillar Economy</h4><p data-i18n="pd1_d1p">Passive, Clicker, Offline, and Ascension buildings each open a different progression path, and each one rewards a different playstyle without spelling it out.</p></div>
+                    <div class="card"><h4 data-i18n="pd1_d2h">Budget Analytics</h4><p data-i18n="pd1_d2p">I designed 4 snapshot events to get the most data possible under Unity Analytics' free tier. Each captures buildings, upgrades, click/passive ratio, and time elapsed at that milestone. The post-overhaul version carries about 33 parameters per event instead of 7, plus session and ad tracking.</p></div>
+                    <div class="card"><h4 data-i18n="pd1_d3h">Price Asymmetry</h4><p data-i18n="pd1_d3p">Clicker buildings scale at 1.65×. Passive buildings scale at 1.25×. That drives the click-to-passive transition mechanically, without any explicit tutorialization.</p></div>
+                    <div class="card"><h4 data-i18n="pd1_d4h">Non-Intrusive Monetization</h4><p data-i18n="pd1_d4p">Reward ads are opt-in only. Banner ads stay peripheral. One review summed it up: "non-intrusive ads, a lot of rewards and a clean UI."</p></div>
+                  </div>
+                  <div class="note"><strong data-i18n="pd_retro">What I'd Do Differently</strong><br><span data-i18n="pd1_retro">The rebalance did what I wanted at the opening and overshot in the middle: time to 1M is now a little over 4× what it was. The choke point moved with it, from 1M → 1B to 1K → 1M, so the next pass belongs earlier in the curve. Rewarded ads are still one power user rather than a habit, and I would spend that iteration on the pacing that gets ordinary players to try them.</span></div>
+                </div>
+              </details>
+
+              <div class="post-links">
+                <a href="#cyberpunk-analytics" data-i18n="p1_link_case">Analytics case study →</a>
+                <a href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener" data-i18n="p1_link_play">Cyberpunk City on Google Play →</a>
+                <a href="docs/GDD_IdleCyberpunkCityClicker_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" data-i18n="pd_gdd_link">Full GDD (PDF) →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Idle Kingdom Builder -->
+          <article class="post" id="p-kingdom">
+            <div class="post-head">
+              <span class="post-title" data-i18n="p2_name">Idle Kingdom Builder: First Shipped Economy</span>
+              <span class="post-badge" data-i18n="p2_badge">Shipped · 2024</span>
+              <span class="post-byline">Android · Solo</span>
+            </div>
+            <div class="post-body">
+              <div class="shot">
+                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Kingdom Builder gameplay showing kingdom construction and resource management"><source src="media/02optimizedVideo-IdleKingdom.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
+              </div>
+              <p data-i18n="p2_desc">My first published idle game. I designed the core loop and economy from scratch, using Cookie Clicker's formulas as a reference and tuning them toward a slower, more deliberate pace. It shipped on Google Play with 1000+ organic downloads and steady engagement in the early weeks. Without an analytics pipeline I had no reliable way to see where players dropped off, and that gap is what pushed me to build the analytics system for Cyberpunk City.</p>
+              <table class="meta">
+                <tbody>
+                  <tr><th data-i18n="label_role">Role</th><td data-i18n="p2_role">Designer &amp; Developer (Solo)</td></tr>
+                  <tr><th data-i18n="label_engine">Engine</th><td>Unity 2022</td></tr>
+                  <tr><th data-i18n="label_platform">Platform</th><td>Android</td></tr>
+                  <tr><th data-i18n="label_duration">Duration</th><td data-i18n="p2_duration">6 months</td></tr>
+                </tbody>
+              </table>
+              <div class="tags">
+                <span class="tag" data-i18n="tag_economy">Economy Design</span>
+                <span class="tag" data-i18n="tag_curves">Progression Curves</span>
+                <span class="tag" data-i18n="tag_monetization">Monetization</span>
+                <span class="tag" data-i18n="tag_firstship">First Ship</span>
+              </div>
+
+              <details class="spoiler">
+                <summary data-i18n="link_details">View details →</summary>
+                <div class="spoiler-body">
+                  <p class="post-lead" data-i18n="pd2_tagline">A medieval kingdom-building idle game. Players click to earn gold and build houses, farms, markets, and more. Each one generates passive income to expand the kingdom further.</p>
+                  <div class="metrics">
+                    <div class="metric"><div class="val">1000+</div><div class="lbl" data-i18n="pd1_m1">Organic Downloads</div></div>
+                    <div class="metric"><div class="val">10</div><div class="lbl" data-i18n="pd2_m4">Building Types</div></div>
+                  </div>
+                  <div class="card"><span class="k" data-i18n="pd_contribution">My Contribution</span><p data-i18n="pd2_contrib">Designed the core loop and economy system from scratch, using Cookie Clicker's formulas as a reference and tuning them toward a slower, more deliberate pace. 10 building types (House through Bank) with upgrade paths and a Royal Ascension prestige system. Ad monetization implemented with reward videos and banners.</p></div>
+                  <div class="cards is-quad">
+                    <div class="card"><h4 data-i18n="pd2_d1h">Cookie Clicker as Foundation</h4><p data-i18n="pd2_d1p">I studied the exponential curves that make Cookie Clicker addictive, then slowed the pace. The medieval theme calls for deliberate growth, not frantic clicking.</p></div>
+                    <div class="card"><h4 data-i18n="pd2_d2h">Royal Ascension</h4><p data-i18n="pd2_d2p">Prestige system that resets progress for permanent bonuses. It gives long-term players a reason to restart and work through the economy again from a stronger position.</p></div>
+                    <div class="card"><h4 data-i18n="pd2_d3h">75 Achievements</h4><p data-i18n="pd2_d3p">Tiered achievement system (Common through Legendary) across buildings, upgrades, clicking, and GPS milestones. It fills the gaps between the major progression beats with smaller goals.</p></div>
+                    <div class="card"><h4 data-i18n="pd2_d4h">The Analytics Gap</h4><p data-i18n="pd2_d4p">Shipped without a data pipeline. I couldn't tell where players were dropping off. That gap is what led me to build the analytics system used in Cyberpunk City.</p></div>
+                  </div>
+                  <div class="note"><strong data-i18n="pd_retro">What I'd Do Differently</strong><br><span data-i18n="pd2_retro">Add analytics from day one. Even basic milestone events would have revealed progression bottlenecks early. The economy feels solid in the first hour, but the mid-game pacing was never validated with real data.</span></div>
+                </div>
+              </details>
+
+              <div class="post-links">
+                <a href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener" data-i18n="p2_link_play">Kingdom Builder on Google Play →</a>
+                <a href="docs/GDD_IdleKingdomBuilder_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" data-i18n="pd_gdd_link">Full GDD (PDF) →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Guardian's Falls -->
+          <article class="post" id="p-guardians">
+            <div class="post-head">
+              <span class="post-title" data-i18n="p3_name">Guardian's Falls: Wounds</span>
+              <span class="post-badge" data-i18n="p3_badge">Graduation · 2023</span>
+              <span class="post-byline">PUC-SP · Team of 6</span>
+            </div>
+            <div class="post-body">
+              <div class="shot">
+                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Guardian's Falls parkour traversal and combat gameplay"><source src="media/010optimizedVideo-Guardians1.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
+              </div>
+              <p class="post-lead" data-i18n="p3_bridge">This project taught me the scope management principles I later applied to shipping my solo idle games on time.</p>
+              <p data-i18n="p3_desc">2.5D Metroidvania developed as a graduation project at PUC-SP. I started as game designer, then took on developer and producer duties as the project progressed, which meant core systems, parkour mechanics, and the art/sound pipeline. I led the scope cuts needed to ship a playable vertical slice with a team of 6 inside academic deadlines.</p>
+              <table class="meta">
+                <tbody>
+                  <tr><th data-i18n="label_role">Role</th><td data-i18n="p3_role">Designer → Developer / Producer</td></tr>
+                  <tr><th data-i18n="label_team">Team</th><td>6</td></tr>
+                  <tr><th data-i18n="label_engine">Engine</th><td>Unity 2021</td></tr>
+                  <tr><th data-i18n="label_platform">Platform</th><td>PC (itch.io)</td></tr>
+                  <tr><th data-i18n="label_duration">Duration</th><td data-i18n="p3_duration">1 Year</td></tr>
+                </tbody>
+              </table>
+              <div class="tags">
+                <span class="tag" data-i18n="tag_scope">Scope Management</span>
+                <span class="tag" data-i18n="tag_production">Production</span>
+                <span class="tag" data-i18n="tag_sysprog">Systems Programming</span>
+                <span class="tag" data-i18n="tag_parkour">Parkour Mechanics</span>
+                <span class="tag" data-i18n="tag_teamlead">Team Leadership</span>
+              </div>
+
+              <details class="spoiler">
+                <summary data-i18n="link_details">View details →</summary>
+                <div class="spoiler-body">
+                  <p class="post-lead" data-i18n="pd3_tagline">A 2.5D Metroidvania with parkour traversal and dash-strike combat. Graduation thesis at PUC-SP, and the project that taught me scope is a design skill.</p>
+                  <div class="metrics">
+                    <div class="metric"><div class="val">6</div><div class="lbl" data-i18n="pd3_m1">Team Members</div></div>
+                    <div class="metric"><div class="val">12 mo</div><div class="lbl" data-i18n="pd3_m2">Development Time</div></div>
+                    <div class="metric"><div class="val">3</div><div class="lbl" data-i18n="pd3_m3">Zones Shipped</div></div>
+                    <div class="metric"><div class="val">8→3</div><div class="lbl" data-i18n="pd3_m4">Mechanics Scoped</div></div>
+                  </div>
+                  <div class="card"><span class="k" data-i18n="pd_contribution">My Contribution</span><p data-i18n="pd3_contrib">Started as game designer, then shifted to developer and producer as the project progressed. I programmed core systems and parkour mechanics in C# and managed the art/sound pipeline. I also led the scope cuts: the original doc had 8 movement mechanics, 4+ zones, combo combat, and skill trees. What we shipped was a focused vertical slice: 3 mechanics, 3 zones, dash-strike combat.</p></div>
+                  <div class="cards is-quad">
+                    <div class="card"><h4 data-i18n="pd3_d1h">Dash-Strike Over Combos</h4><p data-i18n="pd3_d1p">The original 3-hit combo system broke player flow. The dash-strike emerged from prototyping and turned combat into an extension of the movement system instead of something fighting against it.</p></div>
+                    <div class="card"><h4 data-i18n="pd3_d2h">Stamina Cut</h4><p data-i18n="pd3_d2p">Removing the stamina gate made movement feel fast and expressive. The resource system was working against the core fantasy of fluid parkour traversal.</p></div>
+                    <div class="card"><h4 data-i18n="pd3_d3h">Linear Over Hub</h4><p data-i18n="pd3_d3p">We cut the hub and branching paths. Linear progression lets the level design teach mechanics in sequence. Each zone introduces and tests a new skill.</p></div>
+                    <div class="card"><h4 data-i18n="pd3_d4h">Environmental Narrative</h4><p data-i18n="pd3_d4p">No cutscenes. No NPC dialogue. The world tells the story through level design and environmental detail. The narrative survived the scope cuts by changing form.</p></div>
+                  </div>
+                  <div class="note"><strong data-i18n="pd_retro">What I'd Do Differently</strong><br><span data-i18n="pd3_retro">Playtest earlier and more often. Beta testers caught navigation and control issues we had gone blind to. I would also set hard scope ceilings at month 1 instead of letting the dream doc grow unchecked before cutting. Cut early, cut once.</span></div>
+                </div>
+              </details>
+
+              <div class="post-links">
+                <a href="#guardians-case-study" data-i18n="p3_link_case">Case study →</a>
+                <a href="https://hanada1nonly.itch.io/guardians-fall-wounds" target="_blank" rel="noopener" data-i18n="p3_link_play">Play on Itch.io →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Beasts of Agony -->
+          <article class="post" id="p-beasts">
+            <div class="post-head">
+              <span class="post-title" data-i18n="p4_name">Beasts of Agony: Souls-like Boss Fight</span>
+              <span class="post-badge" data-i18n="p4_badge">Game Jam · 9 days · 2023</span>
+              <span class="post-byline" data-i18n="pd4_award">Best Art: PUCJam 2023</span>
+            </div>
+            <div class="post-body">
+              <div class="shot">
+                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Beasts of Agony souls-like boss fight combat"><source src="media/04optimizedVideo-Beastsofagony.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
+              </div>
+              <p class="post-lead" data-i18n="p4_bridge">The clearest example of me building real-time combat architecture and animation state machines against a hard deadline.</p>
+              <p data-i18n="p4_desc">Souls-like combat demo built for PUCJam 2023 on the theme: "Sacred". I designed and programmed the core fighting system: hitboxes, animation trees, life/death state, and combat balancing. It won Best Art at PUCJam 2023.</p>
+              <table class="meta">
+                <tbody>
+                  <tr><th data-i18n="label_role">Role</th><td data-i18n="p4_role">Designer, Programmer &amp; Producer</td></tr>
+                  <tr><th data-i18n="label_team">Team</th><td>7</td></tr>
+                  <tr><th data-i18n="label_engine">Engine</th><td>Unity 2022</td></tr>
+                  <tr><th data-i18n="label_duration">Duration</th><td data-i18n="p4_duration">9 Days</td></tr>
+                </tbody>
+              </table>
+              <div class="tags">
+                <span class="tag" data-i18n="tag_combat">Combat Systems</span>
+                <span class="tag">Game Jam</span>
+                <span class="tag" data-i18n="tag_rapid">Rapid Prototyping</span>
+                <span class="tag" data-i18n="tag_award">Award Winner</span>
+              </div>
+
+              <details class="spoiler">
+                <summary data-i18n="link_details">View details →</summary>
+                <div class="spoiler-body">
+                  <p class="post-lead" data-i18n="pd4_tagline">A souls-like boss fight demo built in 9 days for PUCJam 2023. Theme: "Sacred". Core fighting system designed and programmed from scratch with a team of 7.</p>
+                  <div class="metrics">
+                    <div class="metric"><div class="val">7</div><div class="lbl" data-i18n="pd3_m1">Team Members</div></div>
+                    <div class="metric"><div class="val">9</div><div class="lbl" data-i18n="pd4_m2">Days to Ship</div></div>
+                    <div class="metric"><div class="val">🏆</div><div class="lbl" data-i18n="pd4_m3">Best Art Award</div></div>
+                  </div>
+                  <div class="card"><span class="k" data-i18n="pd_contribution">My Contribution</span><p data-i18n="pd4_contrib">Designed and programmed the core fighting system: hitboxes, animation trees, life/death state machines, and combat balancing. I also handled production, scoping daily milestones across a 7-person team so the boss fight would be playable and polished by day 9.</p></div>
+                  <div class="cards">
+                    <div class="card"><h4 data-i18n="pd4_d1h">One Boss, Done Well</h4><p data-i18n="pd4_d1p">Rather than several enemies with shallow behavior, the design effort went into a single boss: readable tells, punish windows, escalating phases.</p></div>
+                    <div class="card"><h4 data-i18n="pd4_d2h">Weight Over Speed</h4><p data-i18n="pd4_d2p">Animations prioritize impact and readability. Attacks use wind-up frames that telegraph intent. That is the souls-like contract: fair but punishing.</p></div>
+                  </div>
+                </div>
+              </details>
+
+              <div class="post-links">
+                <a href="https://hanada1nonly.itch.io/beasts-of-agony" target="_blank" rel="noopener">Play on itch.io →</a>
+              </div>
+            </div>
+          </article>
+
+          <!-- Operação Bagre Noturno -->
+          <article class="post" id="p-bagre">
+            <div class="post-head">
+              <span class="post-title" data-i18n="p5_name">Operação Bagre Noturno: Stealth Action Comedy</span>
+              <span class="post-badge" data-i18n="p5_badge">Game Jam · 2 weeks · 2024</span>
+              <span class="post-byline">CtrlAltJam#3 · Team of 4</span>
+            </div>
+            <div class="post-body">
+              <div class="shot">
+                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Operação Bagre Noturno stealth action gameplay in alternate-reality Brazil"><source src="media/05optimizedVideo-Bagre.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
+              </div>
+              <p data-i18n="p5_desc">Stealth-action game set in an alternate 2031 Brazil, with Metal Gear Solid and Splinter Cell as clear references. I designed the level layout, the core stealth and shooting mechanics, and the narrative, which mixes espionage with absurd comedy in a Brazilian geopolitical setting. We built it for CtrlAltJam#3 with a team of 4.</p>
+              <table class="meta">
+                <tbody>
+                  <tr><th data-i18n="label_role">Role</th><td data-i18n="p5_role">Game Designer, Producer &amp; 3D Artist</td></tr>
+                  <tr><th data-i18n="label_team">Team</th><td>4</td></tr>
+                  <tr><th data-i18n="label_engine">Engine</th><td>Unity 2023</td></tr>
+                  <tr><th data-i18n="label_duration">Duration</th><td data-i18n="p5_duration">2 Weeks</td></tr>
+                </tbody>
+              </table>
+              <div class="tags">
+                <span class="tag" data-i18n="tag_leveldesign">Level Design</span>
+                <span class="tag" data-i18n="tag_stealth">Stealth Mechanics</span>
+                <span class="tag" data-i18n="tag_narrative">Narrative Design</span>
+                <span class="tag" data-i18n="tag_3dart">3D Art</span>
+              </div>
+
+              <details class="spoiler">
+                <summary data-i18n="link_details">View details →</summary>
+                <div class="spoiler-body">
+                  <p class="post-lead" data-i18n="pd5_tagline">A stealth-action game set in an alternate 2031 Brazil. Metal Gear Solid-inspired espionage mixed with absurd Brazilian comedy. Built for CtrlAltJam#3.</p>
+                  <div class="metrics">
+                    <div class="metric"><div class="val">4</div><div class="lbl" data-i18n="pd3_m1">Team Members</div></div>
+                    <div class="metric"><div class="val">2 wk</div><div class="lbl" data-i18n="pd5_m2">Development Time</div></div>
+                    <div class="metric"><div class="val">3</div><div class="lbl" data-i18n="pd5_m3">Roles Held</div></div>
+                  </div>
+                  <div class="card"><span class="k" data-i18n="pd_contribution">My Contribution</span><p data-i18n="pd5_contrib">Game designer, producer, and 3D artist. I designed the level layout, the core stealth and shooting mechanics, and wrote the narrative: espionage mixed with absurd comedy in a Brazilian geopolitical setting. I also created the 3D environment assets and managed the production pipeline across a 4-person team inside a 2-week deadline.</p></div>
+                  <div class="cards">
+                    <div class="card"><h4 data-i18n="pd5_d1h">Stealth-First Loop</h4><p data-i18n="pd5_d1p">Detection triggers escalation, not instant failure. Players can fight their way out or retreat. That keeps tension in the loop without becoming frustrating in a jam-scoped project.</p></div>
+                    <div class="card"><h4 data-i18n="pd5_d2h">Comedy as World-Building</h4><p data-i18n="pd5_d2p">The absurd alternate-reality Brazil setting lets the narrative carry weight without taking itself too seriously. The satire lands through gameplay rather than exposition.</p></div>
+                  </div>
+                </div>
+              </details>
+
+              <div class="post-links">
+                <a href="https://jhorro.itch.io/operacao-bagre-noturno" target="_blank" rel="noopener">Play on itch.io →</a>
+                <a href="docs/GDD_bagrenoturno.pdf" target="_blank" rel="noopener" data-i18n="pd_gdd_link">Full GDD (PDF) →</a>
+              </div>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+      <!-- ── SYSTEMS DESIGN ───────────────────────────────── -->
+      <section class="panel" id="systems">
+        <h2 class="panel-title">
+          <span data-i18n="sec_wip">Currently Working On</span>
+          <span class="pt-aside" data-i18n="dsp_eyebrow">Dead Saints Parade · Systems Design</span>
+        </h2>
+        <div class="panel-body prose">
+
+          <p data-i18n="dsp_intro">Immersive sims earn their reputation through systemic depth, and one developer cannot afford breadth. Every system has to justify its slot, and "it would be cool" is not a justification.</p>
+
+          <h3 class="h-rule" data-i18n="dsp_rule_h">Four pillars, and what happens when they fight</h3>
+          <p data-i18n="dsp_rule_desc">Most projects list pillars. Fewer say what happens when two of them want opposite things. That second part is where the pillars actually do work, because without it a pillar list is decoration you can argue your way around.</p>
+
+          <div class="prio">
+            <div class="prio-item"><div class="rank" data-i18n="dsp_prio_r1">1 · beats everything</div><div class="pname" data-i18n="dsp_prio_p1">Vulnerability</div></div>
+            <div class="prio-item"><div class="rank">2</div><div class="pname" data-i18n="dsp_prio_p2">Tactical Stealth</div></div>
+            <div class="prio-item"><div class="rank">4</div><div class="pname" data-i18n="dsp_prio_p3">Information as Power</div></div>
+            <div class="prio-item"><div class="rank" data-i18n="dsp_prio_rlast">3 · yields</div><div class="pname" data-i18n="dsp_prio_p4">Non-Linear Exploration</div></div>
+          </div>
+
+          <p data-i18n-html="dsp_read_p">Read as <strong>1 &gt; 2 &gt; 4 &gt; 3</strong>. The numbering is the pillars' own; the order above is what they beat. Vulnerability wins outright, so any feature that lets the player shortcut stealth is cut regardless of how good it feels in isolation. Information outranks exploration convenience, which is why a long detour to reach a document is preferred over auto-collecting it.</p>
+
+          <div class="cards">
+            <div class="callout">
+              <span class="k" data-i18n="dsp_cut1_k">Cut by rule 1</span>
+              <h4 data-i18n="dsp_cut1_h">Bullet-time combat</h4>
+              <p data-i18n="dsp_cut1_p">Fun, genre-adjacent, and a direct shortcut past the stealth layer. Cut without debate, because Vulnerability outranks everything it would have served.</p>
+            </div>
+            <div class="callout">
+              <span class="k" data-i18n="dsp_cut2_k">Cut by rule 4 &gt; 3</span>
+              <h4 data-i18n="dsp_cut2_h">Auto-collect on documents</h4>
+              <p data-i18n="dsp_cut2_p">Would have smoothed exploration and cost the game its central act, which is going to the thing and reading it. Exploration convenience yields to information.</p>
+            </div>
+          </div>
+
+          <p class="note" data-i18n="dsp_rule_note">Both systems below are downstream of that ordering. The corner behaviour in the cover system is the clearest case: a feature that was built, played, and then cut because a higher pillar outranked it.</p>
+
+          <!-- System 01 -->
+          <span class="sublabel" data-i18n="dsp_s1_label">System 01 · Complete</span>
+          <h3 class="h-rule" data-i18n="dsp_s1_h">Cover: designing a refusal</h3>
+          <p data-i18n="dsp_s1_p1">Cover is the primary defensive tool, and the part I would point at first is the feature it deliberately does not have.</p>
+          <p data-i18n="dsp_s1_p2">Walking into a wall puts the player in cover after 4 frames of sustained contact, about 66 ms at 60 fps. There is no cover button, because the point is to remove a button press from the moment the player's attention is most expensive. Camera-relative input is then projected onto the wall's tangent, so a wall facing the camera slides with A/D and a wall on the player's left slides with W/S. Any arbitrary angle works without branches or per-wall authoring.</p>
+
+          <figure>
+            <svg viewBox="0 14 420 158" role="img" data-i18n-aria="svg_cover_alt" aria-label="Top-down diagram of the cover detection fan: five rays at 0, plus and minus 30, and plus and minus 60 degrees from player forward, cast 0.7 metres toward a wall, with the player held at a 0.42 metre standoff.">
+              <rect x="50" y="44" width="320" height="12" fill="var(--border)" stroke="#5a4569" stroke-width="1"/>
+              <text x="52" y="36" class="svg-label b" data-i18n="svg_wall">WALL</text>
+              <g stroke-width="1.2" fill="none">
+                <line x1="210" y1="98" x2="210" y2="28" stroke="#ffccec" opacity="0.85"/>
+                <line x1="210" y1="98" x2="245" y2="37.4" stroke="#ffccec" opacity="0.85"/>
+                <line x1="210" y1="98" x2="175" y2="37.4" stroke="#ffccec" opacity="0.85"/>
+                <line x1="210" y1="98" x2="270.6" y2="63" stroke="#b78ed2" opacity="0.55" stroke-dasharray="3 3"/>
+                <line x1="210" y1="98" x2="149.4" y2="63" stroke="#b78ed2" opacity="0.55" stroke-dasharray="3 3"/>
+              </g>
+              <text x="214" y="26" class="svg-label hi">0°</text>
+              <text x="249" y="34" class="svg-label hi">+30°</text>
+              <text x="152" y="34" class="svg-label hi">−30°</text>
+              <text x="275" y="62" class="svg-label">+60°</text>
+              <text x="108" y="62" class="svg-label">−60°</text>
+              <line x1="140" y1="56" x2="140" y2="98" stroke="#7d6d87" stroke-width="1" stroke-dasharray="2 2"/>
+              <line x1="136" y1="56" x2="144" y2="56" stroke="#7d6d87" stroke-width="1"/>
+              <line x1="136" y1="98" x2="144" y2="98" stroke="#7d6d87" stroke-width="1"/>
+              <text x="86" y="82" class="svg-label b">0.42 m</text>
+              <circle cx="210" cy="98" r="9" fill="var(--surface)" stroke="#ffccec" stroke-width="2"/>
+              <text x="196" y="122" class="svg-label hi" data-i18n="svg_player">PLAYER</text>
+              <path d="M 150 63 A 70 70 0 0 1 270.6 63" fill="none" stroke="#5a4569" stroke-width="1" stroke-dasharray="2 3"/>
+              <text x="286" y="98" class="svg-label" data-i18n="svg_range">0.7 m range</text>
+              <g>
+                <line x1="60" y1="140" x2="130" y2="140" stroke="#b78ed2" stroke-width="1.2"/>
+                <polygon points="130,140 124,137 124,143" fill="#b78ed2"/>
+                <text x="60" y="158" class="svg-label b">wallTangent = Cross(CoverNormal, up)</text>
+              </g>
+            </svg>
+            <figcaption data-i18n-html="dsp_s1_cap"><strong>Detection.</strong> A 5-ray fan at 0°, ±30° and ±60° from player forward, cast 0.7 m from chest height. Walls have to be vertical, so floors and ceilings are rejected. Approach angle must be under 60°, which means running parallel past a wall will not trigger cover. Once in, a magnetic standoff holds the player at 0.42 m: far enough to avoid controller penetration, close enough to read as contact.</figcaption>
+          </figure>
+
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th data-i18n="dsp_th_param">Parameter</th>
+                  <th data-i18n="dsp_th_value">Value</th>
+                  <th data-i18n="dsp_th_purpose">Purpose</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td class="key" data-i18n="dsp_cv_r1k">Walk speed in cover</td><td class="num">1.5 m/s</td><td data-i18n="dsp_cv_r1v">Slower than a normal walk, and sprint is disabled</td></tr>
+                <tr><td class="key" data-i18n="dsp_cv_r2k">Magnetic standoff</td><td class="num">0.42 m</td><td data-i18n="dsp_cv_r2v">Controller radius plus 0.1, with a corrective nudge at speed 10</td></tr>
+                <tr><td class="key" data-i18n="dsp_cv_r3k">Snap-in delay</td><td class="num">4 frames</td><td data-i18n="dsp_cv_r3v">About 66 ms at 60 fps, which kills flicker off a glancing wall</td></tr>
+                <tr><td class="key" data-i18n="dsp_cv_r4k">Exit threshold</td><td class="num">dot &gt; 0.65</td><td data-i18n="dsp_cv_r4v">Roughly 49° into the wall, so leaving cover is always deliberate</td></tr>
+                <tr><td class="key" data-i18n="dsp_cv_r5k">Footstep interval</td><td class="num">0.45 m</td><td data-i18n="dsp_cv_r5v">Lateral travel, which feeds AI hearing at a 1 m radius</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="callout">
+            <span class="k" data-i18n="dsp_ref_k">The refusal</span>
+            <h4 data-i18n="dsp_ref_h">Corners don't wrap, and that's the feature</h4>
+            <p data-i18n="dsp_ref_p1">Nearly every third-person cover system lets you round an outer corner with a button. The character slides around, the camera follows, and you are on the new wall. It feels good. I built it, and it is not in the game.</p>
+            <p data-i18n="dsp_ref_p2">The system commits to one wall. At an outer corner the peek camera looks around it while the body stays clamped at the edge. Getting onto the next wall means pushing away from the current one and re-engaging, which is a deliberate act taken while exposed. Inside corners had the opposite problem, where the detection fan alternated between two surfaces and jittered; normal-locking keeps the player committed to the original wall.</p>
+            <p class="because" data-i18n="dsp_ref_because">Auto-wrap glides the player blindly into space they have not looked at yet. That is a shortcut past observation, and Vulnerability outranks the comfort it would buy.</p>
+          </div>
+
+          <p data-i18n-html="dsp_s1_cost">What it costs is written down rather than discovered later. There is no cover-to-cover dash, no scripted corner turn, and no vaulting over cover. Peek saves and restores the scene camera with <code>FindObjectsByType</code>, which allocates, and single-surface tracking means genuinely complex geometry can still break it.</p>
+
+          <!-- System 02 -->
+          <span class="sublabel" data-i18n="dsp_s3_label">System 02 · Complete</span>
+          <h3 class="h-rule" data-i18n="dsp_s3_h">Perception: seeing versus noticing</h3>
+          <p data-i18n="dsp_s3_p1">A guard's eye is two cones, not one. That split is what produces the genre's signature moment, where the cone sweeps toward you and you freeze instead of running.</p>
+
+          <figure>
+            <svg viewBox="0 75 420 185" role="img" data-i18n-aria="svg_perc_alt" aria-label="Top-down diagram of a guard's two vision cones: an inner 60 degree cone reaching 15 metres that detects any player, and an outer 120 degree cone reaching 8 metres that detects only moving players.">
+              <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="#b78ed2" opacity="0.10"/>
+              <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="none" stroke="#b78ed2" stroke-width="1" opacity="0.45"/>
+              <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="#ffccec" opacity="0.12"/>
+              <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="none" stroke="#ffccec" stroke-width="1" opacity="0.6"/>
+              <circle cx="210" cy="225" r="8" fill="var(--surface)" stroke="var(--text)" stroke-width="2"/>
+              <text x="210" y="246" text-anchor="middle" class="svg-label b" data-i18n="svg_guard">GUARD · eye 1.6 m</text>
+              <text x="292" y="100" class="svg-label hi" data-i18n="svg_inner">INNER 60° / 15 m</text>
+              <text x="292" y="112" class="svg-label" data-i18n="svg_inner_sub">detects any player</text>
+              <text x="286" y="176" class="svg-label b" data-i18n="svg_outer">OUTER 120° / 8 m</text>
+              <text x="286" y="188" class="svg-label" data-i18n="svg_outer_sub">moving players only</text>
+              <circle cx="180" cy="196" r="5" fill="#8fce9b"/>
+              <text x="86" y="199" class="svg-label" style="fill:#8fce9b" data-i18n="svg_still">STILL → unseen</text>
+              <circle cx="240" cy="130" r="5" fill="#d98a8a"/>
+              <text x="250" y="133" class="svg-label" style="fill:#d98a8a" data-i18n="svg_moving">MOVING → seen</text>
+            </svg>
+            <figcaption data-i18n-html="dsp_s3_cap"><strong>Two zones.</strong> The inner cone detects a player whether or not they are moving. The outer cone only registers movement above a threshold, so a stationary player in peripheral vision is invisible, and even when it does fire, peripheral detection fills suspicion at 40% of the normal rate. It is a vague sense, not a sighting. Once a cone check passes, 1 to 3 raycasts to centre-mass, head and feet confirm line of sight, and any clear ray counts, which stops a head poking over cover from being a false negative.</figcaption>
+          </figure>
+
+          <p data-i18n="dsp_s3_p2">Shadow is a hard gate rather than a modifier. Below a light level of 0.2 the guard cannot see the player at all, at any range. Above it, light is remapped to 0 to 1 and raised to an exponent of 2.0, so 50% light gives 25% detection speed. The quadratic is doing real work: it makes the difference between dim and dark feel like a cliff rather than a slope, which is what makes extinguishing a single candle a tactical act.</p>
+          <p data-i18n-html="dsp_s3_p3">Distance, angle, light, movement and posture all multiply into one <code>combinedMult</code>, which maps linearly onto a fill time between 0.5 s at worst and 5 s at best. Every threshold lives on a <code>GuardData</code> ScriptableObject, so a nervous guard in the catacombs is an asset rather than a subclass.</p>
+
+          <div class="tbl-wrap">
+            <table class="tbl">
+              <thead>
+                <tr>
+                  <th data-i18n="dsp_th_scenario">Scenario</th>
+                  <th data-i18n="dsp_th_alert">Time to alert</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr><td data-i18n="dsp_al_r1">Standing, full light, centre of cone, close range</td><td class="num">~0.5 s</td></tr>
+                <tr><td data-i18n="dsp_al_r2">Crouching, dim light (0.4), edge of cone, far range</td><td class="num">~5 s+</td></tr>
+                <tr><td data-i18n="dsp_al_r3">Moving, peripheral cone only</td><td class="num">~12 s</td></tr>
+                <tr><td data-i18n="dsp_al_r4">Still, below the light threshold, any range</td><td class="num" data-i18n="dsp_al_r4v">never</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── DEMO PROGRESS BOARD ──────────────────────────── -->
+      <section class="panel" id="board">
+        <h2 class="panel-title">
+          <span data-i18n="wip_progress_label">Demo Progress</span>
+          <span class="pt-aside" data-i18n="sec_wip_aside">In development · updated as builds ship</span>
+        </h2>
+        <div class="panel-body">
+          <div>
+            <div class="bar-label"><span data-i18n="wip_progress_label">Demo Progress</span><b>62%</b></div>
+            <div class="bar"><div class="bar-fill" style="width:62%"></div></div>
+          </div>
+
+          <span class="sublabel" data-i18n="wip_col_todo">On the Board</span>
+          <div class="board">
+            <div class="board-item is-active"><span class="mark">▸</span><span data-i18n="wip_t10">Level 1 &amp; 2: greybox done, art pass next</span></div>
+            <div class="board-item"><span class="mark">·</span><span data-i18n="wip_t11">Combat slice 2: dagger &amp; pistol</span></div>
+            <div class="board-item"><span class="mark">·</span><span data-i18n="wip_t12">Unified pause menu UI</span></div>
+            <div class="board-item"><span class="mark">·</span><span data-i18n="wip_t13">The Maestro boss AI</span></div>
+            <div class="board-item"><span class="mark">·</span><span data-i18n="wip_t14">Minimap (MGS-style)</span></div>
+            <div class="board-item"><span class="mark">·</span><span data-i18n="wip_t15">Cutscene system</span></div>
+            <div class="board-item"><span class="mark">·</span><span data-i18n="wip_t16">Steam Input wiring &amp; Deck optimization</span></div>
+            <div class="board-item"><span class="mark">·</span><span data-i18n="wip_t17">Steam Next Fest demo build</span></div>
+          </div>
+
+          <details class="spoiler">
+            <summary><span>22</span> <span data-i18n="wip_col_done">Shipped Systems</span></summary>
+            <div class="spoiler-body">
+              <div class="chips">
+                <span class="chip" data-i18n="wip_d1">Lockpicking minigame</span>
+                <span class="chip" data-i18n="wip_d2">Cover &amp; peek system v2</span>
+                <span class="chip" data-i18n="wip_d3">Enemy AI: single guard</span>
+                <span class="chip" data-i18n="wip_d4">Multi-guard coordination</span>
+                <span class="chip" data-i18n="wip_d5">Light &amp; shadow detection</span>
+                <span class="chip" data-i18n="wip_d6">Contextual interactions</span>
+                <span class="chip" data-i18n="wip_d7">Inventory system</span>
+                <span class="chip" data-i18n="wip_d8">Health &amp; damage</span>
+                <span class="chip" data-i18n="wip_d9">Character progression (stats)</span>
+                <span class="chip" data-i18n="wip_d10">Journal &amp; observations</span>
+                <span class="chip" data-i18n="wip_d11">Inspection mode (RE4-style)</span>
+                <span class="chip" data-i18n="wip_d12">Sound propagation</span>
+                <span class="chip" data-i18n="wip_d13">Steam integration</span>
+                <span class="chip" data-i18n="wip_d14">Save / load + scene transitions</span>
+                <span class="chip" data-i18n="wip_d15">Player controller hooks</span>
+                <span class="chip" data-i18n="wip_d16">Debug infrastructure v2</span>
+                <span class="chip" data-i18n="wip_d17">Analytics collection plan</span>
+                <span class="chip" data-i18n="wip_d18">Combat v1: stealth kills &amp; body discovery</span>
+                <span class="chip" data-i18n="wip_d19">Throwables &amp; distractions</span>
+                <span class="chip" data-i18n="wip_d20">Traps &amp; hazards</span>
+                <span class="chip" data-i18n="wip_d21">Civilian NPCs: informants &amp; panic</span>
+                <span class="chip" data-i18n="wip_d22">Game flow: splash, main menu &amp; save shrines</span>
+              </div>
+            </div>
+          </details>
+        </div>
+      </section>
+
+      <!-- ── ADDITIONAL WORK ──────────────────────────────── -->
+      <section class="panel" id="additional">
+        <h2 class="panel-title">
+          <span data-i18n="sec_additional">Additional Work: FoxTales Studios</span>
+          <span class="pt-aside" data-i18n="sec_additional_aside">Student studio · PUC-SP · 2020-2023 · Game Designer &amp; 3D Artist</span>
+        </h2>
+        <div class="panel-body">
+          <div class="tile-grid">
+            <div class="tile">
+              <div class="tile-shot"><img src="media/thumb-coal.jpg" alt="Coal dark fantasy metroidvania environment" loading="lazy"></div>
+              <div class="tile-body">
+                <div class="tile-name">Coal</div>
+                <div class="tile-genre">Metroidvania · Unity · 2020</div>
+                <div class="tile-role" data-i18n="add_coal_role">Dark fantasy world design, interconnected levels, lore.</div>
+                <a href="https://metrodatiavania.itch.io/coal" target="_blank" rel="noopener">Play on itch.io →</a>
+              </div>
+            </div>
+            <div class="tile">
+              <div class="tile-shot"><video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Maldição de Netuno wave-based shooting action"><source src="media/06optimizedVideo-Netuno.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video></div>
+              <div class="tile-body">
+                <div class="tile-name">Maldição de Netuno</div>
+                <div class="tile-genre">Action Rounds Shooter · Unity · 2022</div>
+                <div class="tile-role" data-i18n="add_netuno_role">Level layout, wave economy balancing, weapon tuning, 3D props.</div>
+                <a href="https://vinicim-no-poste.itch.io/maldicao-de-netuno" target="_blank" rel="noopener">Play on itch.io →</a>
+              </div>
+            </div>
+            <div class="tile">
+              <div class="tile-shot"><video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Nárkissos first-person horror exploration"><source src="media/07optimizedVideo-Narksisso.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video></div>
+              <div class="tile-body">
+                <div class="tile-name">Nárkissos</div>
+                <div class="tile-genre">First-Person Horror · Unity · 2021</div>
+                <div class="tile-role" data-i18n="add_narkissos_role">Level design, puzzle design, 3D scenario modeling and textures.</div>
+                <a href="https://jhorro.itch.io/a22-osprimeiros" target="_blank" rel="noopener">Play on itch.io →</a>
+              </div>
+            </div>
+            <div class="tile">
+              <div class="tile-shot"><video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Riddles of the Sands open-world puzzle environment"><source src="media/08optimizedVideo-Sands.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video></div>
+              <div class="tile-body">
+                <div class="tile-name">Riddles of the Sands</div>
+                <div class="tile-genre">Open World Puzzle · Unity · 2021</div>
+                <div class="tile-role" data-i18n="add_riddles_role">Open world layout, puzzle progression system, documentation.</div>
+              </div>
+            </div>
+            <div class="tile">
+              <div class="tile-shot"><video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Mega-Racing platform racing track with obstacles"><source src="media/09optimizedVideo-MegaKart.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video></div>
+              <div class="tile-body">
+                <div class="tile-name">Mega-Racing</div>
+                <div class="tile-genre">Platform Racing · Unity · 2021</div>
+                <div class="tile-role" data-i18n="add_mega_role">Track layouts, obstacles and power-ups, playtesting, 3D props.</div>
+              </div>
+            </div>
+            <div class="tile">
+              <div class="tile-shot"><img src="media/thumb-technichal.png" alt="Technical Difficulties multiplayer party game" loading="lazy"></div>
+              <div class="tile-body">
+                <div class="tile-name">Technical Difficulties</div>
+                <div class="tile-genre">Multiplayer Party Game · Unity · 2020</div>
+                <div class="tile-role" data-i18n="add_tech_role">Core mechanics, social deduction balancing, loop refinement.</div>
+                <a href="https://metrodatiavania.itch.io/technical-dificulties" target="_blank" rel="noopener">Play on itch.io →</a>
+              </div>
+            </div>
+            <div class="tile">
+              <div class="tile-shot"><img src="media/thumb-sonic.jpg" alt="Donkey Sonic retro platformer level" loading="lazy"></div>
+              <div class="tile-body">
+                <div class="tile-name">Donkey Sonic</div>
+                <div class="tile-genre">Retro Platformer · Unity · 2020</div>
+                <div class="tile-role" data-i18n="add_sonic_role">Level layouts, enemy placement, gameplay balancing.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CASE STUDY: ANALYTICS ────────────────────────── -->
+      <section class="panel" id="cyberpunk-analytics">
+        <h2 class="panel-title">
+          <span data-i18n="cs_cyber_title">Case Study: Idle Cyberpunk City Clicker</span>
+          <span class="pt-aside" data-i18n="cs_cyber_aside">220 players before the overhaul · 36 after · 7 tracked events · July 2026 pull</span>
+        </h2>
+        <div class="panel-body">
+          <div class="cards is-quad">
+            <div class="card">
+              <span class="k" data-i18n="cs_label_01">01 · Problem</span>
+              <h3 data-i18n="cs_cyber_01_h">Flying blind after the first game</h3>
+              <p data-i18n="cs_cyber_01_p">Idle Kingdom Builder shipped with 1000+ downloads and solid reviews, but no analytics pipeline. I had no visibility into where players dropped off, or why. Cyberpunk City was growing steadily and had the same blind spot. I needed a way to see inside the player journey without blowing the budget.</p>
+            </div>
+            <div class="card">
+              <span class="k" data-i18n="cs_label_02">02 · Process</span>
+              <h3 data-i18n="cs_cyber_02_h">Milestone snapshots, then a wider net</h3>
+              <p data-i18n="cs_cyber_02_p">The free Unity Analytics tier limits how much you can send, so the first pass was 4 snapshot events tied to credit milestones (1K, 1M, 1B, 1T), about 7 parameters each. After the fixes I widened it: the same events now carry around 33 parameters, plus SessionStart, AdWatched5x and AdFreeBuilding. The old event names stayed, so the pre-1.40 build still works as a baseline.</p>
+            </div>
+            <div class="card">
+              <span class="k" data-i18n="cs_label_03">03 · Findings</span>
+              <h3 data-i18n="cs_cyber_03_h">Economy validates, three bugs surface</h3>
+              <p data-i18n="cs_cyber_03_p">The click-to-passive transition behaved as designed. The data also caught a clicker counter mapped to the wrong variable, and a timeElapsed persistence defect that invalidated the higher milestones. The expensive one was offline production: offlinePercentage already included the bonus and CalculateProduction() multiplied it a second time, which compounded to roughly 38,000× normal CPS on late-game saves. Leaving the app overnight paid better than playing it.</p>
+            </div>
+            <div class="card">
+              <span class="k" data-i18n="cs_label_04">04 · Outcome</span>
+              <h3 data-i18n="cs_cyber_04_h">Five fixes, then a second read</h3>
+              <p data-i18n="cs_cyber_04_p">v1.70 and v1.81 carried five fixes: corrected instrumentation, timer persistence, an offline rewrite with hard ceilings on rate, window and multiplier, rebalanced upgrade multipliers (passive 3.5×, clicker 7×), and an IAP boost that was off by one. In July 2026 I pulled the data again and read 36 post-overhaul Android players against the frozen 220-player baseline.</p>
+            </div>
+          </div>
+
+          <div class="embed">
+            <div class="embed-bar">
+              <span data-i18n="dashboard_label">Interactive Analytics Dashboard · Built from real Unity Analytics data</span>
+              <a href="cyberpunk-dashboard-v3.html" target="_blank" rel="noopener" data-i18n="dashboard_fullscreen">Open full screen →</a>
+            </div>
+            <iframe src="cyberpunk-dashboard-v3.html" loading="lazy" title="Idle Cyberpunk City Clicker analytics dashboard showing player milestone data and economy metrics"></iframe>
+          </div>
+
+          <span class="sublabel" data-i18n="cs_label_05">05 · What I'd change next</span>
+          <h3 class="h-rule" data-i18n="cs_cyber_05_h">What the second read changed</h3>
+          <div class="prose">
+            <p data-i18n="cs_cyber_05_p1">The opening curve landed where I wanted it. Time to the first milestone rose 85% (194s to 360s) and clicks rose about 30% (302 to 394), while buildings bought held flat at 13 and 12. Players spend longer and click more without changing what they buy. The mid-game overshot, though. Median time to 1M went from 824s to 3,503s, a little over 4×, further than I was aiming for. Upgrades are at least doing their job now: 14 owned at 1M against 10 before, and clicker upgrades went from 0 to 6, since the old counter never recorded any.</p>
+            <p data-i18n="cs_cyber_05_p2">The wall moved too. My earlier read was that 1M → 1B was the choke point, a 73% drop. In the new cohort that step converts better than it used to, 27% to 38%, and the one that slipped is 1K → 1M, 42% down to 36%. So the next tuning pass belongs earlier in the curve than I thought. I'm holding that loosely: the post cohort is 36 players at 1K and thins to one by 1T, so the far end is anecdote rather than measurement.</p>
+            <p data-i18n="cs_cyber_05_p3">Monetization and retention only became visible with the new events. Rewarded video has 175 views and a single German player accounts for 120 of them. That same player holds the 1T record and had watched 111 ads by the time they got there, so ads hold up as a progression route at the far end. The median player reaches 1K having watched none. Session opens have also stopped clustering at install: days 8 to 24 carry 58% of them against 19% in the first two days. There is a returning core now, and that is who the next ad-pacing test should target.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CASE STUDY: SCOPE ────────────────────────────── -->
+      <section class="panel" id="guardians-case-study">
+        <h2 class="panel-title">
+          <span data-i18n="cs_gf_title">Case Study: Guardian's Falls</span>
+          <span class="pt-aside" data-i18n="cs_gf_aside">Team of 6 · 12 months · Scope management · Graduation thesis</span>
+        </h2>
+        <div class="panel-body">
+          <div class="cards is-quad">
+            <div class="card">
+              <span class="k" data-i18n="cs_label_01">01 · Problem</span>
+              <h3 data-i18n="cs_gf_01_h">Ambition outpaced capacity</h3>
+              <p data-i18n="cs_gf_01_p">The month-1 design doc planned for 4+ zones, 8 parkour mechanics, combo combat, skill trees, and layered narrative. Team of 6. No dedicated programmer. 12-month academic deadline.</p>
+            </div>
+            <div class="card">
+              <span class="k" data-i18n="cs_label_02">02 · Process</span>
+              <h3 data-i18n="cs_gf_02_h">Prototype fast, cut decisively</h3>
+              <p data-i18n="cs_gf_02_p">We built early prototypes covering the full mechanic set and tested which ones actually supported the core loop. Then a structured beta with categorized feedback. Features that weren't pulling their weight got cut.</p>
+            </div>
+            <div class="card">
+              <span class="k" data-i18n="cs_label_03_sol">03 · Solution</span>
+              <h3 data-i18n="cs_gf_03_h">Ship what works, not everything</h3>
+              <p data-i18n="cs_gf_03_p">The final demo covers 3 zones with streamlined movement (sprint, slide, dash), dash-strike combat, and environmental storytelling. Progression is linear so the level design can introduce mechanics in sequence.</p>
+            </div>
+            <div class="card">
+              <span class="k" data-i18n="cs_label_04">04 · Outcome</span>
+              <h3 data-i18n="cs_gf_04_h">Demo shipped + 3 design principles I still use</h3>
+              <p data-i18n="cs_gf_04_p">Shipped a coherent vertical slice. The scope and iteration lessons from this project shaped how I approached both idle games afterwards.</p>
+            </div>
+          </div>
+
+          <span class="sublabel" data-i18n="gf_scope_label">Scope Management</span>
+          <h3 class="h-rule" data-i18n="gf_scope_subtitle">What We Envisioned vs. What Shipped</h3>
+          <p data-i18n="gf_scope_desc">The original doc was deliberately ambitious. Dream big first, then scope down to what the team can ship well. I handled design, C# programming, and production. No dedicated programmer on the team.</p>
+
+          <div class="tbl-wrap">
+            <table class="data">
+              <thead>
+                <tr>
+                  <th data-i18n="th_system">System</th>
+                  <th data-i18n="th_vision">Month 1 Vision</th>
+                  <th data-i18n="th_shipped">What Shipped</th>
+                  <th data-i18n="th_status">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="feature" data-i18n="scope_movement">Movement</td>
+                  <td class="vision" data-i18n="scope_movement_v">8 mechanics: vault, slide, wall jump, grab/climb, swing, roll, sprint, free jump. Stamina system gating usage.</td>
+                  <td class="final" data-i18n="scope_movement_s">Sprint, slide, dash. Stamina cut entirely. Removing the resource gate made movement feel fast and expressive. Vault, wall jump, and grab/climb were prototyped, then cut for clarity.</td>
+                  <td><span class="badge badge-evolved" data-i18n="badge_evolved">Evolved</span></td>
+                </tr>
+                <tr>
+                  <td class="feature" data-i18n="scope_combat">Combat</td>
+                  <td class="vision" data-i18n="scope_combat_v">3-hit combo tree, slide attack, bounce attack, power punches, sprint attack</td>
+                  <td class="final" data-i18n="scope_combat_s">Dash-into-enemy strike. Combos made players stop and chain punches. The dash-strike let them keep moving. It emerged from prototyping, not from the original doc.</td>
+                  <td><span class="badge badge-simplified" data-i18n="badge_simplified">Simplified</span></td>
+                </tr>
+                <tr>
+                  <td class="feature" data-i18n="scope_zones">Zones</td>
+                  <td class="vision" data-i18n="scope_zones_v">4+ zones (Moonlit Meadow, Bond Fracture, Jade Jungle, Innerlake) + Hub</td>
+                  <td class="final" data-i18n="scope_zones_s">3 zones shipped. Hub removed. Progression is linear, not branching.</td>
+                  <td><span class="badge badge-simplified" data-i18n="badge_simplified">Simplified</span></td>
+                </tr>
+                <tr>
+                  <td class="feature" data-i18n="scope_progression">Progression</td>
+                  <td class="vision" data-i18n="scope_progression_v">Skill tree, NPC quests, HUB, backtracking, left/right difficulty choice</td>
+                  <td class="final" data-i18n="scope_progression_s">Linear progression across 3 zones. No skill tree. No hub. Mechanical mastery carries the progression.</td>
+                  <td><span class="badge badge-cut" data-i18n="badge_cut">Cut</span></td>
+                </tr>
+                <tr>
+                  <td class="feature" data-i18n="scope_narrative">Narrative</td>
+                  <td class="vision" data-i18n="scope_narrative_v">4 cardinal guardians, trauma metaphor, intro cutscene, NPC dialogue, symbolic enemy design</td>
+                  <td class="final" data-i18n="scope_narrative_s">Environmental storytelling carries the narrative. No cutscene. No NPC dialogue. World-building is embedded in level design.</td>
+                  <td><span class="badge badge-evolved" data-i18n="badge_evolved">Evolved</span></td>
+                </tr>
+                <tr>
+                  <td class="feature" data-i18n="scope_enemies">Enemies</td>
+                  <td class="vision" data-i18n="scope_enemies_v">3 types per zone + mini-boss + final boss, thematically symbolic designs</td>
+                  <td class="final" data-i18n="scope_enemies_s">Generic enemy types. Focus shifted to making combat feel responsive rather than narratively themed.</td>
+                  <td><span class="badge badge-simplified" data-i18n="badge_simplified">Simplified</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <span class="sublabel" data-i18n="gf_process_label">Design Process</span>
+          <h3 class="h-rule" data-i18n="gf_mechanic_subtitle">Mechanic Spotlight: Dash-Strike Combat</h3>
+          <div class="shot">
+            <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Guardian's Falls dash-strike combat mechanic in action"><source src="media/03optimizedVideo-Guardians2.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
+            <div class="shot-cap">Core · Combat — Evolved</div>
+          </div>
+          <div class="prose">
+            <h4 class="h-rule" data-i18n="ms_h">Combat is movement</h4>
+            <p data-i18n="ms_p">Instead of standing still and executing combos, the player dashes into enemies to attack. The original doc specified a 3-hit combo tree and special attacks. Early prototypes had them working. In practice, they pulled the feel in the opposite direction of the movement system. Combos made players stop. The dash-strike kept them flowing.</p>
+            <p class="note"><strong data-i18n="ms_iter_label">Iteration:</strong> <span data-i18n="ms_iter_text">This wasn't in the original doc. It emerged from prototyping. Once we saw how the dash felt during traversal, extending that momentum into combat was the obvious next step. We cut the combo system, and what replaced it was stronger than the original plan.</span></p>
+          </div>
+
+          <span class="sublabel" data-i18n="gf_reflection_label">Reflection</span>
+          <h3 class="h-rule" data-i18n="gf_reflection_subtitle">What I Carried Forward</h3>
+          <div class="cards">
+            <div class="card"><h3 data-i18n="tk1_h">Scope is a design skill</h3><p data-i18n="tk1_p">The original doc had 8 movement mechanics. The shipped game has 3, and they feel better. This mindset shaped how I built both idle games: start with the minimum viable loop, not the maximum vision.</p></div>
+            <div class="card"><h3 data-i18n="tk2_h">Test before you're ready</h3><p data-i18n="tk2_p">Even rough testing with non-expert players surfaces problems you can't see from the inside. Beta testers caught navigation issues and control pain points we had gone blind to.</p></div>
+            <div class="card"><h3 data-i18n="tk3_h">Mechanics must talk to each other</h3><p data-i18n="tk3_p">The combo system fought the movement system. The dash-strike emerged because we prototyped both and noticed the conflict. The design doc was a guess, and prototyping is what told us the guess was wrong.</p></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── DESIGN DOCUMENTS ─────────────────────────────── -->
+      <section class="panel" id="documents">
+        <h2 class="panel-title">
+          <span data-i18n="sec_documents">Design Documents</span>
+          <span class="pt-aside" data-i18n="sec_documents_aside">GDDs, QDDs, LDDs, and design tests: How I think on paper</span>
+        </h2>
+        <div class="panel-body">
+          <div class="doc-list">
+            <div class="doc">
+              <div class="doc-icon t-qdd">QDD</div>
+              <div>
+                <div class="doc-name" data-i18n="doc1_name">Secrets Submerged: Genshin Impact Quest</div>
+                <div class="doc-desc" data-i18n="doc1_desc">Fan-made world quest for Fontaine. Full quest flow, NPC interactions, item design, progression steps, and reward balancing. This is the doc I point to for narrative and quest structure.</div>
+                <a href="docs/qdd-genshin-secrets-submerged_jhonnatanbarbosa.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
+              </div>
+            </div>
+            <div class="doc">
+              <div class="doc-icon t-ldd">LDD</div>
+              <div>
+                <div class="doc-name" data-i18n="doc2_name">Fire Dungeon: Level Design Document</div>
+                <div class="doc-desc" data-i18n="doc2_desc">Top-down dungeon level with hand-drawn room maps, enemy placement, boss encounters, objective flow, and challenge pacing.</div>
+                <a href="docs/LDD_FireDungeon_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
+              </div>
+            </div>
+            <div class="doc">
+              <div class="doc-icon">GDD</div>
+              <div>
+                <div class="doc-name" data-i18n="doc3_name">Idle Cyberpunk City Clicker: Full GDD</div>
+                <div class="doc-desc" data-i18n="doc3_desc">Complete design document: core loop, economy system, progression tiers, monetization model, world-building lore, and analytics plan.</div>
+                <a href="docs/GDD_IdleCyberpunkCityClicker_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
+              </div>
+            </div>
+            <div class="doc">
+              <div class="doc-icon">GDD</div>
+              <div>
+                <div class="doc-name" data-i18n="doc4_name">Idle Kingdom Builder: Full GDD</div>
+                <div class="doc-desc" data-i18n="doc4_desc">Economy system design, resource faucets/sinks, progression curves, ascension system, UI flow, and monetization strategy.</div>
+                <a href="docs/GDD_IdleKingdomBuilder_JhonnatanBarbosa.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
+              </div>
+            </div>
+            <div class="doc">
+              <div class="doc-icon">GDD</div>
+              <div>
+                <div class="doc-name" data-i18n="doc5_name">Operação Bagre Noturno: Full GDD</div>
+                <div class="doc-desc" data-i18n="doc5_desc">Stealth-action design: level layout, mechanics, narrative structure, scoring system, and world-building for an alternate-reality Brazil.</div>
+                <a href="docs/GDD_bagrenoturno.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
+              </div>
+            </div>
+            <div class="doc">
+              <div class="doc-icon t-test">TEST</div>
+              <div>
+                <div class="doc-name" data-i18n="doc6_name">Quantum Cafe: Interview Design Test</div>
+                <div class="doc-desc" data-i18n="doc6_desc">Management sim GDD created for a studio interview. Budget breakdown, milestone timeline, career progression system, and economy design inside defined scope constraints.</div>
+                <a href="docs/gdd_test_quantumcafe.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
+              </div>
+            </div>
+            <div class="doc">
+              <div class="doc-icon t-test">TEST</div>
+              <div>
+                <div class="doc-name" data-i18n="doc7_name">Jump Mechanic Level: Design Test GDD</div>
+                <div class="doc-desc" data-i18n="doc7_desc">Level design test. A new mechanic pushes the core jump to its limit across progressively harder rooms. Camera constraint solutions worked out along the way.</div>
+                <a href="docs/gdd_test_levalmechanic.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
+              </div>
+            </div>
+            <div class="doc">
+              <div class="doc-icon t-test">TEST</div>
+              <div>
+                <div class="doc-name" data-i18n="doc8_name">Jelly Morph: Shifty Speedway: Design Test GDD</div>
+                <div class="doc-desc" data-i18n="doc8_desc">Hypercasual mobile game design: core mechanics, competitive analysis, monetization strategy (ads/IAP), and UI wireframes.</div>
+                <a href="docs/gdd_test_jellymorph.pdf" target="_blank" rel="noopener" data-i18n="doc_view">View PDF →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── ABOUT ────────────────────────────────────────── -->
+      <section class="panel" id="about">
+        <h2 class="panel-title"><span data-i18n="sec_about">About</span></h2>
+        <div class="panel-body">
+          <div class="about">
+            <div class="about-photo">
+              <img src="media/thumb-jhonnatan2.png" alt="Jhonnatan Barbosa portrait photo" loading="lazy">
+            </div>
+            <div class="about-body">
+              <div class="about-block">
+                <span class="k" data-i18n="about_bg_label">Background</span>
+                <p data-i18n="about_bg_p">Game designer with a statistics background. I build first and iterate constantly, and I try to settle design arguments with evidence rather than taste, whether the problem is economy tuning, mechanics, levels, or narrative. Over 5 years in game design across 2 shipped mobile titles, a graduation thesis, and more than 10 student and jam projects. Based in São Paulo, Brazil.</p>
+              </div>
+
+              <div class="quote">
+                <strong data-i18n="about_phil_label">Design philosophy</strong>
+                <span data-i18n="about_phil_p">I design systems players feel they discovered on their own, then use data to check that they actually can. When players feel lost, that isn't a badge of honor. It means the invisible guidance failed somewhere. Every design is a hypothesis until you ship it and look at what people actually did with it.</span>
+              </div>
+
+              <div class="about-block">
+                <span class="k" data-i18n="about_teach_label">Teaching</span>
+                <p data-i18n="about_teach_p">Alongside shipping games, I teach game development and design to kids and teens. Over 300 students across three schools, content adapted for ages 8 through 17. It's the best training I've found for studio communication: if a 10-year-old can follow your explanation of a state machine, your spec will probably survive a cross-discipline review. It also means I can scope a lesson the way I scope a milestone. Break a complex system into deliverable chunks, check whether people actually understood, adjust before moving on.</p>
+              </div>
+
+              <div class="about-block">
+                <span class="k" data-i18n="about_range_label">Design range</span>
+                <p data-i18n="about_range_p">My core is systems and economy design, but I work across disciplines regularly. The Genshin Impact quest doc covers narrative and quest structure. Bagre Noturno combines stealth mechanics with alternate-reality storytelling. Cyberpunk City's atmospheric lore ties world-building back into the progression systems.</p>
+              </div>
+
+              <div class="about-block">
+                <span class="k" data-i18n="about_inf_label">Influences</span>
+                <p data-i18n="about_inf_p">A lot of the approach comes from studying how Valve teaches Portal's mechanics through play, and how Half-Life guides players with lighting and architecture instead of waypoints. That kind of invisible design only holds up if you playtest obsessively. Kojima's influence shows up in the ambition: trust players with complex systems and meaningful choices. That sits next to the scope cuts elsewhere on this page more comfortably than it looks, because depth and breadth are different axes. Cutting systems is what buys the time to iterate on the ones left standing, and both Guardian's Falls and Dead Saints Parade got deeper by getting narrower.</p>
+              </div>
+
+              <div class="quote">
+                <strong data-i18n="about_looking_label">Looking for</strong>
+                <span data-i18n="about_looking_p">A systems or gameplay design role where I can combine hands-on design work with data analysis to shape player behavior. Ideally at a mid-size to AAA studio working on PC or console titles. Open to remote or relocation.</span>
+              </div>
+
+              <div class="about-block">
+                <span class="k" data-i18n="about_tools_label">Tools</span>
+                <table class="spec">
+                  <tbody>
+                    <tr><th data-i18n="tool_engines">Engines</th><td>Unity, Unreal Engine 5, Godot</td></tr>
+                    <tr><th data-i18n="tool_design">Design</th><td data-i18n="tool_design_val">GDDs, economy modeling, level design, quest design, playtesting</td></tr>
+                    <tr><th data-i18n="tool_data">Data</th><td data-i18n="tool_data_val">Unity Analytics, spreadsheet simulation, Python, R</td></tr>
+                    <tr><th data-i18n="tool_code">Code</th><td>C#, C++, SQL</td></tr>
+                    <tr><th data-i18n="tool_art">Art</th><td>Blender, Maya, ZBrush, Adobe Creative Suite</td></tr>
+                    <tr><th data-i18n="tool_languages">Languages</th><td data-i18n="tool_lang_val">Fluent English, Native Portuguese, Basic Spanish</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── CONTACT ──────────────────────────────────────── -->
+      <section class="panel" id="contact">
+        <h2 class="panel-title">
+          <span data-i18n="sec_contact">Contact</span>
+          <span class="pt-aside" data-i18n="sec_contact_aside">Currently seeking a systems or gameplay design role · Open to remote or relocation</span>
+        </h2>
+        <div class="panel-body">
+          <p><span class="avail" data-i18n="contact_status">Available for new roles</span></p>
+          <h3 class="h-rule" data-i18n="contact_headline">Let's talk about your next game.</h3>
+          <p data-i18n="contact_intro">Have a role, a project, or just want to talk shop? Email is the fastest way to reach me. I usually reply within a day.</p>
+
+          <div class="mailbox">
+            <div class="mb-text">
+              <span class="ci-label" style="font-size:9px;letter-spacing:.09em;text-transform:uppercase;color:var(--rt-faint)" data-i18n="contact_cta">Email me</span>
+              <div class="mb-addr">jho@jhorro.com</div>
+            </div>
+            <button type="button" class="copy-btn" data-email="jho@jhorro.com" onclick="copyEmail(this)">
+              <span class="copy-label" data-i18n="contact_copy">Copy address</span>
+            </button>
+            <a class="btn-primary" href="mailto:jho@jhorro.com" data-i18n="contact_cta">Email me</a>
+          </div>
+
+          <p style="font-size:10.5px;color:var(--rt-dim)" data-i18n="contact_location">Based in São Paulo, Brazil · UTC-3</p>
+
+          <div class="contact-grid">
+            <a class="contact-item" href="https://linkedin.com/in/jhonnatanbarbosa" target="_blank" rel="noopener">
+              <span class="ci-label">LinkedIn</span><span class="ci-value">/in/jhonnatanbarbosa</span>
+            </a>
+            <a class="contact-item" href="https://jhorro.itch.io" target="_blank" rel="noopener">
+              <span class="ci-label">itch.io</span><span class="ci-value">jhorro.itch.io</span>
+            </a>
+            <a class="contact-item" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+              <span class="ci-label">Steam</span><span class="ci-value">Dead Saints Parade</span>
+            </a>
+            <a class="contact-item" href="docs/CV_Jhonnatan_Barbosa_Game_Designer.pdf" target="_blank" rel="noopener">
+              <span class="ci-label" data-i18n="contact_resume">Resume</span><span class="ci-value" data-i18n="contact_download">Download PDF</span>
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ══════════════════════════════════════════════════════
+         RIGHT RAIL — site news, status, affiliates
+         ══════════════════════════════════════════════════════ -->
+    <aside class="col col-right" aria-label="Site news and status">
+
+      <section class="panel panel-side">
+        <h2 class="panel-title">Site News</h2>
+        <div class="panel-body">
+          <div class="news">
+            <div class="news-date">08.11.26</div>
+            <div class="news-title">Demo progress: 62%</div>
+            <p>Dead Saints Parade levels 1 &amp; 2 are greyboxed and heading into an art pass. 22 systems shipped, 8 still on the board.</p>
+          </div>
+          <div class="news">
+            <div class="news-date">07.24.26</div>
+            <div class="news-title">Cyberpunk City: second data read</div>
+            <p>36 post-overhaul players read against the frozen 220-player baseline. The choke point moved from 1M→1B to 1K→1M, so the next tuning pass belongs earlier in the curve. <a href="#cyberpunk-analytics">Full case study »</a></p>
+          </div>
+          <div class="news">
+            <div class="news-date">06.30.26</div>
+            <div class="news-title">Perception system complete</div>
+            <p>Two-cone guard vision, with shadow as a hard gate below 0.2 light rather than a modifier. <a href="#systems">How it works »</a></p>
+          </div>
+          <div class="news">
+            <div class="news-date">05.12.26</div>
+            <div class="news-title">Dead Saints Parade on Steam</div>
+            <p>Store page is live. PC and Steam Deck, demo February 2027, full release Q2 2027. <a href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">Wishlist »</a></p>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel panel-side">
+        <h2 class="panel-title">Status</h2>
+        <div class="panel-body">
+          <p><span class="avail" data-i18n="contact_status">Available for new roles</span></p>
+          <dl class="readout">
+            <dt>Role</dt><dd data-i18n="nav_role">Game Designer</dd>
+            <dt>Base</dt><dd>São Paulo, BR · UTC-3</dd>
+            <dt>Seeking</dt><dd>Systems / gameplay design</dd>
+            <dt>Email</dt><dd><a href="mailto:jho@jhorro.com">jho@jhorro.com</a></dd>
+          </dl>
+        </div>
+      </section>
+
+      <section class="panel panel-side">
+        <h2 class="panel-title">Now Building</h2>
+        <div class="panel-body">
+          <div class="news-title">Dead Saints Parade</div>
+          <div class="bar-label"><span data-i18n="wip_progress_label">Demo Progress</span><b>62%</b></div>
+          <div class="bar"><div class="bar-fill" style="width:62%"></div></div>
+          <dl class="readout">
+            <dt>Engine</dt><dd>Unity 6.3</dd>
+            <dt>Demo</dt><dd>Feb 2027</dd>
+            <dt>Release</dt><dd>Q2 2027</dd>
+          </dl>
+          <a href="#board">Full board »</a>
+        </div>
+      </section>
+
+      <section class="panel panel-side">
+        <h2 class="panel-title">Affiliates</h2>
+        <div class="panel-body">
+          <div class="buttons88">
+            <a class="btn88 b-steam" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">DEAD SAINTS<br>ON STEAM</a>
+            <a class="btn88 b-itch" href="https://jhorro.itch.io" target="_blank" rel="noopener">JHORRO<br>ON ITCH.IO</a>
+            <a class="btn88 b-play" href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener">GOOGLE PLAY</a>
+            <a class="btn88 b-li" href="https://linkedin.com/in/jhonnatanbarbosa" target="_blank" rel="noopener">LINKEDIN</a>
+            <a class="btn88 b-unity" href="retro-jhorro.html">JHORRO<br>PRODUCTIONS</a>
+            <span class="btn88 b-joke">BEST VIEWED<br>IN ANY BROWSER</span>
+          </div>
+        </div>
+      </section>
+
+    </aside>
+
+  </div>
+
+  <footer class="site-foot">
+    <p><b>Jhonnatan Barbosa</b> · 2026 · <span data-i18n="footer_tagline">Game Designer: Data-Driven Systems and Gameplay</span></p>
+    <p class="foot-nav">
+      <a href="#index">Index</a>|<a href="#projects" data-i18n="nav_projects">Projects</a>|<a href="#documents" data-i18n="nav_documents">Documents</a>|<a href="#about" data-i18n="nav_about">About</a>|<a href="#contact" data-i18n="nav_contact">Contact</a>|<a href="privacy-policy.html">Privacy</a>
+    </p>
+    <p>Best viewed with a monitor. No frames were harmed in the making of this page.</p>
+  </footer>
+
+</div>
+
+<script src="i18n.js"></script>
+<script>
+// ── Status-bar clock ────────────────────────────────────────
+// The reference pages all showed the visitor their own clock in the header
+// strip. Format matches: DD-MM-YY HH:MM AM.
+(function () {
+  const el = document.getElementById('sbClock');
+  if (!el) return;
+  const pad = n => String(n).padStart(2, '0');
+  function tick() {
+    const d = new Date();
+    let h = d.getHours();
+    const ampm = h < 12 ? 'AM' : 'PM';
+    h = h % 12 || 12;
+    el.textContent = `${pad(d.getDate())}-${pad(d.getMonth() + 1)}-${String(d.getFullYear()).slice(2)} ${pad(h)}:${pad(d.getMinutes())} ${ampm}`;
+  }
+  tick();
+  setInterval(tick, 30000);
+})();
+
+// ── Lazy video ─────────────────────────────────────────────
+// Nine clips on one page: only the visible ones are allowed to decode, and
+// anything scrolled away is paused so it stops costing battery.
+(function () {
+  const vids = document.querySelectorAll('video[data-lazyvideo]');
+  if (!vids.length) return;
+
+  if (!('IntersectionObserver' in window)) {
+    vids.forEach(v => { v.setAttribute('controls', ''); });
+    return;
+  }
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      const v = entry.target;
+      if (entry.isIntersecting) {
+        v.play().catch(() => { /* autoplay blocked; the poster frame stands in */ });
+      } else if (!v.paused) {
+        v.pause();
+      }
+    });
+  }, { rootMargin: '120px 0px', threshold: 0.15 });
+
+  vids.forEach(v => io.observe(v));
+})();
+
+// ── Copy email ─────────────────────────────────────────────
+function copyEmail(btn) {
+  const label = btn.querySelector('.copy-label');
+  const dict = (typeof translations !== 'undefined' && translations[currentLang]) || {};
+  const done = () => {
+    btn.classList.add('copied');
+    if (label) label.textContent = dict.contact_copied || 'Copied!';
+    clearTimeout(btn._copyTimer);
+    btn._copyTimer = setTimeout(() => {
+      btn.classList.remove('copied');
+      if (label) label.textContent = dict.contact_copy || 'Copy address';
+    }, 2000);
+  };
+
+  const text = btn.dataset.email;
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
+  } else {
+    fallbackCopy(text, done);
+  }
+}
+
+function fallbackCopy(text, done) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.setAttribute('readonly', '');
+  ta.style.cssText = 'position:fixed;top:-1000px;opacity:0;';
+  document.body.appendChild(ta);
+  ta.select();
+  try { document.execCommand('copy'); done(); } catch (e) { /* clipboard unavailable */ }
+  document.body.removeChild(ta);
+}
+</script>
+
+</body>
+</html>

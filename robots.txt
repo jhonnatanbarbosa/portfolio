@@ -1,4 +1,11 @@
 User-agent: *
 Allow: /
 
+# Raw markdown sources. These can't carry a noindex meta tag (they aren't HTML),
+# so robots.txt is the only lever. The stale HTML pages under /old_pages/ are
+# deliberately NOT blocked here — they carry <meta name="robots" content="noindex">
+# and must stay crawlable for Google to see it and drop them.
+Disallow: /2026cv.md
+Disallow: /old_pages/dsp_gdd.md
+
 Sitemap: https://www.jhorro.com/sitemap.xml

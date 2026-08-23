@@ -1,52 +1,64 @@
 /* ═══════════════════════════════════════════════════════════
    retro.css — early-2000s game fansite skin for the portfolio.
 
-   Period signatures this leans on: a fixed centred frame, a banner
-   art strip with a beveled wordmark, boxed panels with gradient
-   title bars, Verdana at chrome sizes, hard 1px borders with inset
-   bevels, underlined links with a visited colour, alternating table
-   rows, and dated news posts.
+   Era and subgenre, committed: 2000-2003 network fansite. The
+   reference shelf is PlanetQuake, Blue's News, Massassi Temple —
+   dark, dense, gunmetal, one hot accent, everything above the fold.
+
+   Period signatures this leans on: a HARD 980px column with the tile
+   showing on both sides, a banner art strip with a beveled wordmark,
+   boxed panels with gradient title bars, 11px Verdana at 1.45,
+   hard 1px borders with inset bevels, underlined links with a visited
+   colour, alternating table rows, and dated news posts.
 
    Modern bones underneath: CSS grid rather than tables, the three
-   columns fold down at 1080px and 760px, every interactive element
-   keeps a visible focus ring, and motion is opt-out.
+   columns fold down at 1004px and 760px, every interactive element
+   keeps a visible focus ring, motion is opt-out, and the A A A widget
+   in the status bar is both period furniture and the escape hatch that
+   makes 11px body type defensible.
 
-   Palette is the site's own --accent (#ffccec) and --accent2
-   (#b78ed2) rendered as 2002 chrome instead of soft modern glows.
+   Palette is gunmetal with the site's pink as the single accent, used
+   on title bars, links and one badge and nowhere else. The first pass
+   tinted every surface plum, which is the 2020s "Y2K aesthetic" and
+   reads as a recent reinvention rather than as 2002.
    ═══════════════════════════════════════════════════════════ */
 
 :root {
   /* ── Surfaces, darkest outward-in ── */
-  --rt-page:       #0e0a13;   /* outside the frame */
-  --rt-frame:      #171122;   /* the site frame itself */
-  --rt-panel:      #201830;   /* panel body */
-  --rt-panel-alt:  #1a1428;   /* alternating rows, inset wells */
-  --rt-sunken:     #120d1b;   /* screenshot mounts, code, progress track */
+  --rt-page:       #0a0a0a;   /* outside the frame */
+  --rt-frame:      #101010;   /* the site frame itself */
+  --rt-panel:      #141414;   /* panel body */
+  --rt-panel-alt:  #191919;   /* alternating rows, inset wells */
+  --rt-sunken:     #0b0b0b;   /* screenshot mounts, code, progress track */
 
   /* ── Title bars ── */
-  --rt-bar-top:    #5b3a6b;
-  --rt-bar-bot:    #2f1f3f;
-  --rt-bar-edge:   #7d569094;
+  --rt-bar-top:    #3a3a3a;
+  --rt-bar-bot:    #1c1c1c;
+  --rt-bar-edge:   rgba(255,255,255,0.12);
 
   /* ── Lines and bevels ── */
-  --rt-line:       #40304f;
-  --rt-line-soft:  #2b2138;
-  --rt-bevel-hi:   rgba(255,204,236,0.14);
-  --rt-bevel-lo:   #0a0710;
+  --rt-line:       #333333;
+  --rt-line-soft:  #262626;
+  --rt-bevel-hi:   rgba(255,255,255,0.10);
+  --rt-bevel-lo:   #000000;
 
   /* ── Type ── */
-  --rt-text:       #e8e0ea;
-  --rt-dim:        #a08fa9;
-  --rt-faint:      #7d6d87;
-  --rt-link:       #ffccec;
-  --rt-link-vis:   #c9a3dd;
+  --rt-text:       #c8c8c8;
+  --rt-dim:        #8f8f8f;
+  --rt-faint:      #6a6a6a;
+  --rt-link:       #ff77bb;   /* readable pink, for running prose */
+  --rt-link-vis:   #b0688c;
   --rt-link-hover: #ffffff;
 
-  --rt-accent:     #ffccec;
-  --rt-accent2:    #b78ed2;
-  --rt-good:       #8fce9b;
-  --rt-warn:       #e8c07a;
-  --rt-bad:        #d98a8a;
+  --rt-accent:     #ff3d9a;   /* loud pink, rationed: bars, rules, one badge */
+  --rt-accent2:    #ff77bb;
+  --rt-good:       #6fbf7a;
+  --rt-warn:       #d9a441;
+  --rt-bad:        #cc5555;
+
+  /* Text-size widget (A A A). Period furniture and the accessibility escape
+     hatch for 11px Verdana; the script writes the value onto <html>. */
+  --rt-scale: 1;
 
   --rt-mono: "Courier New", Courier, monospace;
   --rt-ui: Verdana, Geneva, Tahoma, "DejaVu Sans", sans-serif;
@@ -55,9 +67,9 @@
   /* The inline SVG diagrams carried over from index.html paint themselves
      with these three names. Aliasing them here means the markup moved across
      unedited. */
-  --border:  #40304f;
-  --surface: #201830;
-  --text:    #e8e0ea;
+  --border:  #333333;
+  --surface: #141414;
+  --text:    #c8c8c8;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -66,22 +78,26 @@
    remembering, and it keeps any markup pasted in from index.html in period. */
 *, *::before, *::after { border-radius: 0; }
 
-html { scroll-behavior: smooth; scroll-padding-top: 12px; }
+html { scroll-padding-top: 12px; }
 
 body {
   font-family: var(--rt-ui);
-  /* Period bodies ran Verdana at 11px. That is punishing for a page with this
-     much prose, so chrome stays at 11 and reading surfaces get 12 — Verdana's
-     x-height makes 12px read close to a 14px humanist face. */
-  font-size: 12px;
-  line-height: 1.6;
+  /* Period bodies ran Verdana at 11px and this one does too. The A A A widget
+     in the status bar scales it — genuinely period furniture, and the reason
+     11px is defensible on a page with this much prose. */
+  font-size: calc(11px * var(--rt-scale, 1));
+  line-height: 1.45;
   color: var(--rt-text);
   background: var(--rt-page);
-  /* Two overlaid diagonal hatches stand in for the tiled GIF background every
-     one of these sites had, at an alpha low enough to stay out of the way. */
+  /* The single strongest period signal is wallpaper showing to the left and
+     right of a hard-edged column, so this has to be VISIBLE — the first pass
+     ran it at 0.018 alpha, which is the same as not having one. Diagonal
+     weave plus a dot grid, standing in for the 8KB carbon-fibre GIF. */
   background-image:
-    repeating-linear-gradient(45deg,  rgba(255,204,236,0.018) 0 1px, transparent 1px 4px),
-    repeating-linear-gradient(-45deg, rgba(183,142,210,0.018) 0 1px, transparent 1px 4px);
+    repeating-linear-gradient(45deg,  rgba(255,255,255,0.030) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(-45deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 4px),
+    radial-gradient(rgba(255,61,154,0.05) 1px, transparent 1px);
+  background-size: auto, auto, 16px 16px;
   padding: 14px 12px 40px;
   -webkit-text-size-adjust: 100%;
 }
@@ -94,14 +110,14 @@ img, video { display: block; }
    modern design talked itself out of and the period did not. */
 a { color: var(--rt-link); text-decoration: underline; }
 a:visited { color: var(--rt-link-vis); }
-a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204,236,0.10); }
+a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,61,154,0.16); }
 
 :focus-visible {
   outline: 2px solid var(--rt-accent);
   outline-offset: 1px;
 }
 
-::selection { background: var(--rt-accent); color: #16101c; }
+::selection { background: var(--rt-accent); color: #0a0a0a; }
 
 .skip-link {
   position: absolute; left: -9999px; top: 0;
@@ -116,16 +132,23 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
    FRAME
    ═══════════════════════════════════════════════════════════ */
 
+/* A hard 980px, not a max-width that fills whatever it is given. 1024x768
+   was the target resolution of the period and the footer badge still claims
+   it; 980 clears the scrollbar there and leaves wallpaper on both sides of
+   anything wider. `max-width` only ever engages below that. */
 .site {
-  max-width: 1180px;
+  width: 980px;
+  max-width: 100%;
   margin: 0 auto;
   background: var(--rt-frame);
   border: 1px solid var(--rt-line);
+  /* Hard rings only. A blurred drop shadow is the single most modern pixel a
+     page like this can have. */
   box-shadow:
     inset 1px 1px 0 var(--rt-bevel-hi),
     inset -1px -1px 0 var(--rt-bevel-lo),
-    0 0 0 3px #0b0810,
-    0 8px 28px rgba(0,0,0,0.55);
+    0 0 0 1px #000,
+    0 0 0 4px #050505;
 }
 
 /* Reusable raised/inset bevel pair. */
@@ -143,7 +166,7 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
 .banner {
   position: relative;
   border-bottom: 1px solid var(--rt-line);
-  background: #150f1f;
+  background: #0f0f0f;
   overflow: hidden;
 }
 
@@ -161,7 +184,7 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
      one strip, the same trick the reference banners used with their montages.
      The art has to stay legible through it — a strip you cannot read as game
      art is just noise, which is the failure mode the first pass had. */
-  filter: grayscale(1) contrast(1.1) brightness(0.85);
+  filter: grayscale(1) contrast(1.25) brightness(0.72);
 }
 /* Plum wash + edge vignette. Strong enough to unify and to seat the wordmark,
    light enough that the screenshots still read as screenshots. */
@@ -169,9 +192,9 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   content: '';
   position: absolute; inset: 0;
   background:
-    linear-gradient(90deg, #150f1f 0%, rgba(21,15,31,0.15) 20%, rgba(21,15,31,0.15) 80%, #150f1f 100%),
-    linear-gradient(180deg, rgba(130,75,165,0.42), rgba(21,15,31,0.55)),
-    radial-gradient(ellipse 55% 78% at 50% 46%, rgba(12,8,17,0.72), transparent 72%);
+    linear-gradient(90deg, #0f0f0f 0%, rgba(10,10,10,0.15) 20%, rgba(10,10,10,0.15) 80%, #0f0f0f 100%),
+    linear-gradient(180deg, rgba(0,0,0,0.20), rgba(10,10,10,0.60)),
+    radial-gradient(ellipse 55% 78% at 50% 46%, rgba(0,0,0,0.72), transparent 72%);
   pointer-events: none;
 }
 
@@ -195,8 +218,8 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   font-size: 10px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: #d7bfe0;
-  text-shadow: 0 1px 0 #0a0710;
+  color: #cccccc;
+  text-shadow: 0 1px 0 #000000;
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -211,7 +234,7 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   padding: 5px 10px;
   font-size: 10px;
   letter-spacing: 0.05em;
-  color: #e2d3ea;
+  color: #cccccc;
   background: linear-gradient(180deg, var(--rt-bar-top), var(--rt-bar-bot));
   border-bottom: 1px solid var(--rt-line);
   box-shadow: inset 0 1px 0 var(--rt-bar-edge), inset 0 -1px 0 var(--rt-bevel-lo);
@@ -227,7 +250,7 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   gap: 1px;
   padding: 1px;
   background: var(--rt-bevel-lo);
-  border: 1px solid #6b4a7a;
+  border: 1px solid #4a4a4a;
 }
 .odo span {
   display: block;
@@ -237,8 +260,8 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   font-size: 10px;
   line-height: 14px;
   text-align: center;
-  color: #ffe6f5;
-  background: linear-gradient(180deg, #2a1c36, #191122);
+  color: #ffffff;
+  background: linear-gradient(180deg, #202020, #131313);
 }
 
 /* Language pills replace index.html's dropdown: three visible choices reads
@@ -249,19 +272,19 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   padding: 1px 5px 1px 4px;
   font-family: var(--rt-ui);
   font-size: 10px;
-  color: #e2d3ea;
-  background: linear-gradient(180deg, #3d2a4c, #251831);
-  border: 1px solid #6b4a7a;
+  color: #cccccc;
+  background: linear-gradient(180deg, #2f2f2f, #1c1c1c);
+  border: 1px solid #4a4a4a;
   cursor: pointer;
 }
-.lang-option:hover { background: linear-gradient(180deg, #4e3660, #30203f); color: #fff; }
+.lang-option:hover { background: linear-gradient(180deg, #3a3a3a, #242424); color: #fff; }
 .lang-option.is-current {
   color: #fff;
-  background: linear-gradient(180deg, #191122, #2a1c36);
+  background: linear-gradient(180deg, #131313, #202020);
   box-shadow: inset 1px 1px 0 var(--rt-bevel-lo);
   border-color: var(--rt-accent);
 }
-.lang-option svg { width: 13px; height: 10px; display: block; border: 1px solid #0a0710; }
+.lang-option svg { width: 13px; height: 10px; display: block; border: 1px solid #000000; }
 
 /* ═══════════════════════════════════════════════════════════
    MAIN NAV
@@ -288,9 +311,9 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
 .mainnav a:last-child { border-right: 0; }
 .mainnav a:hover, .mainnav a:focus-visible {
   color: #fff;
-  background: linear-gradient(180deg, #4a3159, #2c1d3a);
+  background: linear-gradient(180deg, #4a4a4a, #222222);
 }
-.mainnav a.is-cta { color: #fff; background: linear-gradient(180deg, #6b3f7d, #40254e); }
+.mainnav a.is-cta { color: #fff; background: linear-gradient(180deg, #8c1e50, #4d1030); }
 
 /* ── Breadcrumb ── */
 .crumb {
@@ -309,22 +332,22 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
 
 .layout {
   display: grid;
-  grid-template-columns: 186px minmax(0, 1fr) 208px;
-  gap: 10px;
-  padding: 10px;
+  grid-template-columns: 168px minmax(0, 1fr) 196px;
+  gap: 8px;
+  padding: 8px;
   align-items: start;
 }
-.col { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 
 /* Sidebars stick while the long centre column scrolls past them. */
-@media (min-width: 1081px) {
+@media (min-width: 1005px) {
   .col-left, .col-right { position: sticky; top: 10px; max-height: calc(100vh - 20px); overflow-y: auto; }
   /* A period scrollbar for the sticky rails, where a modern one would be the
      single most anachronistic pixel on the page. */
   .col-left::-webkit-scrollbar, .col-right::-webkit-scrollbar { width: 10px; }
   .col-left::-webkit-scrollbar-track, .col-right::-webkit-scrollbar-track { background: var(--rt-sunken); }
   .col-left::-webkit-scrollbar-thumb, .col-right::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #4a3159, #2c1d3a);
+    background: linear-gradient(180deg, #4a4a4a, #222222);
     border: 1px solid var(--rt-line);
   }
 }
@@ -355,11 +378,11 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
-  color: #f4e8f8;
-  text-shadow: 0 1px 0 #0a0710;
-  background: linear-gradient(180deg, var(--rt-bar-top), var(--rt-bar-bot));
-  border-bottom: 1px solid var(--rt-line);
-  box-shadow: inset 0 1px 0 var(--rt-bar-edge);
+  color: #16040d;
+  text-shadow: 0 1px 0 rgba(255,255,255,0.16);
+  background: linear-gradient(180deg, #f83f92, #b01656);
+  border-bottom: 1px solid #000;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.35), inset 0 -1px 0 rgba(0,0,0,0.35);
 }
 .panel-title > * { min-width: 0; }
 .panel-title .pt-aside {
@@ -367,18 +390,18 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   font-weight: 400;
   letter-spacing: 0.04em;
   text-transform: none;
-  color: #dcc7e6;
+  color: rgba(0,0,0,0.62);
   text-align: right;
 }
-.panel-body { padding: 10px; }
-.panel-body > * + * { margin-top: 10px; }
+.panel-body { padding: 8px; }
+.panel-body > * + * { margin-top: 8px; }
 
 /* Centre-column section headings, set in the italic serif the reference
    pages used for their hand-lettered "Index" plates. */
 .plate {
   padding: 12px 10px 10px;
   text-align: center;
-  background: linear-gradient(180deg, #241a34, #1a1327);
+  background: linear-gradient(180deg, #1e1e1e, #161616);
   border-bottom: 1px solid var(--rt-line);
 }
 .plate h2 {
@@ -388,7 +411,7 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   font-size: 26px;
   line-height: 1.1;
   color: var(--rt-accent);
-  text-shadow: 1px 1px 0 #0a0710, 0 0 14px rgba(255,204,236,0.22);
+  text-shadow: 1px 1px 0 #000000;
 }
 .plate .plate-sub {
   display: block;
@@ -403,11 +426,14 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
    SIDEBAR CONTENT
    ═══════════════════════════════════════════════════════════ */
 
-.panel-side .panel-body { padding: 7px 8px; }
+.panel-side .panel-body { padding: 6px 7px; }
 
 .linklist { list-style: none; }
 .linklist li { border-bottom: 1px dotted var(--rt-line-soft); }
 .linklist li:last-child { border-bottom: 0; }
+.linklist a { color: var(--rt-text); text-decoration: none; }
+.linklist a:visited { color: var(--rt-text); }
+.linklist a:hover, .linklist a:focus-visible { color: #fff; text-decoration: underline; }
 .linklist a {
   display: block;
   padding: 4px 6px 4px 10px;
@@ -445,7 +471,7 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   vertical-align: 1px;
   border: 1px solid;
 }
-.tag-new { color: #16101c; background: var(--rt-accent); border-color: var(--rt-accent); }
+.tag-new { color: #0a0a0a; background: var(--rt-accent); border-color: var(--rt-accent); }
 .tag-wip { color: var(--rt-warn); background: rgba(232,192,122,0.10); border-color: rgba(232,192,122,0.5); }
 
 /* ── Sidebar news entries ── */
@@ -472,7 +498,7 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
 .avail::before {
   content: ''; width: 7px; height: 7px;
   background: var(--rt-good);
-  box-shadow: 0 0 6px var(--rt-good);
+  border: 1px solid #000;
   animation: blink 1.6s steps(1, end) infinite;
 }
 @keyframes blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.25; } }
@@ -524,7 +550,7 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
 .btn88.b-li    { background: linear-gradient(180deg, #3d84c6, #1b4f7d); }
 .btn88.b-play  { background: linear-gradient(180deg, #4fa06a, #235c38); }
 .btn88.b-unity { background: linear-gradient(180deg, #4a4a52, #212127); }
-.btn88.b-joke  { background: linear-gradient(180deg, #6b3f7d, #38204a); color: #f0dcf7; cursor: default; }
+.btn88.b-joke  { background: linear-gradient(180deg, #8c1e50, #4d1030); color: #dddddd; cursor: default; }
 
 /* ═══════════════════════════════════════════════════════════
    POSTS — every project is a dated news entry
@@ -543,7 +569,7 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   border: 1px solid var(--rt-line-soft);
   border-left: 3px solid var(--rt-accent2);
 }
-.post.is-flagship .post-head { border-left-color: var(--rt-accent); background: rgba(255,204,236,0.07); }
+.post.is-flagship .post-head { border-left-color: var(--rt-accent); background: rgba(255,61,154,0.10); }
 
 .post-title {
   font-family: var(--rt-display);
@@ -571,7 +597,7 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
 
 .post-body { padding: 10px 2px 0; }
 .post-body > * + * { margin-top: 9px; }
-.post-body p { color: #d6cbdb; }
+.post-body p { color: #c8c8c8; }
 .post-lead { color: var(--rt-accent2) !important; font-style: italic; }
 
 /* Screenshot mount — sunken well with a caption strip, the way every fansite
@@ -622,8 +648,8 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   font-size: 9px;
   letter-spacing: 0.04em;
   color: var(--rt-accent2);
-  background: rgba(183,142,210,0.10);
-  border: 1px solid rgba(183,142,210,0.32);
+  background: rgba(255,119,187,0.10);
+  border: 1px solid rgba(255,119,187,0.35);
 }
 
 /* ── Post link row ── */
@@ -646,13 +672,13 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,204
   font-weight: 700;
   text-decoration: none;
   color: #fff;
-  background: linear-gradient(180deg, #6b3f7d, #3c2249);
+  background: linear-gradient(180deg, #8c1e50, #4d1030);
   border: 1px solid #8a5c9e;
   box-shadow: inset 1px 1px 0 rgba(255,255,255,0.18), inset -1px -1px 0 rgba(0,0,0,0.55);
 }
 .btn-primary:hover, .btn-primary:focus-visible {
   color: #fff;
-  background: linear-gradient(180deg, #85519a, #4b2b5c);
+  background: linear-gradient(180deg, #b02866, #6b1543);
 }
 .btn-primary svg { width: 14px; height: 14px; fill: currentColor; }
 
@@ -672,14 +698,14 @@ details.spoiler > summary {
   color: var(--rt-link);
   cursor: pointer;
   list-style: none;
-  background: linear-gradient(180deg, #33223f, #241830);
+  background: linear-gradient(180deg, #282828, #1b1b1b);
   border-bottom: 1px solid transparent;
 }
 details.spoiler > summary::-webkit-details-marker { display: none; }
 details.spoiler > summary::before { content: '[+] '; font-family: var(--rt-mono); color: var(--rt-accent2); }
 details.spoiler[open] > summary::before { content: '[\2212] '; }
 details.spoiler[open] > summary { border-bottom-color: var(--rt-line); }
-details.spoiler > summary:hover { color: #fff; background: linear-gradient(180deg, #432d52, #2e1f3d); }
+details.spoiler > summary:hover { color: #fff; background: linear-gradient(180deg, #343434, #252525); }
 .spoiler-body { padding: 10px; }
 .spoiler-body > * + * { margin-top: 9px; }
 
@@ -744,7 +770,7 @@ details.spoiler > summary:hover { color: #fff; background: linear-gradient(180de
    ═══════════════════════════════════════════════════════════ */
 
 .prose > * + * { margin-top: 9px; }
-.prose p { color: #d6cbdb; }
+.prose p { color: #c8c8c8; }
 .prose code {
   font-family: var(--rt-mono);
   font-size: 11px;
@@ -771,7 +797,7 @@ details.spoiler > summary:hover { color: #fff; background: linear-gradient(180de
   font-weight: 700;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: #16101c;
+  color: #0a0a0a;
   background: var(--rt-accent2);
 }
 
@@ -823,8 +849,8 @@ details.spoiler > summary:hover { color: #fff; background: linear-gradient(180de
   padding: 8px 10px;
   font-size: 11px;
   color: var(--rt-dim);
-  background: rgba(255,204,236,0.05);
-  border: 1px solid rgba(255,204,236,0.20);
+  background: rgba(255,61,154,0.07);
+  border: 1px solid rgba(255,61,154,0.35);
   border-left: 3px solid var(--rt-accent);
 }
 
@@ -869,7 +895,7 @@ table.tbl th, table.data th {
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: #f4e8f8;
+  color: #ffffff;
   background: linear-gradient(180deg, var(--rt-bar-top), var(--rt-bar-bot));
   border-bottom: 1px solid var(--rt-line);
   white-space: nowrap;
@@ -882,7 +908,7 @@ table.tbl td, table.data td {
 }
 /* Alternating rows — the single most period thing a table can do. */
 table.tbl tbody tr:nth-child(odd), table.data tbody tr:nth-child(odd) { background: var(--rt-panel-alt); }
-table.tbl tbody tr:hover, table.data tbody tr:hover { background: rgba(255,204,236,0.06); }
+table.tbl tbody tr:hover, table.data tbody tr:hover { background: rgba(255,61,154,0.09); }
 table.tbl td.key, table.data td.feature { color: var(--rt-text); font-weight: 700; }
 table.tbl td.num, table.data td.num {
   font-family: var(--rt-mono);
@@ -915,7 +941,7 @@ table.data td.final { color: var(--rt-text); }
   border: 1px solid var(--rt-line-soft);
 }
 .board-item .mark { color: var(--rt-faint); font-family: var(--rt-mono); }
-.board-item.is-active { color: var(--rt-text); border-color: rgba(255,204,236,0.35); }
+.board-item.is-active { color: var(--rt-text); border-color: rgba(255,61,154,0.55); }
 .board-item.is-active .mark { color: var(--rt-accent); }
 
 .chips { display: flex; flex-wrap: wrap; gap: 3px; }
@@ -941,7 +967,7 @@ table.data td.final { color: var(--rt-text); }
   background: var(--rt-panel-alt);
   border-bottom: 1px solid var(--rt-line);
 }
-.embed iframe { width: 100%; height: 620px; border: 0; display: block; background: #0e0a13; }
+.embed iframe { width: 100%; height: 620px; border: 0; display: block; background: #0a0a0a; }
 
 /* ═══════════════════════════════════════════════════════════
    GRIDS — additional work, documents
@@ -977,7 +1003,7 @@ table.data td.final { color: var(--rt-text); }
   background: var(--rt-panel-alt);
   border: 1px solid var(--rt-line);
 }
-.doc:hover { border-color: rgba(255,204,236,0.35); }
+.doc:hover { border-color: rgba(255,61,154,0.55); }
 .doc-icon {
   display: flex;
   align-items: center;
@@ -985,9 +1011,9 @@ table.data td.final { color: var(--rt-text); }
   font-size: 9px;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: #16101c;
+  color: #0a0a0a;
   background: var(--rt-accent2);
-  border: 1px solid #0a0710;
+  border: 1px solid #000000;
   box-shadow: inset 1px 1px 0 rgba(255,255,255,0.3), inset -1px -1px 0 rgba(0,0,0,0.4);
 }
 .doc-icon.t-qdd  { background: var(--rt-accent); }
@@ -1014,15 +1040,15 @@ table.data td.final { color: var(--rt-text); }
   text-transform: uppercase;
   color: var(--rt-accent2);
 }
-.about-block p { color: #d6cbdb; }
+.about-block p { color: #c8c8c8; }
 
 .quote {
   padding: 9px 11px;
-  background: rgba(255,204,236,0.05);
-  border: 1px solid rgba(255,204,236,0.20);
+  background: rgba(255,61,154,0.07);
+  border: 1px solid rgba(255,61,154,0.35);
   border-left: 3px solid var(--rt-accent);
   font-style: italic;
-  color: #ded1e3;
+  color: #c0c0c0;
 }
 .quote strong {
   display: block;
@@ -1058,7 +1084,7 @@ table.data td.final { color: var(--rt-text); }
   border: 1px solid var(--rt-line);
   box-shadow: inset 1px 1px 0 var(--rt-bevel-hi);
 }
-.contact-item:hover, .contact-item:focus-visible { background: rgba(255,204,236,0.08); border-color: var(--rt-accent); }
+.contact-item:hover, .contact-item:focus-visible { background: rgba(255,61,154,0.12); border-color: var(--rt-accent); }
 .contact-item .ci-label {
   display: block;
   font-size: 9px;
@@ -1091,12 +1117,12 @@ table.data td.final { color: var(--rt-text); }
   font-weight: 700;
   letter-spacing: 0.05em;
   color: var(--rt-text);
-  background: linear-gradient(180deg, #3d2a4c, #251831);
-  border: 1px solid #6b4a7a;
+  background: linear-gradient(180deg, #2f2f2f, #1c1c1c);
+  border: 1px solid #4a4a4a;
   box-shadow: inset 1px 1px 0 rgba(255,255,255,0.16), inset -1px -1px 0 rgba(0,0,0,0.5);
   cursor: pointer;
 }
-.copy-btn:hover { color: #fff; background: linear-gradient(180deg, #4e3660, #30203f); }
+.copy-btn:hover { color: #fff; background: linear-gradient(180deg, #3a3a3a, #242424); }
 .copy-btn.copied { color: var(--rt-good); border-color: var(--rt-good); }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1116,11 +1142,142 @@ table.data td.final { color: var(--rt-text); }
 .site-foot .foot-nav a { margin: 0 5px; }
 
 /* ═══════════════════════════════════════════════════════════
+   PERIOD FURNITURE — ticker, text-size widget, poll, counter,
+   link-to-us, badge row.
+
+   This is the layer that makes it a *gaming* site rather than
+   merely an old one. Everything here works: the poll tallies, the
+   counter counts, the widget resizes. Decorative gimmicks are what
+   make a retro page read as costume.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Marquee ticker ──
+   A real <marquee> is deprecated and cannot be stopped. Same effect, with a
+   hover/focus pause and a reduced-motion opt-out further down. */
+.ticker {
+  display: flex;
+  align-items: stretch;
+  overflow: hidden;
+  font-size: 10px;
+  background: #080808;
+  border-bottom: 1px solid var(--rt-line);
+}
+.ticker-label {
+  flex: 0 0 auto;
+  padding: 4px 8px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: #0a0a0a;
+  background: var(--rt-accent);
+  border-right: 1px solid #000;
+}
+.ticker-track {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 4px 0;
+}
+.ticker-track > span {
+  display: inline-block;
+  padding-left: 100%;
+  color: var(--rt-dim);
+  animation: ticker 46s linear infinite;
+}
+.ticker-track b { color: var(--rt-text); font-weight: 700; }
+.ticker-track .sep { color: var(--rt-accent); margin: 0 10px; }
+.ticker:hover .ticker-track > span,
+.ticker:focus-within .ticker-track > span { animation-play-state: paused; }
+@keyframes ticker { to { transform: translateX(-100%); } }
+
+/* ── Text-size widget ── */
+.tsize { gap: 3px; }
+.tsize button {
+  padding: 2px 5px;
+  line-height: 1;
+  font-family: var(--rt-ui);
+  font-weight: 700;
+  color: #cccccc;
+  background: linear-gradient(180deg, #2f2f2f, #1c1c1c);
+  border: 1px solid #4a4a4a;
+  cursor: pointer;
+}
+.tsize button:nth-of-type(1) { font-size: 9px; }
+.tsize button:nth-of-type(2) { font-size: 11px; }
+.tsize button:nth-of-type(3) { font-size: 13px; }
+.tsize button:hover { color: #fff; }
+.tsize button[aria-pressed="true"] {
+  color: #fff;
+  background: linear-gradient(180deg, #131313, #202020);
+  border-color: var(--rt-accent);
+  box-shadow: inset 1px 1px 0 #000;
+}
+
+/* ── Poll ── */
+.poll fieldset { border: 0; }
+.poll legend { font-size: 10.5px; font-weight: 700; color: var(--rt-text); margin-bottom: 5px; }
+.poll-opt {
+  display: block;
+  padding: 1px 0 1px 15px;
+  text-indent: -15px;
+  font-size: 10.5px;
+  line-height: 1.35;
+  color: var(--rt-dim);
+  cursor: pointer;
+}
+.poll-opt:hover { color: var(--rt-text); }
+.poll-opt input { margin-right: 4px; vertical-align: -1px; accent-color: var(--rt-accent); }
+.poll .copy-btn { margin-top: 6px; }
+.poll-res { display: none; }
+.poll.is-voted .poll-form { display: none; }
+.poll.is-voted .poll-res { display: block; }
+.poll-row { margin-bottom: 5px; font-size: 10px; color: var(--rt-dim); }
+.poll-row .pr-top { display: flex; justify-content: space-between; gap: 6px; margin-bottom: 2px; }
+.poll-row .pr-top b { color: var(--rt-accent2); font-weight: 700; }
+.poll-row.is-mine .pr-top { color: var(--rt-text); }
+.poll-row.is-mine .pr-top span:first-child::after { content: ' \2190'; color: var(--rt-accent); }
+/* The result bar is a stretched 1px fill in a sunken well, which is exactly
+   how the period did it with a 1x1 GIF and a width attribute. */
+.poll-bar { height: 8px; padding: 1px; background: var(--rt-sunken); border: 1px solid var(--rt-line); }
+.poll-bar i { display: block; height: 100%; background: var(--rt-accent2); }
+.poll-row.is-mine .poll-bar i { background: var(--rt-accent); }
+.poll-total { padding-top: 4px; border-top: 1px dotted var(--rt-line-soft); font-size: 9px; color: var(--rt-faint); }
+
+/* ── Visit counter ── */
+.counter { text-align: center; }
+.counter .odo { justify-content: center; }
+.counter-cap { display: block; margin-top: 4px; font-size: 9px; line-height: 1.4; letter-spacing: 0.04em; color: var(--rt-faint); }
+
+/* ── Link to us ── */
+.linkus-code {
+  display: block;
+  width: 100%;
+  margin-top: 5px;
+  padding: 4px;
+  font-family: var(--rt-mono);
+  font-size: 9px;
+  line-height: 1.4;
+  color: var(--rt-dim);
+  background: var(--rt-sunken);
+  border: 1px solid var(--rt-line);
+  box-shadow: inset 1px 1px 0 var(--rt-bevel-lo);
+  resize: vertical;
+}
+
+/* ── Footer badge row + disclaimer ── */
+.badgerow { display: flex; flex-wrap: wrap; justify-content: center; gap: 4px; margin: 9px 0; }
+.btn88.b-grey { background: linear-gradient(180deg, #4a4a4a, #202020); }
+.btn88.b-pink { background: linear-gradient(180deg, #b02866, #4d1030); }
+.disclaimer { max-width: 620px; margin: 0 auto; font-size: 9px; line-height: 1.5; color: var(--rt-faint); }
+
+/* ═══════════════════════════════════════════════════════════
    RESPONSIVE — the columns fold, the frame stays
    ═══════════════════════════════════════════════════════════ */
 
-/* Tablet: right rail drops under the centre column, left rail stays. */
-@media (max-width: 1080px) {
+/* Below the fixed shell width the right rail drops under the centre column
+   and the left rail stays. */
+@media (max-width: 1004px) {
   .layout { grid-template-columns: 172px minmax(0, 1fr); }
   .col-right { grid-column: 1 / -1; }
   .col-right .panel { }
@@ -1173,8 +1330,10 @@ table.data td.final { color: var(--rt-text); }
    ═══════════════════════════════════════════════════════════ */
 
 @media (prefers-reduced-motion: reduce) {
-  html { scroll-behavior: auto; }
   .avail::before { animation: none; }
+  /* The blanket rule below would snap the ticker to its end frame, i.e. off
+     the left edge. Stop it where it stands and let it read as a static strip. */
+  .ticker-track > span { animation: none !important; padding-left: 0; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }
 

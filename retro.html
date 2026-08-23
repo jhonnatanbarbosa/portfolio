@@ -56,16 +56,19 @@
     <div class="banner-plate">
       <svg class="wordmark" viewBox="0 0 460 52" role="img" aria-label="Jhonnatan Barbosa">
         <defs>
+          <!-- Chrome gradient text, Photoshop 6 vocabulary: a hard break at the
+               midpoint is what makes metal read as metal. The first pass ran a
+               soft plum ramp, which is airbrush, not chrome. -->
           <linearGradient id="wm" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0"    stop-color="#fff4fb"/>
-            <stop offset="0.48" stop-color="#ffccec"/>
-            <stop offset="0.52" stop-color="#c99cd8"/>
-            <stop offset="1"    stop-color="#8a5c9e"/>
+            <stop offset="0"    stop-color="#ffffff"/>
+            <stop offset="0.48" stop-color="#ffb3d8"/>
+            <stop offset="0.52" stop-color="#b02866"/>
+            <stop offset="1"    stop-color="#59102f"/>
           </linearGradient>
         </defs>
         <!-- Offset dark copy behind the fill is the whole emboss trick. -->
         <text x="230" y="37" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
-              font-size="30" font-weight="700" letter-spacing="5" fill="#0a0710">JHONNATAN BARBOSA</text>
+              font-size="30" font-weight="700" letter-spacing="5" fill="#000000">JHONNATAN BARBOSA</text>
         <text x="229" y="35" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
               font-size="30" font-weight="700" letter-spacing="5" fill="url(#wm)">JHONNATAN BARBOSA</text>
       </svg>
@@ -85,6 +88,11 @@
     <span class="sb-item sb-hide-sm">Online since <b>2020</b></span>
     <span class="sb-item sb-hide-sm">Based in <b>São Paulo, BR</b></span>
     <span class="sb-spacer"></span>
+    <span class="sb-item tsize" role="group" aria-label="Text size">
+      <button type="button" data-tsize="1"    aria-pressed="true"  title="Small text">A</button>
+      <button type="button" data-tsize="1.18" aria-pressed="false" title="Medium text">A</button>
+      <button type="button" data-tsize="1.36" aria-pressed="false" title="Large text">A</button>
+    </span>
     <span class="sb-item lang-pills" role="group" aria-label="Language · Idioma · 言語">
       <button type="button" class="lang-option is-current" role="radio" aria-checked="true" data-lang="en">
         <svg aria-hidden="true" focusable="false"><use href="#flag-en"/></svg>EN
@@ -109,6 +117,24 @@
     <a href="retro-jhorro.html" data-i18n="nav_studio">Jhorro Productions</a>
     <a href="#contact" class="is-cta" data-i18n="nav_contact">Contact</a>
   </nav>
+
+  <!-- The period marquee, rebuilt so it can be stopped: hover or tab into it
+       and it pauses, and prefers-reduced-motion freezes it outright. -->
+  <div class="ticker" aria-label="Latest">
+    <span class="ticker-label">Latest</span>
+    <div class="ticker-track"><span>
+      Dead Saints Parade demo at <b>62%</b> — levels 1 &amp; 2 greyboxed, 22 systems shipped, 8 on the board
+      <span class="sep">•</span>
+      Cyberpunk City second data read: <b>36</b> post-overhaul players against a frozen 220-player baseline
+      <span class="sep">•</span>
+      Time-to-1K up <b>85%</b> after the rebalance, and the choke point moved from 1M→1B to 1K→1M
+      <span class="sep">•</span>
+      <b>12</b> titles shipped since 2020, 2 of them commercial
+      <span class="sep">•</span>
+      Available for systems and gameplay design work — <b>jho@jhorro.com</b>
+      <span class="sep">•</span>
+    </span></div>
+  </div>
 
   <div class="crumb">
     <a href="#index">Jhonnatan Barbosa</a><span class="sep">»</span>Index
@@ -178,6 +204,50 @@
         <h2 class="panel-title">Host</h2>
         <div class="panel-body" style="text-align:center">
           <span class="btn88 b-joke" style="margin:0 auto">DEBIAN&nbsp;VPS<br>+ CADDY</span>
+        </div>
+      </section>
+
+      <!-- Poll. It tallies for real, in this browser, and says so rather than
+           inventing a vote count. -->
+      <section class="panel panel-side">
+        <h2 class="panel-title">Poll</h2>
+        <div class="panel-body">
+          <div class="poll" id="poll">
+            <form class="poll-form" id="pollForm">
+              <fieldset>
+                <legend>Which write-up next?</legend>
+                <label class="poll-opt"><input type="radio" name="poll" value="Guard coordination" required>Guard coordination, in full</label>
+                <label class="poll-opt"><input type="radio" name="poll" value="Economy rebalance">The Cyberpunk City rebalance</label>
+                <label class="poll-opt"><input type="radio" name="poll" value="Cathedral levels">Level design: the cathedral</label>
+                <label class="poll-opt"><input type="radio" name="poll" value="Stats to design">Statistics to game design</label>
+              </fieldset>
+              <button class="copy-btn" type="submit">Vote</button>
+            </form>
+            <div class="poll-res" id="pollRes"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Hit counter. Counts your visits, in your browser, and does not
+           pretend to be site-wide traffic. -->
+      <section class="panel panel-side">
+        <h2 class="panel-title">Counter</h2>
+        <div class="panel-body counter">
+          <span class="odo" id="visitOdo"><span>0</span><span>0</span><span>0</span><span>0</span><span>0</span><span>1</span></span>
+          <span class="counter-cap">Your visits to this page, counted in your own browser. No server keeps score.</span>
+        </div>
+      </section>
+
+      <section class="panel panel-side">
+        <h2 class="panel-title">Link to Us</h2>
+        <div class="panel-body">
+          <div style="text-align:center">
+            <img src="media/button-88x31.svg" width="88" height="31" style="margin:0 auto"
+                 alt="88 by 31 button reading Jhonnatan Barbosa, Game Designer">
+          </div>
+          <label class="counter-cap" for="linkusCode" style="text-align:left">Paste this anywhere:</label>
+          <textarea class="linkus-code" id="linkusCode" rows="4" readonly spellcheck="false"><a href="https://www.jhorro.com/"><img src="https://www.jhorro.com/media/button-88x31.svg" width="88" height="31" alt="Jhonnatan Barbosa - Game Designer"></a></textarea>
+          <button class="copy-btn" type="button" onclick="copyLinkus(this)"><span class="copy-label">Copy HTML</span></button>
         </div>
       </section>
 
@@ -584,31 +654,31 @@
 
           <figure>
             <svg viewBox="0 14 420 158" role="img" data-i18n-aria="svg_cover_alt" aria-label="Top-down diagram of the cover detection fan: five rays at 0, plus and minus 30, and plus and minus 60 degrees from player forward, cast 0.7 metres toward a wall, with the player held at a 0.42 metre standoff.">
-              <rect x="50" y="44" width="320" height="12" fill="var(--border)" stroke="#5a4569" stroke-width="1"/>
+              <rect x="50" y="44" width="320" height="12" fill="var(--border)" stroke="#3a3a3a" stroke-width="1"/>
               <text x="52" y="36" class="svg-label b" data-i18n="svg_wall">WALL</text>
               <g stroke-width="1.2" fill="none">
-                <line x1="210" y1="98" x2="210" y2="28" stroke="#ffccec" opacity="0.85"/>
-                <line x1="210" y1="98" x2="245" y2="37.4" stroke="#ffccec" opacity="0.85"/>
-                <line x1="210" y1="98" x2="175" y2="37.4" stroke="#ffccec" opacity="0.85"/>
-                <line x1="210" y1="98" x2="270.6" y2="63" stroke="#b78ed2" opacity="0.55" stroke-dasharray="3 3"/>
-                <line x1="210" y1="98" x2="149.4" y2="63" stroke="#b78ed2" opacity="0.55" stroke-dasharray="3 3"/>
+                <line x1="210" y1="98" x2="210" y2="28" stroke="#ff3d9a" opacity="0.85"/>
+                <line x1="210" y1="98" x2="245" y2="37.4" stroke="#ff3d9a" opacity="0.85"/>
+                <line x1="210" y1="98" x2="175" y2="37.4" stroke="#ff3d9a" opacity="0.85"/>
+                <line x1="210" y1="98" x2="270.6" y2="63" stroke="#ff77bb" opacity="0.55" stroke-dasharray="3 3"/>
+                <line x1="210" y1="98" x2="149.4" y2="63" stroke="#ff77bb" opacity="0.55" stroke-dasharray="3 3"/>
               </g>
               <text x="214" y="26" class="svg-label hi">0°</text>
               <text x="249" y="34" class="svg-label hi">+30°</text>
               <text x="152" y="34" class="svg-label hi">−30°</text>
               <text x="275" y="62" class="svg-label">+60°</text>
               <text x="108" y="62" class="svg-label">−60°</text>
-              <line x1="140" y1="56" x2="140" y2="98" stroke="#7d6d87" stroke-width="1" stroke-dasharray="2 2"/>
-              <line x1="136" y1="56" x2="144" y2="56" stroke="#7d6d87" stroke-width="1"/>
-              <line x1="136" y1="98" x2="144" y2="98" stroke="#7d6d87" stroke-width="1"/>
+              <line x1="140" y1="56" x2="140" y2="98" stroke="#6a6a6a" stroke-width="1" stroke-dasharray="2 2"/>
+              <line x1="136" y1="56" x2="144" y2="56" stroke="#6a6a6a" stroke-width="1"/>
+              <line x1="136" y1="98" x2="144" y2="98" stroke="#6a6a6a" stroke-width="1"/>
               <text x="86" y="82" class="svg-label b">0.42 m</text>
-              <circle cx="210" cy="98" r="9" fill="var(--surface)" stroke="#ffccec" stroke-width="2"/>
+              <circle cx="210" cy="98" r="9" fill="var(--surface)" stroke="#ff3d9a" stroke-width="2"/>
               <text x="196" y="122" class="svg-label hi" data-i18n="svg_player">PLAYER</text>
-              <path d="M 150 63 A 70 70 0 0 1 270.6 63" fill="none" stroke="#5a4569" stroke-width="1" stroke-dasharray="2 3"/>
+              <path d="M 150 63 A 70 70 0 0 1 270.6 63" fill="none" stroke="#3a3a3a" stroke-width="1" stroke-dasharray="2 3"/>
               <text x="286" y="98" class="svg-label" data-i18n="svg_range">0.7 m range</text>
               <g>
-                <line x1="60" y1="140" x2="130" y2="140" stroke="#b78ed2" stroke-width="1.2"/>
-                <polygon points="130,140 124,137 124,143" fill="#b78ed2"/>
+                <line x1="60" y1="140" x2="130" y2="140" stroke="#ff77bb" stroke-width="1.2"/>
+                <polygon points="130,140 124,137 124,143" fill="#ff77bb"/>
                 <text x="60" y="158" class="svg-label b">wallTangent = Cross(CoverNormal, up)</text>
               </g>
             </svg>
@@ -651,20 +721,20 @@
 
           <figure>
             <svg viewBox="0 75 420 185" role="img" data-i18n-aria="svg_perc_alt" aria-label="Top-down diagram of a guard's two vision cones: an inner 60 degree cone reaching 15 metres that detects any player, and an outer 120 degree cone reaching 8 metres that detects only moving players.">
-              <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="#b78ed2" opacity="0.10"/>
-              <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="none" stroke="#b78ed2" stroke-width="1" opacity="0.45"/>
-              <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="#ffccec" opacity="0.12"/>
-              <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="none" stroke="#ffccec" stroke-width="1" opacity="0.6"/>
+              <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="#ff77bb" opacity="0.10"/>
+              <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="none" stroke="#ff77bb" stroke-width="1" opacity="0.45"/>
+              <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="#ff3d9a" opacity="0.12"/>
+              <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="none" stroke="#ff3d9a" stroke-width="1" opacity="0.6"/>
               <circle cx="210" cy="225" r="8" fill="var(--surface)" stroke="var(--text)" stroke-width="2"/>
               <text x="210" y="246" text-anchor="middle" class="svg-label b" data-i18n="svg_guard">GUARD · eye 1.6 m</text>
               <text x="292" y="100" class="svg-label hi" data-i18n="svg_inner">INNER 60° / 15 m</text>
               <text x="292" y="112" class="svg-label" data-i18n="svg_inner_sub">detects any player</text>
               <text x="286" y="176" class="svg-label b" data-i18n="svg_outer">OUTER 120° / 8 m</text>
               <text x="286" y="188" class="svg-label" data-i18n="svg_outer_sub">moving players only</text>
-              <circle cx="180" cy="196" r="5" fill="#8fce9b"/>
-              <text x="86" y="199" class="svg-label" style="fill:#8fce9b" data-i18n="svg_still">STILL → unseen</text>
-              <circle cx="240" cy="130" r="5" fill="#d98a8a"/>
-              <text x="250" y="133" class="svg-label" style="fill:#d98a8a" data-i18n="svg_moving">MOVING → seen</text>
+              <circle cx="180" cy="196" r="5" fill="#6fbf7a"/>
+              <text x="86" y="199" class="svg-label" style="fill:#6fbf7a" data-i18n="svg_still">STILL → unseen</text>
+              <circle cx="240" cy="130" r="5" fill="#cc5555"/>
+              <text x="250" y="133" class="svg-label" style="fill:#cc5555" data-i18n="svg_moving">MOVING → seen</text>
             </svg>
             <figcaption data-i18n-html="dsp_s3_cap"><strong>Two zones.</strong> The inner cone detects a player whether or not they are moving. The outer cone only registers movement above a threshold, so a stationary player in peripheral vision is invisible, and even when it does fire, peripheral detection fills suspicion at 40% of the normal rate. It is a vague sense, not a sighting. Once a cone check passes, 1 to 3 raycasts to centre-mass, head and feet confirm line of sight, and any clear ray counts, which stops a head poking over cover from being a false negative.</figcaption>
           </figure>
@@ -1224,6 +1294,34 @@
         </div>
       </section>
 
+      <!-- Update log. Site News is about the work; this is about the site,
+           which is the split every one of these pages ran. -->
+      <section class="panel panel-side">
+        <h2 class="panel-title">Site Updates</h2>
+        <div class="panel-body">
+          <div class="news">
+            <div class="news-date">08.23.26</div>
+            <p>Retro skin v2. Gunmetal palette, hard 980px column, 11px body, and the tile is finally visible. Added the poll, counter and ticker. &mdash;Jho</p>
+          </div>
+          <div class="news">
+            <div class="news-date">08.18.26</div>
+            <p>Productions page picked up the two shipped idle titles. <a href="retro-jhorro.html#released">Look »</a></p>
+          </div>
+          <div class="news">
+            <div class="news-date">08.14.26</div>
+            <p>Analytics dashboard embedded straight into the case study instead of sitting behind a link.</p>
+          </div>
+          <div class="news">
+            <div class="news-date">07.24.26</div>
+            <p>Second Cyberpunk City data pull folded in. Every number in the case study moved.</p>
+          </div>
+          <div class="news">
+            <div class="news-date">05.30.26</div>
+            <p>Moved off shared hosting. Debian VPS behind Caddy, static files, no build step.</p>
+          </div>
+        </div>
+      </section>
+
     </aside>
 
   </div>
@@ -1232,6 +1330,19 @@
     <p><b>Jhonnatan Barbosa</b> · 2026 · <span data-i18n="footer_tagline">Game Designer: Data-Driven Systems and Gameplay</span></p>
     <p class="foot-nav">
       <a href="#index">Index</a>|<a href="#projects" data-i18n="nav_projects">Projects</a>|<a href="#documents" data-i18n="nav_documents">Documents</a>|<a href="#about" data-i18n="nav_about">About</a>|<a href="#contact" data-i18n="nav_contact">Contact</a>|<a href="privacy-policy.html">Privacy</a>
+    </p>
+    <div class="badgerow">
+      <img src="media/button-88x31.svg" width="88" height="31" alt="88 by 31 button reading Jhonnatan Barbosa, Game Designer">
+      <span class="btn88 b-grey">BEST VIEWED AT<br>1024×768</span>
+      <span class="btn88 b-grey">NO FRAMEWORKS<br>WERE USED</span>
+      <span class="btn88 b-pink">MADE IN<br>SÃO PAULO</span>
+      <a class="btn88 b-unity" href="docs/CV_Jhonnatan_Barbosa_Game_Designer.pdf" target="_blank" rel="noopener">PLAIN-TEXT<br>RESUME</a>
+    </div>
+    <p class="disclaimer">
+      Hand-written HTML and CSS, no build step, served static. Screenshots and footage come from
+      builds I worked on; game titles, logos and trademarks are the property of their respective
+      owners and appear here without endorsement. This page is a 2002 pastiche, not an archived
+      document.
     </p>
     <p>Best viewed with a monitor. No frames were harmed in the making of this page.</p>
   </footer>
@@ -1303,6 +1414,122 @@ function copyEmail(btn) {
     navigator.clipboard.writeText(text).then(done).catch(() => fallbackCopy(text, done));
   } else {
     fallbackCopy(text, done);
+  }
+}
+
+// ── Text-size widget (A A A) ───────────────────────────────
+// Period furniture that happens to be the accessibility escape hatch for
+// 11px Verdana. Writes --rt-scale, which body's font-size multiplies.
+(function () {
+  const KEY = 'jb-tsize';
+  const btns = document.querySelectorAll('.tsize button');
+  if (!btns.length) return;
+
+  function apply(v) {
+    document.documentElement.style.setProperty('--rt-scale', v);
+    btns.forEach(b => b.setAttribute('aria-pressed', String(b.dataset.tsize === v)));
+    try { localStorage.setItem(KEY, v); } catch (e) { /* private mode */ }
+  }
+
+  let saved = '1';
+  try { saved = localStorage.getItem(KEY) || '1'; } catch (e) { /* private mode */ }
+  apply(saved);
+  btns.forEach(b => b.addEventListener('click', () => apply(b.dataset.tsize)));
+})();
+
+// ── Poll ───────────────────────────────────────────────────
+// A decorative poll is the tell that a retro page was skinned rather than
+// built, so this one tallies. It tallies locally, and says so, because
+// there is no server behind a static site.
+(function () {
+  const KEY = 'jb-poll';
+  const wrap = document.getElementById('poll');
+  const form = document.getElementById('pollForm');
+  const out = document.getElementById('pollRes');
+  if (!wrap || !form || !out) return;
+
+  const opts = Array.from(form.querySelectorAll('input[name="poll"]')).map(i => ({
+    value: i.value,
+    text: i.parentElement.textContent.trim()
+  }));
+
+  const load = () => {
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; }
+  };
+  const save = state => {
+    try { localStorage.setItem(KEY, JSON.stringify(state)); } catch (e) { /* private mode */ }
+  };
+
+  function render(state) {
+    const counts = state.counts || {};
+    const total = opts.reduce((n, o) => n + (counts[o.value] || 0), 0);
+    if (!total) return;
+
+    const rows = opts.map(o => {
+      const pct = Math.round((counts[o.value] || 0) / total * 100);
+      const mine = state.mine === o.value ? ' is-mine' : '';
+      return '<div class="poll-row' + mine + '">' +
+               '<div class="pr-top"><span>' + o.text + '</span><b>' + pct + '%</b></div>' +
+               '<div class="poll-bar"><i style="width:' + pct + '%"></i></div>' +
+             '</div>';
+    }).join('');
+
+    out.innerHTML = rows +
+      '<p class="poll-total">' + total + (total === 1 ? ' vote' : ' votes') +
+      ', tallied in this browser only &mdash; nothing is sent anywhere. Want yours to count for ' +
+      'real? <a href="mailto:jho@jhorro.com?subject=Poll">Mail it in</a>.</p>';
+    wrap.classList.add('is-voted');
+  }
+
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const picked = form.querySelector('input[name="poll"]:checked');
+    if (!picked) return;
+    const state = load();
+    state.counts = state.counts || {};
+    state.counts[picked.value] = (state.counts[picked.value] || 0) + 1;
+    state.mine = picked.value;
+    save(state);
+    render(state);
+  });
+
+  render(load());
+})();
+
+// ── Hit counter ────────────────────────────────────────────
+// Every one of these sites had one and most of them lied. This one counts
+// your own visits and the caption says exactly that.
+(function () {
+  const el = document.getElementById('visitOdo');
+  if (!el) return;
+  const KEY = 'jb-visits';
+  let n = 1;
+  try {
+    n = parseInt(localStorage.getItem(KEY) || '0', 10) + 1;
+    localStorage.setItem(KEY, String(n));
+  } catch (e) { /* private mode: it reads 1, which is true */ }
+  el.innerHTML = String(n).padStart(6, '0').split('').map(d => '<span>' + d + '</span>').join('');
+  el.setAttribute('aria-label', 'Visit number ' + n);
+})();
+
+// ── Copy the Link-to-Us snippet ────────────────────────────
+function copyLinkus(btn) {
+  const ta = document.getElementById('linkusCode');
+  const label = btn.querySelector('.copy-label');
+  if (!ta) return;
+  const done = () => {
+    btn.classList.add('copied');
+    if (label) label.textContent = 'Copied!';
+    clearTimeout(btn._linkTimer);
+    btn._linkTimer = setTimeout(() => {
+      btn.classList.remove('copied');
+      if (label) label.textContent = 'Copy HTML';
+    }, 2000);
+  };
+  if (navigator.clipboard && window.isSecureContext) {
+    navigator.clipboard.writeText(ta.value).then(done).catch(() => fallbackCopy(ta.value, done));
+  } else {
+    fallbackCopy(ta.value, done);
   }
 }
 

@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="88" height="31" viewBox="0 0 88 31" shape-rendering="crispEdges">
+  <rect width="88" height="31" fill="#0a0a0a"/>
+  <rect x="0.5" y="0.5" width="87" height="30" fill="none" stroke="#333333"/>
+  <rect x="1" y="1" width="86" height="1" fill="#ffffff" opacity="0.10"/>
+  <rect x="0" y="0" width="7" height="31" fill="#ff3d9a"/>
+  <rect x="7" y="0" width="1" height="31" fill="#000000"/>
+  <g font-family="Verdana, Geneva, sans-serif" font-weight="bold" fill="#ffffff">
+    <text x="12" y="12" font-size="8" letter-spacing="0.6">JHONNATAN</text>
+    <text x="12" y="21" font-size="8" letter-spacing="0.6" fill="#ff77bb">BARBOSA</text>
+  </g>
+  <text x="12" y="28" font-family="Verdana, Geneva, sans-serif" font-size="5" letter-spacing="1.1" fill="#8f8f8f">GAME DESIGNER</text>
+</svg>

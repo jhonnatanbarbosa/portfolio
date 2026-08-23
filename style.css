@@ -39,12 +39,17 @@ img, video, iframe, table { max-width: 100%; }
 .scroll-progress {
   position: fixed;
   top: 0; left: 0;
-  width: 0%;
+  /* Full width, scaled from the left edge by JS. Animating width made the
+     browser lay the page out again on every scroll frame; scaleX is a
+     compositor transform and never touches layout. */
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: 0 50%;
   height: 2px;
   background: linear-gradient(90deg, var(--accent-dim), var(--accent), rgba(var(--accent2-rgb),0.7));
   z-index: 100;
   pointer-events: none;
-  transition: width 0.05s linear;
+  transition: transform 0.05s linear;
   box-shadow: 0 0 8px rgba(var(--accent-rgb),0.3);
 }
 
@@ -69,19 +74,28 @@ body {
      .about-text, .doc-desc, .ai-role and bare p/li/td. Those are the
      long-form reading surfaces, and 13.5px was too small for them. */
   font-size: 15px;
-  /* ── Dot grid pattern fills the blank background ── */
-  background-image:
-    radial-gradient(circle, rgba(var(--accent-rgb),0.045) 1px, transparent 1px);
-  background-size: 28px 28px;
   position: relative;
   overflow-x: hidden;
 }
 
-/* A fixed-attachment background defeats the fast scroll path on Android and
-   repaints the full viewport every frame. Keep the effect on pointer devices
-   only; on touch the grid just scrolls with the page. */
-@media (hover: hover) and (pointer: fine) {
-  body { background-attachment: fixed; }
+/* ── Dot grid pattern fills the blank background ──
+   This was a background-image on body with `background-attachment: fixed` on
+   pointer devices. Fixed attachment is what the note here used to warn about
+   on Android: it defeats the fast scroll path and repaints the whole viewport
+   every frame — which is just as true of an old desktop GPU as it is of a
+   phone. As its own fixed layer the grid is composited once and never
+   repainted, so it can stay put on every device instead of only some.
+   body's background-color still propagates to the canvas, so this pseudo at
+   z-index -1 sits above the page colour and below everything else. */
+html::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(circle, rgba(var(--accent-rgb),0.045) 1px, transparent 1px);
+  background-size: 28px 28px;
 }
 
 /* ── Ambient glow blobs — fixed in viewport, sit behind everything ──
@@ -235,17 +249,14 @@ nav.scrolled {
 
 /* ── Noise / grain overlay for depth ── */
 nav::after { display: none; }
-main.page::before {
-  content: '';
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  pointer-events: none;
-  z-index: 0;
-  opacity: 0.3;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  background-repeat: repeat;
-  background-size: 256px 256px;
-}
+/* The grain overlay that used to live here targeted main.page::before — the
+   same pseudo-element as the left guide rail above. It won on specificity but
+   never set a width, so it inherited the rail's `width: 1px` and rendered as a
+   1px strip pinned to the viewport's left edge; below 1480px the rail's
+   display:none removed it altogether. So it never drew grain on anything, and
+   it cost an feTurbulence rasterisation and took out the left rail while doing
+   it. Removed: the rails are symmetric again. If the grain is wanted back it
+   needs its own element, not a pseudo the rails already use. */
 
 nav .nav-inner {
   max-width: var(--page-max); margin: 0 auto;
@@ -776,18 +787,31 @@ section + section { border-top: 1px solid var(--border-soft); }
   display: none;
 }
 
+/* ── Pulsing status dots ──────────────────────────────────────
+   These used to animate box-shadow spread, which the compositor cannot
+   touch: every frame of a loop that never ends was a main-thread repaint,
+   so the page never went idle. A box-shadow with 0 blur and N spread is
+   just a filled disc drawn behind the dot, so scaling a same-coloured
+   pseudo-element produces the identical halo for free.
+   --pulse-scale is (dot + 2 x spread) / dot. */
 .live-dot {
+  position: relative;
+  --pulse-scale: 3.67;             /* 6px dot + 8px ring = 22px */
   width: 6px; height: 6px;
   background: var(--accent);
   border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(var(--accent-rgb),0.6);
-  animation: wip-pulse 2.4s infinite;
   display: inline-block;
 }
-@keyframes wip-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(var(--accent-rgb),0.55); }
-  70%  { box-shadow: 0 0 0 8px rgba(var(--accent-rgb),0); }
-  100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb),0); }
+.live-dot::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb),0.55);
+  animation: dot-pulse 2.4s infinite;
+}
+@keyframes dot-pulse {
+  0%        { transform: scale(1); opacity: 1; }
+  70%, 100% { transform: scale(var(--pulse-scale)); opacity: 0; }
 }
 
 .project-badge.active {
@@ -1270,15 +1294,17 @@ section + section { border-top: 1px solid var(--border-soft); }
 /* Live "available" dot inside the status pill */
 #contact .section-aside { display: inline-flex; align-items: center; gap: 0.45rem; }
 .contact-avail-dot {
+  position: relative;
+  --pulse-scale: 3;                /* 7px dot + 7px ring = 21px */
   width: 7px; height: 7px; border-radius: 50%;
   background: var(--accent); flex-shrink: 0;
-  box-shadow: 0 0 0 0 rgba(var(--accent-rgb),0.6);
-  animation: avail-pulse 2.4s ease-out infinite;
 }
-@keyframes avail-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(var(--accent-rgb),0.55); }
-  70%  { box-shadow: 0 0 0 7px rgba(var(--accent-rgb),0); }
-  100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb),0); }
+.contact-avail-dot::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb),0.55);
+  animation: dot-pulse 2.4s ease-out infinite;
 }
 
 .contact-top { display: grid; gap: 1.4rem; }
@@ -1305,21 +1331,32 @@ section + section { border-top: 1px solid var(--border-soft); }
   border: 1px solid var(--accent); border-radius: 10px;
   padding: 0.85rem 1.3rem 0.85rem 1.1rem;
   text-decoration: none;
+  position: relative;
   box-shadow: 0 8px 22px rgba(var(--accent-rgb),0.22);
-  animation: cta-breathe 3.4s ease-in-out infinite;
   transition: transform 0.25s cubic-bezier(0.22,1,0.36,1), box-shadow 0.25s ease;
 }
-/* Slow glow so the eye lands here first; stops the moment it's hovered */
+/* Slow glow so the eye lands here first; stops the moment it's hovered.
+   The glow lives on a pseudo-element at its brightest and only its opacity
+   animates — animating the box-shadow itself repainted the button on every
+   frame, forever. z-index puts it behind the button's own background. */
+.contact-cta::before {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  z-index: -1;
+  box-shadow: 0 8px 30px rgba(var(--accent-rgb),0.38);
+  animation: cta-breathe 3.4s ease-in-out infinite;
+}
 @keyframes cta-breathe {
-  0%, 100% { box-shadow: 0 8px 22px rgba(var(--accent-rgb),0.20); }
-  50%      { box-shadow: 0 8px 30px rgba(var(--accent-rgb),0.38); }
+  0%, 100% { opacity: 0.55; }
+  50%      { opacity: 1; }
 }
 .contact-cta:hover {
   text-decoration: none;
   transform: translateY(-2px);
-  animation: none;
   box-shadow: 0 12px 30px rgba(var(--accent-rgb),0.34);
 }
+.contact-cta:hover::before { animation: none; opacity: 0; }
 .contact-cta:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .contact-cta .cta-icon { display: inline-flex; flex-shrink: 0; }
 .contact-cta .cta-text { display: flex; flex-direction: column; line-height: 1.25; }
@@ -1356,8 +1393,9 @@ section + section { border-top: 1px solid var(--border-soft); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .contact-cta { animation: none; }
-  .contact-avail-dot { animation: none; }
+  .contact-cta::before { animation: none; }
+  .contact-avail-dot::after { animation: none; }
+  .live-dot::after { animation: none; }
 }
 
 /* Secondary contact cards */
@@ -2160,6 +2198,16 @@ footer {
   transition: opacity 0.3s ease;
 }
 .pd-overlay.open { opacity: 1; pointer-events: auto; }
+
+/* A closed overlay is transparent but still a full-viewport fixed box, so the
+   backdrop blur above stayed live in the compositor on all five modals at
+   once — seven blurred layers with the nav and the contact dock. Dropping the
+   filter while opacity is 0 costs nothing visually and gives the compositor
+   five fewer full-screen surfaces to maintain on every scroll frame. */
+.pd-overlay:not(.open) {
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
 
 .pd-modal {
   background: var(--bg); border: 1px solid var(--border); border-radius: 16px;

@@ -40,7 +40,7 @@
 <div class="site">
 
   <!-- ══════════════════════════════════════════════════════
-       BANNER — art strip behind the wordmark plate.
+       BANNER: art strip behind the wordmark plate.
        The five screenshots are desaturated and re-tinted in CSS so
        unrelated projects read as one montage, which is exactly what
        the period fansite banners were doing with their key art.
@@ -56,9 +56,9 @@
     <div class="banner-plate">
       <svg class="wordmark" viewBox="0 0 460 52" role="img" aria-label="Jhonnatan Barbosa">
         <defs>
-          <!-- Chrome gradient text, Photoshop 6 vocabulary: a hard break at the
-               midpoint is what makes metal read as metal. The first pass ran a
-               soft plum ramp, which is airbrush, not chrome. -->
+          <!-- Chrome gradient text, Photoshop 6 vocabulary. The hard break at
+               the midpoint is what makes metal read as metal; ramp the stops
+               smoothly instead and you get airbrush. -->
           <linearGradient id="wm" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0"    stop-color="#ffffff"/>
             <stop offset="0.48" stop-color="#ffb3d8"/>
@@ -77,7 +77,7 @@
   </header>
 
   <!-- ══════════════════════════════════════════════════════
-       STATUS BAR — the reference pages' "Pageviews / date" strip.
+       STATUS BAR: the reference pages' "Pageviews / date" strip.
        The odometer counts shipped titles instead of invented traffic.
        ══════════════════════════════════════════════════════ -->
   <div class="statusbar">
@@ -108,7 +108,7 @@
   </div>
 
   <nav class="mainnav" aria-label="Main">
-    <a href="#index">Index</a>
+    <a href="#index">Front Page</a>
     <a href="#projects" data-i18n="nav_projects">Projects</a>
     <a href="#systems">Systems</a>
     <a href="#cyberpunk-analytics" data-i18n="nav_casestudy">Case Study</a>
@@ -123,7 +123,7 @@
   <div class="ticker" aria-label="Latest">
     <span class="ticker-label">Latest</span>
     <div class="ticker-track"><span>
-      Dead Saints Parade demo at <b>62%</b> — levels 1 &amp; 2 greyboxed, 22 systems shipped, 8 on the board
+      Dead Saints Parade demo at <b>62%</b>: levels 1 &amp; 2 greyboxed, 22 systems shipped, 8 on the board
       <span class="sep">•</span>
       Cyberpunk City second data read: <b>36</b> post-overhaul players against a frozen 220-player baseline
       <span class="sep">•</span>
@@ -131,19 +131,19 @@
       <span class="sep">•</span>
       <b>12</b> titles shipped since 2020, 2 of them commercial
       <span class="sep">•</span>
-      Available for systems and gameplay design work — <b>jho@jhorro.com</b>
+      Available for systems and gameplay design work. Write to <b>jho@jhorro.com</b>
       <span class="sep">•</span>
     </span></div>
   </div>
 
   <div class="crumb">
-    <a href="#index">Jhonnatan Barbosa</a><span class="sep">»</span>Index
+    <a href="#index">Jhonnatan Barbosa</a><span class="sep">»</span>Front Page
   </div>
 
   <div class="layout">
 
     <!-- ══════════════════════════════════════════════════════
-         LEFT RAIL — the "Games" index every fansite led with
+         LEFT RAIL: the "Games" index every fansite led with
          ══════════════════════════════════════════════════════ -->
     <aside class="col col-left" aria-label="Site index">
 
@@ -173,7 +173,7 @@
         <h2 class="panel-title">Sections</h2>
         <div class="panel-body">
           <ul class="linklist">
-            <li><a href="#index">Index</a></li>
+            <li><a href="#index">Front Page</a></li>
             <li><a href="#projects" data-i18n="sec_projects">Selected Projects</a></li>
             <li><a href="#systems" data-i18n="sec_wip">Currently Working On</a></li>
             <li><a href="#board">Demo Progress</a></li>
@@ -258,10 +258,10 @@
          ══════════════════════════════════════════════════════ -->
     <main class="col col-main" id="main">
 
-      <!-- ── INDEX / welcome post ─────────────────────────── -->
+      <!-- ── FRONT PAGE / welcome post ─────────────────────── -->
       <section class="panel" id="index">
         <div class="plate">
-          <h2>Index</h2>
+          <h2>Front Page</h2>
           <span class="plate-sub" data-i18n="nav_role">Game Designer</span>
         </div>
         <div class="panel-body">
@@ -291,7 +291,7 @@
         </h2>
         <div class="panel-body">
 
-          <!-- Dead Saints Parade — the only commercial PC title, so it leads. -->
+          <!-- Dead Saints Parade: the only commercial PC title, so it leads. -->
           <article class="post is-flagship" id="dead-saints-parade">
             <div class="post-head">
               <span class="post-title">Dead Saints Parade</span>
@@ -1027,7 +1027,7 @@
           <h3 class="h-rule" data-i18n="gf_mechanic_subtitle">Mechanic Spotlight: Dash-Strike Combat</h3>
           <div class="shot">
             <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Guardian's Falls dash-strike combat mechanic in action"><source src="media/03optimizedVideo-Guardians2.mp4" type="video/mp4"><track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default></video>
-            <div class="shot-cap">Core · Combat — Evolved</div>
+            <div class="shot-cap">Core · Combat, Evolved</div>
           </div>
           <div class="prose">
             <h4 class="h-rule" data-i18n="ms_h">Combat is movement</h4>
@@ -1222,7 +1222,7 @@
     </main>
 
     <!-- ══════════════════════════════════════════════════════
-         RIGHT RAIL — site news, status, affiliates
+         RIGHT RAIL: site news, status, affiliates
          ══════════════════════════════════════════════════════ -->
     <aside class="col col-right" aria-label="Site news and status">
 
@@ -1309,7 +1309,7 @@
           </div>
           <div class="news">
             <div class="news-date">08.14.26</div>
-            <p>Analytics dashboard embedded straight into the case study instead of sitting behind a link.</p>
+            <p>Moved the analytics dashboard into the case study itself. It used to sit behind a link and nobody clicked it.</p>
           </div>
           <div class="news">
             <div class="news-date">07.24.26</div>
@@ -1329,7 +1329,7 @@
   <footer class="site-foot">
     <p><b>Jhonnatan Barbosa</b> · 2026 · <span data-i18n="footer_tagline">Game Designer: Data-Driven Systems and Gameplay</span></p>
     <p class="foot-nav">
-      <a href="#index">Index</a>|<a href="#projects" data-i18n="nav_projects">Projects</a>|<a href="#documents" data-i18n="nav_documents">Documents</a>|<a href="#about" data-i18n="nav_about">About</a>|<a href="#contact" data-i18n="nav_contact">Contact</a>|<a href="privacy-policy.html">Privacy</a>
+      <a href="#index">Front Page</a>|<a href="#projects" data-i18n="nav_projects">Projects</a>|<a href="#documents" data-i18n="nav_documents">Documents</a>|<a href="#about" data-i18n="nav_about">About</a>|<a href="#contact" data-i18n="nav_contact">Contact</a>|<a href="privacy-policy.html">Privacy</a>
     </p>
     <div class="badgerow">
       <img src="media/button-88x31.svg" width="88" height="31" alt="88 by 31 button reading Jhonnatan Barbosa, Game Designer">
@@ -1476,8 +1476,8 @@ function copyEmail(btn) {
 
     out.innerHTML = rows +
       '<p class="poll-total">' + total + (total === 1 ? ' vote' : ' votes') +
-      ', tallied in this browser only &mdash; nothing is sent anywhere. Want yours to count for ' +
-      'real? <a href="mailto:jho@jhorro.com?subject=Poll">Mail it in</a>.</p>';
+      ', tallied in this browser only. Nothing is sent anywhere. To have yours ' +
+      'counted, <a href="mailto:jho@jhorro.com?subject=Poll">mail it in</a>.</p>';
     wrap.classList.add('is-voted');
   }
 

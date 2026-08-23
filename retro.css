@@ -18,9 +18,9 @@
    makes 11px body type defensible.
 
    Palette is gunmetal with the site's pink as the single accent, used
-   on title bars, links and one badge and nowhere else. The first pass
-   tinted every surface plum, which is the 2020s "Y2K aesthetic" and
-   reads as a recent reinvention rather than as 2002.
+   on title bars, links and one badge and nowhere else. Tinting the
+   surfaces themselves lands on the 2020s "Y2K aesthetic", which reads
+   as a recent reinvention rather than as 2002.
    ═══════════════════════════════════════════════════════════ */
 
 :root {
@@ -90,9 +90,9 @@ body {
   color: var(--rt-text);
   background: var(--rt-page);
   /* The single strongest period signal is wallpaper showing to the left and
-     right of a hard-edged column, so this has to be VISIBLE — the first pass
-     ran it at 0.018 alpha, which is the same as not having one. Diagonal
-     weave plus a dot grid, standing in for the 8KB carbon-fibre GIF. */
+     right of a hard-edged column, so this has to be VISIBLE. Much below
+     0.03 alpha is the same as having no tile at all. Diagonal weave plus a
+     dot grid, standing in for the 8KB carbon-fibre GIF. */
   background-image:
     repeating-linear-gradient(45deg,  rgba(255,255,255,0.030) 0 1px, transparent 1px 4px),
     repeating-linear-gradient(-45deg, rgba(255,255,255,0.018) 0 1px, transparent 1px 4px),
@@ -182,12 +182,12 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,61,
   object-fit: cover;
   /* Desaturating and re-tinting is what welds five unrelated screenshots into
      one strip, the same trick the reference banners used with their montages.
-     The art has to stay legible through it — a strip you cannot read as game
-     art is just noise, which is the failure mode the first pass had. */
+     The art has to stay legible through it. Push the treatment far enough and
+     the strip stops reading as game art and becomes noise. */
   filter: grayscale(1) contrast(1.25) brightness(0.72);
 }
-/* Plum wash + edge vignette. Strong enough to unify and to seat the wordmark,
-   light enough that the screenshots still read as screenshots. */
+/* Edge vignette over the montage. Strong enough to unify the five clips and
+   to seat the wordmark, light enough that they still read as screenshots. */
 .banner::after {
   content: '';
   position: absolute; inset: 0;
@@ -339,18 +339,13 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,61,
 }
 .col { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 
-/* Sidebars stick while the long centre column scrolls past them. */
-@media (min-width: 1005px) {
-  .col-left, .col-right { position: sticky; top: 10px; max-height: calc(100vh - 20px); overflow-y: auto; }
-  /* A period scrollbar for the sticky rails, where a modern one would be the
-     single most anachronistic pixel on the page. */
-  .col-left::-webkit-scrollbar, .col-right::-webkit-scrollbar { width: 10px; }
-  .col-left::-webkit-scrollbar-track, .col-right::-webkit-scrollbar-track { background: var(--rt-sunken); }
-  .col-left::-webkit-scrollbar-thumb, .col-right::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, #4a4a4a, #222222);
-    border: 1px solid var(--rt-line);
-  }
-}
+/* The rails deliberately do NOT stick. Pinning them with position:sticky
+   plus their own overflow-y gives the page three scroll positions that never
+   agree: reaching the bottom of the centre column leaves both rails showing
+   their first panel, and scrolling a rail back does nothing to the page. A
+   table sidebar in 2002 scrolled with the document and stopped when it ran
+   out of boxes. So does this one. The empty column below a short rail is not
+   a bug; it is what the layout looked like. */
 
 /* ═══════════════════════════════════════════════════════════
    PANEL
@@ -609,6 +604,34 @@ a:hover, a:focus-visible { color: var(--rt-link-hover); background: rgba(255,61,
   box-shadow: inset 1px 1px 0 var(--rt-bevel-lo);
 }
 .shot video, .shot img { width: 100%; border: 1px solid #000; }
+
+/* ── DUOTONE ──────────────────────────────────────────────────────────
+   Twelve projects, twelve unrelated key arts: a neon-blue idle game next
+   to a brown souls-like next to a green parkour game. At full colour the
+   media is the loudest thing on a page whose whole argument is that it
+   holds eight colours. Knocking every clip down to one ink is the same
+   move the era made in Photoshop: desaturate, then Color Balance the
+   midtones toward the site's accent. It is the same thing index.html does
+   with its blended overlay.
+
+   Chained filters rather than a ::after overlay because .shot-cap sits
+   inside .shot, and an inset:0 overlay would tint the caption too. */
+:root {
+  /* Order matters. Desaturate, set the contrast and the black point, and
+     only then lay the ink on. Sepia over an already-dark greyscale gives a
+     tinted midtone; sepia over a bright one gives pastel lavender, which is
+     the exact 2020s look this page is avoiding. hue-rotate carries sepia's
+     brown round to the page's pink. Half strength keeps bright sources like
+     the Kingdom Builder map from flattening into a slab of candy pink. */
+  --rt-duo: grayscale(1) contrast(1.28) brightness(0.66) sepia(0.5) hue-rotate(292deg) saturate(2.1);
+}
+.shot video, .shot img,
+.tile-shot video, .tile-shot img { filter: var(--rt-duo); }
+
+/* Rollover reveals the real colours. No transition on purpose: the period
+   equivalent is an onmouseover GIF swap, which was instant or nothing. */
+.shot:hover video, .shot:hover img,
+.tile:hover .tile-shot video, .tile:hover .tile-shot img { filter: none; }
 .shot-cap {
   padding: 3px 2px 0;
   font-size: 9px;

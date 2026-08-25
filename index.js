@@ -336,7 +336,16 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProject
     return;
   }
   // Someone who asked for reduced motion gets the first frame and nothing else.
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // The build-footage clips are the exception: they are the only evidence
+  // offered for the systems they sit beside, so instead of a frozen frame with
+  // no affordance they get controls and play once, on purpose, when asked.
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    vids.filter(v => v.closest('.dsp-clip')).forEach(v => {
+      v.controls = true;
+      v.loop = false;
+    });
+    return;
+  }
 
   const io = new IntersectionObserver(entries => {
     entries.forEach(entry => {

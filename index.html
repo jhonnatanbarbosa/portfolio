@@ -166,6 +166,7 @@
       <li><a href="#cyberpunk-analytics" data-i18n="nav_casestudy">Case Study</a></li>
       <li><a href="#documents" data-i18n="nav_documents">Documents</a></li>
       <li><a href="#about" data-i18n="nav_about">About</a></li>
+      <li><a href="#experience" data-i18n="nav_experience">Experience</a></li>
       <li><a href="/productions" data-i18n="nav_studio">Jhorro Productions</a></li>
       <li><a href="#contact" class="nav-contact" data-i18n="nav_contact">Contact</a></li>
     </ul>
@@ -1182,12 +1183,15 @@
        plain string. Every track is the same width and scale, so the overlaps
        read straight down the column. Bar geometry is inline left/width from
        pct(year) = (year - 2017) / 11 * 100, so a date edit is two numbers.
+       Ongoing roles set left only and stop at the --xp-now token in the
+       stylesheet, so an open bar is as long as the role has actually been.
        Tracks are aria-hidden: the .xp-when line below each one carries the
        same dates as text, which is the version worth reading aloud. -->
   <section id="experience">
     <div class="section-header">
       <h2 class="section-title" data-i18n="sec_experience">Experience &amp; Education</h2>
-      <span class="section-aside" data-i18n="sec_experience_aside">Full history in the CV (PDF)</span>
+      <a class="section-aside" href="docs/CV_Jhonnatan_Barbosa_Game_Designer.pdf" target="_blank" rel="noopener"
+         data-i18n="sec_experience_aside">Full history in the CV (PDF)</a>
     </div>
 
     <div class="xp-rail reveal">
@@ -1200,7 +1204,7 @@
           <b style="left:36.4%">'21</b>
           <b style="left:54.5%">'23</b>
           <b style="left:72.7%">'25</b>
-          <b class="xp-axis-now" style="left:87.7%" data-i18n="xp_now">now</b>
+          <b class="xp-axis-now" data-i18n="xp_now">now</b>
         </div>
       </div>
 
@@ -1216,7 +1220,7 @@
           <p class="xp-desc" data-i18n="xp1_desc">Dead Saints Parade, plus two mobile titles already shipped. I handle the design, the code, the analytics and the release.</p>
         </div>
         <div>
-          <div class="xp-track" aria-hidden="true"><span class="xp-bar is-design is-open" style="left:68.2%;width:31.8%"></span></div>
+          <div class="xp-track" aria-hidden="true"><span class="xp-bar is-design is-open" style="left:68.2%"></span></div>
           <div class="xp-when" data-i18n-html="xp1_when">Jul 2024 — <span class="xp-now">now</span></div>
         </div>
       </div>
@@ -1231,7 +1235,7 @@
           <p class="xp-desc" data-i18n="xp2_desc">PLC and HMI work in Siemens TIA Portal. Most of it is data layer work: process telemetry, machine state, and operator dashboards.</p>
         </div>
         <div>
-          <div class="xp-track" aria-hidden="true"><span class="xp-bar is-side is-open" style="left:85%;width:15%"></span></div>
+          <div class="xp-track" aria-hidden="true"><span class="xp-bar is-side is-open" style="left:85%"></span></div>
           <div class="xp-when" data-i18n-html="xp2_when">May 2026 — <span class="xp-now">now</span></div>
         </div>
       </div>

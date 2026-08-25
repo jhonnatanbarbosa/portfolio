@@ -517,6 +517,16 @@ section + section { border-top: 1px solid var(--border-soft); }
 }
 
 .section-aside { font-size: 0.75rem; color: var(--text-dim); }
+/* An aside that names a document should open it. It keeps the aside's dim
+   colour rather than turning accent-blue, and carries a faint underline so it
+   is findable without reading as a call to action. */
+a.section-aside {
+  text-decoration: underline;
+  text-decoration-color: var(--border);
+  text-underline-offset: 3px;
+  transition: color 0.2s ease, text-decoration-color 0.2s ease;
+}
+a.section-aside:hover { color: var(--text-mid); text-decoration-color: var(--accent-dim); }
 
 /* ── PROJECT CARDS ───────────────────────────────────────── */
 .project-card {
@@ -1208,18 +1218,26 @@ section + section { border-top: 1px solid var(--border-soft); }
    full width, so the middle three blocks are what was leaving the
    right half of the section empty. As a 3-up grid they fill it while
    each column stays inside the 68ch measure set on .about-body p. */
-/* The lede sits above the full-width philosophy box, so capping it at the
-   68ch measure left the right half of the section empty. It is three or
-   four lines at this width, short enough that the long line length costs
-   less than the hole did. */
-.about-lede p { max-width: none; }
+/* The lede sits above the full-width philosophy box, so the 68ch measure left
+   the right half of the section empty. Widened rather than uncapped: with no
+   cap at all it runs ~165 characters per line on a 1440px display, and the
+   measure is the one typographic rule this section keeps everywhere else. */
+.about-lede p { max-width: 90ch; }
 
 .about-cols {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  grid-template-columns: 1fr;
   gap: 0.6rem 2.2rem;
   margin: 0.9rem 0;
   align-items: start;
+}
+/* Three blocks, so auto-fit's 2-column step put one alone on a second row with
+   an empty cell beside it — the exact hole this band exists to close. Go 3-up
+   only where three 280px columns genuinely fit: .about-body is viewport - 6vw
+   padding - 150px photo - 1.5rem gap, which clears 3*280 + 2*2.2rem at about
+   1154px. Below that they stack full-width, which leaves no hole either. */
+@media (min-width: 1160px) {
+  .about-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -1232,15 +1250,25 @@ section + section { border-top: 1px solid var(--border-soft); }
 
    Bar geometry: pct(year) = (year - 2017) / 11 * 100, set inline as
    left/width so changing a date is a two-number edit in the markup.
+   Ongoing roles set left only: --xp-now is where "now" sits on that
+   scale, and .is-open ends there, so moving the marker moves the axis
+   label, the guide line and every open bar together.
+
+   .xp-sprite is hidden by the shared off-screen sprite rule — see
+   .flag-sprite under LANGUAGE SWITCHER, which explains it for both.
    ═══════════════════════════════════════════════════════════ */
-.xp-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 .xp-icon {
   width: 15px; height: 15px; display: block;
   fill: none; stroke: currentColor;
   stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
 }
 
-.xp-rail { position: relative; padding-left: 2.15rem; }
+.xp-rail {
+  position: relative; padding-left: 2.15rem;
+  /* pct(Aug 2026) on the 2017-2028 scale. The one number to edit when
+     "now" moves; nothing else in the section hardcodes a date. */
+  --xp-now: 87.7%;
+}
 .xp-rail::before {
   content: ''; position: absolute; left: 11px; top: 30px; bottom: 42px; width: 1px;
   background: linear-gradient(180deg,
@@ -1266,7 +1294,7 @@ section + section { border-top: 1px solid var(--border-soft); }
 }
 .xp-axis b { position: absolute; bottom: 2px; font-weight: 400; transform: translateX(-50%); }
 .xp-axis b:first-child { transform: none; }
-.xp-axis .xp-axis-now { color: var(--accent); transform: translateX(-50%); }
+.xp-axis .xp-axis-now { color: var(--accent); left: var(--xp-now); }
 
 .xp-group {
   font-family: 'Geist Mono', monospace; font-size: 0.6rem;
@@ -1317,7 +1345,7 @@ section + section { border-top: 1px solid var(--border-soft); }
    the segments align into a continuous guide and it survives the mobile
    reflow, where the track column moves under the text. */
 .xp-track::after {
-  content: ''; position: absolute; top: -2px; bottom: -2px; left: 87.7%;
+  content: ''; position: absolute; top: -2px; bottom: -2px; left: var(--xp-now);
   width: 1px; background: rgba(var(--accent-rgb),0.22);
 }
 .xp-bar {
@@ -1335,7 +1363,13 @@ section + section { border-top: 1px solid var(--border-soft); }
 .xp-bar.is-side {
   background: rgba(255,255,255,0.05); border-color: var(--border);
 }
-.xp-bar.is-open { border-right-style: dashed; border-right-color: rgba(var(--accent-rgb),0.55); }
+/* An open span runs from its start to "now", not to the end of the axis.
+   Setting right instead of a width keeps that true without restating the
+   date: the bar is as long as the role has actually been. */
+.xp-bar.is-open {
+  right: calc(100% - var(--xp-now));
+  border-right-style: dashed; border-right-color: rgba(var(--accent-rgb),0.55);
+}
 .xp-dot {
   position: absolute; top: 50%; width: 10px; height: 10px; margin-left: -5px;
   transform: translateY(-50%) rotate(45deg);
@@ -1347,20 +1381,30 @@ section + section { border-top: 1px solid var(--border-soft); }
   color: var(--text-dim); margin-top: 0.1rem; white-space: nowrap;
 }
 .xp-now {
+  position: relative;
   display: inline-flex; align-items: center; gap: 0.32rem;
   font-size: 0.57rem; color: var(--accent);
   text-transform: uppercase; letter-spacing: 0.08em;
 }
 .xp-now::before {
   content: ''; width: 5px; height: 5px; border-radius: 50%;
-  background: var(--accent); animation: xp-pulse 2.6s ease-out infinite;
+  background: var(--accent);
 }
-@keyframes xp-pulse {
-  0%   { box-shadow: 0 0 0 0 rgba(var(--accent-rgb),0.45); }
-  70%  { box-shadow: 0 0 0 6px rgba(var(--accent-rgb),0); }
-  100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb),0); }
+/* Same halo, and the same reason, as .live-dot: an animated box-shadow spread
+   is a main-thread repaint on every frame of a loop that never ends, so the
+   page never goes idle. ::before is the dot itself and cannot carry a pseudo
+   of its own, so the ring is a second one scaled over it. It reuses dot-pulse
+   verbatim; only --pulse-scale, (dot + 2 x spread) / dot, differs. */
+.xp-now::after {
+  content: '';
+  --pulse-scale: 3.4;              /* 5px dot + 6px ring = 17px */
+  position: absolute; left: 0; top: 50%;
+  width: 5px; height: 5px; margin-top: -2.5px;
+  border-radius: 50%;
+  background: rgba(var(--accent-rgb),0.45);
+  animation: dot-pulse 2.6s ease-out infinite;
 }
-@media (prefers-reduced-motion: reduce) { .xp-now::before { animation: none; } }
+@media (prefers-reduced-motion: reduce) { .xp-now::after { display: none; } }
 
 .xp-legend {
   display: flex; gap: 1rem; flex-wrap: wrap;
@@ -1387,7 +1431,7 @@ section + section { border-top: 1px solid var(--border-soft); }
 @media print {
   .xp-row { break-inside: avoid; }
   .xp-node { background: #fff !important; border: 1px solid #ccc !important; }
-  .xp-track::after, .xp-now::before { display: none; }
+  .xp-track::after, .xp-now::before, .xp-now::after { display: none; }
 }
 
 /* ── SITE FOOTER ────────────────────────────────────────── */
@@ -2098,12 +2142,13 @@ footer {
   .cs-grid { grid-template-columns: repeat(2, 1fr); }
   .additional-grid { grid-template-columns: 1fr 1fr; }
   .contact-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-}
 
-/* ── MOBILE (≤720px) ─────────────────────────────────────── */
-@media (max-width: 720px) {
-
-  /* Show hamburger, collapse nav links into dropdown */
+  /* Show hamburger, collapse nav links into dropdown. Measured, not guessed:
+     the seven links plus the brand and the language picker need ~830px of
+     content width in pt, the longest of the three locales, which is a ~883px
+     viewport once the 3vw side padding is out. Below that they go to the
+     dropdown instead of wrapping to a second row or colliding with the
+     brand. Every other mobile collapse still waits for 720px. */
   .nav-toggle {
     display: flex;
     flex-direction: column;
@@ -2139,7 +2184,9 @@ footer {
   /* Group the language control against the hamburger on the right instead of
      leaving the burger stranded mid-bar, and keep the picker the first control
      on that side so it stays easy to spot. */
-  .lang-switch { order: 2; margin-left: auto; margin-right: 0.9rem; }
+  /* nav-scoped so it outranks .lang-switch's own margin-left, which is
+     declared further down the file and would otherwise win on source order. */
+  nav .lang-switch { order: 2; margin-left: auto; margin-right: 0.9rem; }
   .nav-toggle { order: 3; }
 
   /* Pill styling doesn't fit the dropdown — keep only the accent color */
@@ -2151,6 +2198,10 @@ footer {
     margin: 0;
     padding: 0.65rem clamp(1.25rem, 3vw, 3rem);
   }
+}
+
+/* ── MOBILE (≤720px) ─────────────────────────────────────── */
+@media (max-width: 720px) {
 
   /* Layout collapses */
   .intro { grid-template-columns: 1fr; }
@@ -2237,7 +2288,7 @@ footer {
 /* Flags are inline SVG, not emoji: Windows has no glyphs for regional-indicator
    pairs, so emoji flags degrade to bare letters there while looking correct on
    mobile. The sprite itself never renders — only its <symbol>s, via <use>. */
-.flag-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.flag-sprite, .xp-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
 
 .lang-flag {
   width: 18px;
@@ -2707,6 +2758,9 @@ footer {
   /* Video placeholders */
   video { display: none; }
   .project-thumb { display: none; }
+  /* The wrapper too, or the clip prints as an empty framed box under a
+     caption describing footage that is not on the page. */
+  .dsp-clip { display: none; }
 
   /* Restore doc-type badge in print (preview hidden) */
   .doc-item > .doc-type { display: inline-block !important; }
@@ -2985,7 +3039,6 @@ table.tbl td.num { font-family: 'Geist Mono', monospace; color: var(--text); whi
     gap: 1rem;
     align-items: stretch;
   }
-  .dsp-figpair > figure { margin: 1.1rem 0; }
   /* Both media get the clip's 16:9 box so the two captions start on the same
      line. The SVG keeps its own viewBox ratio and simply centres inside the
      taller frame — preserveAspectRatio does that for free, so the drawing and

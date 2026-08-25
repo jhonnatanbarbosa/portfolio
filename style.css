@@ -1116,12 +1116,12 @@ section + section { border-top: 1px solid var(--border-soft); }
 /* ── ABOUT ───────────────────────────────────────────────── */
 .about-layout {
   display: grid;
-  grid-template-columns: 110px 1fr;
+  grid-template-columns: 150px 1fr;
   gap: 1.5rem; align-items: start;
 }
 
 .about-photo {
-  width: 110px; height: 135px;
+  width: 150px; height: 184px;
   background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 6px;
@@ -1135,7 +1135,7 @@ section + section { border-top: 1px solid var(--border-soft); }
 
 .about-body p {
   color: var(--text-mid); font-size: 0.88rem;
-  margin-bottom: 0.6rem; max-width: 580px; line-height: 1.6;
+  margin-bottom: 0.6rem; max-width: 68ch; line-height: 1.6;
 }
 
 .about-body .design-philosophy {
@@ -1201,6 +1201,193 @@ section + section { border-top: 1px solid var(--border-soft); }
   text-transform: uppercase;
   letter-spacing: 0.08em;
   margin-bottom: 0.3rem;
+}
+
+/* ── ABOUT: three-column prose band ──────────────────────
+   Background reads as the lede and the two highlight boxes span the
+   full width, so the middle three blocks are what was leaving the
+   right half of the section empty. As a 3-up grid they fill it while
+   each column stays inside the 68ch measure set on .about-body p. */
+/* The lede sits above the full-width philosophy box, so capping it at the
+   68ch measure left the right half of the section empty. It is three or
+   four lines at this width, short enough that the long line length costs
+   less than the hole did. */
+.about-lede p { max-width: none; }
+
+.about-cols {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 0.6rem 2.2rem;
+  margin: 0.9rem 0;
+  align-items: start;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   EXPERIENCE & EDUCATION
+   A rail of icon nodes, where the date column is a span bar on a
+   shared 2017-2028 axis. Every track is the same width and scale,
+   so the overlaps read straight down the column: the studio starts
+   while teaching is still running, and Statistics sits alone at the
+   far left, which is the credential the rest of the page leans on.
+
+   Bar geometry: pct(year) = (year - 2017) / 11 * 100, set inline as
+   left/width so changing a date is a two-number edit in the markup.
+   ═══════════════════════════════════════════════════════════ */
+.xp-sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.xp-icon {
+  width: 15px; height: 15px; display: block;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+
+.xp-rail { position: relative; padding-left: 2.15rem; }
+.xp-rail::before {
+  content: ''; position: absolute; left: 11px; top: 30px; bottom: 42px; width: 1px;
+  background: linear-gradient(180deg,
+    transparent 0%,
+    rgba(var(--accent-rgb),0.35) 8%,
+    rgba(var(--accent2-rgb),0.28) 92%,
+    transparent 100%);
+}
+
+/* Axis header shares the row grid so it lines up with every track. */
+.xp-axis-row {
+  display: grid; grid-template-columns: minmax(0, 1fr) minmax(280px, 1fr);
+  gap: 0 1.5rem; align-items: end;
+}
+.xp-axis-lead {
+  font-family: 'Geist Mono', monospace; font-size: 0.58rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim);
+}
+.xp-axis {
+  position: relative; height: 15px;
+  font-family: 'Geist Mono', monospace; font-size: 0.55rem; color: var(--text-dim);
+  border-bottom: 1px solid var(--border-soft);
+}
+.xp-axis b { position: absolute; bottom: 2px; font-weight: 400; transform: translateX(-50%); }
+.xp-axis b:first-child { transform: none; }
+.xp-axis .xp-axis-now { color: var(--accent); transform: translateX(-50%); }
+
+.xp-group {
+  font-family: 'Geist Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  color: var(--text-dim); margin: 1.15rem 0 0.45rem; position: relative;
+}
+.xp-group::before {
+  content: ''; position: absolute; left: -2.15rem; top: 0.55em;
+  width: 22px; height: 1px; background: var(--border);
+}
+
+.xp-row {
+  position: relative; display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(280px, 1fr);
+  gap: 0 1.5rem; align-items: start; padding: 0.42rem 0 0.6rem;
+}
+.xp-node {
+  position: absolute; left: -2.15rem; top: 0.45rem;
+  width: 23px; height: 23px; border-radius: 6px;
+  background: var(--surface); border: 1px solid var(--border);
+  display: grid; place-items: center; color: var(--text-dim);
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+.xp-row:hover .xp-node { color: var(--accent); border-color: rgba(var(--accent-rgb),0.45); }
+.xp-head { display: flex; align-items: baseline; gap: 0.45rem; flex-wrap: wrap; }
+.xp-role { font-size: 0.86rem; color: var(--text); font-weight: 500; }
+.xp-org  { font-size: 0.81rem; color: var(--text-mid); }
+.xp-org::before { content: '\00b7\00a0'; color: var(--text-dim); }
+.xp-desc {
+  font-size: 0.8rem; color: var(--text-mid);
+  line-height: 1.55; margin-top: 0.12rem; max-width: 54ch;
+}
+
+/* ── the inline chart ── */
+.xp-track {
+  position: relative; height: 27px;
+  /* One gridline per year. They line up down the rail across all rows,
+     which is what makes the bars readable as a shared scale. */
+  background: repeating-linear-gradient(90deg,
+    var(--border-soft) 0 1px, transparent 1px calc(100% / 11));
+}
+/* Baseline groove, so a short bar still reads as sitting on a scale. */
+.xp-track::before {
+  content: ''; position: absolute; left: 0; right: 0; top: 50%;
+  height: 1px; background: var(--border-soft);
+}
+/* "Now" drawn per track rather than as one absolute line over the rail:
+   the segments align into a continuous guide and it survives the mobile
+   reflow, where the track column moves under the text. */
+.xp-track::after {
+  content: ''; position: absolute; top: -2px; bottom: -2px; left: 87.7%;
+  width: 1px; background: rgba(var(--accent-rgb),0.22);
+}
+.xp-bar {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  height: 12px; border-radius: 2px; border: 1px solid;
+}
+.xp-bar.is-design {
+  background: linear-gradient(90deg, rgba(var(--accent-rgb),0.32), rgba(var(--accent-rgb),0.14));
+  border-color: rgba(var(--accent-rgb),0.42);
+}
+.xp-bar.is-edu {
+  background: linear-gradient(90deg, rgba(var(--accent2-rgb),0.3), rgba(var(--accent2-rgb),0.11));
+  border-color: rgba(var(--accent2-rgb),0.4);
+}
+.xp-bar.is-side {
+  background: rgba(255,255,255,0.05); border-color: var(--border);
+}
+.xp-bar.is-open { border-right-style: dashed; border-right-color: rgba(var(--accent-rgb),0.55); }
+.xp-dot {
+  position: absolute; top: 50%; width: 10px; height: 10px; margin-left: -5px;
+  transform: translateY(-50%) rotate(45deg);
+  background: rgba(var(--accent2-rgb),0.32);
+  border: 1px solid rgba(var(--accent2-rgb),0.55);
+}
+.xp-when {
+  font-family: 'Geist Mono', monospace; font-size: 0.62rem;
+  color: var(--text-dim); margin-top: 0.1rem; white-space: nowrap;
+}
+.xp-now {
+  display: inline-flex; align-items: center; gap: 0.32rem;
+  font-size: 0.57rem; color: var(--accent);
+  text-transform: uppercase; letter-spacing: 0.08em;
+}
+.xp-now::before {
+  content: ''; width: 5px; height: 5px; border-radius: 50%;
+  background: var(--accent); animation: xp-pulse 2.6s ease-out infinite;
+}
+@keyframes xp-pulse {
+  0%   { box-shadow: 0 0 0 0 rgba(var(--accent-rgb),0.45); }
+  70%  { box-shadow: 0 0 0 6px rgba(var(--accent-rgb),0); }
+  100% { box-shadow: 0 0 0 0 rgba(var(--accent-rgb),0); }
+}
+@media (prefers-reduced-motion: reduce) { .xp-now::before { animation: none; } }
+
+.xp-legend {
+  display: flex; gap: 1rem; flex-wrap: wrap;
+  margin-top: 1rem; padding-top: 0.6rem;
+  border-top: 1px solid var(--border-soft);
+  font-size: 0.66rem; color: var(--text-dim);
+}
+.xp-legend span { display: inline-flex; align-items: center; gap: 0.35rem; }
+.xp-legend i { width: 10px; height: 9px; border-radius: 2px; border: 1px solid; font-style: normal; }
+.xp-legend .lg-design { background: rgba(var(--accent-rgb),0.28); border-color: rgba(var(--accent-rgb),0.42); }
+.xp-legend .lg-edu    { background: rgba(var(--accent2-rgb),0.28); border-color: rgba(var(--accent2-rgb),0.4); }
+.xp-legend .lg-side   { background: rgba(255,255,255,0.05); border-color: var(--border); }
+
+/* Below 860px the track column can't hold a readable scale beside text,
+   so it drops under the row and spans full width. Bars are percentage
+   based, so they rescale with no other change. */
+@media (max-width: 860px) {
+  .xp-axis-row, .xp-row { grid-template-columns: 1fr; }
+  .xp-axis-lead { display: none; }
+  .xp-track { margin-top: 0.45rem; }
+  .xp-when { margin-top: 0.2rem; }
+}
+
+@media print {
+  .xp-row { break-inside: avoid; }
+  .xp-node { background: #fff !important; border: 1px solid #ccc !important; }
+  .xp-track::after, .xp-now::before { display: none; }
 }
 
 /* ── SITE FOOTER ────────────────────────────────────────── */
@@ -2716,10 +2903,14 @@ table.tbl td.key { color: var(--text); font-weight: 500; }
 table.tbl td.num { font-family: 'Geist Mono', monospace; color: var(--text); white-space: nowrap; }
 
 /* The "I built it and said no" callout. */
+/* Spans the column like the table and the figures above it. A 760px cap used
+   to leave it stranded under a full-width table, reading as a block that had
+   failed to lay out rather than a deliberate callout. The line length is held
+   on the text instead, at the same 74ch the section's body copy uses. */
 .refusal {
   background: linear-gradient(180deg, rgba(var(--accent-rgb),0.05), rgba(var(--accent-rgb),0.015));
   border: 1px solid var(--accent-dim); border-radius: 6px;
-  padding: 1rem 1.15rem; margin: 1.1rem 0; max-width: 760px;
+  padding: 1rem 1.15rem; margin: 1.1rem 0;
 }
 .refusal .k {
   font-family: 'Geist Mono', monospace; font-size: 0.6rem; color: var(--accent);
@@ -2731,12 +2922,31 @@ table.tbl td.num { font-family: 'Geist Mono', monospace; color: var(--text); whi
 }
 .refusal p {
   font-size: 0.81rem; color: var(--text-mid); line-height: 1.7;
-  margin-bottom: 0.4rem; max-width: none;
+  margin-bottom: 0.4rem; max-width: 74ch;
 }
 .refusal p:last-child { margin-bottom: 0; }
 .refusal .because {
   font-size: 0.76rem; color: var(--accent); padding-top: 0.5rem;
   border-top: 1px solid rgba(var(--accent-rgb),0.18); margin-top: 0.6rem;
+}
+
+/* On a wide column the argument reads down the left and the conclusion sits
+   beside it, so the callout fills the width it spans instead of leaving half
+   the box empty. The rule between them turns from a top border into a left
+   one. Same breakpoint as the figure pairs above, for one consistent switch. */
+@media (min-width: 1100px) {
+  .refusal {
+    display: grid;
+    grid-template-columns: minmax(0, 74ch) 1fr;
+    column-gap: 1.5rem;
+    align-items: center;
+  }
+  .refusal .because {
+    margin-top: 0; padding-top: 0;
+    padding-left: 1.5rem;
+    border-top: none;
+    border-left: 1px solid rgba(var(--accent-rgb),0.18);
+  }
 }
 
 .dsp-system figure {
@@ -2746,6 +2956,42 @@ table.tbl td.num { font-family: 'Geist Mono', monospace; color: var(--text); whi
 /* Labels are absolute px inside the viewBox, so an unbounded figure scales
    9px mono type past 17px on a wide column. */
 .dsp-system figure svg { display: block; width: 100%; max-width: 560px; height: auto; margin: 0 auto; }
+
+/* Build footage, paired with the diagram it belongs to. Same 560px cap as the
+   SVG so the two boxes match, and a fixed 16:9 frame so the figure reserves its
+   height before the file decodes and the section below it never jumps.
+   object-fit keeps a source that is slightly off 16:9 filling the frame instead
+   of letterboxing into the surface colour. */
+.dsp-system figure.dsp-clip video {
+  display: block;
+  width: 100%;
+  max-width: 560px;
+  aspect-ratio: 16 / 9;
+  margin: 0 auto;
+  object-fit: cover;
+  background: var(--surface-hover);
+  border: 1px solid var(--border-soft);
+  border-radius: 4px;
+}
+
+/* Diagram beside its footage. The pair only splits once each half can still
+   give the SVG ~480px: its labels are absolute px inside a 420-wide viewBox, so
+   a narrower column renders 9px mono below its authored size. Below the
+   breakpoint the two figures simply stack, which is the layout they had. */
+@media (min-width: 1100px) {
+  .dsp-figpair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    align-items: stretch;
+  }
+  .dsp-figpair > figure { margin: 1.1rem 0; }
+  /* Both media get the clip's 16:9 box so the two captions start on the same
+     line. The SVG keeps its own viewBox ratio and simply centres inside the
+     taller frame — preserveAspectRatio does that for free, so the drawing and
+     its 9px labels render at exactly the size they did stacked. */
+  .dsp-figpair > figure > svg { aspect-ratio: 16 / 9; }
+}
 .dsp-system figcaption {
   font-size: 0.74rem; color: var(--text-dim); line-height: 1.6;
   margin-top: 0.85rem; padding-top: 0.7rem; border-top: 1px solid var(--border-soft);

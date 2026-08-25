@@ -51,6 +51,23 @@
   "url": "https://www.jhorro.com",
   "email": "mailto:jho@jhorro.com",
   "jobTitle": "Game Designer",
+  "worksFor": {
+    "@type": "Organization",
+    "name": "Jhorro Productions",
+    "url": "https://www.jhorro.com/productions"
+  },
+  "alumniOf": [
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "Pontifícia Universidade Católica de São Paulo",
+      "description": "Bachelor's degree, Digital Games, 2020-2024"
+    },
+    {
+      "@type": "CollegeOrUniversity",
+      "name": "Universidade de São Paulo",
+      "description": "Statistics, 2017-2019"
+    }
+  ],
   "description": "Data-driven systems & gameplay designer. 5+ years shipping titles across mobile, PC, and web.",
   "sameAs": [
     "https://linkedin.com/in/jhonnatanbarbosa",
@@ -98,6 +115,39 @@
   <symbol id="flag-ja" viewBox="0 0 20 15">
     <rect width="20" height="15" fill="#fff"/>
     <circle cx="10" cy="7.5" r="4.1" fill="#bc002d"/>
+  </symbol>
+</defs></svg>
+
+<!-- Role/education glyphs for the Experience rail. Same technique as the flag
+     sprite above: drawn once as symbols, referenced with <use>, so an icon
+     swap is a single href change. -->
+<svg class="xp-sprite" aria-hidden="true" focusable="false"><defs>
+  <symbol id="ico-pad" viewBox="0 0 24 24">
+    <path d="M7.5 8.5h9a4 4 0 0 1 3.9 3.1l.8 3.6a2.4 2.4 0 0 1-4.2 2L15.4 15.5H8.6l-1.6 1.7a2.4 2.4 0 0 1-4.2-2l.8-3.6a4 4 0 0 1 3.9-3.1Z"/>
+    <path d="M7 11v2.2M5.9 12.1h2.2"/>
+    <path d="M15.9 11.6h.01M17.9 13.2h.01"/>
+  </symbol>
+  <symbol id="ico-chip" viewBox="0 0 24 24">
+    <rect x="7" y="7" width="10" height="10" rx="1.6"/>
+    <rect x="10.4" y="10.4" width="3.2" height="3.2" rx="0.6"/>
+    <path d="M10 7V4M14 7V4M10 20v-3M14 20v-3M7 10H4M7 14H4M20 10h-3M20 14h-3"/>
+  </symbol>
+  <symbol id="ico-board" viewBox="0 0 24 24">
+    <rect x="3" y="4" width="18" height="12" rx="1.6"/>
+    <path d="M12 16v4M8.5 20h7M6.5 8h7M6.5 11h4.5"/>
+  </symbol>
+  <symbol id="ico-cap" viewBox="0 0 24 24">
+    <path d="M12 4 2.5 8.6 12 13.2l9.5-4.6L12 4Z"/>
+    <path d="M6.5 10.9v4.3c0 1.6 2.5 2.9 5.5 2.9s5.5-1.3 5.5-2.9v-4.3"/>
+    <path d="M21.5 8.6v5.2"/>
+  </symbol>
+  <symbol id="ico-curve" viewBox="0 0 24 24">
+    <path d="M2.5 18.5h19"/>
+    <path d="M3 18c3.4 0 3.4-11.5 9-11.5S17.6 18 21 18"/>
+    <path d="M12 18v-3"/>
+  </symbol>
+  <symbol id="ico-star" viewBox="0 0 24 24">
+    <path d="M12 3.6 14 9.1l5.8.3-4.5 3.6 1.5 5.6L12 15.5l-4.8 3.1 1.5-5.6L4.2 9.4 10 9.1Z"/>
   </symbol>
 </defs></svg>
 
@@ -184,7 +234,7 @@
     <div class="project-card reveal is-flagship" id="dead-saints-parade">
       <div class="project-thumb">
         <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Dead Saints Parade third-person stealth immersive sim gameplay">
-          <source src="media/project4141UpdateApril.mp4" type="video/mp4">
+          <source src="media/dsp_updateAug.mp4" type="video/mp4">
           <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
         </video>
       </div>
@@ -416,12 +466,12 @@
 
     <div class="dsp-systems reveal">
       <p class="dsp-intro" data-i18n="dsp_intro">
-        Immersive sims earn their reputation through systemic depth, and one developer cannot afford breadth. Every system has to justify its slot, and "it would be cool" is not a justification.
+        Immersive sims are judged on systemic depth, and I am one person. Every system has to earn its slot, and "it would be cool" is not a reason.
       </p>
 
       <h3 class="dsp-rule-h" data-i18n="dsp_rule_h">Four pillars, and what happens when they fight</h3>
       <p data-i18n="dsp_rule_desc">
-        Most projects list pillars. Fewer say what happens when two of them want opposite things. That second part is where the pillars actually do work, because without it a pillar list is decoration you can argue your way around.
+        Most projects list pillars. Fewer say what happens when two of them want opposite things, which is the part I actually needed.
       </p>
 
       <div class="prio">
@@ -432,24 +482,24 @@
       </div>
 
       <p data-i18n-html="dsp_read_p">
-        Read as <strong>1 &gt; 2 &gt; 4 &gt; 3</strong>. The numbering is the pillars' own; the order above is what they beat. Vulnerability wins outright, so any feature that lets the player shortcut stealth is cut regardless of how good it feels in isolation. Information outranks exploration convenience, which is why a long detour to reach a document is preferred over auto-collecting it.
+        Read as <strong>1 &gt; 2 &gt; 4 &gt; 3</strong>. The numbering is the pillars' own; the order above is what they beat.
       </p>
 
       <div class="dsp-cuts">
         <div class="dsp-cut">
           <div class="k" data-i18n="dsp_cut1_k">Cut by rule 1</div>
           <h4 data-i18n="dsp_cut1_h">Bullet-time combat</h4>
-          <p data-i18n="dsp_cut1_p">Fun, genre-adjacent, and a direct shortcut past the stealth layer. Cut without debate, because Vulnerability outranks everything it would have served.</p>
+          <p data-i18n="dsp_cut1_p">It was fun, and it went straight past the stealth layer. I cut it without much debate.</p>
         </div>
         <div class="dsp-cut">
           <div class="k" data-i18n="dsp_cut2_k">Cut by rule 4 &gt; 3</div>
           <h4 data-i18n="dsp_cut2_h">Auto-collect on documents</h4>
-          <p data-i18n="dsp_cut2_p">Would have smoothed exploration and cost the game its central act, which is going to the thing and reading it. Exploration convenience yields to information.</p>
+          <p data-i18n="dsp_cut2_p">It would have smoothed exploration and cost the game its central act, which is walking to the document and reading it.</p>
         </div>
       </div>
 
       <p class="dsp-rule-note" data-i18n="dsp_rule_note">
-        Both systems below are downstream of that ordering. The corner behaviour in the cover system is the clearest case: a feature that was built, played, and then cut because a higher pillar outranked it.
+        Both systems below come out of that order.
       </p>
 
       <!-- System 01 -->
@@ -457,55 +507,72 @@
         <span class="dsp-system-label" data-i18n="dsp_s1_label">System 01 · Complete</span>
         <h3 data-i18n="dsp_s1_h">Cover: designing a refusal</h3>
         <p data-i18n="dsp_s1_p1">
-          Cover is the primary defensive tool, and the part I would point at first is the feature it deliberately does not have.
+          Cover is the main defensive tool and it has no button. Walking into a wall puts you in cover after 4 frames of contact. I kept a button press out of it because those are the moments when a player has the least attention to spare.
         </p>
         <p data-i18n="dsp_s1_p2">
-          Walking into a wall puts the player in cover after 4 frames of sustained contact, about 66 ms at 60 fps. There is no cover button, because the point is to remove a button press from the moment the player's attention is most expensive. Camera-relative input is then projected onto the wall's tangent, so a wall facing the camera slides with A/D and a wall on the player's left slides with W/S. Any arbitrary angle works without branches or per-wall authoring.
+          Camera-relative input projects onto the wall's tangent, so a wall facing the camera slides with A/D and a wall on your left slides with W/S. Any angle works without per-wall authoring.
         </p>
 
-        <figure>
-          <svg viewBox="0 14 420 158" role="img" data-i18n-aria="svg_cover_alt" aria-label="Top-down diagram of the cover detection fan: five rays at 0, plus and minus 30, and plus and minus 60 degrees from player forward, cast 0.7 metres toward a wall, with the player held at a 0.42 metre standoff.">
-            <!-- The greys here are literals, like the cone hues below: the wall
-                 outline and the range arc need to sit a step lighter than
-                 --border, and no token lives in that range. -->
-            <rect x="50" y="44" width="320" height="12" fill="var(--border)" stroke="#3a3a42" stroke-width="1"/>
-            <text x="52" y="36" class="svg-label b" data-i18n="svg_wall">WALL</text>
+        <!-- Diagram and build footage are one unit: the diagram states the rule,
+             the clip is the rule running. Side by side above 1100px, stacked below
+             that, where a half-column would shrink the SVG's 9px labels. -->
+        <div class="dsp-figpair">
+          <figure>
+            <svg viewBox="0 14 420 158" role="img" data-i18n-aria="svg_cover_alt" aria-label="Top-down diagram of the cover detection fan: five rays at 0, plus and minus 30, and plus and minus 60 degrees from player forward, cast 0.7 metres toward a wall, with the player held at a 0.42 metre standoff.">
+              <!-- The greys here are literals, like the cone hues below: the wall
+                   outline and the range arc need to sit a step lighter than
+                   --border, and no token lives in that range. -->
+              <rect x="50" y="44" width="320" height="12" fill="var(--border)" stroke="#3a3a42" stroke-width="1"/>
+              <text x="52" y="36" class="svg-label b" data-i18n="svg_wall">WALL</text>
 
-            <g stroke-width="1.2" fill="none">
-              <line x1="210" y1="98" x2="210" y2="28" stroke="#c4a86a" opacity="0.85"/>
-              <line x1="210" y1="98" x2="245" y2="37.4" stroke="#c4a86a" opacity="0.85"/>
-              <line x1="210" y1="98" x2="175" y2="37.4" stroke="#c4a86a" opacity="0.85"/>
-              <line x1="210" y1="98" x2="270.6" y2="63" stroke="#7e8fa8" opacity="0.55" stroke-dasharray="3 3"/>
-              <line x1="210" y1="98" x2="149.4" y2="63" stroke="#7e8fa8" opacity="0.55" stroke-dasharray="3 3"/>
-            </g>
+              <g stroke-width="1.2" fill="none">
+                <line x1="210" y1="98" x2="210" y2="28" stroke="#c4a86a" opacity="0.85"/>
+                <line x1="210" y1="98" x2="245" y2="37.4" stroke="#c4a86a" opacity="0.85"/>
+                <line x1="210" y1="98" x2="175" y2="37.4" stroke="#c4a86a" opacity="0.85"/>
+                <line x1="210" y1="98" x2="270.6" y2="63" stroke="#7e8fa8" opacity="0.55" stroke-dasharray="3 3"/>
+                <line x1="210" y1="98" x2="149.4" y2="63" stroke="#7e8fa8" opacity="0.55" stroke-dasharray="3 3"/>
+              </g>
 
-            <text x="214" y="26" class="svg-label hi">0°</text>
-            <text x="249" y="34" class="svg-label hi">+30°</text>
-            <text x="152" y="34" class="svg-label hi">−30°</text>
-            <text x="275" y="62" class="svg-label">+60°</text>
-            <text x="108" y="62" class="svg-label">−60°</text>
+              <text x="214" y="26" class="svg-label hi">0°</text>
+              <text x="249" y="34" class="svg-label hi">+30°</text>
+              <text x="152" y="34" class="svg-label hi">−30°</text>
+              <text x="275" y="62" class="svg-label">+60°</text>
+              <text x="108" y="62" class="svg-label">−60°</text>
 
-            <line x1="140" y1="56" x2="140" y2="98" stroke="#6e6d68" stroke-width="1" stroke-dasharray="2 2"/>
-            <line x1="136" y1="56" x2="144" y2="56" stroke="#6e6d68" stroke-width="1"/>
-            <line x1="136" y1="98" x2="144" y2="98" stroke="#6e6d68" stroke-width="1"/>
-            <text x="86" y="82" class="svg-label b">0.42 m</text>
+              <line x1="140" y1="56" x2="140" y2="98" stroke="#6e6d68" stroke-width="1" stroke-dasharray="2 2"/>
+              <line x1="136" y1="56" x2="144" y2="56" stroke="#6e6d68" stroke-width="1"/>
+              <line x1="136" y1="98" x2="144" y2="98" stroke="#6e6d68" stroke-width="1"/>
+              <text x="86" y="82" class="svg-label b">0.42 m</text>
 
-            <circle cx="210" cy="98" r="9" fill="var(--surface)" stroke="#c4a86a" stroke-width="2"/>
-            <text x="196" y="122" class="svg-label hi" data-i18n="svg_player">PLAYER</text>
+              <circle cx="210" cy="98" r="9" fill="var(--surface)" stroke="#c4a86a" stroke-width="2"/>
+              <text x="196" y="122" class="svg-label hi" data-i18n="svg_player">PLAYER</text>
 
-            <path d="M 150 63 A 70 70 0 0 1 270.6 63" fill="none" stroke="#3a3a42" stroke-width="1" stroke-dasharray="2 3"/>
-            <text x="286" y="98" class="svg-label" data-i18n="svg_range">0.7 m range</text>
+              <path d="M 150 63 A 70 70 0 0 1 270.6 63" fill="none" stroke="#3a3a42" stroke-width="1" stroke-dasharray="2 3"/>
+              <text x="286" y="98" class="svg-label" data-i18n="svg_range">0.7 m range</text>
 
-            <g>
-              <line x1="60" y1="140" x2="130" y2="140" stroke="#7e8fa8" stroke-width="1.2"/>
-              <polygon points="130,140 124,137 124,143" fill="#7e8fa8"/>
-              <text x="60" y="158" class="svg-label b">wallTangent = Cross(CoverNormal, up)</text>
-            </g>
-          </svg>
-          <figcaption data-i18n-html="dsp_s1_cap">
-            <strong>Detection.</strong> A 5-ray fan at 0°, ±30° and ±60° from player forward, cast 0.7 m from chest height. Walls have to be vertical, so floors and ceilings are rejected. Approach angle must be under 60°, which means running parallel past a wall will not trigger cover. Once in, a magnetic standoff holds the player at 0.42 m: far enough to avoid controller penetration, close enough to read as contact.
-          </figcaption>
-        </figure>
+              <g>
+                <line x1="60" y1="140" x2="130" y2="140" stroke="#7e8fa8" stroke-width="1.2"/>
+                <polygon points="130,140 124,137 124,143" fill="#7e8fa8"/>
+                <text x="60" y="158" class="svg-label b">wallTangent = Cross(CoverNormal, up)</text>
+              </g>
+            </svg>
+            <figcaption data-i18n-html="dsp_s1_cap">
+              <strong>Detection.</strong> A 5-ray fan at 0°, ±30° and ±60°, cast 0.7 m from chest height. Approach angle has to be under 60°, so running parallel past a wall will not put you in cover.
+            </figcaption>
+          </figure>
+
+          <figure class="dsp-clip">
+            <video muted loop playsinline preload="metadata" data-lazyvideo
+                   data-i18n-aria="clip_cover_alt"
+                   aria-label="Build footage of the cover system: the player walks into a wall, snaps into cover, slides along it, and peeks around an outer corner without wrapping onto the next wall.">
+              <source src="media/dsp_coverAug.mp4" type="video/mp4">
+              <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+            </video>
+            <figcaption data-i18n-html="dsp_s1_clipcap">
+              <strong>In the build.</strong> Contact into cover, then sliding along the wall. At the outer corner the camera looks around it and the body stays where it is.
+            </figcaption>
+          </figure>
+        </div>
 
         <div class="tbl-wrap">
           <table class="tbl">
@@ -527,21 +594,23 @@
         </div>
 
         <div class="refusal">
-          <div class="k" data-i18n="dsp_ref_k">The refusal</div>
-          <h4 data-i18n="dsp_ref_h">Corners don't wrap, and that's the feature</h4>
-          <p data-i18n="dsp_ref_p1">
-            Nearly every third-person cover system lets you round an outer corner with a button. The character slides around, the camera follows, and you are on the new wall. It feels good. I built it, and it is not in the game.
-          </p>
-          <p data-i18n="dsp_ref_p2">
-            The system commits to one wall. At an outer corner the peek camera looks around it while the body stays clamped at the edge. Getting onto the next wall means pushing away from the current one and re-engaging, which is a deliberate act taken while exposed. Inside corners had the opposite problem, where the detection fan alternated between two surfaces and jittered; normal-locking keeps the player committed to the original wall.
-          </p>
+          <div class="refusal-body">
+            <div class="k" data-i18n="dsp_ref_k">The refusal</div>
+            <h4 data-i18n="dsp_ref_h">Corners don't wrap, and that's the feature</h4>
+            <p data-i18n="dsp_ref_p1">
+              Nearly every third-person cover system rounds an outer corner with a button, and it feels good. I built it, and it is not in the game.
+            </p>
+            <p data-i18n="dsp_ref_p2">
+              The system commits to one wall. Getting onto the next one means pushing away and re-engaging, which is a deliberate act taken while exposed.
+            </p>
+          </div>
           <p class="because" data-i18n="dsp_ref_because">
-            Auto-wrap glides the player blindly into space they have not looked at yet. That is a shortcut past observation, and Vulnerability outranks the comfort it would buy.
+            Auto-wrap glides you blindly into space you have not looked at yet. Vulnerability outranks the comfort it would buy.
           </p>
         </div>
 
         <p data-i18n-html="dsp_s1_cost">
-          What it costs is written down rather than discovered later. There is no cover-to-cover dash, no scripted corner turn, and no vaulting over cover. Peek saves and restores the scene camera with <code>FindObjectsByType</code>, which allocates, and single-surface tracking means genuinely complex geometry can still break it.
+          What it costs: no cover-to-cover dash, no scripted corner turn, no vaulting. Peek restores the scene camera with <code>FindObjectsByType</code>, which allocates, and single-surface tracking still breaks on complex geometry.
         </p>
       </article>
 
@@ -550,40 +619,54 @@
         <span class="dsp-system-label" data-i18n="dsp_s3_label">System 02 · Complete</span>
         <h3 data-i18n="dsp_s3_h">Perception: seeing versus noticing</h3>
         <p data-i18n="dsp_s3_p1">
-          A guard's eye is two cones, not one. That split is what produces the genre's signature moment, where the cone sweeps toward you and you freeze instead of running.
+          A guard's eye is two cones, not one. The split is what makes you freeze instead of run when one sweeps toward you.
         </p>
 
-        <figure>
-          <svg viewBox="0 75 420 185" role="img" data-i18n-aria="svg_perc_alt" aria-label="Top-down diagram of a guard's two vision cones: an inner 60 degree cone reaching 15 metres that detects any player, and an outer 120 degree cone reaching 8 metres that detects only moving players.">
-            <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="#7e8fa8" opacity="0.10"/>
-            <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="none" stroke="#7e8fa8" stroke-width="1" opacity="0.45"/>
-            <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="#c4a86a" opacity="0.12"/>
-            <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="none" stroke="#c4a86a" stroke-width="1" opacity="0.6"/>
+        <div class="dsp-figpair">
+          <figure>
+            <svg viewBox="0 75 420 185" role="img" data-i18n-aria="svg_perc_alt" aria-label="Top-down diagram of a guard's two vision cones: an inner 60 degree cone reaching 15 metres that detects any player, and an outer 120 degree cone reaching 8 metres that detects only moving players.">
+              <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="#7e8fa8" opacity="0.10"/>
+              <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="none" stroke="#7e8fa8" stroke-width="1" opacity="0.45"/>
+              <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="#c4a86a" opacity="0.12"/>
+              <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="none" stroke="#c4a86a" stroke-width="1" opacity="0.6"/>
 
-            <circle cx="210" cy="225" r="8" fill="var(--surface)" stroke="var(--text)" stroke-width="2"/>
-            <text x="210" y="246" text-anchor="middle" class="svg-label b" data-i18n="svg_guard">GUARD · eye 1.6 m</text>
+              <circle cx="210" cy="225" r="8" fill="var(--surface)" stroke="var(--text)" stroke-width="2"/>
+              <text x="210" y="246" text-anchor="middle" class="svg-label b" data-i18n="svg_guard">GUARD · eye 1.6 m</text>
 
-            <text x="292" y="100" class="svg-label hi" data-i18n="svg_inner">INNER 60° / 15 m</text>
-            <text x="292" y="112" class="svg-label" data-i18n="svg_inner_sub">detects any player</text>
-            <text x="286" y="176" class="svg-label b" data-i18n="svg_outer">OUTER 120° / 8 m</text>
-            <text x="286" y="188" class="svg-label" data-i18n="svg_outer_sub">moving players only</text>
+              <text x="292" y="100" class="svg-label hi" data-i18n="svg_inner">INNER 60° / 15 m</text>
+              <text x="292" y="112" class="svg-label" data-i18n="svg_inner_sub">detects any player</text>
+              <text x="286" y="176" class="svg-label b" data-i18n="svg_outer">OUTER 120° / 8 m</text>
+              <text x="286" y="188" class="svg-label" data-i18n="svg_outer_sub">moving players only</text>
 
-            <circle cx="180" cy="196" r="5" fill="#7aab8b"/>
-            <text x="86" y="199" class="svg-label" style="fill:#7aab8b" data-i18n="svg_still">STILL → unseen</text>
+              <circle cx="180" cy="196" r="5" fill="#7aab8b"/>
+              <text x="86" y="199" class="svg-label" style="fill:#7aab8b" data-i18n="svg_still">STILL → unseen</text>
 
-            <circle cx="240" cy="130" r="5" fill="#c4736e"/>
-            <text x="250" y="133" class="svg-label" style="fill:#c4736e" data-i18n="svg_moving">MOVING → seen</text>
-          </svg>
-          <figcaption data-i18n-html="dsp_s3_cap">
-            <strong>Two zones.</strong> The inner cone detects a player whether or not they are moving. The outer cone only registers movement above a threshold, so a stationary player in peripheral vision is invisible, and even when it does fire, peripheral detection fills suspicion at 40% of the normal rate. It is a vague sense, not a sighting. Once a cone check passes, 1 to 3 raycasts to centre-mass, head and feet confirm line of sight, and any clear ray counts, which stops a head poking over cover from being a false negative.
-          </figcaption>
-        </figure>
+              <circle cx="240" cy="130" r="5" fill="#c4736e"/>
+              <text x="250" y="133" class="svg-label" style="fill:#c4736e" data-i18n="svg_moving">MOVING → seen</text>
+            </svg>
+            <figcaption data-i18n-html="dsp_s3_cap">
+              <strong>Two zones.</strong> The inner cone sees you whether you move or not. The outer one only registers movement, and at 40% of the normal rate, so it reads as a vague sense rather than a sighting. After a cone check passes, 1 to 3 rays to centre-mass, head and feet confirm line of sight.
+            </figcaption>
+          </figure>
+
+          <figure class="dsp-clip">
+            <video muted loop playsinline preload="metadata" data-lazyvideo
+                   data-i18n-aria="clip_perc_alt"
+                   aria-label="Build footage of the guard perception system: a guard sweeps past a player standing still in peripheral vision without reacting, then detects the same player once they move into the inner cone.">
+              <source src="media/dsp_perceptionAug.mp4" type="video/mp4">
+              <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+            </video>
+            <figcaption data-i18n-html="dsp_s3_clipcap">
+              <strong>In the build.</strong> Standing still in the outer cone reads as nothing, and moving there fills suspicion slowly. The inner cone takes the sighting outright.
+            </figcaption>
+          </figure>
+        </div>
 
         <p data-i18n="dsp_s3_p2">
-          Shadow is a hard gate rather than a modifier. Below a light level of 0.2 the guard cannot see the player at all, at any range. Above it, light is remapped to 0 to 1 and raised to an exponent of 2.0, so 50% light gives 25% detection speed. The quadratic is doing real work: it makes the difference between dim and dark feel like a cliff rather than a slope, which is what makes extinguishing a single candle a tactical act.
+          Shadow is a gate, not a modifier. Below a light level of 0.2 the guard cannot see you at any range. Above it the curve is quadratic, so 50% light gives 25% detection speed. That makes the step from dim to dark much bigger than the step from bright to dim, which is why putting out one candle is worth the time.
         </p>
         <p data-i18n-html="dsp_s3_p3">
-          Distance, angle, light, movement and posture all multiply into one <code>combinedMult</code>, which maps linearly onto a fill time between 0.5 s at worst and 5 s at best. Every threshold lives on a <code>GuardData</code> ScriptableObject, so a nervous guard in the catacombs is an asset rather than a subclass.
+          Distance, angle, light, movement and posture multiply into one <code>combinedMult</code>, mapped onto a fill time from 0.5 s to 5 s. Every threshold lives on a <code>GuardData</code> ScriptableObject, so a nervous guard is an asset, not a subclass.
         </p>
 
         <div class="tbl-wrap">
@@ -1036,42 +1119,44 @@
           <img width="223" height="320" src="media/thumb-jhonnatan2.webp" alt="Jhonnatan Barbosa portrait photo" loading="lazy" decoding="async">
       </div>
       <div class="about-body">
-        <div class="about-block">
+        <div class="about-block about-lede">
           <div class="about-label" data-i18n="about_bg_label">Background</div>
           <p data-i18n="about_bg_p">
-            Game designer with a statistics background. I build first and iterate constantly, and I try to settle design arguments with evidence rather than taste, whether the problem is economy tuning, mechanics, levels, or narrative. Over 5 years in game design across 2 shipped mobile titles, a graduation thesis, and more than 10 student and jam projects. Based in São Paulo, Brazil.
+            Game designer with a statistics background. I build first and iterate constantly, and I'd rather settle a design argument with evidence than with taste, whether the problem is economy tuning, mechanics, levels, or narrative. Over 5 years in game design: 2 shipped mobile titles, a graduation thesis, and more than 10 student and jam projects. Based in São Paulo, Brazil.
           </p>
         </div>
 
         <div class="design-philosophy">
           <strong data-i18n="about_phil_label">Design philosophy</strong>
-          <span data-i18n="about_phil_p">I design systems players feel they discovered on their own, then use data to check that they actually can. When players feel lost, that isn't a badge of honor. It means the invisible guidance failed somewhere. Every design is a hypothesis until you ship it and look at what people actually did with it.</span>
+          <span data-i18n="about_phil_p">I design systems players feel they discovered on their own, then use data to check whether they actually can. Players getting lost is not a sign that the design is deep; it means the invisible guidance failed somewhere. Until a design ships and I can see what people did with it, it's still a guess.</span>
         </div>
 
-        <div class="about-block">
-          <div class="about-label" data-i18n="about_teach_label">Teaching</div>
-          <p data-i18n="about_teach_p">
-            Alongside shipping games, I teach game development and design to kids and teens. Over 300 students across three schools, content adapted for ages 8 through 17. It's the best training I've found for studio communication: if a 10-year-old can follow your explanation of a state machine, your spec will probably survive a cross-discipline review. It also means I can scope a lesson the way I scope a milestone. Break a complex system into deliverable chunks, check whether people actually understood, adjust before moving on.
+        <div class="about-cols">
+          <div class="about-block">
+            <div class="about-label" data-i18n="about_teach_label">Teaching</div>
+            <p data-i18n="about_teach_p">
+              Alongside shipping games, I teach game development and design to kids and teens. Over 300 students across three schools, with the material adapted for ages 8 through 17. It's the best training I've found for studio communication: if a 10-year-old can follow your explanation of a state machine, your spec will probably survive a cross-discipline review. Scoping a lesson also turns out to work like scoping a milestone. I cut the system into pieces small enough to deliver, check whether anyone actually followed it, and fix that before moving on.
+            </p>
+          </div>
+
+          <div class="about-block">
+            <div class="about-label" data-i18n="about_range_label">Design range</div>
+            <p data-i18n="about_range_p">
+              My core is systems and economy design, but I work across disciplines regularly. The Genshin Impact quest doc is mostly narrative and quest structure, Bagre Noturno puts stealth mechanics inside an alternate-reality story, and in Cyberpunk City the lore feeds back into the progression systems instead of sitting beside them.
+            </p>
+          </div>
+
+          <div class="about-block">
+            <div class="about-label" data-i18n="about_inf_label">Influences</div>
+            <p data-i18n="about_inf_p">
+            A lot of the approach comes from studying how Valve teaches Portal's mechanics through play, and how Half-Life guides players with lighting and architecture instead of waypoints. That kind of invisible design only holds up if you playtest obsessively. Kojima shows up in the ambition: trust players with complex systems and real choices. Cutting systems is what buys the time to iterate on the ones left standing, which is why Guardian's Falls and Dead Saints Parade both got better after I narrowed them.
           </p>
         </div>
 
-        <div class="about-block">
-          <div class="about-label" data-i18n="about_range_label">Design range</div>
-          <p data-i18n="about_range_p">
-            My core is systems and economy design, but I work across disciplines regularly. The Genshin Impact quest doc covers narrative and quest structure. Bagre Noturno combines stealth mechanics with alternate-reality storytelling. Cyberpunk City's atmospheric lore ties world-building back into the progression systems.
-          </p>
         </div>
-
-        <div class="about-block">
-          <div class="about-label" data-i18n="about_inf_label">Influences</div>
-          <p data-i18n="about_inf_p">
-            A lot of the approach comes from studying how Valve teaches Portal's mechanics through play, and how Half-Life guides players with lighting and architecture instead of waypoints. That kind of invisible design only holds up if you playtest obsessively. Kojima's influence shows up in the ambition: trust players with complex systems and meaningful choices. That sits next to the scope cuts elsewhere on this page more comfortably than it looks, because depth and breadth are different axes. Cutting systems is what buys the time to iterate on the ones left standing, and both Guardian's Falls and Dead Saints Parade got deeper by getting narrower.
-          </p>
-        </div>
-
         <div class="looking-for">
           <strong data-i18n="about_looking_label">Looking for</strong>
-          <span data-i18n="about_looking_p">A systems or gameplay design role where I can combine hands-on design work with data analysis to shape player behavior. Ideally at a mid-size to AAA studio working on PC or console titles. Open to remote or relocation.</span>
+          <span data-i18n="about_looking_p">A systems or gameplay design role where I can pair hands-on design work with data analysis to shape player behavior. Ideally a mid-size to AAA studio working on PC or console titles. Open to remote or relocation.</span>
         </div>
 
         <br>
@@ -1090,6 +1175,157 @@
       </div>
     </div>
 
+  </section>
+
+  <!-- EXPERIENCE & EDUCATION -->
+  <!-- The date column is a span bar on a shared 2017-2028 axis rather than a
+       plain string. Every track is the same width and scale, so the overlaps
+       read straight down the column. Bar geometry is inline left/width from
+       pct(year) = (year - 2017) / 11 * 100, so a date edit is two numbers.
+       Tracks are aria-hidden: the .xp-when line below each one carries the
+       same dates as text, which is the version worth reading aloud. -->
+  <section id="experience">
+    <div class="section-header">
+      <h2 class="section-title" data-i18n="sec_experience">Experience &amp; Education</h2>
+      <span class="section-aside" data-i18n="sec_experience_aside">Full history in the CV (PDF)</span>
+    </div>
+
+    <div class="xp-rail reveal">
+
+      <div class="xp-axis-row">
+        <span class="xp-axis-lead" data-i18n="xp_axis_lead">Timeline</span>
+        <div class="xp-axis" aria-hidden="true">
+          <b style="left:0">2017</b>
+          <b style="left:18.2%">'19</b>
+          <b style="left:36.4%">'21</b>
+          <b style="left:54.5%">'23</b>
+          <b style="left:72.7%">'25</b>
+          <b class="xp-axis-now" style="left:87.7%" data-i18n="xp_now">now</b>
+        </div>
+      </div>
+
+      <div class="xp-group" data-i18n="xp_grp_exp">Experience</div>
+
+      <div class="xp-row">
+        <span class="xp-node"><svg class="xp-icon" aria-hidden="true" focusable="false"><use href="#ico-pad"/></svg></span>
+        <div>
+          <div class="xp-head">
+            <span class="xp-role" data-i18n="xp1_role">Founder &amp; Game Designer</span>
+            <span class="xp-org">Jhorro Productions</span>
+          </div>
+          <p class="xp-desc" data-i18n="xp1_desc">Dead Saints Parade, plus two mobile titles already shipped. I handle the design, the code, the analytics and the release.</p>
+        </div>
+        <div>
+          <div class="xp-track" aria-hidden="true"><span class="xp-bar is-design is-open" style="left:68.2%;width:31.8%"></span></div>
+          <div class="xp-when" data-i18n-html="xp1_when">Jul 2024 — <span class="xp-now">now</span></div>
+        </div>
+      </div>
+
+      <div class="xp-row">
+        <span class="xp-node"><svg class="xp-icon" aria-hidden="true" focusable="false"><use href="#ico-chip"/></svg></span>
+        <div>
+          <div class="xp-head">
+            <span class="xp-role" data-i18n="xp2_role">Automation Software Developer</span>
+            <span class="xp-org" data-i18n="xp2_org">Electrolux Group (contract)</span>
+          </div>
+          <p class="xp-desc" data-i18n="xp2_desc">PLC and HMI work in Siemens TIA Portal. Most of it is data layer work: process telemetry, machine state, and operator dashboards.</p>
+        </div>
+        <div>
+          <div class="xp-track" aria-hidden="true"><span class="xp-bar is-side is-open" style="left:85%;width:15%"></span></div>
+          <div class="xp-when" data-i18n-html="xp2_when">May 2026 — <span class="xp-now">now</span></div>
+        </div>
+      </div>
+
+      <div class="xp-row">
+        <span class="xp-node"><svg class="xp-icon" aria-hidden="true" focusable="false"><use href="#ico-pad"/></svg></span>
+        <div>
+          <div class="xp-head">
+            <span class="xp-role" data-i18n="xp3_role">Game Designer</span>
+            <span class="xp-org">FoxTales Studios</span>
+          </div>
+          <p class="xp-desc" data-i18n="xp3_desc">Student studio at PUC-SP. 10+ titles on PC, Android and web with teams of 5 to 7.</p>
+        </div>
+        <div>
+          <div class="xp-track" aria-hidden="true"><span class="xp-bar is-design" style="left:29.1%;width:27.7%"></span></div>
+          <div class="xp-when" data-i18n="xp3_when">Mar 2020 — Mar 2023</div>
+        </div>
+      </div>
+
+      <div class="xp-row">
+        <span class="xp-node"><svg class="xp-icon" aria-hidden="true" focusable="false"><use href="#ico-board"/></svg></span>
+        <div>
+          <div class="xp-head">
+            <span class="xp-role" data-i18n="xp4_role">Instructor, Game Dev &amp; Robotics</span>
+            <span class="xp-org">Yadaa / SuperGeeks / Engineering For Kids</span>
+          </div>
+          <p class="xp-desc" data-i18n="xp4_desc">300+ students, ages 8 to 17, across three schools. I also wrote the Godot course from scratch.</p>
+        </div>
+        <div>
+          <div class="xp-track" aria-hidden="true"><span class="xp-bar is-side" style="left:56.8%;width:28.6%"></span></div>
+          <div class="xp-when" data-i18n="xp4_when">Apr 2023 — May 2026</div>
+        </div>
+      </div>
+
+      <div class="xp-group" data-i18n="xp_grp_edu">Education</div>
+
+      <div class="xp-row">
+        <span class="xp-node"><svg class="xp-icon" aria-hidden="true" focusable="false"><use href="#ico-cap"/></svg></span>
+        <div>
+          <div class="xp-head">
+            <span class="xp-role" data-i18n="xp5_role">B.A. Digital Games</span>
+            <span class="xp-org">PUC-SP</span>
+          </div>
+          <p class="xp-desc" data-i18n="xp5_desc">Unity and Unreal, 3D art, scripting, sound design, QA.</p>
+        </div>
+        <div>
+          <div class="xp-track" aria-hidden="true"><span class="xp-bar is-edu" style="left:28.2%;width:44.5%"></span></div>
+          <div class="xp-when" data-i18n="xp5_when">2020 — 2024</div>
+        </div>
+      </div>
+
+      <div class="xp-row">
+        <span class="xp-node"><svg class="xp-icon" aria-hidden="true" focusable="false"><use href="#ico-curve"/></svg></span>
+        <div>
+          <div class="xp-head">
+            <span class="xp-role" data-i18n="xp6_role">B.Sc. Statistics</span>
+            <span class="xp-org">USP · ICMC</span>
+          </div>
+          <p class="xp-desc" data-i18n="xp6_desc">3 of 4 years, then I transferred to Digital Games. Probability, data analysis, Python and R, which is what the economy models on this page are built on.</p>
+        </div>
+        <div>
+          <div class="xp-track" aria-hidden="true"><span class="xp-bar is-edu" style="left:0.9%;width:26.4%"></span></div>
+          <div class="xp-when" data-i18n="xp6_when">2017 — 2019</div>
+        </div>
+      </div>
+
+      <div class="xp-group" data-i18n="xp_grp_vol">Volunteering</div>
+
+      <div class="xp-row">
+        <span class="xp-node"><svg class="xp-icon" aria-hidden="true" focusable="false"><use href="#ico-star"/></svg></span>
+        <div>
+          <div class="xp-head">
+            <span class="xp-role" data-i18n="xp7_role">Instructor</span>
+            <span class="xp-org" data-i18n="xp7_org">Technovation Summer School for Girls, ICMC/USP</span>
+          </div>
+          <p class="xp-desc" data-i18n="xp7_desc">Mobile app programming mini-course for young women entering STEM.</p>
+        </div>
+        <div>
+          <div class="xp-track" aria-hidden="true">
+            <span class="xp-dot" style="left:74.5%"></span>
+            <span class="xp-dot" style="left:83.6%"></span>
+          </div>
+          <div class="xp-when" data-i18n="xp7_when">2025 &amp; 2026</div>
+        </div>
+      </div>
+
+      <div class="xp-legend">
+        <span><i class="lg-design"></i><span data-i18n="xp_lg_design">Game design</span></span>
+        <span><i class="lg-edu"></i><span data-i18n="xp_lg_edu">Education</span></span>
+        <span><i class="lg-side"></i><span data-i18n="xp_lg_side">Teaching &amp; engineering</span></span>
+        <span data-i18n="xp_lg_open">Dashed edge = ongoing</span>
+      </div>
+
+    </div>
   </section>
 
   <!-- CONTACT -->

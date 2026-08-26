@@ -2828,7 +2828,13 @@ footer {
   margin-top: 4.5rem;
   padding-top: 1.7rem;
   border-top: 1px solid var(--border);
-  align-items: flex-end;
+}
+/* Sits the aside on the title's bottom edge rather than its baseline — but only
+   while the header is still a row. At 720px .section-header stacks, and flex-end
+   on a column flips to the cross axis and right-aligns the whole heading against
+   an otherwise left-aligned page. */
+@media (min-width: 721px) {
+  .section-header.is-major { align-items: flex-end; }
 }
 .section-heading-group { display: flex; flex-direction: column; gap: 0.35rem; }
 .section-eyebrow {
@@ -3003,35 +3009,59 @@ table.tbl td.num { font-family: 'Geist Mono', monospace; color: var(--text); whi
   }
 }
 
+/* ── Build figures ──────────────────────────────────────────────
+   The drawing and the footage are one exhibit, so both figures are built the
+   same way: a media band running edge to edge, then a caption plate under a
+   hairline. Framing the clip the way .project-thumb frames a thumbnail —
+   flush to the card — drops the second border and the dead gutters that came
+   from floating a fixed-width video inside a padded box. */
 .dsp-system figure {
-  background: var(--surface); border: 1px solid var(--border);
-  border-radius: 6px; padding: 1.1rem 1rem 0.85rem; margin: 1.1rem 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;                 /* clips the media to the corner radius */
+  margin: 1.1rem 0;
+  /* Stacked, the card hugs its media instead of stretching to the full column
+     and leaving a 560px drawing marooned in the middle of a 1000px box. The cap
+     is the prose measure above it, so the figure's left edge and its width both
+     line up with the paragraph it illustrates. */
+  max-width: 700px;
 }
-/* Labels are absolute px inside the viewBox, so an unbounded figure scales
-   9px mono type past 17px on a wide column. */
-.dsp-system figure svg { display: block; width: 100%; max-width: 560px; height: auto; margin: 0 auto; }
 
-/* Build footage, paired with the diagram it belongs to. Same 560px cap as the
-   SVG so the two boxes match, and a fixed 16:9 frame so the figure reserves its
-   height before the file decodes and the section below it never jumps.
-   object-fit keeps a source that is slightly off 16:9 filling the frame instead
-   of letterboxing into the surface colour. */
+/* Ground for the drawing. It is a measured top-down plan, so it sits on graph
+   paper — a finer, squared echo of the page's own dot grid. */
+.dsp-plate {
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.15rem 1rem;
+  background-image:
+    linear-gradient(rgba(var(--accent-rgb),0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(var(--accent-rgb),0.035) 1px, transparent 1px);
+  background-size: 26px 26px;
+  background-position: center center;
+}
+/* Labels are absolute px inside the viewBox, so the drawing needs a ceiling or
+   9px mono scales past 17px. The figure's own max-width is that ceiling now:
+   the widest column this pair ever gets is ~654px, which lands the labels at
+   about 13px. */
+.dsp-system figure svg { display: block; width: 100%; height: auto; }
+
+/* Build footage, flush to the card on three sides. 7/4 is the clips' own ratio
+   (864x494 and 810x460), so the frame reserves the right height before the file
+   decodes — the section below never jumps — and cover crops nothing worth
+   seeing. The mat is darker than the surface so a source that is off ratio
+   letterboxes into black instead of into the card colour. */
 .dsp-system figure.dsp-clip video {
   display: block;
   width: 100%;
-  max-width: 560px;
-  aspect-ratio: 16 / 9;
-  margin: 0 auto;
+  aspect-ratio: 7 / 4;
   object-fit: cover;
-  background: var(--surface-hover);
-  border: 1px solid var(--border-soft);
-  border-radius: 4px;
+  background: #0e0e11;
 }
 
 /* Diagram beside its footage. The pair only splits once each half can still
-   give the SVG ~480px: its labels are absolute px inside a 420-wide viewBox, so
-   a narrower column renders 9px mono below its authored size. Below the
-   breakpoint the two figures simply stack, which is the layout they had. */
+   give the drawing ~480px; below that they stack, which is the layout they had. */
 @media (min-width: 1100px) {
   .dsp-figpair {
     display: grid;
@@ -3039,15 +3069,20 @@ table.tbl td.num { font-family: 'Geist Mono', monospace; color: var(--text); whi
     gap: 1rem;
     align-items: stretch;
   }
-  /* Both media get the clip's 16:9 box so the two captions start on the same
-     line. The SVG keeps its own viewBox ratio and simply centres inside the
-     taller frame — preserveAspectRatio does that for free, so the drawing and
-     its 9px labels render at exactly the size they did stacked. */
-  .dsp-figpair > figure > svg { aspect-ratio: 16 / 9; }
+  .dsp-figpair > figure { max-width: none; margin: 1.1rem 0; }
+  /* Both media bands take the clip's ratio so the two captions start on the
+     same line. The drawing keeps its own viewBox ratio and simply centres
+     inside the taller band. */
+  .dsp-figpair > figure > .dsp-plate { aspect-ratio: 7 / 4; }
 }
+
+/* The caption is the plate under the media, not a note appended to it, so it
+   fills whatever height is left once the media bands have matched. */
 .dsp-system figcaption {
+  flex: 1;
   font-size: 0.74rem; color: var(--text-dim); line-height: 1.6;
-  margin-top: 0.85rem; padding-top: 0.7rem; border-top: 1px solid var(--border-soft);
+  padding: 0.75rem 1rem 0.9rem;
+  border-top: 1px solid var(--border);
 }
 .dsp-system figcaption strong { color: var(--text-mid); font-weight: 500; }
 .svg-label { font-family: 'Geist Mono', monospace; font-size: 9px; fill: var(--text-dim); letter-spacing: 0.04em; }

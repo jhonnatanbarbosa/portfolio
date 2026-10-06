@@ -1,0 +1,70 @@
+# Caddy config for www.jhorro.com.
+# The server runs a copy of this at /etc/caddy/Caddyfile. After changing it:
+#   sudo cp /var/www/jhorro/deploy/Caddyfile /etc/caddy/Caddyfile
+#   sudo systemctl reload caddy
+{
+	email jhocbarbosa@gmail.com
+}
+
+jhorro.com, jhorro.com.br, www.jhorro.com.br {
+	redir https://www.jhorro.com{uri} permanent
+}
+
+www.jhorro.com {
+	# Only site/ is public. The rest of the checkout (.git, notes/, archive/,
+	# this file) sits outside the root and cannot be requested.
+	root * /var/www/jhorro/site
+	encode gzip
+
+	route {
+		# The studio page used to live at /productions and now is the root.
+		redir /productions / permanent
+		redir /productions/ / permanent
+		redir /jhorro-productions / permanent
+		redir /jhorro-productions.html / permanent
+		redir /retro-jhorro / permanent
+		redir /retro-jhorro.html / permanent
+		redir /index.html / permanent
+		redir /privacy-policy.html /privacy-policy permanent
+
+		# The portfolio used to be the root and now lives in /jhonnatan/.
+		redir /jhonnatan/index.html /jhonnatan/ permanent
+		redir /jhonnatan/dsp-case-study.html /jhonnatan/dsp-case-study permanent
+		redir /dsp-case-study /jhonnatan/dsp-case-study permanent
+		redir /dsp-case-study.html /jhonnatan/dsp-case-study permanent
+		redir /cyberpunk-dashboard-v3 /jhonnatan/cyberpunk-dashboard permanent
+		redir /cyberpunk-dashboard-v3.html /jhonnatan/cyberpunk-dashboard permanent
+		redir /retro /jhonnatan/ permanent
+		redir /retro.html /jhonnatan/ permanent
+
+		# Its files moved with it. Anything requested at the old root address
+		# that now exists under /jhonnatan is sent there: /docs/*.pdf linked
+		# from CVs already sent out, /media/*, /style.css for a cached copy of
+		# the old homepage.
+		@moved {
+			not file {path} {path}.html
+			file /jhonnatan{path}
+		}
+		redir @moved /jhonnatan{uri} permanent
+
+		# The logo folder lost the spaces in its name; the files kept theirs.
+		@oldlogo path_regexp oldlogo "^/jhorro productions logo 2/export/(.*)$"
+		redir @oldlogo /brand/{re.oldlogo.1} permanent
+
+		try_files {path} {path}.html
+		file_server
+	}
+
+	log {
+		output file /var/log/caddy/jhorro.log
+	}
+}
+
+# The studio's own domains, any path, land on the studio home.
+jhorroproductions.com, www.jhorroproductions.com,
+jhorroproductions.com.br, www.jhorroproductions.com.br {
+	redir https://www.jhorro.com/ permanent
+	log {
+		output file /var/log/caddy/jhorroproductions.log
+	}
+}

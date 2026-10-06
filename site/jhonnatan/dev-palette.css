@@ -40,11 +40,9 @@
   .palette-swatch:hover { transform: scale(1.12); }
   .palette-hexrow { display: flex; align-items: center; gap: 8px; }
   .palette-hex { flex: 1; font-family: 'Geist Mono', monospace; font-size: 0.8rem; background: #232328; border: 1px solid #2c2c32; border-radius: 6px; padding: 6px 8px; color: #dddbd6; text-align: center; }
-  .palette-copy, .palette-reset, .palette-link { font-family: 'Geist', sans-serif; font-size: 0.72rem; background: #232328; color: #dddbd6; border: 1px solid #2c2c32; border-radius: 6px; padding: 6px 10px; cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease; }
-  .palette-copy:hover, .palette-reset:hover, .palette-link:hover { border-color: #4a4a52; background: #2a2a30; }
+  .palette-copy, .palette-reset { font-family: 'Geist', sans-serif; font-size: 0.72rem; background: #232328; color: #dddbd6; border: 1px solid #2c2c32; border-radius: 6px; padding: 6px 10px; cursor: pointer; transition: border-color 0.2s ease, background 0.2s ease; }
+  .palette-copy:hover, .palette-reset:hover { border-color: #4a4a52; background: #2a2a30; }
   .palette-reset { width: 100%; }
-  .palette-link { display: block; width: 100%; text-align: center; text-decoration: none; }
-  .palette-link:hover { color: #fff; text-decoration: none; }
   .palette-note { font-size: 0.62rem; color: #6c6a65; text-align: center; margin: 0; }
   /* ── hue-overlay controls (moved in from color-overlay-demo.html) ── */
   .palette-ctl { display: flex; flex-direction: column; gap: 5px; }

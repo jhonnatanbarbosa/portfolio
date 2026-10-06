@@ -1,15 +1,14 @@
 // ══════════════════════════════════════════════════════════
-//  i18n — shared translation dictionary
+//  i18n — translation dictionary
 //
 //  Lifted out of index.html, where it sat inline and made up ~48% of the
 //  document: the parser had to stop mid-body and evaluate a 136 KB object
 //  literal before it could finish building the page. As its own file it is
 //  deferred, parsed off the critical path, and cached across page loads.
 //
-//  Loaded by index.html and by retro.html (via i18n.js). Both pages read
-//  `translations` off the global lexical scope, so this file must be
-//  requested before the runtime that consumes it — deferred classic scripts
-//  execute in document order, which is what guarantees that.
+//  index.js reads `translations` off the global lexical scope, so this file
+//  must be requested before it — deferred classic scripts execute in
+//  document order, which is what guarantees that.
 // ══════════════════════════════════════════════════════════
 
 const translations = {

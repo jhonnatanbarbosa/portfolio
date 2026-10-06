@@ -5,15 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jhorro Productions · Official Site</title>
 <meta name="description" content="Jhorro Productions is an independent studio, developer and publisher of Dead Saints Parade, a third-person stealth immersive sim coming to PC and Steam Deck in 2027.">
-<link rel="canonical" href="https://www.jhorro.com/productions">
-<link rel="icon" type="image/svg+xml" href="jhorro%20productions%20logo%202/export/svg/jhorro-symbol-white.svg">
+<link rel="canonical" href="https://www.jhorro.com/">
+<link rel="icon" type="image/svg+xml" href="brand/svg/jhorro-symbol-white.svg">
 
 <!-- Open Graph / Social Preview -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="Jhorro Productions · Official Site">
 <meta property="og:description" content="Independent studio developing Dead Saints Parade, a third-person stealth immersive sim coming to PC and Steam Deck in 2027.">
-<meta property="og:url" content="https://www.jhorro.com/productions">
-<meta property="og:image" content="https://www.jhorro.com/jhorro%20productions%20logo%202/export/png/app-icon-dark-512.png">
+<meta property="og:url" content="https://www.jhorro.com/">
+<meta property="og:image" content="https://www.jhorro.com/brand/png/app-icon-dark-512.png">
 <meta property="og:image:width" content="512">
 <meta property="og:image:height" content="512">
 <meta property="og:locale" content="en_US">
@@ -22,16 +22,16 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Jhorro Productions · Official Site">
 <meta name="twitter:description" content="Independent studio developing Dead Saints Parade, a third-person stealth immersive sim coming to PC and Steam Deck in 2027.">
-<meta name="twitter:image" content="https://www.jhorro.com/jhorro%20productions%20logo%202/export/png/app-icon-dark-512.png">
+<meta name="twitter:image" content="https://www.jhorro.com/brand/png/app-icon-dark-512.png">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
   "name": "Jhorro Productions",
-  "url": "https://www.jhorro.com/productions",
+  "url": "https://www.jhorro.com/",
   "email": "mailto:contact@jhorro.com",
-  "logo": "https://www.jhorro.com/jhorro%20productions%20logo%202/export/png/app-icon-dark-512.png",
+  "logo": "https://www.jhorro.com/brand/png/app-icon-dark-512.png",
   "makesOffer": [
     {
       "@type": "VideoGame",
@@ -59,6 +59,20 @@
     }
   ]
 }
+</script>
+
+<script>
+// This address was the designer's portfolio until the studio took the root.
+// A fragment never reaches the server, so Caddy cannot redirect an old link
+// like /#cyberpunk-analytics. Forward the ones that only ever meant that page.
+(function () {
+  var moved = ['projects', 'cyberpunk-analytics', 'guardians-case-study',
+               'documents', 'about', 'experience', 'contact'];
+  var id = location.hash.slice(1);
+  if (moved.indexOf(id) !== -1 || id.indexOf('pd-') === 0) {
+    location.replace('/jhonnatan/' + location.hash);
+  }
+})();
 </script>
 
 <style>
@@ -290,7 +304,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
    project, and neither does this: smaller mount, smaller type, same
    chrome. */
 .releases { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.release {
+.release, .sys {
   background: #131316;
   border: 1px solid var(--line);
   box-shadow: inset 1px 1px 0 var(--bevel-hi), inset -1px -1px 0 var(--bevel-lo);
@@ -300,9 +314,10 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 .release-body p { font-size: 11px; line-height: 1.55; color: rgba(241,239,233,0.75); }
 .release-title { font-family: var(--display); font-size: 15px; line-height: 1.2; margin-top: 3px; }
 .release-genre { font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mut); margin-top: 2px; }
-/* One clip is portrait (mobile) and one is landscape. A fixed mount with
-   letterboxing keeps both cards the same height, which is what a period
-   screenshot table did by construction, since the slices were all one size. */
+/* Both clips are cut to 4:3, the shape of this mount. A clip of any other
+   shape is letterboxed, not cropped, so the two cards keep the same height,
+   which is what a period screenshot table did by construction, since the
+   slices were all one size. */
 .release .shot video { aspect-ratio: 4 / 3; object-fit: contain; background: #000; }
 .release .meta { font-size: 10px; }
 .release .meta th { width: 66px; }
@@ -319,6 +334,80 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
   background: rgba(241,239,233,0.07);
   border: 1px solid var(--line);
 }
+
+/* ── DEAD SAINTS PARADE ──────────────────────────────────── */
+/* The lead clip is portrait, so it stands beside the write-up the way a
+   box shot stood beside a review instead of running the full width. */
+.lead { display: grid; grid-template-columns: 250px 1fr; gap: 12px; align-items: start; }
+.lead-body > * + * { margin-top: 10px; }
+.lead .shot video { aspect-ratio: 390 / 494; object-fit: cover; background: #000; }
+
+/* ── HOW IT PLAYS ────────────────────────────────────────── */
+.sys-body { padding: 10px; }
+.sys-body > * + * { margin-top: 10px; }
+
+/* Diagram beside its footage, in two sunken mounts of the same height so
+   the captions start on one line. 7/4 is the clips' own ratio. */
+.figpair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.fig { padding: 4px; background: var(--sunken); border: 1px solid var(--line); box-shadow: inset 1px 1px 0 var(--bevel-lo); }
+.fig .plate {
+  display: flex;
+  align-items: center;
+  aspect-ratio: 7 / 4;
+  border: 1px solid #000;
+  /* Graph paper, faint enough to sit behind 9px labels. */
+  background:
+    linear-gradient(rgba(241,239,233,0.035) 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(90deg, rgba(241,239,233,0.035) 1px, transparent 1px) 0 0 / 20px 20px,
+    #0e0e11;
+}
+.fig svg { display: block; width: 100%; height: auto; }
+.fig video { width: 100%; aspect-ratio: 7 / 4; object-fit: cover; background: #000; border: 1px solid #000; }
+.fig figcaption { padding: 5px 3px 2px; font-size: 10.5px; line-height: 1.5; color: var(--mut); }
+.svg-label { font-family: var(--ui); font-size: 9.5px; letter-spacing: 0.03em; fill: var(--dim); }
+.svg-label.b { fill: var(--mut); }
+.svg-label.hi { fill: var(--ink); font-weight: 700; }
+
+/* Data table, under a title-bar header row. */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); }
+.tbl { width: 100%; min-width: 420px; border-collapse: collapse; font-size: 10.5px; }
+.tbl th {
+  padding: 4px 8px;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: linear-gradient(180deg, var(--bar-top), var(--bar-bot));
+  border-bottom: 1px solid var(--line);
+}
+.tbl td { padding: 4px 8px; vertical-align: top; border-bottom: 1px solid var(--line-soft); color: var(--mut); }
+.tbl tbody tr:last-child td { border-bottom: 0; }
+.tbl tbody tr:nth-child(odd) { background: rgba(241,239,233,0.03); }
+.tbl td.num { font-family: "Courier New", Courier, monospace; font-size: 12px; color: var(--ink); white-space: nowrap; }
+
+/* ── STATUS ──────────────────────────────────────────────── */
+.bar-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mut); }
+.bar-label b { color: var(--ink); }
+.bar { height: 14px; padding: 2px; background: var(--sunken); border: 1px solid var(--line); box-shadow: inset 1px 1px 0 var(--bevel-lo); }
+/* Segmented fill. The period progress bar was always chunks, never a
+   continuous sweep. */
+.bar-fill { height: 100%; background: repeating-linear-gradient(90deg, var(--ink) 0 5px, transparent 5px 7px); }
+
+.sublabel { display: block; font-size: 9px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--dim); }
+.sublabel + * { margin-top: 4px; }
+
+.board, .chips { list-style: none; }
+.board { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.board-item { display: flex; gap: 6px; padding: 3px 7px; font-size: 10.5px; color: var(--mut); background: rgba(241,239,233,0.03); border: 1px solid var(--line-soft); }
+.board-item .tick { color: var(--dim); }
+.board-item.is-active { color: var(--ink); border-color: #6e6c68; }
+.board-item.is-active .tick { color: var(--ink); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 3px; }
+.chip { padding: 2px 6px; font-size: 9.5px; color: var(--mut); background: var(--sunken); border: 1px solid var(--line-soft); }
+.chip::before { content: '\2713\00a0'; color: var(--ink); }
 
 /* ── FOOTER ──────────────────────────────────────────────── */
 .site-foot {
@@ -345,7 +434,10 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
   .statusbar { font-size: 9px; gap: 0 10px; }
   .sb-hide-sm { display: none; }
   .game-title { font-size: 19px; }
-  .releases { grid-template-columns: 1fr; }
+  .releases, .lead, .figpair, .board { grid-template-columns: 1fr; }
+  .lead .shot { width: 100%; max-width: 260px; justify-self: center; }
+  /* Wrapped cells read better on a phone than a table that scrolls sideways. */
+  .tbl { min-width: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -413,7 +505,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
   <!-- ── STATUS BAR ─────────────────────────────────────── -->
   <div class="statusbar">
     <span>Developer &amp; publisher of <b>Dead Saints Parade</b></span>
-    <span class="sb-hide-sm">Titles shipped: <b>3</b></span>
+    <span class="sb-hide-sm">Games released: <b>2</b></span>
     <span class="sb-spacer"></span>
     <span class="sb-hide-sm"><b id="clock">&nbsp;</b></span>
   </div>
@@ -421,7 +513,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
   <nav class="mainnav" aria-label="Main">
     <a href="#dead-saints-parade">Dead Saints Parade</a>
     <a href="#released">Released Titles</a>
-    <a href="/">Portfolio</a>
+    <a href="/jhonnatan/">Portfolio</a>
     <a class="is-cta" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">Wishlist on Steam</a>
   </nav>
 
@@ -432,11 +524,10 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
       <h2 class="panel-title"><span>The Studio</span><span class="aside">Est. 2024 · Brazil</span></h2>
       <div class="panel-body">
         <p class="lede">
-          An independent game studio building systems-driven games. Everything here currently goes into
-          <b>Dead Saints Parade</b>, a third-person stealth immersive sim for PC and Steam Deck,
-          developed and published in-house. Before it came two idle titles on Google Play,
-          <a href="#released">Idle Kingdom Builder</a> and <a href="#released">Idle Cyberpunk City
-          Clicker</a>, which have 1,600+ organic downloads between them.
+          Jhorro Productions is an independent game studio in Brazil. The current project is
+          <b>Dead Saints Parade</b>, a third-person stealth game for PC and Steam Deck. Two idle games
+          are out on Google Play: <a href="#released">Idle Kingdom Builder</a> and
+          <a href="#released">Idle Cyberpunk City Clicker</a>.
         </p>
         <div class="actions">
           <a class="btn is-primary" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
@@ -444,7 +535,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
             Wishlist on Steam →
           </a>
           <a class="btn" href="#released">Released Titles →</a>
-          <a class="btn" href="/">Designer's Portfolio</a>
+          <a class="btn" href="/jhonnatan/">Designer's Portfolio</a>
         </div>
       </div>
     </section>
@@ -454,34 +545,41 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
       <h2 class="panel-title"><span>Dead Saints Parade</span><span class="aside">01 · First PC Title</span></h2>
       <div class="panel-body">
 
-        <div class="shot">
-          <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Dead Saints Parade third-person stealth immersive sim gameplay">
-            <source src="media/project4141UpdateApril.mp4" type="video/mp4">
-            <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
-          </video>
-          <div class="shot-cap">April build · pre-alpha footage</div>
-        </div>
+        <div class="lead">
+          <div class="shot">
+            <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Dead Saints Parade third-person stealth immersive sim gameplay">
+              <source src="media/dsp_updateAug.mp4" type="video/mp4">
+              <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+            </video>
+            <div class="shot-cap">August build · pre-alpha footage</div>
+          </div>
 
-        <div>
-          <span class="status">In Development · Demo Feb 2027 · Release Q2 2027</span>
-          <div class="game-title">Dead Saints Parade</div>
-          <div class="game-genre">Third-Person Stealth Immersive Sim · PC &amp; Steam Deck · Unity 6</div>
-        </div>
+          <div class="lead-body">
+            <div>
+              <span class="status">In Development · Demo Feb 2027 · Release Q2 2027</span>
+              <div class="game-title">Dead Saints Parade</div>
+              <div class="game-genre">Third-Person Stealth Immersive Sim · PC &amp; Steam Deck · Unity 6</div>
+            </div>
 
-        <p>
-          You play a fragile spy in a decaying Gothic-Victorian world where combat is lethal in both
-          directions, so what you know is worth more than what you carry. Guards coordinate with each
-          other, light and sound give you away, and civilians repeat what they have heard, which means
-          anything you observe can be turned into leverage. The tension comes from those systems
-          reacting to each other rather than from scripted moments. It takes after Thief, Dishonored,
-          Metal Gear Solid, and Gloomwood.
-        </p>
+            <p>
+              You play a spy in a decaying Gothic-Victorian city. Information is your best weapon, and a
+              fight kills you about as fast as it kills a guard. Guards work together, and light and
+              sound give you away. Civilians repeat what they hear. The game takes after Thief,
+              Dishonored, Metal Gear Solid and Gloomwood.
+            </p>
+
+            <p>
+              The core systems are done and the demo is 62% complete. The cathedral levels, dagger and
+              pistol combat, and Steam Deck controls are being built now.
+            </p>
+          </div>
+        </div>
 
         <table class="meta">
           <tbody>
             <tr><th scope="row">Genre</th><td>Third-person stealth immersive sim, single-player</td></tr>
             <tr><th scope="row">Platform</th><td>PC (Windows) · Steam Deck</td></tr>
-            <tr><th scope="row">Engine</th><td>Unity 6</td></tr>
+            <tr><th scope="row">Engine</th><td>Unity 6.3</td></tr>
             <tr><th scope="row">Developer</th><td>Jhorro Productions</td></tr>
             <tr><th scope="row">Publisher</th><td>Jhorro Productions</td></tr>
             <tr><th scope="row">Release</th><td>Demo February 2027 · Full release Q2 2027</td></tr>
@@ -493,8 +591,62 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
             <svg aria-hidden="true" focusable="false"><use href="#i-steam"/></svg>
             Wishlist on Steam →
           </a>
-          <a class="btn" href="/#dead-saints-parade">Development status →</a>
+          <a class="btn" href="#dsp-systems">How it plays →</a>
+          <a class="btn" href="#dsp-status">Development status →</a>
         </div>
+
+      </div>
+    </section>
+
+    <!-- ── DEAD SAINTS PARADE: STATUS ───────────────────── -->
+    <section class="panel" id="dsp-status">
+      <h2 class="panel-title"><span>Development status</span><span class="aside">Dead Saints Parade · updated as builds ship</span></h2>
+      <div class="panel-body">
+
+        <div>
+          <div class="bar-label"><span>Demo progress</span><b>62%</b></div>
+          <div class="bar" role="progressbar" aria-label="Demo progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="62">
+            <div class="bar-fill" style="width:62%"></div>
+          </div>
+        </div>
+
+        <span class="sublabel">To do · 8</span>
+        <ul class="board">
+          <li class="board-item is-active"><span class="tick">▸</span><span>Levels 1 and 2: layout done, art next</span></li>
+          <li class="board-item"><span class="tick">·</span><span>Combat: dagger and pistol</span></li>
+          <li class="board-item"><span class="tick">·</span><span>Pause menu</span></li>
+          <li class="board-item"><span class="tick">·</span><span>The Maestro boss</span></li>
+          <li class="board-item"><span class="tick">·</span><span>Minimap (MGS-style)</span></li>
+          <li class="board-item"><span class="tick">·</span><span>Cutscenes</span></li>
+          <li class="board-item"><span class="tick">·</span><span>Steam Deck controls and performance</span></li>
+          <li class="board-item"><span class="tick">·</span><span>Steam Next Fest demo</span></li>
+        </ul>
+
+        <span class="sublabel">Done · 22</span>
+        <ul class="chips">
+          <li class="chip">Lockpicking</li>
+          <li class="chip">Cover and peeking</li>
+          <li class="chip">Guard AI</li>
+          <li class="chip">Guards working together</li>
+          <li class="chip">Light and shadow detection</li>
+          <li class="chip">Contextual interactions</li>
+          <li class="chip">Inventory</li>
+          <li class="chip">Health and damage</li>
+          <li class="chip">Character stats</li>
+          <li class="chip">Journal and observations</li>
+          <li class="chip">Inspection mode (RE4-style)</li>
+          <li class="chip">Sound propagation</li>
+          <li class="chip">Steam integration</li>
+          <li class="chip">Save and load</li>
+          <li class="chip">Player controller</li>
+          <li class="chip">Debug tools</li>
+          <li class="chip">Analytics</li>
+          <li class="chip">Stealth kills and body discovery</li>
+          <li class="chip">Throwables and distractions</li>
+          <li class="chip">Traps and hazards</li>
+          <li class="chip">Civilians: informants and panic</li>
+          <li class="chip">Main menu and save shrines</li>
+        </ul>
 
       </div>
     </section>
@@ -504,12 +656,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
       <h2 class="panel-title"><span>Released Titles</span><span class="aside">02-03 · Android · Google Play</span></h2>
       <div class="panel-body">
 
-        <p>
-          Two idle titles shipped solo on Google Play before the studio turned to PC. Between them
-          they have <b>1,600+ organic downloads</b>, with no marketing spend behind either. The first
-          went out with no analytics at all; the second carried instrumentation at four progression
-          milestones, and those snapshots drove five balance fixes.
-        </p>
+        <p>Both idle games are on Google Play. Together they have more than 1,600 downloads.</p>
 
         <div class="releases">
 
@@ -517,11 +664,11 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
             <div class="release-body">
 
               <div class="shot">
-                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Cyberpunk City Clicker gameplay showing a neon cityscape and the upgrade interface">
-                  <source src="media/01optimizedVideo-Cyberpunk.mp4" type="video/mp4">
+                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Cyberpunk City Clicker gameplay">
+                  <source src="media/idle-cyberpunk-city-clicker.mp4" type="video/mp4">
                   <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
                 </video>
-                <div class="shot-cap">v1.81 · release build</div>
+                <div class="shot-cap">Gameplay</div>
               </div>
 
               <div>
@@ -531,25 +678,20 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
               </div>
 
               <p>
-                This one builds on what the first game taught: deeper progression tiers and a
-                monetization layer of rewarded ads and IAP. Unity Analytics snapshots player state at
-                four milestones, which is how two economy bugs and a timer persistence defect
-                surfaced. Five fixes went out across v1.70 and v1.81, and a second measurement put
-                the economy against the frozen pre-overhaul baseline.
+                It is an idle clicker set in a dystopian cyberpunk city. You earn credits by tapping and
+                from buildings that pay out on their own, then spend them to expand the city.
               </p>
 
               <table class="meta">
                 <tbody>
                   <tr><th scope="row">Platform</th><td>Android</td></tr>
-                  <tr><th scope="row">Engine</th><td>Unity 6</td></tr>
                   <tr><th scope="row">Released</th><td>June 2025</td></tr>
-                  <tr><th scope="row">Players</th><td>600+ downloads · 4.2/5 · ~6 min median session</td></tr>
+                  <tr><th scope="row">Players</th><td>600+ downloads · rated 4.2/5</td></tr>
                 </tbody>
               </table>
 
               <div class="actions">
                 <a class="btn" href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener">Google Play →</a>
-                <a class="btn" href="/#cyberpunk-analytics">Analytics case study →</a>
               </div>
 
             </div>
@@ -559,11 +701,11 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
             <div class="release-body">
 
               <div class="shot">
-                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Kingdom Builder gameplay showing kingdom construction and resource management">
-                  <source src="media/02optimizedVideo-IdleKingdom.mp4" type="video/mp4">
+                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Kingdom Builder gameplay">
+                  <source src="media/idle-kingdom-builder.mp4" type="video/mp4">
                   <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
                 </video>
-                <div class="shot-cap">Kingdom build-out · release build</div>
+                <div class="shot-cap">Gameplay</div>
               </div>
 
               <div>
@@ -573,25 +715,21 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
               </div>
 
               <p>
-                The first game out the door. Core loop and economy designed from scratch with Cookie
-                Clicker's formulas as the reference, then tuned toward a slower, more deliberate pace:
-                ten building types from House to Bank, an upgrade path on each, and a Royal Ascension
-                prestige reset. It shipped with no analytics at all, so there was no reliable way to
-                see where players stopped. That gap is what Cyberpunk City was instrumented to close.
+                It is a medieval kingdom-building idle game. You click for gold and build houses, farms,
+                markets and more, and each building earns on its own. There are ten kinds of building
+                and 75 achievements. A Royal Ascension restarts the kingdom with a permanent bonus.
               </p>
 
               <table class="meta">
                 <tbody>
                   <tr><th scope="row">Platform</th><td>Android</td></tr>
-                  <tr><th scope="row">Engine</th><td>Unity 2022</td></tr>
                   <tr><th scope="row">Released</th><td>September 2024</td></tr>
-                  <tr><th scope="row">Players</th><td>1,000+ downloads, no marketing spend</td></tr>
+                  <tr><th scope="row">Players</th><td>1,000+ downloads</td></tr>
                 </tbody>
               </table>
 
               <div class="actions">
                 <a class="btn" href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener">Google Play →</a>
-                <a class="btn" href="/#projects">Portfolio entry →</a>
               </div>
 
             </div>
@@ -601,12 +739,168 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
       </div>
     </section>
 
+    <!-- ── DEAD SAINTS PARADE: HOW IT PLAYS ─────────────── -->
+    <section class="panel" id="dsp-systems">
+      <h2 class="panel-title"><span>Dead Saints Parade: how it plays</span><span class="aside">Details</span></h2>
+      <div class="panel-body">
+
+        <p>
+          Four ideas run through Dead Saints Parade: vulnerability, tactical stealth, information as
+          power, and non-linear exploration. Cover and guard vision are two of the systems already
+          working in the build.
+        </p>
+
+        <article class="sys" id="dsp-cover">
+          <h3 class="panel-title"><span>Cover</span></h3>
+          <div class="sys-body">
+            <p>
+              There is no cover button. Walk into a wall and you take cover, then push away from it to
+              leave. In cover you move slower and can't sprint.
+            </p>
+            <p>
+              At a corner, the camera looks around it while your body stays where it is. You can't slide
+              around the corner onto the next wall. To change walls you step out and take cover again,
+              and for that moment you are exposed.
+            </p>
+
+            <div class="figpair">
+              <figure class="fig">
+                <div class="plate">
+                  <svg viewBox="0 14 420 116" role="img" aria-label="Top-down diagram of how cover is detected: five rays fan out in front of the player at 0, plus and minus 30, and plus and minus 60 degrees, reaching 0.7 metres toward a wall. In cover, the player is held 0.42 metres from the wall.">
+                    <rect x="50" y="44" width="320" height="12" fill="#2b2b30" stroke="#3d3d45" stroke-width="1"/>
+                    <text x="52" y="36" class="svg-label b">WALL</text>
+
+                    <g stroke="#f1efe9" stroke-width="1.2" fill="none">
+                      <line x1="210" y1="98" x2="210" y2="28" opacity="0.9"/>
+                      <line x1="210" y1="98" x2="245" y2="37.4" opacity="0.9"/>
+                      <line x1="210" y1="98" x2="175" y2="37.4" opacity="0.9"/>
+                      <line x1="210" y1="98" x2="270.6" y2="63" opacity="0.45" stroke-dasharray="3 3"/>
+                      <line x1="210" y1="98" x2="149.4" y2="63" opacity="0.45" stroke-dasharray="3 3"/>
+                    </g>
+
+                    <text x="214" y="26" class="svg-label hi">0°</text>
+                    <text x="249" y="34" class="svg-label hi">+30°</text>
+                    <text x="171" y="34" text-anchor="end" class="svg-label hi">−30°</text>
+                    <text x="275" y="62" class="svg-label">+60°</text>
+                    <text x="131" y="62" text-anchor="end" class="svg-label">−60°</text>
+
+                    <line x1="140" y1="56" x2="140" y2="98" stroke="#6e6c68" stroke-width="1" stroke-dasharray="2 2"/>
+                    <line x1="136" y1="56" x2="144" y2="56" stroke="#6e6c68" stroke-width="1"/>
+                    <line x1="136" y1="98" x2="144" y2="98" stroke="#6e6c68" stroke-width="1"/>
+                    <text x="131" y="84" text-anchor="end" class="svg-label b">0.42 m</text>
+
+                    <circle cx="210" cy="98" r="9" fill="#17171a" stroke="#f1efe9" stroke-width="2"/>
+                    <text x="210" y="122" text-anchor="middle" class="svg-label hi">PLAYER</text>
+
+                    <path d="M 150 63 A 70 70 0 0 1 270.6 63" fill="none" stroke="#3d3d45" stroke-width="1" stroke-dasharray="2 3"/>
+                    <text x="286" y="98" class="svg-label">0.7 m range</text>
+                  </svg>
+                </div>
+                <figcaption>
+                  The game casts five rays in front of you. Each reaches 0.7 m. Running along a wall
+                  won't put you in cover. You have to walk into it.
+                </figcaption>
+              </figure>
+
+              <figure class="fig">
+                <video muted loop playsinline preload="metadata" data-lazyvideo
+                       aria-label="Build footage of the cover system: the player walks into a wall, takes cover, slides along it, and looks around an outer corner without moving onto the next wall.">
+                  <source src="media/dsp_coverAug.mp4" type="video/mp4">
+                  <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+                </video>
+                <figcaption>
+                  The same thing in the build: the player takes cover, slides along the wall and looks
+                  around the corner.
+                </figcaption>
+              </figure>
+            </div>
+          </div>
+        </article>
+
+        <article class="sys" id="dsp-perception">
+          <h3 class="panel-title"><span>Guard vision</span></h3>
+          <div class="sys-body">
+            <p>
+              A guard has two fields of view. The narrow one straight ahead reaches 15 m and sees you
+              whether you move or not. The wide one reaches 8 m and only picks up movement, and it does
+              that slowly. If a guard turns your way while you are at the edge of their vision, standing
+              still keeps you hidden.
+            </p>
+            <p>
+              Light matters as well. In deep shadow a guard can't see you at any distance, so putting
+              out a single candle can be worth the time.
+            </p>
+
+            <div class="figpair">
+              <figure class="fig">
+                <div class="plate">
+                  <!-- No colour to spare in this palette, so the two states are
+                       drawn the way a printed diagram would: hollow for the
+                       player who goes unseen, solid for the one who is caught. -->
+                  <svg viewBox="0 75 420 185" role="img" aria-label="Top-down diagram of a guard's two vision cones: an inner 60 degree cone reaching 15 metres that sees any player, and an outer 120 degree cone reaching 8 metres that sees only moving players.">
+                    <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="#f1efe9" opacity="0.07"/>
+                    <path d="M 210 225 L 140.7 185 A 80 80 0 0 1 279.3 185 Z" fill="none" stroke="#f1efe9" stroke-width="1" opacity="0.45" stroke-dasharray="3 3"/>
+                    <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="#f1efe9" opacity="0.12"/>
+                    <path d="M 210 225 L 135 95.1 A 150 150 0 0 1 285 95.1 Z" fill="none" stroke="#f1efe9" stroke-width="1" opacity="0.8"/>
+
+                    <circle cx="210" cy="225" r="8" fill="#17171a" stroke="#f1efe9" stroke-width="2"/>
+                    <text x="210" y="248" text-anchor="middle" class="svg-label b">GUARD</text>
+
+                    <text x="296" y="100" class="svg-label hi">INNER 60° / 15 m</text>
+                    <text x="296" y="113" class="svg-label">sees any player</text>
+                    <text x="290" y="176" class="svg-label b">OUTER 120° / 8 m</text>
+                    <text x="290" y="189" class="svg-label">moving players only</text>
+
+                    <circle cx="180" cy="196" r="5" fill="#17171a" stroke="#f1efe9" stroke-width="1.5"/>
+                    <text x="168" y="199" text-anchor="end" class="svg-label b">STILL → unseen</text>
+
+                    <circle cx="240" cy="130" r="5" fill="#f1efe9"/>
+                    <text x="250" y="133" class="svg-label hi">MOVING → seen</text>
+                  </svg>
+                </div>
+                <figcaption>
+                  The inner cone is 60° wide and reaches 15 m. The outer cone is 120° wide and reaches 8 m.
+                </figcaption>
+              </figure>
+
+              <figure class="fig">
+                <video muted loop playsinline preload="metadata" data-lazyvideo
+                       aria-label="Build footage of guard vision: a guard sweeps past a player standing still at the edge of its view without reacting, then spots the same player once they move into the inner cone.">
+                  <source src="media/dsp_perceptionAug.mp4" type="video/mp4">
+                  <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+                </video>
+                <figcaption>
+                  In the build, standing still in the outer cone goes unnoticed and moving there raises
+                  suspicion slowly. The inner cone spots you right away.
+                </figcaption>
+              </figure>
+            </div>
+
+            <div class="tbl-wrap">
+              <table class="tbl">
+                <thead>
+                  <tr><th>Where you are</th><th>Time to alert</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td>Standing in full light, close, right in front of the guard</td><td class="num">~0.5 s</td></tr>
+                  <tr><td>Crouching in dim light, far away, at the edge of the cone</td><td class="num">5 s or more</td></tr>
+                  <tr><td>Moving in the outer cone only</td><td class="num">~12 s</td></tr>
+                  <tr><td>Standing still in the dark, at any distance</td><td class="num">never</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
   </main>
 
   <footer class="site-foot">
     <p>© Jhorro Productions · The Watcher, watching through the keyhole.</p>
     <p class="foot-nav">
-      <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>|<a href="/">Jhonnatan Barbosa · Game Designer</a>|<a href="/privacy-policy">Privacy</a>
+      <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>|<a href="/jhonnatan/">Jhonnatan Barbosa · Game Designer</a>|<a href="/privacy-policy">Privacy</a>
     </p>
     <p>Best viewed at 1024×768.</p>
   </footer>
@@ -630,7 +924,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
   setInterval(tick, 30000);
 })();
 
-// Three clips on one page. Only what is on screen is allowed to decode,
+// Five clips on one page. Only what is on screen is allowed to decode,
 // and anything scrolled away is paused so it stops costing battery.
 (function () {
   var vids = Array.prototype.slice.call(document.querySelectorAll('video[data-lazyvideo]'));

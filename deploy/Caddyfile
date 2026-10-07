@@ -16,6 +16,12 @@ www.jhorro.com {
 	root * /var/www/jhorro/site
 	encode gzip
 
+	# CVs that have been replaced. They still answer for whoever was sent the
+	# link, and this header keeps them out of search results. A CV that gets
+	# replaced is added to this list, never deleted.
+	@oldcv path /jhonnatan/docs/Jhonnatan_BarbosaCV.pdf /jhonnatan/docs/JhonnatanBarbosaCV.pdf /jhonnatan/docs/Jhonnatan_Barbosa_-_Game_Designer.pdf /jhonnatan/docs/JhonnatanCB_CV.pdf /jhonnatan/docs/JhonnatanCB_CV2022.pdf /jhonnatan/docs/JhonnatanChristoferBarbosaCV.pdf
+	header @oldcv X-Robots-Tag noindex
+
 	route {
 		# The studio page used to live at /productions and now is the root.
 		redir /productions / permanent
@@ -37,6 +43,13 @@ www.jhorro.com {
 		redir /cyberpunk-dashboard-v3.html /jhonnatan/cyberpunk-dashboard permanent
 		redir /retro /jhonnatan/ permanent
 		redir /retro.html /jhonnatan/ permanent
+
+		# A page is not a folder. Its address with a slash on the end goes to
+		# the page instead of the 404.
+		redir /dead-saints-parade/ /dead-saints-parade permanent
+		redir /privacy-policy/ /privacy-policy permanent
+		redir /jhonnatan/dsp-case-study/ /jhonnatan/dsp-case-study permanent
+		redir /jhonnatan/cyberpunk-dashboard/ /jhonnatan/cyberpunk-dashboard permanent
 
 		# Its files moved with it. Anything requested at the old root address
 		# that now exists under /jhonnatan is sent there: /docs/*.pdf linked

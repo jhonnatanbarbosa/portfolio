@@ -54,9 +54,9 @@ Addresses other parties hold, which must keep answering:
 
 - `/privacy-policy` is registered in both Google Play listings. Its wording is a legal text: restyle it freely, reword it only when asked.
 - `/google1551b97329f3afc5.html` is the Search Console verification file and has to be served directly, not redirected.
-- `/jhonnatan/docs/*.pdf`, and the old `/docs/*.pdf` that redirects to it, are linked from CVs already sent out. Do not rename or remove a PDF.
+- `/jhonnatan/docs/*.pdf`, and the old `/docs/*.pdf` that redirects to it, are linked from CVs already sent out. Do not rename or remove a PDF. A CV that has been replaced stays in the folder and goes in the `@oldcv` list in the Caddyfile, which sends `X-Robots-Tag: noindex` so it keeps answering and stays out of search.
 
-Adding or renaming a page means its `<link rel="canonical">` (extensionless, `https://www.jhorro.com/...`), `site/sitemap.xml`, every inbound link, and a `redir` in the Caddyfile for the old address.
+Adding or renaming a page means its `<link rel="canonical">` (extensionless, `https://www.jhorro.com/...`), `site/sitemap.xml`, every inbound link, and a `redir` in the Caddyfile for the old address and for the new one with a slash on the end. Each sitemap entry carries a `<lastmod>` date, changed by hand when what the page says changes.
 
 ## Portfolio i18n
 
@@ -94,7 +94,7 @@ The studio (the card on `site/index.html`, and the card, Development status and 
 
 ## Analytics dashboard
 
-`site/jhonnatan/cyberpunk-dashboard.html` is a single-file React app (React 18, Recharts and Babel-standalone from cdnjs) whose JSX is transpiled in the browser. All datasets are literals near the top of its `<script type="text/babel">`. It is iframed into `#cyberpunk-analytics` on the portfolio, so its `matchMedia` checks see the iframe's width, not the device's, and its layout is tuned for a short embed.
+`site/jhonnatan/cyberpunk-dashboard.html` is a single-file React app (React 18, Recharts and Babel-standalone from cdnjs) whose JSX is transpiled in the browser. All datasets are literals near the top of its `<script type="text/babel">`. It is iframed into `#cyberpunk-analytics` on the portfolio, so its `matchMedia` checks see the iframe's width, not the device's, and its layout is tuned for a short embed. It is `noindex, indexifembedded` and left out of the sitemap, because on its own it is an empty page until the script runs. The second word lets Google still read it inside the portfolio's iframe.
 
 ## Styling
 

@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jhorro Productions - Official Site</title>
+<title>Jhorro Productions - Game Studio</title>
 <meta name="description" content="Jhorro Productions is an independent studio, developer and publisher of Dead Saints Parade, a third-person stealth immersive sim coming to PC and Steam Deck in 2027.">
 <link rel="canonical" href="https://www.jhorro.com/">
 <link rel="icon" href="favicon.ico" sizes="32x32">
@@ -14,7 +14,7 @@
 
 <!-- Open Graph / Social Preview -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="Jhorro Productions - Official Site">
+<meta property="og:title" content="Jhorro Productions - Game Studio">
 <meta property="og:description" content="Independent studio developing Dead Saints Parade, a third-person stealth immersive sim coming to PC and Steam Deck in 2027.">
 <meta property="og:url" content="https://www.jhorro.com/">
 <meta property="og:image" content="https://www.jhorro.com/brand/01-logo/symbol-tiles/png/jhorro-symbol-tile-dark-1024.png">
@@ -25,25 +25,36 @@
 <!-- Twitter Card -->
 <meta name="twitter:card" content="summary">
 <meta name="twitter:site" content="@jhorroprod">
-<meta name="twitter:title" content="Jhorro Productions - Official Site">
+<meta name="twitter:title" content="Jhorro Productions - Game Studio">
 <meta name="twitter:description" content="Independent studio developing Dead Saints Parade, a third-person stealth immersive sim coming to PC and Steam Deck in 2027.">
 <meta name="twitter:image" content="https://www.jhorro.com/brand/01-logo/symbol-tiles/png/jhorro-symbol-tile-dark-1024.png">
 
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "Jhorro Productions",
-  "url": "https://www.jhorro.com/",
-  "email": "mailto:contact@jhorro.com",
-  "logo": "https://www.jhorro.com/brand/01-logo/symbol-tiles/png/jhorro-symbol-tile-dark-1024.png",
-  "sameAs": [
-    "https://www.youtube.com/@jhorro",
-    "https://www.linkedin.com/company/jhorro-productions/",
-    "https://x.com/jhorroprod",
-    "https://www.instagram.com/jhorroproductions/"
-  ],
-  "makesOffer": [
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.jhorro.com/#organization",
+      "name": "Jhorro Productions",
+      "url": "https://www.jhorro.com/",
+      "email": "mailto:contact@jhorro.com",
+      "logo": "https://www.jhorro.com/brand/01-logo/symbol-tiles/png/jhorro-symbol-tile-dark-1024.png",
+      "sameAs": [
+        "https://www.youtube.com/@jhorro",
+        "https://www.linkedin.com/company/jhorro-productions/",
+        "https://x.com/jhorroprod",
+        "https://www.instagram.com/jhorroproductions/"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.jhorro.com/#website",
+      "name": "Jhorro Productions",
+      "alternateName": "Jhorro",
+      "url": "https://www.jhorro.com/",
+      "publisher": { "@id": "https://www.jhorro.com/#organization" }
+    },
     {
       "@type": "VideoGame",
       "name": "Dead Saints Parade",
@@ -51,7 +62,7 @@
       "gamePlatform": ["PC", "Steam Deck"],
       "url": "https://www.jhorro.com/dead-saints-parade",
       "sameAs": "https://store.steampowered.com/app/4635010/Dead_Saints_Parade/",
-      "publisher": { "@type": "Organization", "name": "Jhorro Productions" }
+      "publisher": { "@id": "https://www.jhorro.com/#organization" }
     },
     {
       "@type": "VideoGame",
@@ -59,7 +70,8 @@
       "genre": ["Idle", "Clicker"],
       "gamePlatform": "Android",
       "datePublished": "2025-06",
-      "url": "https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker"
+      "url": "https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker",
+      "publisher": { "@id": "https://www.jhorro.com/#organization" }
     },
     {
       "@type": "VideoGame",
@@ -67,7 +79,8 @@
       "genre": ["Idle", "Clicker"],
       "gamePlatform": "Android",
       "datePublished": "2024-09",
-      "url": "https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder"
+      "url": "https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder",
+      "publisher": { "@id": "https://www.jhorro.com/#organization" }
     }
   ]
 }
@@ -278,7 +291,7 @@
         <h2 class="panel-title"><span>Released Titles</span><span class="aside">02-03 | Android | Google Play</span></h2>
         <div class="panel-body">
 
-          <p>Both idle games are on Google Play. Together they have more than 1,600 downloads.</p>
+          <p>Together the two idle games have more than 1,600 downloads on Google Play.</p>
 
           <div class="releases">
 
@@ -337,9 +350,10 @@
                 </div>
 
                 <p>
-                  It is a medieval kingdom-building idle game. You click for gold and build houses, farms,
-                  markets and more, and each building earns on its own. There are ten kinds of building
-                  and 75 achievements. A Royal Ascension restarts the kingdom with a permanent bonus.
+                  It is a medieval kingdom-building idle game. You click for gold and put up buildings
+                  such as houses, farms and markets, and each one earns on its own. There are ten kinds
+                  of building and 75 achievements. A Royal Ascension restarts the kingdom with a
+                  permanent bonus.
                 </p>
 
                 <table class="meta">

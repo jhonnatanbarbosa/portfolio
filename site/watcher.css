@@ -1,0 +1,480 @@
+/* ═══════════════════════════════════════════════════════════════════
+   The Watcher skin: Jhorro Productions dressed from the brand kit in
+   site/brand. All four studio pages wear it.
+
+   What it takes from brand/jhorro-brand-guide.pdf:
+
+   - The logo is placed as a file, never drawn or typed. The header
+     has the horizontal lockup, the footer the stacked one.
+     Each keeps C of clear space, the cap height of JHORRO.
+   - Five colours and no others. Red is the signal: the symbol, the
+     rules, the bars, a marker, a readout. Red never sets small text
+     and small text never sits on red, as the contrast table asks.
+   - Three typefaces, each with one job. Archivo Expanded Black for
+     titles, Michroma for labels, IBM Plex Mono for everything read.
+   - The slogan appears once on a page, as its last line.
+
+   Three things go against the guide because the owner asked for them:
+   the eye follows the pointer, the stripes above the nav thicken as
+   they fall where the symbol's stay one height, and the slogan is set
+   as text under a footer logo smaller than the 320px the guide wants
+   beside it.
+
+   Footage is shown as a feed: corner ticks, scanlines, a record light.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── FONTS ───────────────────────────────────────────────── */
+/* The three brand faces, served from this site so a visit contacts
+   nobody else. They are the Latin subsets Google Fonts cuts, and all
+   three are under the SIL Open Font License, which is reproduced in
+   brand/FONTS-AND-LICENSES.txt. */
+@font-face { font-family: 'Archivo'; font-style: normal; font-weight: 900; font-stretch: 125%; font-display: swap; src: url(fonts/archivo-expanded-black.woff2) format('woff2'); }
+@font-face { font-family: 'Michroma'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/michroma-400.woff2) format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url(fonts/ibm-plex-mono-400.woff2) format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 500; font-display: swap; src: url(fonts/ibm-plex-mono-500.woff2) format('woff2'); }
+
+:root {
+  /* Section 4 of the guide. */
+  --ink:      #0C0C0D;
+  --red:      #E3311D;
+  --bone:     #F1EFE9;
+  --ash:      #8C8982;
+  --ash-dark: #6B6862;
+
+  /* Hairlines are bone, thinned. */
+  --line:      rgba(241,239,233,0.17);
+  --line-soft: rgba(241,239,233,0.08);
+
+  /* Section 5. Archivo is only ever width 125, weight 900, in capitals. */
+  --head:  'Archivo', 'Arial Black', Arial, Helvetica, sans-serif;
+  --label: 'Michroma', Arial, Helvetica, sans-serif;
+  --mono:  'IBM Plex Mono', 'Courier New', Courier, monospace;
+
+  /* The stripes over the nav run the other way from the symbol's: a
+     hairline at the top, each bar thicker and each gap narrower than the
+     one above, down to a slab that sits on the nav. */
+  --bars: linear-gradient(180deg,
+    var(--red) 0 1px,     transparent 1px 7px,
+    var(--red) 7px 9px,   transparent 9px 14px,
+    var(--red) 14px 17px, transparent 17px 21px,
+    var(--red) 21px 25px, transparent 25px 28px,
+    var(--red) 28px 34px, transparent 34px 36px,
+    var(--red) 36px 45px);
+  /* The bullet keeps the symbol's own rhythm: bars of one height, the gap
+     between them growing. */
+  --bars-sm: linear-gradient(180deg,
+    var(--red) 0 3px, transparent 3px 4px,
+    var(--red) 4px 7px, transparent 7px 9px,
+    var(--red) 9px 12px);
+  /* The double rule from under JHORRO, at the guide's 5 to 3 to 2. */
+  --rule2: linear-gradient(180deg, var(--red) 0 5px, transparent 5px 8px, var(--red) 8px 10px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; border-radius: 0; }
+html { scroll-behavior: smooth; scroll-padding-top: 12px; }
+
+body {
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--bone);
+  background: var(--ink);
+  padding: 0 12px 48px;
+  -webkit-text-size-adjust: 100%;
+}
+img, video { display: block; max-width: 100%; }
+
+a { color: var(--bone); text-decoration: underline; text-decoration-color: var(--red); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+/* A link is selected the way a terminal selects a line: inverted. */
+a:hover, a:focus-visible { color: var(--ink); background: var(--bone); text-decoration: none; }
+:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+::selection { background: var(--bone); color: var(--ink); }
+
+.skip-link { position: absolute; left: -9999px; top: 0; padding: 8px 14px; background: var(--ink); border: 1px solid var(--bone); z-index: 50; }
+.skip-link:focus { left: 8px; top: 8px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+
+/* ── FRAME ───────────────────────────────────────────────── */
+/* No wallpaper: the page is ink, and the frame is two hairlines down
+   its sides. */
+.site { max-width: 1260px; margin: 0 auto; border-left: 1px solid var(--line); border-right: 1px solid var(--line); }
+html[data-ts="2"] .site { zoom: 1.12; }
+html[data-ts="3"] .site { zoom: 1.25; }
+
+/* ── MASTHEAD ────────────────────────────────────────────── */
+.util {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 18px;
+  padding: 7px 14px;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ash);
+  border-bottom: 1px solid var(--line);
+}
+.util b { color: var(--bone); font-weight: 500; }
+.sb-spacer { flex: 1 1 auto; }
+
+.textsize { display: none; align-items: center; gap: 3px; }
+.js .textsize { display: inline-flex; }
+.textsize span { margin-right: 4px; }
+.textsize button { min-width: 18px; height: 17px; padding: 0 3px; font-family: var(--mono); font-size: 9px; line-height: 1; color: var(--ash); background: none; border: 1px solid var(--line); cursor: pointer; }
+.textsize button:nth-of-type(2) { font-size: 11px; }
+.textsize button:nth-of-type(3) { font-size: 13px; }
+.textsize button:hover, .textsize button:focus-visible { color: var(--bone); border-color: var(--bone); }
+.textsize button[aria-pressed="true"] { color: var(--ink); background: var(--bone); border-color: var(--bone); }
+
+/* The padding is the logo's clear space. At 470px wide C is 39px, and
+   nothing may come nearer than that: not the strip above, the bars
+   below, the frame's edge or the lines beside it. */
+.ident { display: flex; align-items: flex-end; justify-content: space-between; gap: 44px; padding: 44px; }
+.lockup { margin: 0; font-size: inherit; font-weight: inherit; line-height: 0; }
+.logo { position: relative; display: block; }
+.logo img { width: 100%; height: auto; }
+.lockup .logo { width: 470px; }
+/* On the home the lockup is the heading. On every other page the heading
+   is the page's own title, so the lockup is the way back home. A link's
+   hover fill would put bone behind the logo's bone type, so it gets none. */
+a.lockup { display: block; text-decoration: none; }
+a.lockup:hover, a.lockup:focus-visible { background: none; }
+
+/* The eye follows the pointer. The logo file is left as it is: a small
+   drawing laid over its symbol, in the symbol's own 920-unit square,
+   fills the eye in red and puts the pupil back as a shape that can
+   move, with the lids clipping it. */
+.eye { position: absolute; top: 0; pointer-events: none; }
+.logo-h .eye { left: 0; width: 22.139%; }        /* the symbol is 184 of the file's 831.1 units */
+.logo-v .eye { left: 29.941%; width: 40.118%; }  /* 232 of 578.3, centred */
+.eye-fill { fill: var(--red); }
+.pupil { fill: var(--ink); }
+
+.ident-side { text-align: right; }
+.ident-side p + p { margin-top: 6px; }
+.ident-side .line { font-size: 10px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ash); }
+.ident-side .line b { color: var(--bone); font-weight: 500; }
+.ident-side a { color: inherit; }
+.ident-side a:hover, .ident-side a:focus-visible { color: var(--ink); }
+
+.bars { height: 45px; background: var(--bars); }
+
+/* ── NAV ─────────────────────────────────────────────────── */
+.mainnav { display: flex; flex-wrap: wrap; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.mainnav a {
+  flex: 1 1 auto;
+  padding: 13px 14px 12px;
+  text-align: center;
+  font-family: var(--label);
+  font-size: 9.5px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-right: 1px solid var(--line);
+}
+.mainnav a:last-child { border-right: 0; }
+/* The one filled cell is bone. Red would put small text on red. */
+.mainnav a.is-cta { color: var(--ink); background: var(--bone); }
+.mainnav a.is-cta:hover, .mainnav a.is-cta:focus-visible { color: var(--bone); background: var(--ink); }
+
+/* ── COLUMNS ─────────────────────────────────────────────── */
+/* The rails are 214px: the label face is wide and the guide tracks it
+   wider still. */
+.cols { display: grid; grid-template-columns: 214px minmax(0, 1fr) 214px; align-items: start; gap: 12px; padding: 12px; }
+.rail { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+main { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+
+/* ── RAIL BOXES ──────────────────────────────────────────── */
+.box { border: 1px solid var(--line); }
+/* A rail title goes without the bars: they mark the sections of the page. */
+.box-title { padding: 10px 9px 9px; font-family: var(--label); font-size: 8.5px; letter-spacing: 0.3em; line-height: 1.4; text-transform: uppercase; border-bottom: 1px solid var(--line); }
+.box-body { padding: 10px; }
+.box-body > * + * { margin-top: 10px; }
+.box-body > a { display: block; font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; }
+
+.linklist { list-style: none; }
+.linklist li + li { border-top: 1px solid var(--line-soft); }
+.linklist a { position: relative; display: block; padding: 7px 9px 7px 23px; font-size: 11.5px; line-height: 1.4; text-decoration: none; }
+.linklist a::before { content: ''; position: absolute; left: 10px; top: 13px; width: 5px; height: 5px; background: var(--ash-dark); }
+/* The page you are on is marked in red and left in bone. */
+.linklist a[aria-current]::before { background: var(--red); }
+.linklist a:hover::before, .linklist a:focus-visible::before { background: var(--ink); }
+.linklist .tag { display: block; margin-top: -4px; padding: 0 9px 7px 23px; font-size: 8.5px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ash); }
+.linklist .tag.is-live { color: var(--bone); }
+
+/* ── PANELS ──────────────────────────────────────────────── */
+.panel { border: 1px solid var(--line); }
+.panel-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px 12px;
+  padding: 11px 12px 10px;
+  font-family: var(--label);
+  font-size: 10.5px;
+  font-weight: 400;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  border-bottom: 1px solid var(--line);
+}
+.panel-title > span:first-child { display: inline-flex; align-items: center; gap: 11px; }
+.panel > .panel-title > span:first-child::before { content: ''; flex-shrink: 0; width: 15px; height: 12px; background: var(--bars-sm); }
+.panel-title .aside { font-family: var(--mono); font-size: 9px; letter-spacing: 0.28em; color: var(--ash); text-align: right; }
+.panel-body { padding: 16px; }
+.panel-body > * + * { margin-top: 13px; }
+/* A monospace line runs long, so the measure is capped. */
+.panel-body p { max-width: 78ch; }
+.lede { font-size: 14px; }
+.lede b, .lede strong { font-weight: 500; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  padding: 10px 13px 9px;
+  font-family: var(--label);
+  font-size: 9px;
+  letter-spacing: 0.3em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--bone);
+  background: none;
+  border: 1px solid var(--bone);
+}
+.btn:hover, .btn:focus-visible { color: var(--ink); background: var(--bone); }
+/* The filled button is bone on the same grounds as the nav's filled cell. */
+.btn.is-primary { color: var(--ink); background: var(--bone); }
+.btn.is-primary:hover, .btn.is-primary:focus-visible { color: var(--bone); background: var(--ink); }
+.btn svg { width: 13px; height: 13px; fill: currentColor; flex-shrink: 0; }
+
+/* ── FOOTAGE ─────────────────────────────────────────────── */
+/* A clip is a feed: ticks at the corners of the picture, scanlines over
+   it, and a record light in the caption. */
+.shot { position: relative; border: 1px solid var(--line); }
+.shot video { width: 100%; }
+.shot::before, .shot::after { content: ''; position: absolute; pointer-events: none; }
+.shot::before { inset: 0 0 26px; background: repeating-linear-gradient(0deg, rgba(12,12,13,0.22) 0 1px, transparent 1px 3px); }
+.shot::after {
+  inset: 8px 8px 34px;
+  opacity: 0.75;
+  background:
+    linear-gradient(var(--bone), var(--bone)) left top / 14px 1px no-repeat,
+    linear-gradient(var(--bone), var(--bone)) left top / 1px 14px no-repeat,
+    linear-gradient(var(--bone), var(--bone)) right top / 14px 1px no-repeat,
+    linear-gradient(var(--bone), var(--bone)) right top / 1px 14px no-repeat,
+    linear-gradient(var(--bone), var(--bone)) left bottom / 14px 1px no-repeat,
+    linear-gradient(var(--bone), var(--bone)) left bottom / 1px 14px no-repeat,
+    linear-gradient(var(--bone), var(--bone)) right bottom / 14px 1px no-repeat,
+    linear-gradient(var(--bone), var(--bone)) right bottom / 1px 14px no-repeat;
+}
+.shot-cap { display: flex; align-items: center; gap: 8px; height: 26px; padding: 0 9px; font-size: 8.5px; letter-spacing: 0.28em; white-space: nowrap; overflow: hidden; text-transform: uppercase; color: var(--ash); border-top: 1px solid var(--line); }
+.shot-cap::before { content: ''; flex-shrink: 0; width: 6px; height: 6px; background: var(--red); animation: blink 1.6s steps(1, end) infinite; }
+@keyframes blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.2; } }
+
+/* ── THE GAME ────────────────────────────────────────────── */
+/* The clip runs the height of the text beside it, a tall monitor with
+   the sides of the picture cut off, so nothing is left empty under it. */
+.lead { display: grid; grid-template-columns: 310px 1fr; gap: 20px; }
+.lead-body > * + * { margin-top: 13px; }
+.lead .shot { display: flex; flex-direction: column; }
+.lead .shot video { flex: 1 1 0; min-height: 0; object-fit: cover; background: var(--ink); }
+
+/* The status is bone behind a red marker: red is too weak for type this
+   small. */
+.status { display: flex; align-items: baseline; gap: 9px; font-size: 9px; font-weight: 500; letter-spacing: 0.28em; line-height: 1.5; text-transform: uppercase; text-wrap: balance; }
+.status::before { content: ''; flex-shrink: 0; width: 6px; height: 6px; background: var(--red); }
+/* The game's name in the face of the studio's, over the same double rule. */
+.game-title { margin-top: 12px; font-family: var(--head); font-stretch: 125%; font-weight: 900; font-size: 31px; line-height: 1; letter-spacing: 0.035em; text-transform: uppercase; }
+.game-title::after { content: ''; display: block; height: 10px; margin-top: 14px; background: var(--rule2); }
+.game-genre { margin-top: 11px; font-size: 9px; letter-spacing: 0.28em; line-height: 1.6; text-transform: uppercase; text-wrap: balance; color: var(--ash); }
+
+/* A specification sheet: the field in ash capitals, the value in bone. */
+.meta { width: 100%; border-collapse: collapse; font-size: 12px; }
+.meta th, .meta td { padding: 6px 8px 6px 0; text-align: left; vertical-align: top; border-top: 1px solid var(--line-soft); }
+.meta tr:last-child th, .meta tr:last-child td { border-bottom: 1px solid var(--line-soft); }
+.meta th { width: 126px; padding-top: 9px; font-size: 9px; font-weight: 400; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ash); white-space: nowrap; }
+
+/* ── RELEASED TITLES ─────────────────────────────────────── */
+.releases { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.release { display: flex; border: 1px solid var(--line); }
+.release-body { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 12px; }
+.release-body > * + * { margin-top: 12px; }
+.release-body p { flex: 1 0 auto; font-size: 12px; }
+.release-title { margin-top: 11px; font-family: var(--head); font-stretch: 125%; font-weight: 900; font-size: 16px; line-height: 1.14; letter-spacing: 0.035em; text-transform: uppercase; }
+.release-genre { margin-top: 7px; font-size: 8.5px; letter-spacing: 0.28em; text-transform: uppercase; text-wrap: balance; color: var(--ash); }
+.release .shot video { aspect-ratio: 4 / 3; object-fit: contain; background: var(--ink); }
+.release .meta th { width: 104px; }
+/* A shipped title carries a stamp, bone with the type in ink. */
+.shipped { display: inline-block; padding: 4px 5px 3px 8px; font-size: 8.5px; font-weight: 500; letter-spacing: 0.28em; line-height: 1.2; text-transform: uppercase; color: var(--ink); background: var(--bone); }
+
+/* ── THE GAME PAGE: STATUS ───────────────────────────────── */
+.sublabel { display: block; font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ash); }
+.sublabel + * { margin-top: 8px; }
+.panel-body > .sublabel { margin-top: 20px; }
+
+.board, .chips { list-style: none; }
+/* What is left to build, each line behind an open box. The one being
+   worked on has its box filled red and a bone edge. */
+.board { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.board-item { display: flex; align-items: baseline; gap: 10px; padding: 8px 10px; font-size: 12px; line-height: 1.45; border: 1px solid var(--line); }
+.board-item::before { content: ''; flex-shrink: 0; width: 7px; height: 7px; border: 1px solid var(--ash); }
+.board-item.is-active { border-color: var(--bone); }
+.board-item.is-active::before { background: var(--red); border-color: var(--red); }
+/* What is built, kept quiet in ash. */
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip { padding: 4px 8px 3px; font-size: 10.5px; line-height: 1.4; color: var(--ash); border: 1px solid var(--line-soft); }
+
+/* ── THE GAME PAGE: HOW IT PLAYS ─────────────────────────── */
+/* A box for each system. Its title goes without the bars, like a rail's. */
+.sys { border: 1px solid var(--line); }
+.sys > .panel-title { padding: 10px 12px 9px; font-size: 9px; }
+.sys-body { padding: 14px; }
+.sys-body > * + * { margin-top: 13px; }
+.sys-body p { max-width: 78ch; }
+
+/* A diagram beside its footage, both 7 by 4, the clips' own shape, so the
+   captions start on one line. */
+.figpair { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fig { border: 1px solid var(--line); }
+.fig .plate {
+  display: flex;
+  align-items: center;
+  aspect-ratio: 7 / 4;
+  border-bottom: 1px solid var(--line);
+  /* Drawing paper: a grid faint enough to sit behind the small labels. */
+  background:
+    linear-gradient(var(--line-soft) 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px) 0 0 / 20px 20px;
+}
+.fig svg { display: block; width: 100%; height: auto; }
+/* The clip is a feed with no caption strip, so its ticks sit in all four
+   corners of the picture. */
+.fig .shot { border: 0; border-bottom: 1px solid var(--line); }
+.fig .shot::before { inset: 0; }
+.fig .shot::after { inset: 8px; }
+.fig video { aspect-ratio: 7 / 4; object-fit: cover; background: var(--ink); }
+.fig figcaption { padding: 9px 10px 10px; font-size: 11px; line-height: 1.55; color: var(--ash); }
+/* Labels inside the drawings. Red draws what detects you and never the
+   words, which are too small for it. */
+.svg-label { font-family: var(--mono); font-size: 10px; letter-spacing: 0.02em; fill: var(--ash); }
+.svg-label.b { fill: var(--bone); }
+.svg-label.hi { fill: var(--bone); font-weight: 500; }
+
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); }
+.tbl { width: 100%; min-width: 420px; border-collapse: collapse; font-size: 12px; }
+.tbl th { padding: 9px 10px 8px; font-size: 9px; font-weight: 400; letter-spacing: 0.28em; text-align: left; text-transform: uppercase; white-space: nowrap; color: var(--ash); border-bottom: 1px solid var(--line); }
+.tbl td { padding: 7px 10px; vertical-align: top; border-bottom: 1px solid var(--line-soft); }
+.tbl tbody tr:last-child td { border-bottom: 0; }
+.tbl td.num { font-weight: 500; white-space: nowrap; }
+
+/* ── RAIL: DEMO PROGRESS, WISHLIST ───────────────────────── */
+.bar-label { display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 8px; font-size: 8.5px; letter-spacing: 0.28em; text-transform: uppercase; color: var(--ash); }
+/* The number is the readout, and at this size red is allowed to set it. */
+.bar-label b { font-family: var(--head); font-stretch: 125%; font-weight: 900; font-size: 30px; line-height: 0.8; letter-spacing: 0.035em; color: var(--red); }
+.bar { height: 12px; padding: 2px; border: 1px solid var(--line); }
+.bar-fill { height: 100%; background: repeating-linear-gradient(90deg, var(--red) 0 4px, transparent 4px 6px); }
+.panel .bar { height: 16px; }
+.box .meta { font-size: 11px; }
+.box .meta th { width: 1%; padding-right: 10px; font-size: 8.5px; }
+
+/* The wishlist box as a two-ink poster: the still printed in ink on red,
+   and its title on a solid ink panel, where the guide wants type that
+   has to cross a picture. */
+.wishbox { display: block; text-decoration: none; }
+.wishbox:hover, .wishbox:focus-visible { color: inherit; background: none; }
+.wishbox .shot { display: block; border: 0; background: var(--red); }
+.wishbox .shot::before, .wishbox .shot::after { display: none; }
+.wishbox img { width: 100%; height: auto; filter: grayscale(1) brightness(3.4) contrast(1.25); mix-blend-mode: multiply; }
+.wishbox-title { position: absolute; left: 0; right: 0; bottom: 0; padding: 10px 9px 9px; font-family: var(--head); font-stretch: 125%; font-weight: 900; font-size: 13px; line-height: 1.1; letter-spacing: 0.035em; text-transform: uppercase; color: var(--bone); background: var(--ink); }
+.wishbox .btn { display: flex; justify-content: center; margin-top: 10px; padding: 11px 2px 10px; font-size: 8px; letter-spacing: 0.3em; white-space: nowrap; }
+.wishbox:hover .btn, .wishbox:focus-visible .btn { color: var(--bone); background: var(--ink); }
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+/* The page signs off the way the kit's splash screens do: the stacked
+   logo with the slogan under it, and a line in each lower corner. */
+.site-foot { border-top: 1px solid var(--line); text-align: center; font-size: 11px; color: var(--ash); }
+.foot-in { padding: 26px 14px 0; }
+.site-foot p + p { margin-top: 7px; }
+.site-foot a { color: var(--ash); }
+.site-foot a:hover, .site-foot a:focus-visible { color: var(--ink); }
+.foot-nav { font-size: 9.5px; letter-spacing: 0.28em; text-transform: uppercase; }
+.foot-nav a { margin: 0 9px; }
+/* At 180px wide C is 21px. The file with the slogan in it would set the
+   slogan under 5px at this size, so the slogan is type here, in the
+   guide's own setting: Plex Mono Regular, capitals, 0.28em, ash. The
+   indent balances the tracking after the last letter. */
+.signoff { padding: 38px 30px 34px; }
+.signoff .logo { width: 180px; margin: 0 auto; }
+.slogan { margin-top: 15px; font-size: 8px; line-height: 1; letter-spacing: 0.28em; text-indent: 0.28em; text-transform: uppercase; color: var(--ash); }
+.foot-base { display: flex; justify-content: space-between; gap: 14px; padding: 0 14px 14px; font-size: 9.5px; letter-spacing: 0.28em; text-transform: uppercase; }
+
+/* ── RESPONSIVE / MOTION ─────────────────────────────────── */
+@media (max-width: 1339px) {
+  .site { max-width: 1080px; }
+  .cols { grid-template-columns: 214px minmax(0, 1fr); grid-template-rows: auto 1fr; }
+  .rail-l { grid-area: 1 / 1; }
+  .rail-r { grid-area: 2 / 1; }
+  main { grid-area: 1 / 2 / 3 / 3; }
+  .lead { grid-template-columns: 300px 1fr; }
+  .ident { padding: 40px; }
+  .lockup .logo { width: 420px; }
+}
+@media (max-width: 899px) {
+  .cols { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  .rail-l, .rail-r, main { grid-area: auto; }
+  main { order: -1; }
+  .rail { flex-direction: row; flex-wrap: wrap; }
+  .rail .box { flex: 1 1 214px; }
+  .rail .box-nav { display: none; }
+  .ident { flex-direction: column; align-items: flex-start; }
+  .ident-side { text-align: left; }
+}
+@media (max-width: 620px) {
+  body { padding: 0 0 24px; }
+  .site { border-left: 0; border-right: 0; }
+  /* The lockup stays above the 300px at which PRODUCTIONS can be read. */
+  .ident { gap: 34px; padding: 34px 30px; }
+  .lockup .logo { width: min(100%, 420px); }
+  .util { letter-spacing: 0.2em; }
+  .sb-hide-sm { display: none; }
+  .mainnav a { padding: 11px 9px 10px; font-size: 8.5px; letter-spacing: 0.3em; }
+  .game-title { font-size: 23px; }
+  .releases, .lead, .figpair, .board { grid-template-columns: 1fr; }
+  .tbl { min-width: 0; }
+  /* In one column the clip has no text beside it and takes its own shape. */
+  .lead .shot { display: block; width: 100%; max-width: 340px; justify-self: center; }
+  .lead .shot video { aspect-ratio: 390 / 494; }
+  .foot-nav { font-size: 8.5px; }
+  .foot-nav a { margin: 0 4px; }
+  .foot-base { flex-direction: column; align-items: center; gap: 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .shot-cap::before { animation: none; }
+}
+
+/* ── PRINT ───────────────────────────────────────────────── */
+/* Paper takes the guide's light treatment: ink on white, and Ash Dark
+   for the quiet type. The two logos are the dark files, so each keeps a
+   panel of ink behind it. */
+@media print {
+  :root { --bone: #0C0C0D; --ash: #6B6862; --line: rgba(12,12,13,0.3); --line-soft: rgba(12,12,13,0.14); }
+  body { background: #fff; padding: 0; }
+  .site, html[data-ts] .site { border: 0; max-width: none; zoom: 1; }
+  .util, .bars, .mainnav, .rail { display: none; }
+  .cols, main { display: block; padding: 0; }
+  .panel { margin-bottom: 12px; }
+  /* The two filled things would print ink on ink. */
+  .btn.is-primary { background: none; }
+  .shipped { background: none; border: 1px solid var(--bone); }
+  .ident, .signoff { background: #0C0C0D; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .ident-side .line, .slogan { color: #8C8982; }
+  .ident-side .line b { color: #F1EFE9; }
+  /* The drawings are bone lines, so their paper stays ink as well. */
+  .fig .plate { background: #0C0C0D; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .svg-label { fill: #8C8982; }
+  .svg-label.b, .svg-label.hi { fill: #F1EFE9; }
+}

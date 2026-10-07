@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 Not Found - Jhorro Productions</title>
+<meta name="robots" content="noindex">
+<!-- Caddy serves this page for a missing address at any depth (handle_errors
+     in deploy/Caddyfile), so every path in it starts at the root. -->
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="manifest" href="/site.webmanifest">
+<meta name="theme-color" content="#0C0C0D">
+
+<link rel="preload" href="/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/michroma-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/fonts/archivo-expanded-black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="/watcher.css">
+<script src="/studio.js"></script>
+
+<style>
+/* The number, in the face of the wordmark and the red of a warning. At this
+   size the guide lets red set type. The indent balances the tracking after
+   the last figure. */
+.big404 {
+  font-family: var(--head);
+  font-stretch: 125%;
+  font-weight: 900;
+  font-size: 150px;
+  line-height: 0.9;
+  letter-spacing: 0.035em;
+  text-indent: 0.035em;
+  text-align: center;
+  color: var(--red);
+}
+/* The one line under it is a caption to the number, so it is centred too. */
+.panel-body .lede { max-width: none; text-align: center; }
+
+/* The address that was asked for. */
+.req { font-weight: 500; overflow-wrap: anywhere; }
+/* An address in a sentence is not broken at its slash. */
+.nb { white-space: nowrap; }
+
+@media (max-width: 620px) {
+  .big404 { font-size: 88px; }
+}
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="site">
+
+  <!-- ── MASTHEAD ───────────────────────────────────────── -->
+  <header>
+    <div class="util">
+      <span>Independent Studio | Est. 2024 | Brazil</span>
+      <span class="sb-spacer"></span>
+      <span class="textsize" role="group" aria-label="Text size">
+        <span>Text size</span>
+        <button type="button" data-ts="1" aria-label="Normal text size">A</button>
+        <button type="button" data-ts="2" aria-label="Large text size">A</button>
+        <button type="button" data-ts="3" aria-label="Largest text size">A</button>
+      </span>
+    </div>
+
+    <div class="ident">
+      <!-- The horizontal lockup from the brand kit, and the way back to the
+           studio home. The drawing after it is the eye studio.js moves. -->
+      <a class="lockup" href="/" aria-label="Jhorro Productions, studio home">
+        <span class="logo logo-h">
+          <img src="/brand/01-logo/horizontal/svg/jhorro-horizontal-dark.svg" alt="" width="470" height="104">
+          <svg class="eye" viewBox="0 0 920 920" aria-hidden="true" focusable="false">
+            <clipPath id="lid-head"><path d="M330 360Q460 260 590 360Q460 460 330 360Z"/></clipPath>
+            <ellipse class="eye-fill" cx="460" cy="360" rx="29" ry="48"/>
+            <g clip-path="url(#lid-head)"><ellipse class="pupil" cx="460" cy="360" rx="24" ry="44"/></g>
+          </svg>
+        </span>
+      </a>
+
+      <div class="ident-side">
+        <p class="line"><a href="/">Jhorro Productions</a> &gt; <b>404 Not Found</b></p>
+      </div>
+    </div>
+
+    <div class="bars" aria-hidden="true"></div>
+  </header>
+
+  <nav class="mainnav" aria-label="Main">
+    <a href="/">Studio Home</a>
+    <a href="/dead-saints-parade">Dead Saints Parade</a>
+    <a href="/#released">Released Titles</a>
+    <a href="/jhonnatan/">Portfolio</a>
+  </nav>
+
+  <div class="cols">
+
+    <!-- ── LEFT RAIL ────────────────────────────────────── -->
+    <!-- Both rails are repeated in every studio page, like the masthead and
+         the footer. The four accounts in the last box are also in the footer, in
+         sameAs in the home's head, and in the twitter:site tags. -->
+    <aside class="rail rail-l" aria-label="Site">
+
+      <nav class="box box-nav" aria-labelledby="bx-nav">
+        <div class="box-title" id="bx-nav">Navigate</div>
+        <ul class="linklist">
+          <li><a href="/">Studio Home</a></li>
+          <li><a href="/dead-saints-parade">Dead Saints Parade</a></li>
+          <li><a href="/#released">Released Titles</a></li>
+          <li><a href="/#studio">About</a></li>
+          <li><a href="/privacy-policy">Privacy Policy</a></li>
+        </ul>
+      </nav>
+
+      <section class="box" aria-labelledby="bx-games">
+        <div class="box-title" id="bx-games">Games</div>
+        <ul class="linklist">
+          <li><a href="/dead-saints-parade">Dead Saints Parade</a><span class="tag is-live">In development</span></li>
+          <li><a href="/#released">Idle Cyberpunk City Clicker</a><span class="tag">Released 2025</span></li>
+          <li><a href="/#released">Idle Kingdom Builder</a><span class="tag">Released 2024</span></li>
+        </ul>
+      </section>
+
+      <section class="box" aria-labelledby="bx-follow">
+        <div class="box-title" id="bx-follow">Contact and follow</div>
+        <ul class="linklist">
+          <li><a href="mailto:contact@jhorro.com">Email</a></li>
+          <li><a href="https://www.youtube.com/@jhorro" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://www.linkedin.com/company/jhorro-productions/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://x.com/jhorroprod" target="_blank" rel="noopener">X (Twitter)</a></li>
+          <li><a href="https://www.instagram.com/jhorroproductions/" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </section>
+
+    </aside>
+
+    <main id="main">
+
+      <section class="panel">
+        <h1 class="panel-title"><span>Not Found</span><span class="aside">Error 404</span></h1>
+        <div class="panel-body">
+          <!-- Decoration: the heading and its aside already say it. -->
+          <div class="big404" aria-hidden="true">404</div>
+          <p class="lede">The requested URL <span class="req" id="req"></span> was not found on this server.</p>
+          <p>
+            The site was reorganized in October 2026 and some pages moved. The studio is now on the front
+            page, and Jhonnatan Barbosa's portfolio is at <span class="nb">jhorro.com/jhonnatan</span>.
+          </p>
+
+          <table class="meta">
+            <tbody>
+              <tr><th scope="row">Studio</th><td><a href="/">Studio home</a></td></tr>
+              <tr><th scope="row">Game</th><td><a href="/dead-saints-parade">Dead Saints Parade</a></td></tr>
+              <tr><th scope="row">Released</th><td><a href="/#released">Idle Kingdom Builder and Idle Cyberpunk City Clicker</a></td></tr>
+              <tr><th scope="row">Portfolio</th><td><a href="/jhonnatan/">Jhonnatan Barbosa, game designer</a></td></tr>
+              <tr><th scope="row">Legal</th><td><a href="/privacy-policy">Privacy policy</a></td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            If a link on this site sent you here, write to
+            <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>.
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ── RIGHT RAIL ───────────────────────────────────── -->
+    <!-- The percentage is the one in the game page's status panel and in the
+         home card's lead paragraph. tools/check_site.py compares them. -->
+    <aside class="rail rail-r" aria-label="Dead Saints Parade">
+
+      <section class="box" aria-labelledby="bx-demo">
+        <div class="box-title" id="bx-demo">Demo progress</div>
+        <div class="box-body">
+          <div>
+            <div class="bar-label"><span>Complete</span><b>62%</b></div>
+            <div class="bar" role="progressbar" aria-label="Demo progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="62">
+              <div class="bar-fill" style="width:62%"></div>
+            </div>
+          </div>
+          <table class="meta">
+            <tbody>
+              <tr><th scope="row">Demo</th><td>February 2027</td></tr>
+              <tr><th scope="row">Release</th><td>Q2 2027</td></tr>
+            </tbody>
+          </table>
+          <a href="/dead-saints-parade#dsp-status">Development status</a>
+        </div>
+      </section>
+
+      <section class="box" aria-labelledby="bx-wish">
+        <div class="box-title" id="bx-wish">Wishlist</div>
+        <div class="box-body">
+          <!-- A still from the August build. The whole box is one link. -->
+          <a class="wishbox" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+            <span class="shot">
+              <img src="/media/wishlist-dsp.jpg" alt="" width="300" height="380">
+              <span class="wishbox-title">Dead Saints Parade</span>
+            </span>
+            <span class="btn is-primary">Wishlist on Steam</span>
+          </a>
+        </div>
+      </section>
+
+    </aside>
+
+  </div>
+
+  <footer class="site-foot">
+    <div class="foot-in">
+      <p>© Jhorro Productions</p>
+      <p class="foot-nav">
+        <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>|<a href="/">Studio Home</a>|<a href="/privacy-policy">Privacy</a>
+      </p>
+      <p class="foot-nav">
+        <a href="https://www.youtube.com/@jhorro" target="_blank" rel="noopener">YouTube</a>|<a href="https://www.linkedin.com/company/jhorro-productions/" target="_blank" rel="noopener">LinkedIn</a>|<a href="https://x.com/jhorroprod" target="_blank" rel="noopener">X (Twitter)</a>|<a href="https://www.instagram.com/jhorroproductions/" target="_blank" rel="noopener">Instagram</a>
+      </p>
+    </div>
+    <div class="signoff">
+      <span class="logo logo-v">
+        <img src="/brand/01-logo/stacked/svg/jhorro-stacked-dark.svg" alt="Jhorro Productions" width="180" height="130" loading="lazy">
+        <svg class="eye" viewBox="0 0 920 920" aria-hidden="true" focusable="false">
+          <clipPath id="lid-foot"><path d="M330 360Q460 260 590 360Q460 460 330 360Z"/></clipPath>
+          <ellipse class="eye-fill" cx="460" cy="360" rx="29" ry="48"/>
+          <g clip-path="url(#lid-foot)"><ellipse class="pupil" cx="460" cy="360" rx="24" ry="44"/></g>
+        </svg>
+      </span>
+      <p class="slogan">Your attention is appreciated.</p>
+    </div>
+    <div class="foot-base">
+      <span>Est. 2024</span>
+      <span>São Paulo, Brazil</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+// Print the address that was asked for. textContent, so nothing in it is parsed.
+(function () {
+  var el = document.getElementById('req');
+  if (el) el.textContent = location.pathname;
+})();
+</script>
+
+</body>
+</html>

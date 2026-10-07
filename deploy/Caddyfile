@@ -1,0 +1,93 @@
+# Caddy config for www.jhorro.com.
+# The server runs a copy of this at /etc/caddy/Caddyfile. After changing it:
+#   sudo cp /var/www/jhorro/deploy/Caddyfile /etc/caddy/Caddyfile
+#   sudo systemctl reload caddy
+{
+	email jhocbarbosa@gmail.com
+}
+
+jhorro.com, jhorro.com.br, www.jhorro.com.br {
+	redir https://www.jhorro.com{uri} permanent
+}
+
+www.jhorro.com {
+	# Only site/ is public. The rest of the checkout (.git, notes/, archive/,
+	# this file) sits outside the root and cannot be requested.
+	root * /var/www/jhorro/site
+	encode gzip
+
+	# CVs that have been replaced. They still answer for whoever was sent the
+	# link, and this header keeps them out of search results. A CV that gets
+	# replaced is added to this list, never deleted.
+	@oldcv path /jhonnatan/docs/Jhonnatan_BarbosaCV.pdf /jhonnatan/docs/JhonnatanBarbosaCV.pdf /jhonnatan/docs/Jhonnatan_Barbosa_-_Game_Designer.pdf /jhonnatan/docs/JhonnatanCB_CV.pdf /jhonnatan/docs/JhonnatanCB_CV2022.pdf /jhonnatan/docs/JhonnatanChristoferBarbosaCV.pdf
+	header @oldcv X-Robots-Tag noindex
+
+	route {
+		# The studio page used to live at /productions and now is the root.
+		redir /productions / permanent
+		redir /productions/ / permanent
+		redir /jhorro-productions / permanent
+		redir /jhorro-productions.html / permanent
+		redir /retro-jhorro / permanent
+		redir /retro-jhorro.html / permanent
+		redir /index.html / permanent
+		redir /privacy-policy.html /privacy-policy permanent
+		redir /dead-saints-parade.html /dead-saints-parade permanent
+
+		# The portfolio used to be the root and now lives in /jhonnatan/.
+		redir /jhonnatan/index.html /jhonnatan/ permanent
+		redir /jhonnatan/dsp-case-study.html /jhonnatan/dsp-case-study permanent
+		redir /dsp-case-study /jhonnatan/dsp-case-study permanent
+		redir /dsp-case-study.html /jhonnatan/dsp-case-study permanent
+		redir /cyberpunk-dashboard-v3 /jhonnatan/cyberpunk-dashboard permanent
+		redir /cyberpunk-dashboard-v3.html /jhonnatan/cyberpunk-dashboard permanent
+		redir /retro /jhonnatan/ permanent
+		redir /retro.html /jhonnatan/ permanent
+
+		# A page is not a folder. Its address with a slash on the end goes to
+		# the page instead of the 404.
+		redir /dead-saints-parade/ /dead-saints-parade permanent
+		redir /privacy-policy/ /privacy-policy permanent
+		redir /jhonnatan/dsp-case-study/ /jhonnatan/dsp-case-study permanent
+		redir /jhonnatan/cyberpunk-dashboard/ /jhonnatan/cyberpunk-dashboard permanent
+
+		# Its files moved with it. Anything requested at the old root address
+		# that now exists under /jhonnatan is sent there: /docs/*.pdf linked
+		# from CVs already sent out, /media/*, /style.css for a cached copy of
+		# the old homepage.
+		@moved {
+			not file {path} {path}.html
+			file /jhonnatan{path}
+		}
+		redir @moved /jhonnatan{uri} permanent
+
+		# The first logo's folder lost the spaces in its name, then moved into
+		# /brand/old when the Watcher kit took /brand. The files kept their names.
+		@oldlogo path_regexp oldlogo "^/jhorro productions logo 2/export/(.*)$"
+		redir @oldlogo /brand/old/{re.oldlogo.1} permanent
+
+		try_files {path} {path}.html
+		file_server
+	}
+
+	# A missing address gets the studio's own 404 page, still with a 404 status.
+	# The page uses root-absolute paths because it is served at any depth.
+	handle_errors {
+		@notfound expression {err.status_code} == 404
+		rewrite @notfound /404.html
+		file_server
+	}
+
+	log {
+		output file /var/log/caddy/jhorro.log
+	}
+}
+
+# The studio's own domains, any path, land on the studio home.
+jhorroproductions.com, www.jhorroproductions.com,
+jhorroproductions.com.br, www.jhorroproductions.com.br {
+	redir https://www.jhorro.com/ permanent
+	log {
+		output file /var/log/caddy/jhorroproductions.log
+	}
+}

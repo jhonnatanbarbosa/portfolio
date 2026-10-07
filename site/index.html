@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jhorro Productions - Game Studio</title>
+<meta name="description" content="Jhorro Productions is an independent studio, developer and publisher of Dead Saints Parade, a third-person stealth immersive sim coming to PC and Steam Deck in 2027.">
+<link rel="canonical" href="https://www.jhorro.com/">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="site.webmanifest">
+<meta name="theme-color" content="#0C0C0D">
+
+<!-- Open Graph / Social Preview -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Jhorro Productions - Game Studio">
+<meta property="og:description" content="Independent studio developing Dead Saints Parade, a third-person stealth immersive sim coming to PC and Steam Deck in 2027.">
+<meta property="og:url" content="https://www.jhorro.com/">
+<meta property="og:image" content="https://www.jhorro.com/brand/01-logo/symbol-tiles/png/jhorro-symbol-tile-dark-1024.png">
+<meta property="og:image:width" content="1024">
+<meta property="og:image:height" content="1024">
+<meta property="og:locale" content="en_US">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@jhorroprod">
+<meta name="twitter:title" content="Jhorro Productions - Game Studio">
+<meta name="twitter:description" content="Independent studio developing Dead Saints Parade, a third-person stealth immersive sim coming to PC and Steam Deck in 2027.">
+<meta name="twitter:image" content="https://www.jhorro.com/brand/01-logo/symbol-tiles/png/jhorro-symbol-tile-dark-1024.png">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://www.jhorro.com/#organization",
+      "name": "Jhorro Productions",
+      "url": "https://www.jhorro.com/",
+      "email": "mailto:contact@jhorro.com",
+      "logo": "https://www.jhorro.com/brand/01-logo/symbol-tiles/png/jhorro-symbol-tile-dark-1024.png",
+      "sameAs": [
+        "https://www.youtube.com/@jhorro",
+        "https://www.linkedin.com/company/jhorro-productions/",
+        "https://x.com/jhorroprod",
+        "https://www.instagram.com/jhorroproductions/"
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://www.jhorro.com/#website",
+      "name": "Jhorro Productions",
+      "alternateName": "Jhorro",
+      "url": "https://www.jhorro.com/",
+      "publisher": { "@id": "https://www.jhorro.com/#organization" }
+    },
+    {
+      "@type": "VideoGame",
+      "name": "Dead Saints Parade",
+      "genre": ["Stealth", "Immersive Sim"],
+      "gamePlatform": ["PC", "Steam Deck"],
+      "url": "https://www.jhorro.com/dead-saints-parade",
+      "sameAs": "https://store.steampowered.com/app/4635010/Dead_Saints_Parade/",
+      "publisher": { "@id": "https://www.jhorro.com/#organization" }
+    },
+    {
+      "@type": "VideoGame",
+      "name": "Idle Cyberpunk City Clicker",
+      "genre": ["Idle", "Clicker"],
+      "gamePlatform": "Android",
+      "datePublished": "2025-06",
+      "url": "https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker",
+      "publisher": { "@id": "https://www.jhorro.com/#organization" }
+    },
+    {
+      "@type": "VideoGame",
+      "name": "Idle Kingdom Builder",
+      "genre": ["Idle", "Clicker"],
+      "gamePlatform": "Android",
+      "datePublished": "2024-09",
+      "url": "https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder",
+      "publisher": { "@id": "https://www.jhorro.com/#organization" }
+    }
+  ]
+}
+</script>
+
+<script>
+// This address was the designer's portfolio until the studio took the root.
+// A fragment never reaches the server, so Caddy cannot redirect an old link
+// like /#cyberpunk-analytics. Forward the ones that only ever meant that page.
+// No section of this page may use an id from this list.
+(function () {
+  var moved = ['projects', 'cyberpunk-analytics', 'guardians-case-study', 'dsp-systems',
+               'documents', 'about', 'experience', 'contact'];
+  var id = location.hash.slice(1);
+  if (moved.indexOf(id) !== -1 || id.indexOf('pd-') === 0) {
+    location.replace('/jhonnatan/' + location.hash);
+  }
+})();
+</script>
+
+<link rel="preload" href="fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/michroma-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/archivo-expanded-black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="watcher.css">
+<script src="studio.js"></script>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<svg width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute">
+  <symbol id="i-steam" viewBox="0 0 24 24"><path d="M11.98 2C6.65 2 2.28 6.13 2 11.4l5.36 2.22a3.04 3.04 0 0 1 1.7-.53l2.39-3.46v-.05a4.05 4.05 0 1 1 4.05 4.05h-.1l-3.4 2.43c0 .03.01.06.01.09a3.05 3.05 0 1 1-6.06-.55L2.5 13.6A10 10 0 1 0 11.98 2zM8.6 17.6l-1.23-.5a2.29 2.29 0 0 0 4.2-1.27 2.29 2.29 0 0 0-2.3-2.29c-.27 0-.53.05-.78.14l1.27.53a1.69 1.69 0 1 1-1.3 3.11l.14.28zm9.16-7.49a2.7 2.7 0 1 0-5.4 0 2.7 2.7 0 0 0 5.4 0zm-4.72 0a2.03 2.03 0 1 1 4.06 0 2.03 2.03 0 0 1-4.06 0z"/></symbol>
+</svg>
+
+<div class="site">
+
+  <!-- ── MASTHEAD ───────────────────────────────────────── -->
+  <header>
+    <div class="util">
+      <span>Independent Studio | Est. 2024 | Brazil</span>
+      <span class="sb-spacer"></span>
+      <span class="textsize" role="group" aria-label="Text size">
+        <span>Text size</span>
+        <button type="button" data-ts="1" aria-label="Normal text size">A</button>
+        <button type="button" data-ts="2" aria-label="Large text size">A</button>
+        <button type="button" data-ts="3" aria-label="Largest text size">A</button>
+      </span>
+      <span class="sb-hide-sm"><b id="clock">&nbsp;</b></span>
+    </div>
+
+    <div class="ident">
+      <!-- The horizontal lockup, the version the guide gives a website
+           header, in the dark treatment. The file is the logo: its name
+           is outlines, so it needs no font and must not be retyped. The
+           drawing after it is the eye studio.js moves. -->
+      <h1 class="lockup">
+        <span class="logo logo-h">
+          <img src="brand/01-logo/horizontal/svg/jhorro-horizontal-dark.svg" alt="Jhorro Productions, Independent Game Studio" width="470" height="104">
+          <svg class="eye" viewBox="0 0 920 920" aria-hidden="true" focusable="false">
+            <clipPath id="lid-head"><path d="M330 360Q460 260 590 360Q460 460 330 360Z"/></clipPath>
+            <ellipse class="eye-fill" cx="460" cy="360" rx="29" ry="48"/>
+            <g clip-path="url(#lid-head)"><ellipse class="pupil" cx="460" cy="360" rx="24" ry="44"/></g>
+          </svg>
+        </span>
+      </h1>
+
+      <div class="ident-side">
+        <p class="line">Your attention is <b>appreciated</b></p>
+        <p class="line">Developer &amp; publisher of <b>Dead Saints Parade</b></p>
+        <p class="line">Games released: <b>2</b></p>
+      </div>
+    </div>
+
+    <div class="bars" aria-hidden="true"></div>
+  </header>
+
+  <nav class="mainnav" aria-label="Main">
+    <a href="/dead-saints-parade">Dead Saints Parade</a>
+    <a href="#released">Released Titles</a>
+    <a href="#studio">About</a>
+    <a href="/jhonnatan/">Portfolio</a>
+    <a class="is-cta" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">Wishlist on Steam</a>
+  </nav>
+
+  <div class="cols">
+
+    <!-- ── LEFT RAIL ────────────────────────────────────── -->
+    <!-- Both rails are repeated in every studio page, like the masthead and
+         the footer. The four accounts in the last box are also in the footer, in
+         sameAs in the home's head, and in the twitter:site tags. -->
+    <aside class="rail rail-l" aria-label="Site">
+
+      <nav class="box box-nav" aria-labelledby="bx-nav">
+        <div class="box-title" id="bx-nav">Navigate</div>
+        <ul class="linklist">
+          <li><a href="/" aria-current="page">Studio Home</a></li>
+          <li><a href="/dead-saints-parade">Dead Saints Parade</a></li>
+          <li><a href="#released">Released Titles</a></li>
+          <li><a href="#studio">About</a></li>
+          <li><a href="/privacy-policy">Privacy Policy</a></li>
+        </ul>
+      </nav>
+
+      <section class="box" aria-labelledby="bx-games">
+        <div class="box-title" id="bx-games">Games</div>
+        <ul class="linklist">
+          <li><a href="/dead-saints-parade">Dead Saints Parade</a><span class="tag is-live">In development</span></li>
+          <li><a href="#released">Idle Cyberpunk City Clicker</a><span class="tag">Released 2025</span></li>
+          <li><a href="#released">Idle Kingdom Builder</a><span class="tag">Released 2024</span></li>
+        </ul>
+      </section>
+
+      <section class="box" aria-labelledby="bx-follow">
+        <div class="box-title" id="bx-follow">Contact and follow</div>
+        <ul class="linklist">
+          <li><a href="mailto:contact@jhorro.com">Email</a></li>
+          <li><a href="https://www.youtube.com/@jhorro" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://www.linkedin.com/company/jhorro-productions/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://x.com/jhorroprod" target="_blank" rel="noopener">X (Twitter)</a></li>
+          <li><a href="https://www.instagram.com/jhorroproductions/" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </section>
+
+    </aside>
+
+    <main id="main">
+
+      <!-- ── INTRO ────────────────────────────────────────── -->
+      <section class="panel">
+        <h2 class="panel-title"><span>The Studio</span><span class="aside">Est. 2024, Brazil</span></h2>
+        <div class="panel-body">
+          <p class="lede">
+            Jhorro Productions is an independent game studio in Brazil. The current project is
+            <b>Dead Saints Parade</b>, a third-person stealth game for PC and Steam Deck. Two idle games
+            are out on Google Play: <a href="#released">Idle Kingdom Builder</a> and
+            <a href="#released">Idle Cyberpunk City Clicker</a>.
+          </p>
+          <div class="actions">
+            <a class="btn is-primary" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+              <svg aria-hidden="true" focusable="false"><use href="#i-steam"/></svg>
+              Wishlist on Steam
+            </a>
+            <a class="btn" href="#released">Released Titles</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── DEAD SAINTS PARADE ───────────────────────────── -->
+      <section class="panel" id="dead-saints-parade">
+        <h2 class="panel-title"><span>Dead Saints Parade</span><span class="aside">01 | First PC Title</span></h2>
+        <div class="panel-body">
+
+          <div class="lead">
+            <div class="shot">
+              <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Dead Saints Parade third-person stealth immersive sim gameplay">
+                <source src="media/dsp_updateAug.mp4" type="video/mp4">
+                <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+              </video>
+              <div class="shot-cap">August build, pre-alpha footage</div>
+            </div>
+
+            <div class="lead-body">
+              <div>
+                <span class="status">In Development | Demo Feb 2027 | Release Q2 2027</span>
+                <div class="game-title">Dead Saints Parade</div>
+                <div class="game-genre">Third-Person Stealth Immersive Sim | PC &amp; Steam Deck | Unity 6</div>
+              </div>
+
+              <p>
+                You play a spy in a decaying Gothic-Victorian city. Information is your best weapon, and a
+                fight kills you about as fast as it kills a guard. Guards work together, and light and
+                sound give you away. Civilians repeat what they hear. The game takes after Thief,
+                Dishonored, Metal Gear Solid and Gloomwood.
+              </p>
+
+              <p>
+                The core systems are done and the demo is 62% complete. The cathedral levels, dagger and
+                pistol combat, and Steam Deck controls are being built now.
+              </p>
+
+              <table class="meta">
+                <tbody>
+                  <tr><th scope="row">Genre</th><td>Third-person stealth immersive sim, single-player</td></tr>
+                  <tr><th scope="row">Platform</th><td>PC (Windows) and Steam Deck</td></tr>
+                  <tr><th scope="row">Engine</th><td>Unity 6.3</td></tr>
+                  <tr><th scope="row">Developer</th><td>Jhorro Productions</td></tr>
+                  <tr><th scope="row">Publisher</th><td>Jhorro Productions</td></tr>
+                  <tr><th scope="row">Release</th><td>Demo February 2027, full release Q2 2027</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="actions">
+            <a class="btn is-primary" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+              <svg aria-hidden="true" focusable="false"><use href="#i-steam"/></svg>
+              Wishlist on Steam
+            </a>
+            <a class="btn" href="/dead-saints-parade">Game page</a>
+            <a class="btn" href="/dead-saints-parade#dsp-status">Development status</a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── RELEASED TITLES ──────────────────────────────── -->
+      <section class="panel" id="released">
+        <h2 class="panel-title"><span>Released Titles</span><span class="aside">02-03 | Android | Google Play</span></h2>
+        <div class="panel-body">
+
+          <p>Together the two idle games have more than 1,600 downloads on Google Play.</p>
+
+          <div class="releases">
+
+            <article class="release">
+              <div class="release-body">
+
+                <div class="shot">
+                  <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Cyberpunk City Clicker gameplay">
+                    <source src="media/idle-cyberpunk-city-clicker.mp4" type="video/mp4">
+                    <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+                  </video>
+                  <div class="shot-cap">Gameplay</div>
+                </div>
+
+                <div>
+                  <span class="shipped">Released June 2025</span>
+                  <div class="release-title">Idle Cyberpunk City Clicker</div>
+                  <div class="release-genre">Idle Clicker | Android | Unity 6</div>
+                </div>
+
+                <p>
+                  It is an idle clicker set in a dystopian cyberpunk city. You earn credits by tapping and
+                  from buildings that pay out on their own, then spend them to expand the city.
+                </p>
+
+                <table class="meta">
+                  <tbody>
+                    <tr><th scope="row">Platform</th><td>Android</td></tr>
+                    <tr><th scope="row">Released</th><td>June 2025</td></tr>
+                    <tr><th scope="row">Players</th><td>600+ downloads, rated 4.2/5</td></tr>
+                  </tbody>
+                </table>
+
+                <div class="actions">
+                  <a class="btn" href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener">Google Play</a>
+                </div>
+
+              </div>
+            </article>
+
+            <article class="release">
+              <div class="release-body">
+
+                <div class="shot">
+                  <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Kingdom Builder gameplay">
+                    <source src="media/idle-kingdom-builder.mp4" type="video/mp4">
+                    <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+                  </video>
+                  <div class="shot-cap">Gameplay</div>
+                </div>
+
+                <div>
+                  <span class="shipped">Released September 2024</span>
+                  <div class="release-title">Idle Kingdom Builder</div>
+                  <div class="release-genre">Idle Clicker | Android | Unity 2022</div>
+                </div>
+
+                <p>
+                  It is a medieval kingdom-building idle game. You click for gold and put up buildings
+                  such as houses, farms and markets, and each one earns on its own. There are ten kinds
+                  of building and 75 achievements. A Royal Ascension restarts the kingdom with a
+                  permanent bonus.
+                </p>
+
+                <table class="meta">
+                  <tbody>
+                    <tr><th scope="row">Platform</th><td>Android</td></tr>
+                    <tr><th scope="row">Released</th><td>September 2024</td></tr>
+                    <tr><th scope="row">Players</th><td>1,000+ downloads</td></tr>
+                  </tbody>
+                </table>
+
+                <div class="actions">
+                  <a class="btn" href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener">Google Play</a>
+                </div>
+
+              </div>
+            </article>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- ── ABOUT ────────────────────────────────────────── -->
+      <!-- The id is "studio" because #about and #contact belong to the portfolio:
+           the script in the head forwards both of them to /jhonnatan/. -->
+      <section class="panel" id="studio">
+        <h2 class="panel-title"><span>About</span><span class="aside">Jhorro Productions</span></h2>
+        <div class="panel-body">
+
+          <p>
+            Jhorro Productions is an independent game studio in São Paulo, Brazil, founded by game
+            designer Jhonnatan Barbosa. It makes stealth and immersive-sim games for PC and idle games
+            for mobile, and does its own design and programming.
+          </p>
+
+          <p>
+            The name has been in use since 2022. The first game came out in 2024, and the studio was
+            incorporated in 2026.
+          </p>
+
+          <table class="meta">
+            <tbody>
+              <tr><th scope="row">Based in</th><td>São Paulo, Brazil</td></tr>
+              <tr><th scope="row">Founded by</th><td><a href="/jhonnatan/">Jhonnatan Barbosa</a>, game designer</td></tr>
+              <tr><th scope="row">Games</th><td><a href="/dead-saints-parade">Dead Saints Parade</a> (in development), Idle Cyberpunk City Clicker (2025), Idle Kingdom Builder (2024)</td></tr>
+              <tr><th scope="row">Contact</th><td><a href="mailto:contact@jhorro.com">contact@jhorro.com</a></td></tr>
+              <tr><th scope="row">Support</th><td><a href="mailto:support@jhorro.com">support@jhorro.com</a>, for the Android games</td></tr>
+            </tbody>
+          </table>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ── RIGHT RAIL ───────────────────────────────────── -->
+    <!-- The percentage is the one in the game page's status panel and in the
+         home card's lead paragraph. tools/check_site.py compares them. -->
+    <aside class="rail rail-r" aria-label="Dead Saints Parade">
+
+      <section class="box" aria-labelledby="bx-demo">
+        <div class="box-title" id="bx-demo">Demo progress</div>
+        <div class="box-body">
+          <div>
+            <div class="bar-label"><span>Complete</span><b>62%</b></div>
+            <div class="bar" role="progressbar" aria-label="Demo progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="62">
+              <div class="bar-fill" style="width:62%"></div>
+            </div>
+          </div>
+          <table class="meta">
+            <tbody>
+              <tr><th scope="row">Demo</th><td>February 2027</td></tr>
+              <tr><th scope="row">Release</th><td>Q2 2027</td></tr>
+            </tbody>
+          </table>
+          <a href="/dead-saints-parade#dsp-status">Development status</a>
+        </div>
+      </section>
+
+      <section class="box" aria-labelledby="bx-wish">
+        <div class="box-title" id="bx-wish">Wishlist</div>
+        <div class="box-body">
+          <!-- A still from the August build. The whole box is one link. -->
+          <a class="wishbox" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+            <span class="shot">
+              <img src="media/wishlist-dsp.jpg" alt="" width="300" height="380">
+              <span class="wishbox-title">Dead Saints Parade</span>
+            </span>
+            <span class="btn is-primary">Wishlist on Steam</span>
+          </a>
+        </div>
+      </section>
+
+    </aside>
+
+  </div>
+
+  <footer class="site-foot">
+    <div class="foot-in">
+      <p>© Jhorro Productions</p>
+      <p class="foot-nav">
+        <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>|<a href="/privacy-policy">Privacy</a>
+      </p>
+      <p class="foot-nav">
+        <a href="https://www.youtube.com/@jhorro" target="_blank" rel="noopener">YouTube</a>|<a href="https://www.linkedin.com/company/jhorro-productions/" target="_blank" rel="noopener">LinkedIn</a>|<a href="https://x.com/jhorroprod" target="_blank" rel="noopener">X (Twitter)</a>|<a href="https://www.instagram.com/jhorroproductions/" target="_blank" rel="noopener">Instagram</a>
+      </p>
+    </div>
+    <div class="signoff">
+      <span class="logo logo-v">
+        <img src="brand/01-logo/stacked/svg/jhorro-stacked-dark.svg" alt="Jhorro Productions" width="180" height="130" loading="lazy">
+        <svg class="eye" viewBox="0 0 920 920" aria-hidden="true" focusable="false">
+          <clipPath id="lid-foot"><path d="M330 360Q460 260 590 360Q460 460 330 360Z"/></clipPath>
+          <ellipse class="eye-fill" cx="460" cy="360" rx="29" ry="48"/>
+          <g clip-path="url(#lid-foot)"><ellipse class="pupil" cx="460" cy="360" rx="24" ry="44"/></g>
+        </svg>
+      </span>
+      <p class="slogan">Your attention is appreciated.</p>
+    </div>
+    <div class="foot-base">
+      <span>Est. 2024</span>
+      <span>São Paulo, Brazil</span>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+// The strip at the top shows the visitor their own clock: DD-MM-YY HH:MM AM.
+(function () {
+  var el = document.getElementById('clock');
+  if (!el) return;
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function tick() {
+    var d = new Date(), h = d.getHours(), ampm = h < 12 ? 'AM' : 'PM';
+    h = h % 12 || 12;
+    el.textContent = pad(d.getDate()) + '-' + pad(d.getMonth() + 1) + '-' +
+                     String(d.getFullYear()).slice(2) + ' ' + pad(h) + ':' + pad(d.getMinutes()) + ' ' + ampm;
+  }
+  tick();
+  setInterval(tick, 30000);
+})();
+</script>
+
+</body>
+</html>

@@ -16,7 +16,9 @@ There is no build step, package manager or bundler. Files are served exactly as 
 - `site/` is the web root and the only folder the server can reach. Anything that should not be public stays out of it.
   - The studio has four pages, English only: `site/index.html` (the home), `site/dead-saints-parade.html` (the game), `site/privacy-policy.html` and `site/404.html`.
   - `site/studio.css` is the stylesheet those four share. `site/studio.js` is their shared script, loaded in the head: it puts the saved text size on the page before anything paints, then runs the status bar's size buttons and the lazy video. Each page keeps its markup, and any script of its own, inline.
-  - `site/media/` and `site/brand/` hold the studio's clips and logo files.
+  - `site/media/` holds the studio's clips.
+  - `site/brand/` is the brand kit: the logo files in `01-logo/`, the favicon set in `02-favicon/`, social and splash images, and `jhorro-brand-guide.pdf`, which sets the rules for using them. Read the guide before placing a logo. `site/brand/old/` is the first logo, kept and no longer used.
+  - The favicon set is at the web root (`favicon.ico`, `favicon.svg`, `apple-touch-icon.png`, `site.webmanifest`, `icon-*.png`), where the kit's head snippet and the manifest look for it. The Apple and Android icons and the manifest are copies of the files in `site/brand/02-favicon/`. `favicon.ico` and `favicon.svg` are not: the owner wanted the tab icon as the red symbol with no background, so they are the kit's 16, 32 and 48px drawings with the black tile and the keyhole made transparent. Copying the kit's two files over them puts the tile back. The share image on the home and the game page, and `logo` in the home's structured data, is the kit's dark symbol tile.
   - `site/jhonnatan/` is the whole portfolio as one self-contained folder (page, stylesheet, scripts, `media/`, `docs/`). It references its own files with relative paths.
 - `deploy/Caddyfile` is the server config.
 - `tools/check_site.py` checks links, translation keys and that the demo percentage is the same on every studio page. `tools/preview.py` is the local preview server.
@@ -44,7 +46,7 @@ The server's `/var/www/jhorro` is a git checkout of `main`, and Caddy serves `/v
 All of it is in `deploy/Caddyfile`:
 
 - `/foo` serves `foo.html`, and a folder serves its `index.html`. The portfolio's canonical URL is `/jhonnatan/` with the trailing slash, and its relative paths depend on that.
-- The portfolio used to be the root and the studio used to be `/productions`. The redirects for those old addresses, including the `@moved` rule that sends old root asset URLs into `/jhonnatan/`, must stay. A new file at the root must not take the name of one under `/jhonnatan/` (`style.css`, `index.js`), or that rule stops forwarding the old address.
+- The portfolio used to be the root and the studio used to be `/productions`. The redirects for those old addresses, including the `@moved` rule that sends old root asset URLs into `/jhonnatan/`, must stay. A new file at the root must not take the name of one under `/jhonnatan/` (`style.css`, `index.js`), or that rule stops forwarding the old address. `favicon.svg` is the one exception: the root's is the studio's icon, so the old address now gets that one.
 - A fragment never reaches the server, so the studio home carries a small inline script that forwards old portfolio links such as `/#cyberpunk-analytics`. A new portfolio section id that old links might use goes in its list, and no section of the studio home may use an id from it. That is why the home's about panel is `#studio`, not `#about`.
 - A missing address gets `site/404.html` with a 404 status, through `handle_errors`. Caddy serves that page at any depth, so every path inside it is root-absolute. It is `noindex` and stays out of the sitemap.
 
@@ -106,7 +108,8 @@ The studio (the card on `site/index.html`, and the card, Development status and 
 - The banner, status bar, nav, both rails and footer are repeated in each studio page, so a change to one is four edits. The rails differ between pages only in which Navigate line has `aria-current`, in `#released` and `#studio` on the home against `/#released` and `/#studio` elsewhere, and in the 404's root-absolute paths. On the home the lockup is the `h1`; on the other three it is a link home and the page's own title is the `h1`.
 - The A A A buttons in the status bar scale the whole frame with `zoom` and keep the choice in the `studio-text-size` localStorage key.
 - Nothing in the rails is named "ad" (file, class or id): ad blockers hide those. The wishlist box is `.wishbox` and its image is `media/wishlist-dsp.jpg`.
-- `site/concept-jhorro-codex.html` is a noindex concept for a possible future studio skin, not a live page.
+- `site/concept-jhorro-codex.html` and `site/concept-jhorro-watcher.html` are noindex concepts for a possible future studio skin, not live pages. The Watcher one is the home's markup under a stylesheet that follows the brand guide, apart from three things the owner asked for, listed in the comment at the top of its `<style>`. Its `.cols` block was copied from the home and is not kept in step with it.
+- The live studio pages take only the favicon and the share image from the Watcher kit. Their banner still draws the first logo inline (`.lockup`).
 
 ## Portfolio JS conventions
 

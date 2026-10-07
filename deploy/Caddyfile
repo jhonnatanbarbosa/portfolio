@@ -48,9 +48,10 @@ www.jhorro.com {
 		}
 		redir @moved /jhonnatan{uri} permanent
 
-		# The logo folder lost the spaces in its name; the files kept theirs.
+		# The first logo's folder lost the spaces in its name, then moved into
+		# /brand/old when the Watcher kit took /brand. The files kept their names.
 		@oldlogo path_regexp oldlogo "^/jhorro productions logo 2/export/(.*)$"
-		redir @oldlogo /brand/{re.oldlogo.1} permanent
+		redir @oldlogo /brand/old/{re.oldlogo.1} permanent
 
 		try_files {path} {path}.html
 		file_server

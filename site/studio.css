@@ -1,0 +1,548 @@
+/* ═══════════════════════════════════════════════════════════
+   Jhorro Productions, early-2000s skin.
+
+   The stylesheet of every studio page: the home, the game page,
+   the privacy policy and the 404. Period chrome: a fixed centred
+   frame, a beveled wordmark plate, gradient title bars, Verdana,
+   hard 1px borders, underlined links. Palette is the studio's own
+   grey/white/black rather than the portfolio's pink, so the two
+   retro sites read as two sites by the same hand instead of one
+   site twice.
+
+   A rule only one page needs stays in that page's own <style>.
+   ═══════════════════════════════════════════════════════════ */
+
+:root {
+  --paper:     #0b0b0d;   /* outside the frame */
+  --frame:     #131316;   /* the frame itself */
+  --panel:     #17171a;   /* panel body */
+  --sunken:    #0b0b0d;   /* screenshot mount */
+
+  --bar-top:   #33333a;   /* title bars */
+  --bar-bot:   #1a1a1e;
+
+  --line:      #2b2b30;
+  --line-soft: #1e1e22;
+  --bevel-hi:  rgba(241,239,233,0.10);
+  --bevel-lo:  #000;
+
+  --ink:       #f1efe9;
+  --mut:       rgba(241,239,233,0.58);
+  --dim:       rgba(241,239,233,0.40);
+
+  --ui:      Verdana, Geneva, Tahoma, "DejaVu Sans", sans-serif;
+  --display: Georgia, "Times New Roman", Times, serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+/* Nothing in 2002 had a border radius. */
+*, *::before, *::after { border-radius: 0; }
+
+html { scroll-behavior: smooth; scroll-padding-top: 12px; }
+
+body {
+  font-family: var(--ui);
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ink);
+  background: var(--paper);
+  /* Stand-in for the tiled GIF background, at an alpha low enough to
+     stay out of the way. */
+  background-image:
+    repeating-linear-gradient(45deg,  rgba(241,239,233,0.016) 0 1px, transparent 1px 4px),
+    repeating-linear-gradient(-45deg, rgba(241,239,233,0.016) 0 1px, transparent 1px 4px);
+  padding: 14px 12px 40px;
+  -webkit-text-size-adjust: 100%;
+}
+
+img, video { display: block; max-width: 100%; }
+
+/* Underlined links with a distinct visited colour, both of which modern
+   design talked itself out of and the period did not. The visited colour is
+   scoped to prose: nav items and buttons are chrome, and chrome that fades
+   after one click just reads as broken. :where() keeps the scoping free of
+   specificity so the :hover rule below still wins on a visited link. */
+a { color: var(--ink); text-decoration: underline; }
+:where(.panel-body p) a:visited { color: var(--mut); }
+a:hover, a:focus-visible { color: #fff; background: rgba(241,239,233,0.10); }
+:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
+::selection { background: var(--ink); color: var(--paper); }
+
+.skip-link { position: absolute; left: -9999px; top: 0; padding: 8px 14px; background: var(--panel); border: 1px solid var(--ink); z-index: 50; }
+.skip-link:focus { left: 8px; top: 8px; }
+
+/* ── FRAME ───────────────────────────────────────────────── */
+.site {
+  max-width: 820px;
+  margin: 0 auto;
+  background: var(--frame);
+  border: 1px solid var(--line);
+  box-shadow:
+    inset 1px 1px 0 var(--bevel-hi),
+    inset -1px -1px 0 var(--bevel-lo),
+    0 0 0 3px #08080a,
+    0 8px 28px rgba(0,0,0,0.6);
+}
+
+/* ── BANNER ──────────────────────────────────────────────── */
+.banner {
+  padding: 26px 20px 20px;
+  text-align: center;
+  background:
+    radial-gradient(ellipse 70% 100% at 50% 0%, #1e1e22, transparent 70%),
+    linear-gradient(180deg, #16161a, #101013);
+  border-bottom: 1px solid var(--line);
+}
+/* Mark and wordmark as one horizontal lockup, which is how the studio's
+   own logo files are drawn. */
+.lockup { display: flex; align-items: center; justify-content: center; gap: 14px;
+  margin: 0; font-size: inherit; font-weight: inherit; line-height: normal; }
+/* On the home page the lockup is the heading. On every other page the
+   heading is the page's own title, so the lockup is the way back home. */
+a.lockup { text-decoration: none; }
+a.lockup:hover, a.lockup:focus-visible { background: none; }
+/* Real heading text for search engines and screen readers; the visible
+   wordmark above it is SVG, which headings can't be reliably read out of. */
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+.mark { width: 44px; height: 44px; flex-shrink: 0; }
+.wordmark { width: min(360px, 74%); height: auto; }
+.banner-sub {
+  display: block;
+  margin-top: 9px;
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--mut);
+  text-shadow: 0 1px 0 #000;
+}
+
+/* ── STATUS BAR ──────────────────────────────────────────── */
+.statusbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0 16px;
+  padding: 5px 10px;
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--mut);
+  background: linear-gradient(180deg, var(--bar-top), var(--bar-bot));
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgba(241,239,233,0.10), inset 0 -1px 0 var(--bevel-lo);
+}
+.statusbar b { color: var(--ink); font-weight: 700; }
+/* The home page shows the visitor's clock here. A second-level page uses
+   the same strip to say where you are. */
+.statusbar a { color: var(--mut); }
+.sb-spacer { flex: 1 1 auto; }
+
+/* ── NAV ─────────────────────────────────────────────────── */
+.mainnav { display: flex; flex-wrap: wrap; background: #111114; border-bottom: 1px solid var(--line); }
+.mainnav a {
+  flex: 1 1 auto;
+  padding: 7px 12px;
+  text-align: center;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  border-right: 1px solid var(--line-soft);
+}
+.mainnav a:last-child { border-right: 0; }
+.mainnav a:hover, .mainnav a:focus-visible { color: #fff; background: linear-gradient(180deg, #2e2e34, #1b1b1f); }
+.mainnav a.is-cta { background: linear-gradient(180deg, #3a3a42, #202025); }
+
+/* ── PANELS ──────────────────────────────────────────────── */
+main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
+
+.panel {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: inset 1px 1px 0 var(--bevel-hi), inset -1px -1px 0 var(--bevel-lo);
+}
+.panel-title {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2px 10px;
+  padding: 5px 9px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #000;
+  background: linear-gradient(180deg, var(--bar-top), var(--bar-bot));
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgba(241,239,233,0.12);
+}
+.panel-title > * { min-width: 0; }
+.panel-title .aside { font-size: 9px; font-weight: 400; letter-spacing: 0.04em; text-transform: none; color: var(--mut); text-align: right; }
+.panel-body { padding: 12px; }
+.panel-body > * + * { margin-top: 10px; }
+.panel-body p { color: rgba(241,239,233,0.78); }
+
+/* ── INTRO ───────────────────────────────────────────────── */
+.lede { font-size: 13px; line-height: 1.65; }
+.lede b { color: var(--ink); }
+
+.actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  font-size: 11px;
+  font-weight: 700;
+  text-decoration: none;
+  color: var(--ink);
+  background: linear-gradient(180deg, #2a2a30, #17171b);
+  border: 1px solid #3d3d45;
+  box-shadow: inset 1px 1px 0 rgba(241,239,233,0.14), inset -1px -1px 0 rgba(0,0,0,0.6);
+}
+.btn:hover, .btn:focus-visible { color: #fff; background: linear-gradient(180deg, #36363e, #202026); }
+.btn.is-primary { color: #0b0b0d; background: linear-gradient(180deg, #efece6, #b9b6b0); border-color: #fff; }
+.btn.is-primary:hover, .btn.is-primary:focus-visible { color: #0b0b0d; background: linear-gradient(180deg, #fff, #d5d2cc); }
+.btn svg { width: 14px; height: 14px; fill: currentColor; flex-shrink: 0; }
+
+/* ── GAME ────────────────────────────────────────────────── */
+/* Sunken screenshot mount with a caption strip, the way every site of
+   the period framed its media. */
+.shot { padding: 4px; background: var(--sunken); border: 1px solid var(--line); box-shadow: inset 1px 1px 0 var(--bevel-lo); }
+.shot video { width: 100%; border: 1px solid #000; }
+.shot-cap { padding: 4px 2px 0; font-size: 9px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--dim); }
+
+.status { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; }
+.status::before {
+  content: ''; width: 7px; height: 7px;
+  background: var(--ink);
+  box-shadow: 0 0 6px rgba(241,239,233,0.8);
+  animation: blink 1.6s steps(1, end) infinite;
+}
+@keyframes blink { 0%, 60% { opacity: 1; } 61%, 100% { opacity: 0.25; } }
+
+.game-title { font-family: var(--display); font-size: 22px; line-height: 1.15; margin-top: 3px; }
+.game-genre { font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mut); margin-top: 2px; }
+
+/* Meta table. Alternating rows are the single most period thing a
+   table can do. */
+.meta { width: 100%; border-collapse: collapse; font-size: 10.5px; }
+.meta th, .meta td { padding: 4px 8px; text-align: left; border: 1px solid var(--line-soft); vertical-align: top; }
+.meta th { width: 96px; font-size: 9px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--dim); white-space: nowrap; }
+.meta tbody tr:nth-child(odd) { background: rgba(241,239,233,0.03); }
+
+/* ── RELEASED TITLES ─────────────────────────────────────── */
+/* The back catalogue, in a rigid two-up grid under the flagship. Period
+   sites never gave a shipped title the same weight as the current
+   project, and neither does this: smaller mount, smaller type, same
+   chrome. */
+.releases { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.release, .sys {
+  background: #131316;
+  border: 1px solid var(--line);
+  box-shadow: inset 1px 1px 0 var(--bevel-hi), inset -1px -1px 0 var(--bevel-lo);
+}
+.release-body { padding: 9px; }
+.release-body > * + * { margin-top: 7px; }
+.release-body p { font-size: 11px; line-height: 1.55; color: rgba(241,239,233,0.75); }
+.release-title { font-family: var(--display); font-size: 15px; line-height: 1.2; margin-top: 3px; }
+.release-genre { font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mut); margin-top: 2px; }
+/* Both clips are cut to 4:3, the shape of this mount. A clip of any other
+   shape is letterboxed, not cropped, so the two cards keep the same height,
+   which is what a period screenshot table did by construction, since the
+   slices were all one size. */
+.release .shot video { aspect-ratio: 4 / 3; object-fit: contain; background: #000; }
+.release .meta { font-size: 10px; }
+.release .meta th { width: 66px; }
+.release .btn { font-size: 10px; padding: 4px 9px; }
+
+.shipped {
+  display: inline-block;
+  padding: 1px 5px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: rgba(241,239,233,0.07);
+  border: 1px solid var(--line);
+}
+
+/* ── DEAD SAINTS PARADE ──────────────────────────────────── */
+/* The lead clip is portrait, so it stands beside the write-up the way a
+   box shot stood beside a review instead of running the full width. */
+.lead { display: grid; grid-template-columns: 250px 1fr; gap: 12px; align-items: start; }
+.lead-body > * + * { margin-top: 10px; }
+.lead .shot video { aspect-ratio: 390 / 494; object-fit: cover; background: #000; }
+
+/* ── HOW IT PLAYS ────────────────────────────────────────── */
+.sys-body { padding: 10px; }
+.sys-body > * + * { margin-top: 10px; }
+
+/* Diagram beside its footage, in two sunken mounts of the same height so
+   the captions start on one line. 7/4 is the clips' own ratio. */
+.figpair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.fig { padding: 4px; background: var(--sunken); border: 1px solid var(--line); box-shadow: inset 1px 1px 0 var(--bevel-lo); }
+.fig .plate {
+  display: flex;
+  align-items: center;
+  aspect-ratio: 7 / 4;
+  border: 1px solid #000;
+  /* Graph paper, faint enough to sit behind 9px labels. */
+  background:
+    linear-gradient(rgba(241,239,233,0.035) 1px, transparent 1px) 0 0 / 20px 20px,
+    linear-gradient(90deg, rgba(241,239,233,0.035) 1px, transparent 1px) 0 0 / 20px 20px,
+    #0e0e11;
+}
+.fig svg { display: block; width: 100%; height: auto; }
+.fig video { width: 100%; aspect-ratio: 7 / 4; object-fit: cover; background: #000; border: 1px solid #000; }
+.fig figcaption { padding: 5px 3px 2px; font-size: 10.5px; line-height: 1.5; color: var(--mut); }
+.svg-label { font-family: var(--ui); font-size: 9.5px; letter-spacing: 0.03em; fill: var(--dim); }
+.svg-label.b { fill: var(--mut); }
+.svg-label.hi { fill: var(--ink); font-weight: 700; }
+
+/* Data table, under a title-bar header row. */
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); }
+.tbl { width: 100%; min-width: 420px; border-collapse: collapse; font-size: 10.5px; }
+.tbl th {
+  padding: 4px 8px;
+  text-align: left;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: linear-gradient(180deg, var(--bar-top), var(--bar-bot));
+  border-bottom: 1px solid var(--line);
+}
+.tbl td { padding: 4px 8px; vertical-align: top; border-bottom: 1px solid var(--line-soft); color: var(--mut); }
+.tbl tbody tr:last-child td { border-bottom: 0; }
+.tbl tbody tr:nth-child(odd) { background: rgba(241,239,233,0.03); }
+.tbl td.num { font-family: "Courier New", Courier, monospace; font-size: 12px; color: var(--ink); white-space: nowrap; }
+
+/* ── STATUS ──────────────────────────────────────────────── */
+.bar-label { display: flex; justify-content: space-between; margin-bottom: 4px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mut); }
+.bar-label b { color: var(--ink); }
+.bar { height: 14px; padding: 2px; background: var(--sunken); border: 1px solid var(--line); box-shadow: inset 1px 1px 0 var(--bevel-lo); }
+/* Segmented fill. The period progress bar was always chunks, never a
+   continuous sweep. */
+.bar-fill { height: 100%; background: repeating-linear-gradient(90deg, var(--ink) 0 5px, transparent 5px 7px); }
+
+.sublabel { display: block; font-size: 9px; font-weight: 700; letter-spacing: 0.09em; text-transform: uppercase; color: var(--dim); }
+.sublabel + * { margin-top: 4px; }
+
+.board, .chips { list-style: none; }
+.board { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
+.board-item { display: flex; gap: 6px; padding: 3px 7px; font-size: 10.5px; color: var(--mut); background: rgba(241,239,233,0.03); border: 1px solid var(--line-soft); }
+.board-item.is-active { color: var(--ink); border-color: #6e6c68; }
+
+.chips { display: flex; flex-wrap: wrap; gap: 3px; }
+.chip { padding: 2px 6px; font-size: 9.5px; color: var(--mut); background: var(--sunken); border: 1px solid var(--line-soft); }
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.site-foot {
+  padding: 10px 12px;
+  text-align: center;
+  font-size: 10px;
+  color: var(--dim);
+  background: #111114;
+  border-top: 1px solid var(--line);
+}
+.site-foot p + p { margin-top: 4px; }
+.site-foot a { color: var(--mut); }
+.site-foot .foot-nav a { margin: 0 5px; }
+
+/* ── RESPONSIVE / MOTION ─────────────────────────────────── */
+@media (max-width: 620px) {
+  body { padding: 0 0 24px; }
+  .site { border-left: 0; border-right: 0; box-shadow: none; }
+  .banner { padding: 18px 12px 15px; }
+  .banner-sub { font-size: 9px; letter-spacing: 0.14em; }
+  .lockup { flex-direction: column; gap: 9px; }
+  .wordmark { width: 88%; }
+  .mainnav a { font-size: 10px; padding: 7px 9px; }
+  .statusbar { font-size: 9px; gap: 0 10px; }
+  .sb-hide-sm { display: none; }
+  .game-title { font-size: 19px; }
+  .releases, .lead, .figpair, .board { grid-template-columns: 1fr; }
+  .lead .shot { width: 100%; max-width: 260px; justify-self: center; }
+  /* Wrapped cells read better on a phone than a table that scrolls sideways. */
+  .tbl { min-width: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .status::before { animation: none; }
+}
+
+@media print {
+  body { background: #fff; color: #000; padding: 0; }
+  .site { border: 0; box-shadow: none; }
+  .statusbar, .mainnav { display: none; }
+  a { color: #000; }
+}
+
+/* ═══════════════════════════════════════════════════════════
+   TRIALS
+
+   Experiments laid over the rules above, one block each. Delete a
+   block and that part of the page goes back to how it looked
+   before. Keep the ones that work and fold them into the rules
+   they override.
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── TRIAL 1 · Banner art ────────────────────────────────── */
+/* Three stills from the August build run across the header, the way a
+   2002 studio site ran its key art, with the wordmark laid over the top
+   of them. The stills are cut from the game's own clips. */
+.banner {
+  position: relative;
+  height: 224px;
+  padding: 0;
+  overflow: hidden;
+  background: #000;
+}
+.banner-art { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; }
+/* The footage is a stealth game's: dark. It is lifted here so the rooms
+   read at banner size. */
+.banner-art img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85) contrast(1.08) brightness(1.4); }
+/* Scanlines, then a shade down from the top for the wordmark to sit on,
+   and a little at the bottom and both ends to seat the strip in the frame. */
+.banner-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(0deg, rgba(0,0,0,0.16) 0 1px, transparent 1px 3px),
+    linear-gradient(180deg, rgba(8,8,10,0.95) 0%, rgba(8,8,10,0.82) 24%, rgba(8,8,10,0) 56%, rgba(8,8,10,0) 84%, rgba(8,8,10,0.6) 100%),
+    linear-gradient(90deg, rgba(8,8,10,0.5) 0%, transparent 9%, transparent 91%, rgba(8,8,10,0.5) 100%);
+}
+.banner-head { position: relative; padding: 18px 16px 0; text-align: center; }
+.banner-head .wordmark { width: 340px; max-width: 60vw; }
+.banner-head .banner-sub { color: rgba(241,239,233,0.72); }
+@media (max-width: 620px) {
+  .banner { height: 190px; padding: 0; }
+  .banner-head { padding-top: 14px; }
+}
+@media print {
+  .banner { height: auto; }
+  .banner-art { display: none; }
+}
+
+/* ── TRIAL 2 · One accent ────────────────────────────────── */
+/* Candle amber, taken from the footage, on the few things that should
+   catch the eye: the status light, the progress bar, the wishlist
+   button, the active to-do item, and the diagrams. */
+:root { --accent: #e0a23c; --accent-dim: #8f6420; }
+
+.status::before { background: var(--accent); box-shadow: 0 0 6px rgba(224,162,60,0.85); }
+.bar-label b { color: var(--accent); }
+.bar-fill { background: repeating-linear-gradient(90deg, var(--accent) 0 5px, transparent 5px 7px); }
+
+.btn.is-primary { color: #1a1206; background: linear-gradient(180deg, #f3c873, #c98a26); border-color: #ffe0a0; }
+.btn.is-primary:hover, .btn.is-primary:focus-visible { color: #1a1206; background: linear-gradient(180deg, #ffdc92, #dc9c34); }
+.mainnav a.is-cta { color: var(--accent); }
+a:hover, a:focus-visible { background: rgba(224,162,60,0.16); }
+.lockup:hover, .btn:hover { background-color: transparent; }
+
+.board-item.is-active { border-color: var(--accent-dim); }
+
+/* The diagrams draw their main lines in the accent: the three centre rays
+   and the player in the cover drawing, the inner cone in the vision one. */
+.svg-label.hi { fill: var(--accent); }
+#dsp-cover .fig svg g line, #dsp-cover .fig svg circle { stroke: var(--accent); }
+#dsp-perception .fig svg path:nth-of-type(3) { fill: var(--accent); }
+#dsp-perception .fig svg path:nth-of-type(4) { stroke: var(--accent); }
+
+/* ── TRIAL 3 · Tile and frame ────────────────────────────── */
+/* A carbon-weave tile you can see, and a heavier edge on the frame, so
+   the page reads as a hard column sitting on wallpaper. */
+body {
+  background-color: #070709;
+  background-image:
+    linear-gradient(45deg, rgba(241,239,233,0.030) 25%, transparent 25%, transparent 75%, rgba(241,239,233,0.030) 75%),
+    linear-gradient(45deg, rgba(241,239,233,0.030) 25%, transparent 25%, transparent 75%, rgba(241,239,233,0.030) 75%);
+  background-size: 6px 6px;
+  background-position: 0 0, 3px 3px;
+}
+.site {
+  box-shadow:
+    inset 1px 1px 0 var(--bevel-hi),
+    inset -1px -1px 0 var(--bevel-lo),
+    0 0 0 1px #000,
+    0 0 0 2px #3a3a42,
+    0 0 0 5px #0c0c0f,
+    0 0 0 6px #000,
+    0 14px 40px rgba(0,0,0,0.8);
+}
+@media (max-width: 620px) {
+  .site { box-shadow: none; }
+}
+@media print {
+  body { background-image: none; }
+  .site { box-shadow: none; }
+}
+
+/* ── TRIAL 4 · Title bar hierarchy ───────────────────────── */
+/* Section bars get a little more height and an accent tick at the left.
+   The bars on the boxes inside them go flat and quiet, so a box inside a
+   section no longer looks like a section itself. */
+.panel > .panel-title { position: relative; padding: 6px 10px 6px 13px; }
+.panel > .panel-title::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: var(--accent, var(--ink)); }
+.sys > .panel-title {
+  padding: 4px 9px;
+  font-size: 10px;
+  color: rgba(241,239,233,0.82);
+  background: #1e1e23;
+  box-shadow: none;
+  text-shadow: none;
+  border-bottom-color: var(--line-soft);
+}
+
+/* ── TRIAL 5 · Chrome game title ─────────────────────────── */
+/* The game's name set like the wordmark: a hard-break metal gradient over
+   a dark offset copy. */
+.game-title {
+  margin-top: 5px;
+  font-size: 30px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+  color: transparent;
+  background: linear-gradient(180deg, #ffffff 0%, #f1efe9 46%, #aaa7a1 54%, #6e6c68 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(1px 2px 0 #000);
+}
+@media (max-width: 620px) {
+  .game-title { font-size: 24px; }
+}
+@media print {
+  .game-title { color: #000; background: none; filter: none; }
+}
+
+/* ── TRIAL 6 · Footer buttons ────────────────────────────── */
+/* 88×31 buttons, the size every site of the period traded with its
+   neighbours. Two of them are links. */
+.badges { display: flex; flex-wrap: wrap; justify-content: center; gap: 5px; margin-top: 8px; }
+.b88 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 88px;
+  height: 31px;
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1.25;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--mut);
+  background: linear-gradient(180deg, #26262b, #141417);
+  border: 1px solid #3d3d45;
+  box-shadow: inset 1px 1px 0 rgba(241,239,233,0.12), inset -1px -1px 0 rgba(0,0,0,0.6);
+}
+.site-foot a.b88 { color: var(--ink); }
+.site-foot a.b88:hover, .site-foot a.b88:focus-visible { color: #fff; background: linear-gradient(180deg, #36363e, #202026); }
+.site-foot a.b88.is-hot { color: #1a1206; background: linear-gradient(180deg, #f3c873, #c98a26); border-color: #ffe0a0; }
+.site-foot a.b88.is-hot:hover, .site-foot a.b88.is-hot:focus-visible { color: #1a1206; background: linear-gradient(180deg, #ffdc92, #dc9c34); }

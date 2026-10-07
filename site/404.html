@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 Not Found - Jhorro Productions</title>
+<meta name="robots" content="noindex">
+<!-- Caddy serves this page for a missing address at any depth (handle_errors
+     in deploy/Caddyfile), so every path in it starts at the root. -->
+<link rel="icon" type="image/svg+xml" href="/brand/svg/jhorro-symbol-white.svg">
+
+<link rel="stylesheet" href="/studio.css">
+
+<style>
+/* The address that was asked for, set the way a server error printed it. */
+.req { font-family: "Courier New", Courier, monospace; font-size: 13px; color: var(--ink); overflow-wrap: anywhere; }
+</style>
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to content</a>
+
+<div class="site">
+
+  <!-- ── BANNER ─────────────────────────────────────────── -->
+  <header class="banner">
+    <!-- Stills cut from the August build's own footage. -->
+    <div class="banner-art" aria-hidden="true">
+      <img src="/media/banner-dsp-wall.jpg" alt="" width="410" height="285">
+      <img src="/media/banner-dsp-hall.jpg" alt="" width="410" height="285">
+      <img src="/media/banner-dsp-floor.jpg" alt="" width="410" height="285">
+    </div>
+    <div class="banner-head">
+      <a class="lockup" href="/" aria-label="Jhorro Productions, studio home">
+        <!-- The Watcher: a figure with a keyhole cut out of it, inside a diamond. -->
+        <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <polygon points="50,5 95,50 50,95 5,50" fill="none" stroke="#f1efe9" stroke-width="3" stroke-linejoin="miter"/>
+          <mask id="kh" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+            <rect x="0" y="0" width="100" height="100" fill="#fff"/>
+            <path d="M34 41 Q50 30 66 41 Q50 52 34 41 Z" fill="#000"/>
+            <ellipse cx="50" cy="41" rx="2.5" ry="4.6" fill="#fff"/>
+          </mask>
+          <g mask="url(#kh)">
+            <circle cx="50" cy="41" r="18" fill="#f1efe9"/>
+            <path d="M46 53 L40.5 78 L59.5 78 L54 53 Z" fill="#f1efe9"/>
+          </g>
+        </svg>
+
+        <svg class="wordmark" viewBox="0 0 420 44" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="wm" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"    stop-color="#ffffff"/>
+              <stop offset="0.48" stop-color="#f1efe9"/>
+              <stop offset="0.52" stop-color="#b6b3ad"/>
+              <stop offset="1"    stop-color="#6e6c68"/>
+            </linearGradient>
+          </defs>
+          <!-- Offset dark copy behind the fill is the whole emboss trick. -->
+          <text x="211" y="32" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+                font-size="26" font-weight="700" letter-spacing="4" fill="#000">JHORRO PRODUCTIONS</text>
+          <text x="210" y="30" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+                font-size="26" font-weight="700" letter-spacing="4" fill="url(#wm)">JHORRO PRODUCTIONS</text>
+        </svg>
+      </a>
+
+      <span class="banner-sub">Independent Studio | Est. 2024 | Brazil</span>
+    </div>
+  </header>
+
+  <!-- ── STATUS BAR ─────────────────────────────────────── -->
+  <div class="statusbar">
+    <span><a href="/">Jhorro Productions</a> &gt; <b>404 Not Found</b></span>
+  </div>
+
+  <nav class="mainnav" aria-label="Main">
+    <a href="/">Studio Home</a>
+    <a href="/dead-saints-parade">Dead Saints Parade</a>
+    <a href="/#news">News</a>
+    <a href="/#released">Released Titles</a>
+    <a href="/jhonnatan/">Portfolio</a>
+  </nav>
+
+  <main id="main">
+
+    <section class="panel">
+      <h1 class="panel-title"><span>Not Found</span><span class="aside">Error 404</span></h1>
+      <div class="panel-body">
+        <p class="lede">The requested URL <span class="req" id="req"></span> was not found on this server.</p>
+        <p>
+          The site was reorganized in October 2026 and some pages moved. The studio is now on the front
+          page, and Jhonnatan Barbosa's portfolio is at jhorro.com/jhonnatan.
+        </p>
+
+        <table class="meta">
+          <tbody>
+            <tr><th scope="row">Studio</th><td><a href="/">Studio home</a></td></tr>
+            <tr><th scope="row">Game</th><td><a href="/dead-saints-parade">Dead Saints Parade</a></td></tr>
+            <tr><th scope="row">Released</th><td><a href="/#released">Idle Kingdom Builder and Idle Cyberpunk City Clicker</a></td></tr>
+            <tr><th scope="row">News</th><td><a href="/#news">Studio news</a></td></tr>
+            <tr><th scope="row">Portfolio</th><td><a href="/jhonnatan/">Jhonnatan Barbosa, game designer</a></td></tr>
+            <tr><th scope="row">Legal</th><td><a href="/privacy-policy">Privacy policy</a></td></tr>
+          </tbody>
+        </table>
+
+        <p>
+          If a link on this site sent you here, write to
+          <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>.
+        </p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="site-foot">
+    <p>© Jhorro Productions. The Watcher, watching through the keyhole.</p>
+    <p class="foot-nav">
+      <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>|<a href="/">Studio Home</a>|<a href="/jhonnatan/">Jhonnatan Barbosa, Game Designer</a>|<a href="/privacy-policy">Privacy</a>
+    </p>
+    <p>Best viewed at 1024x768.</p>
+  </footer>
+
+</div>
+
+<script>
+// Print the address that was asked for. textContent, so nothing in it is parsed.
+(function () {
+  var el = document.getElementById('req');
+  if (el) el.textContent = location.pathname;
+})();
+</script>
+
+</body>
+</html>

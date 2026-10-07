@@ -3,204 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Privacy Policy — Jhorro Productions</title>
+<title>Privacy Policy - Jhorro Productions</title>
 <meta name="description" content="Privacy Policy for Jhorro Productions' Android games, including Idle Kingdom Builder and Idle Cyberpunk City Clicker.">
 <link rel="canonical" href="https://www.jhorro.com/privacy-policy">
 <link rel="icon" type="image/svg+xml" href="brand/svg/jhorro-symbol-white.svg">
 
+<link rel="stylesheet" href="studio.css">
+
 <style>
-/* ═══════════════════════════════════════════════════════════
-   Jhorro Productions, privacy policy.
-
-   A studio page, so it wears the studio's chrome: the same frame,
-   banner, title bars and footer as index.html. These rules are a
-   copy of the ones that page uses, kept inline the way that page
-   keeps its own. A change to the shared chrome goes into both.
-   ═══════════════════════════════════════════════════════════ */
-
-:root {
-  --paper:     #0b0b0d;   /* outside the frame */
-  --frame:     #131316;   /* the frame itself */
-  --panel:     #17171a;   /* panel body */
-  --sunken:    #0b0b0d;   /* inset note */
-
-  --bar-top:   #33333a;   /* title bars */
-  --bar-bot:   #1a1a1e;
-
-  --line:      #2b2b30;
-  --line-soft: #1e1e22;
-  --bevel-hi:  rgba(241,239,233,0.10);
-  --bevel-lo:  #000;
-
-  --ink:       #f1efe9;
-  --mut:       rgba(241,239,233,0.58);
-  --dim:       rgba(241,239,233,0.40);
-
-  --ui:      Verdana, Geneva, Tahoma, "DejaVu Sans", sans-serif;
-}
-
-* { margin: 0; padding: 0; box-sizing: border-box; }
-/* Nothing in 2002 had a border radius. */
-*, *::before, *::after { border-radius: 0; }
-
-body {
-  font-family: var(--ui);
-  font-size: 12px;
-  line-height: 1.6;
-  color: var(--ink);
-  background: var(--paper);
-  background-image:
-    repeating-linear-gradient(45deg,  rgba(241,239,233,0.016) 0 1px, transparent 1px 4px),
-    repeating-linear-gradient(-45deg, rgba(241,239,233,0.016) 0 1px, transparent 1px 4px);
-  padding: 14px 12px 40px;
-  -webkit-text-size-adjust: 100%;
-}
-
-a { color: var(--ink); text-decoration: underline; }
-:where(.panel-body p) a:visited { color: var(--mut); }
-a:hover, a:focus-visible { color: #fff; background: rgba(241,239,233,0.10); }
-:focus-visible { outline: 2px solid var(--ink); outline-offset: 1px; }
-::selection { background: var(--ink); color: var(--paper); }
-
-.skip-link { position: absolute; left: -9999px; top: 0; padding: 8px 14px; background: var(--panel); border: 1px solid var(--ink); z-index: 50; }
-.skip-link:focus { left: 8px; top: 8px; }
-
-/* ── FRAME ───────────────────────────────────────────────── */
-.site {
-  max-width: 820px;
-  margin: 0 auto;
-  background: var(--frame);
-  border: 1px solid var(--line);
-  box-shadow:
-    inset 1px 1px 0 var(--bevel-hi),
-    inset -1px -1px 0 var(--bevel-lo),
-    0 0 0 3px #08080a,
-    0 8px 28px rgba(0,0,0,0.6);
-}
-
-/* ── BANNER ──────────────────────────────────────────────── */
-.banner {
-  padding: 26px 20px 20px;
-  text-align: center;
-  background:
-    radial-gradient(ellipse 70% 100% at 50% 0%, #1e1e22, transparent 70%),
-    linear-gradient(180deg, #16161a, #101013);
-  border-bottom: 1px solid var(--line);
-}
-/* On the home page the lockup is the heading. Here the heading is the
-   policy's own title, so the lockup is the way back to the studio. */
-.lockup { display: flex; align-items: center; justify-content: center; gap: 14px; text-decoration: none; }
-.lockup:hover, .lockup:focus-visible { background: none; }
-.mark { width: 44px; height: 44px; flex-shrink: 0; }
-.wordmark { width: min(360px, 74%); height: auto; }
-.banner-sub {
-  display: block;
-  margin-top: 9px;
-  font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--mut);
-  text-shadow: 0 1px 0 #000;
-}
-
-/* ── STATUS BAR ──────────────────────────────────────────── */
-/* The home page shows the visitor's clock here. A second-level page
-   used the same strip to say where you were. */
-.statusbar {
-  padding: 5px 10px;
-  font-size: 10px;
-  letter-spacing: 0.05em;
-  color: var(--mut);
-  background: linear-gradient(180deg, var(--bar-top), var(--bar-bot));
-  border-bottom: 1px solid var(--line);
-  box-shadow: inset 0 1px 0 rgba(241,239,233,0.10), inset 0 -1px 0 var(--bevel-lo);
-}
-.statusbar a { color: var(--mut); }
-.statusbar b { color: var(--ink); font-weight: 700; }
-
-/* ── NAV ─────────────────────────────────────────────────── */
-.mainnav { display: flex; flex-wrap: wrap; background: #111114; border-bottom: 1px solid var(--line); }
-.mainnav a {
-  flex: 1 1 auto;
-  padding: 7px 12px;
-  text-align: center;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  border-right: 1px solid var(--line-soft);
-}
-.mainnav a:last-child { border-right: 0; }
-.mainnav a:hover, .mainnav a:focus-visible { color: #fff; background: linear-gradient(180deg, #2e2e34, #1b1b1f); }
-
-/* ── PANELS ──────────────────────────────────────────────── */
-main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
-
-.panel {
-  background: var(--panel);
-  border: 1px solid var(--line);
-  box-shadow: inset 1px 1px 0 var(--bevel-hi), inset -1px -1px 0 var(--bevel-lo);
-}
-.panel-title {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-between;
-  gap: 2px 10px;
-  padding: 5px 9px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.09em;
-  text-transform: uppercase;
-  text-shadow: 0 1px 0 #000;
-  background: linear-gradient(180deg, var(--bar-top), var(--bar-bot));
-  border-bottom: 1px solid var(--line);
-  box-shadow: inset 0 1px 0 rgba(241,239,233,0.12);
-}
-.panel-title > * { min-width: 0; }
-.panel-title .aside { font-size: 9px; font-weight: 400; letter-spacing: 0.04em; text-transform: none; color: var(--mut); text-align: right; }
-.panel-body { padding: 12px; }
-.panel-body > * + * { margin-top: 10px; }
-.panel-body p { color: rgba(241,239,233,0.78); }
-
-.lede { font-size: 13px; line-height: 1.65; }
+/* The policy's own rules. The chrome is studio.css. */
 .lede strong, .note strong { color: var(--ink); }
 
 /* The short version, set into the page like a screenshot mount. */
 .note { padding: 8px 10px; background: var(--sunken); border: 1px solid var(--line); box-shadow: inset 1px 1px 0 var(--bevel-lo); }
 
-/* ── FOOTER ──────────────────────────────────────────────── */
-.site-foot {
-  padding: 10px 12px;
-  text-align: center;
-  font-size: 10px;
-  color: var(--dim);
-  background: #111114;
-  border-top: 1px solid var(--line);
-}
-.site-foot p + p { margin-top: 4px; }
-.site-foot a { color: var(--mut); }
-.site-foot .foot-nav a { margin: 0 5px; }
-
-/* ── RESPONSIVE / PRINT ──────────────────────────────────── */
-@media (max-width: 620px) {
-  body { padding: 0 0 24px; }
-  .site { border-left: 0; border-right: 0; box-shadow: none; }
-  .banner { padding: 18px 12px 15px; }
-  .banner-sub { font-size: 9px; letter-spacing: 0.14em; }
-  .lockup { flex-direction: column; gap: 9px; }
-  .wordmark { width: 88%; }
-  .mainnav a { font-size: 10px; padding: 7px 9px; }
-  .statusbar { font-size: 9px; }
-}
-
+/* The one studio page someone might print, so it prints as plain text. */
 @media print {
-  body { background: #fff; color: #000; padding: 0; }
-  .site { border: 0; box-shadow: none; background: #fff; }
-  .banner, .statusbar, .mainnav { display: none; }
+  .site { background: #fff; }
+  .banner { display: none; }
   .panel, .note { background: #fff; border-color: #999; box-shadow: none; }
   .panel-title { background: none; text-shadow: none; }
   .panel-title .aside, .panel-body p, .site-foot, .site-foot a { color: #000; }
-  a { color: #000; }
 }
 </style>
 </head>
@@ -212,49 +35,58 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 
   <!-- ── BANNER ─────────────────────────────────────────── -->
   <header class="banner">
-    <a class="lockup" href="/" aria-label="Jhorro Productions, studio home">
-      <!-- The Watcher: a figure with a keyhole cut out of it, inside a diamond. -->
-      <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-        <polygon points="50,5 95,50 50,95 5,50" fill="none" stroke="#f1efe9" stroke-width="3" stroke-linejoin="miter"/>
-        <mask id="kh" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
-          <rect x="0" y="0" width="100" height="100" fill="#fff"/>
-          <path d="M34 41 Q50 30 66 41 Q50 52 34 41 Z" fill="#000"/>
-          <ellipse cx="50" cy="41" rx="2.5" ry="4.6" fill="#fff"/>
-        </mask>
-        <g mask="url(#kh)">
-          <circle cx="50" cy="41" r="18" fill="#f1efe9"/>
-          <path d="M46 53 L40.5 78 L59.5 78 L54 53 Z" fill="#f1efe9"/>
-        </g>
-      </svg>
+    <!-- Stills cut from the August build's own footage. -->
+    <div class="banner-art" aria-hidden="true">
+      <img src="media/banner-dsp-wall.jpg" alt="" width="410" height="285">
+      <img src="media/banner-dsp-hall.jpg" alt="" width="410" height="285">
+      <img src="media/banner-dsp-floor.jpg" alt="" width="410" height="285">
+    </div>
+    <div class="banner-head">
+      <a class="lockup" href="/" aria-label="Jhorro Productions, studio home">
+        <!-- The Watcher: a figure with a keyhole cut out of it, inside a diamond. -->
+        <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
+          <polygon points="50,5 95,50 50,95 5,50" fill="none" stroke="#f1efe9" stroke-width="3" stroke-linejoin="miter"/>
+          <mask id="kh" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
+            <rect x="0" y="0" width="100" height="100" fill="#fff"/>
+            <path d="M34 41 Q50 30 66 41 Q50 52 34 41 Z" fill="#000"/>
+            <ellipse cx="50" cy="41" rx="2.5" ry="4.6" fill="#fff"/>
+          </mask>
+          <g mask="url(#kh)">
+            <circle cx="50" cy="41" r="18" fill="#f1efe9"/>
+            <path d="M46 53 L40.5 78 L59.5 78 L54 53 Z" fill="#f1efe9"/>
+          </g>
+        </svg>
 
-      <svg class="wordmark" viewBox="0 0 420 44" aria-hidden="true" focusable="false">
-        <defs>
-          <linearGradient id="wm" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0"    stop-color="#ffffff"/>
-            <stop offset="0.48" stop-color="#f1efe9"/>
-            <stop offset="0.52" stop-color="#b6b3ad"/>
-            <stop offset="1"    stop-color="#6e6c68"/>
-          </linearGradient>
-        </defs>
-        <!-- Offset dark copy behind the fill is the whole emboss trick. -->
-        <text x="211" y="32" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
-              font-size="26" font-weight="700" letter-spacing="4" fill="#000">JHORRO PRODUCTIONS</text>
-        <text x="210" y="30" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
-              font-size="26" font-weight="700" letter-spacing="4" fill="url(#wm)">JHORRO PRODUCTIONS</text>
-      </svg>
-    </a>
+        <svg class="wordmark" viewBox="0 0 420 44" aria-hidden="true" focusable="false">
+          <defs>
+            <linearGradient id="wm" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0"    stop-color="#ffffff"/>
+              <stop offset="0.48" stop-color="#f1efe9"/>
+              <stop offset="0.52" stop-color="#b6b3ad"/>
+              <stop offset="1"    stop-color="#6e6c68"/>
+            </linearGradient>
+          </defs>
+          <!-- Offset dark copy behind the fill is the whole emboss trick. -->
+          <text x="211" y="32" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+                font-size="26" font-weight="700" letter-spacing="4" fill="#000">JHORRO PRODUCTIONS</text>
+          <text x="210" y="30" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
+                font-size="26" font-weight="700" letter-spacing="4" fill="url(#wm)">JHORRO PRODUCTIONS</text>
+        </svg>
+      </a>
 
-    <span class="banner-sub">Independent Studio · Est. 2024 · Brazil</span>
+      <span class="banner-sub">Independent Studio | Est. 2024 | Brazil</span>
+    </div>
   </header>
 
   <!-- ── STATUS BAR ─────────────────────────────────────── -->
   <div class="statusbar">
-    <a href="/">Jhorro Productions</a> » Legal » <b>Privacy Policy</b>
+    <span><a href="/">Jhorro Productions</a> &gt; Legal &gt; <b>Privacy Policy</b></span>
   </div>
 
   <nav class="mainnav" aria-label="Main">
     <a href="/">Studio Home</a>
-    <a href="/#dead-saints-parade">Dead Saints Parade</a>
+    <a href="/dead-saints-parade">Dead Saints Parade</a>
+    <a href="/#news">News</a>
     <a href="/#released">Released Titles</a>
     <a href="mailto:support@jhorro.com">Support</a>
   </nav>
@@ -267,15 +99,15 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
       <div class="panel-body">
         <p class="lede">
           This Privacy Policy explains what information is collected by the Android games published by
-          <strong>Jhorro Productions</strong> ("we," "us," "our") — the independent studio run by Jhonnatan
+          <strong>Jhorro Productions</strong> ("we," "us," "our"), the independent studio run by Jhonnatan
           Barbosa. It currently covers <strong>Idle Kingdom Builder</strong> and
           <strong>Idle Cyberpunk City Clicker</strong>, and applies to any future Android game we publish
           unless that game links to a different policy.
         </p>
         <p class="note">
-          <strong>Short version —</strong> we don't collect your name, email, or anything else that
+          <strong>Short version:</strong> we don't collect your name, email, or anything else that
           identifies you directly. Some games use anonymous gameplay analytics (with your consent, where the
-          law requires it) and ad networks that rely on your device's advertising ID. Full details below.
+          law requires it) and ad networks that rely on your device's advertising ID. The full details are below.
         </p>
       </div>
     </section>
@@ -290,7 +122,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
     <section class="panel">
       <h2 class="panel-title"><span>Anonymous Gameplay Analytics</span><span class="aside">02</span></h2>
       <div class="panel-body">
-        <p>Some of our games use Unity Analytics, part of Unity Gaming Services, to see how players progress and to catch bugs early. This can include gameplay events — like milestones reached, items or buildings unlocked, and time spent — plus general device information such as device model, OS version, and country. This data is aggregated and isn't linked to your name or any contact details in our systems.</p>
+        <p>Some of our games use Unity Analytics, part of Unity Gaming Services, to see how players progress and to catch bugs early. This can include gameplay events (like milestones reached, items or buildings unlocked, and time spent) and general device information such as device model, OS version, and country. This data is aggregated and isn't linked to your name or any contact details in our systems.</p>
         <p>Where the law requires it (for example, players in the EU/EEA or UK), the game shows a consent screen before this collection starts. You're free to decline, and the game works exactly the same either way. See Unity's <a href="https://unity.com/legal/game-player-and-app-user-privacy-policy" target="_blank" rel="noopener">Game Player and App User Privacy Policy</a> for how Unity itself handles this data.</p>
       </div>
     </section>
@@ -298,7 +130,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
     <section class="panel">
       <h2 class="panel-title"><span>Advertising</span><span class="aside">03</span></h2>
       <div class="panel-body">
-        <p>To help keep our games free, some of them show ads through networks like Google AdMob and Unity Ads. These networks can use your device's advertising ID to choose and measure ads, and — with your consent, where required — to personalize them. You can opt out of ad personalization anytime in your device settings, or decline personalized ads when asked in-game; you'll still see ads, just less targeted ones. Reward ads (the kind that give an in-game bonus) are always opt-in — none play without you choosing to start one.</p>
+        <p>To help keep our games free, some of them show ads through networks like Google AdMob and Unity Ads. These networks can use your device's advertising ID to choose and measure ads and, with your consent where required, to personalize them. You can opt out of ad personalization anytime in your device settings, or decline personalized ads when the game asks. You'll still see ads, just less targeted ones. Reward ads (the kind that give an in-game bonus) are always opt-in: none play unless you choose to start one.</p>
         <p>See Google's page on <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">how it uses information from apps that use its services</a> for more.</p>
       </div>
     </section>
@@ -306,7 +138,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
     <section class="panel">
       <h2 class="panel-title"><span>In-App Purchases</span><span class="aside">04</span></h2>
       <div class="panel-body">
-        <p>A few of our games offer optional in-app purchases. These are processed entirely by Google Play's billing system — we never see or store your card details, only what you bought.</p>
+        <p>A few of our games offer optional in-app purchases. These are processed entirely by Google Play's billing system. We never see or store your card details, only what you bought.</p>
       </div>
     </section>
 
@@ -327,32 +159,32 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
     <section class="panel">
       <h2 class="panel-title"><span>Your Choices</span><span class="aside">07</span></h2>
       <div class="panel-body">
-        <p>You can reset or opt out of your device's advertising ID anytime in your Android settings, and withdrawing analytics consent or uninstalling a game stops any further collection tied to that install. If you'd like to ask what data, if any, is associated with your device, or want it deleted, just email us below and we'll help.</p>
+        <p>You can reset or opt out of your device's advertising ID anytime in your Android settings, and withdrawing analytics consent or uninstalling a game stops any further collection tied to that install. If you'd like to ask what data, if any, is associated with your device, or want it deleted, email us at the address below and we'll help.</p>
       </div>
     </section>
 
     <section class="panel">
       <h2 class="panel-title"><span>Changes to This Policy</span><span class="aside">08</span></h2>
       <div class="panel-body">
-        <p>We may update this policy as our games, or the services they rely on, change. Updates will be posted right here, with a new "last updated" date at the top.</p>
+        <p>We may update this policy as our games, or the services they rely on, change. We will post updates here, with a new "last updated" date at the top.</p>
       </div>
     </section>
 
     <section class="panel">
       <h2 class="panel-title"><span>Contact Us</span><span class="aside">09</span></h2>
       <div class="panel-body">
-        <p>Questions about this policy? Reach us at <a href="mailto:support@jhorro.com">support@jhorro.com</a>.</p>
+        <p>If you have questions about this policy, write to <a href="mailto:support@jhorro.com">support@jhorro.com</a>.</p>
       </div>
     </section>
 
   </main>
 
   <footer class="site-foot">
-    <p>© Jhorro Productions · The Watcher, watching through the keyhole.</p>
+    <p>© Jhorro Productions. The Watcher, watching through the keyhole.</p>
     <p class="foot-nav">
-      <a href="mailto:support@jhorro.com">support@jhorro.com</a>|<a href="/">Studio Home</a>|<a href="/jhonnatan/">Jhonnatan Barbosa · Game Designer</a>
+      <a href="mailto:support@jhorro.com">support@jhorro.com</a>|<a href="/">Studio Home</a>|<a href="/jhonnatan/">Jhonnatan Barbosa, Game Designer</a>
     </p>
-    <p>Best viewed at 1024×768.</p>
+    <p>Best viewed at 1024x768.</p>
   </footer>
 
 </div>

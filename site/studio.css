@@ -179,7 +179,9 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 .panel-title .aside { font-size: 9px; font-weight: 400; letter-spacing: 0.04em; text-transform: none; color: var(--mut); text-align: right; }
 .panel-body { padding: 12px; }
 .panel-body > * + * { margin-top: 10px; }
-.panel-body p { color: rgba(241,239,233,0.78); }
+/* Body text is set justified, the way the period set it. Hyphenation keeps
+   the narrow columns (the release cards, a phone) from opening rivers. */
+.panel-body p { color: rgba(241,239,233,0.78); text-align: justify; -webkit-hyphens: auto; hyphens: auto; }
 
 /* ── INTRO ───────────────────────────────────────────────── */
 .lede { font-size: 13px; line-height: 1.65; }
@@ -241,9 +243,13 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
   border: 1px solid var(--line);
   box-shadow: inset 1px 1px 0 var(--bevel-hi), inset -1px -1px 0 var(--bevel-lo);
 }
-.release-body { padding: 9px; }
+/* The two cards are one grid row, so they are the same height. The write-up
+   takes whatever height is left over, which puts the facts table and the
+   button on the same line in both cards however long each write-up runs. */
+.release { display: flex; }
+.release-body { flex: 1; min-width: 0; display: flex; flex-direction: column; padding: 9px; }
 .release-body > * + * { margin-top: 7px; }
-.release-body p { font-size: 11px; line-height: 1.55; color: rgba(241,239,233,0.75); }
+.release-body p { flex: 1 0 auto; font-size: 11px; line-height: 1.55; color: rgba(241,239,233,0.75); }
 .release-title { font-family: var(--display); font-size: 15px; line-height: 1.2; margin-top: 3px; }
 .release-genre { font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--mut); margin-top: 2px; }
 /* Both clips are cut to 4:3, the shape of this mount. A clip of any other
@@ -295,7 +301,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 }
 .fig svg { display: block; width: 100%; height: auto; }
 .fig video { width: 100%; aspect-ratio: 7 / 4; object-fit: cover; background: #000; border: 1px solid #000; }
-.fig figcaption { padding: 5px 3px 2px; font-size: 10.5px; line-height: 1.5; color: var(--mut); }
+.fig figcaption { padding: 5px 3px 2px; font-size: 10.5px; line-height: 1.5; color: var(--mut); text-align: justify; -webkit-hyphens: auto; hyphens: auto; }
 .svg-label { font-family: var(--ui); font-size: 9.5px; letter-spacing: 0.03em; fill: var(--dim); }
 .svg-label.b { fill: var(--mut); }
 .svg-label.hi { fill: var(--ink); font-weight: 700; }

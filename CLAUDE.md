@@ -19,7 +19,7 @@ There is no build step, package manager or bundler. Files are served exactly as 
   - `site/media/` and `site/brand/` hold the studio's clips and logo files.
   - `site/jhonnatan/` is the whole portfolio as one self-contained folder (page, stylesheet, scripts, `media/`, `docs/`). It references its own files with relative paths.
 - `deploy/Caddyfile` is the server config.
-- `tools/check_site.py` checks links and translation keys.
+- `tools/check_site.py` checks links and translation keys. `tools/preview.py` is the local preview server.
 - `notes/` holds sources that are not pages: the CV and GDD in markdown, and `SKILL.md`.
 - `archive/` holds retired pages and about 750 MB of media no current page uses. Nothing in it is served or maintained, and paths inside the archived pages are broken. To use a file again, move it back under `site/`.
 
@@ -27,11 +27,12 @@ There is no build step, package manager or bundler. Files are served exactly as 
 
 ```
 python tools/check_site.py                     # after any change to a link, path or translation key
-python -m http.server 8000 --directory site    # preview
+python tools/preview.py                        # preview at http://localhost:8000
 ```
 
 - A link to a file that is not written yet goes in `PENDING` at the top of `tools/check_site.py`, so the checker reports it without failing.
-- The preview does not reproduce Caddy's routing: extensionless URLs (`/dead-saints-parade`, `/privacy-policy`, `/jhonnatan/dsp-case-study`, `/jhonnatan/cyberpunk-dashboard`), every redirect and the 404 page only work in production. Open the `.html` file directly, `/404.html` included.
+- `tools/preview.py` serves `/foo` as `foo.html` and answers a missing address with `404.html`, as Caddy does. It does not reproduce the redirects, which only work in production. `python -m http.server` does neither: there `/dead-saints-parade` is a 404 and the error page is Python's own.
+- A page opened as a file, or from a server not rooted at `site/`, loses every root-absolute path. The 404 page uses nothing else, so it shows unstyled that way.
 - `http://localhost:8000/jhonnatan/?dev` (or `#dev`) mounts the colour-tuning dock (`dev-palette.js` / `dev-palette.css`). Nothing is fetched without the flag.
 
 ## Deploying
@@ -69,13 +70,14 @@ Only `site/jhonnatan/index.html` is translated. The studio pages and the case st
 
 The studio pages are for players, not a portfolio. Their copy is plain and short.
 
-The home runs in this order: the studio, the card for the game in development, the news log, the released games, and last the about panel. The game page runs: the same card, the development status, then how it plays. Overviews come before details, so a new write-up of how the game works goes at the bottom of the game page.
+The home runs in this order: the studio, the card for the game in development, the released games, and last the about panel. The game page runs: the same card, the development status, then how it plays. Overviews come before details, so a new write-up of how the game works goes at the bottom of the game page.
 
 - Say what a game is and how it plays, in the second person ("you take cover"). The studio itself is described in neutral sentences, with no "I" and no "we".
 - Leave out the portfolio's material: design rationale, what was cut and why, tuning values, engine or code names, analytics findings, and claims about growth or marketing.
 - After writing or rewriting visible copy on a studio page, run it through the humanizer skill. The owner asked for that in October 2026. On the privacy policy that pass may change wording, never what the policy states.
-- The news log is newest first. A new build or a release gets a dated entry at the top, written `6 Oct 2026`, or `Jun 2025` when the day is not known.
-- The "Contact and follow" row in the about panel holds the Email button (`contact@jhorro.com`) and is where the studio's social links go, as text buttons with no icons. `support@jhorro.com` is the address for the Android games and the one the privacy policy names.
+- The "Contact and follow" row on the home's studio card holds the Email button (`contact@jhorro.com`) and the studio's YouTube, LinkedIn, X and Instagram accounts, as text buttons with no icons. The same four URLs are in the footer of every studio page, in `sameAs` in the home's structured data, and in the `twitter:site` tags of the home and the game page.
+- `support@jhorro.com` is the address for the Android games and the one the privacy policy names.
+- The studio pages do not push the portfolio: it is linked from the nav and from the about panel, and has no button on the studio card and no footer link.
 - No decorative characters in the visible text of the studio pages: no arrows, middle dots, triangles, bullets or check marks. Separate items with a comma, a pipe or a plain word, and write `1024x768` and `-30` with keyboard characters. The degree sign and the copyright sign stay. Code comments are not affected.
 
 ## Dead Saints Parade is written up twice
@@ -84,7 +86,7 @@ The studio (the card on `site/index.html`, and the card, Development status and 
 
 - The portfolio has the long version, in first person and in three languages. The studio has a short plain version in English only, so the two are not word-for-word copies and the lists on the game page use simpler names.
 - The card (clip, blurb, facts table) is on both studio pages. A change to it on one goes into the other.
-- A status update goes into the game page's status panel, the home card's lead paragraph, the portfolio markup plus `en`, `pt` and `ja`, and a new entry in the home's news log.
+- A status update goes into the game page's status panel, the home card's lead paragraph, and the portfolio markup plus `en`, `pt` and `ja`.
 - The demo percentage appears in the home card's lead paragraph and in the game page's status panel, where the bar's `width` and `aria-valuenow` carry it too. The game page's own lead paragraph leaves it out. The to-do and done counts are in that panel's two labels.
 
 ## Analytics dashboard

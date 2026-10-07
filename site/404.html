@@ -12,8 +12,32 @@
 <link rel="stylesheet" href="/studio.css">
 
 <style>
+/* The number, in the same metal as the wordmark and the game's title. */
+.big404 {
+  font-family: var(--display);
+  font-size: 150px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-align: center;
+  color: transparent;
+  background: linear-gradient(180deg, #ffffff 0%, #f1efe9 46%, #aaa7a1 54%, #6e6c68 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  filter: drop-shadow(3px 5px 0 #000);
+}
+/* The one line under it is a caption to the number, so it is centred too. */
+.panel-body .lede { text-align: center; }
+
 /* The address that was asked for, set the way a server error printed it. */
 .req { font-family: "Courier New", Courier, monospace; font-size: 13px; color: var(--ink); overflow-wrap: anywhere; }
+
+@media (max-width: 620px) {
+  .big404 { font-size: 96px; }
+}
+@media print {
+  .big404 { color: #000; background: none; filter: none; }
+}
 </style>
 </head>
 <body>
@@ -75,7 +99,6 @@
   <nav class="mainnav" aria-label="Main">
     <a href="/">Studio Home</a>
     <a href="/dead-saints-parade">Dead Saints Parade</a>
-    <a href="/#news">News</a>
     <a href="/#released">Released Titles</a>
     <a href="/jhonnatan/">Portfolio</a>
   </nav>
@@ -85,6 +108,8 @@
     <section class="panel">
       <h1 class="panel-title"><span>Not Found</span><span class="aside">Error 404</span></h1>
       <div class="panel-body">
+        <!-- Decoration: the heading and its aside already say it. -->
+        <div class="big404" aria-hidden="true">404</div>
         <p class="lede">The requested URL <span class="req" id="req"></span> was not found on this server.</p>
         <p>
           The site was reorganized in October 2026 and some pages moved. The studio is now on the front
@@ -96,7 +121,6 @@
             <tr><th scope="row">Studio</th><td><a href="/">Studio home</a></td></tr>
             <tr><th scope="row">Game</th><td><a href="/dead-saints-parade">Dead Saints Parade</a></td></tr>
             <tr><th scope="row">Released</th><td><a href="/#released">Idle Kingdom Builder and Idle Cyberpunk City Clicker</a></td></tr>
-            <tr><th scope="row">News</th><td><a href="/#news">Studio news</a></td></tr>
             <tr><th scope="row">Portfolio</th><td><a href="/jhonnatan/">Jhonnatan Barbosa, game designer</a></td></tr>
             <tr><th scope="row">Legal</th><td><a href="/privacy-policy">Privacy policy</a></td></tr>
           </tbody>
@@ -114,7 +138,10 @@
   <footer class="site-foot">
     <p>© Jhorro Productions. The Watcher, watching through the keyhole.</p>
     <p class="foot-nav">
-      <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>|<a href="/">Studio Home</a>|<a href="/jhonnatan/">Jhonnatan Barbosa, Game Designer</a>|<a href="/privacy-policy">Privacy</a>
+      <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>|<a href="/">Studio Home</a>|<a href="/privacy-policy">Privacy</a>
+    </p>
+    <p class="foot-nav">
+      <a href="https://www.youtube.com/@jhorro" target="_blank" rel="noopener">YouTube</a>|<a href="https://www.linkedin.com/company/jhorro-productions/" target="_blank" rel="noopener">LinkedIn</a>|<a href="https://x.com/jhorroprod" target="_blank" rel="noopener">X (Twitter)</a>|<a href="https://www.instagram.com/jhorroproductions/" target="_blank" rel="noopener">Instagram</a>
     </p>
     <p>Best viewed at 1024x768.</p>
   </footer>

@@ -10,6 +10,7 @@
 <link rel="icon" type="image/svg+xml" href="/brand/svg/jhorro-symbol-white.svg">
 
 <link rel="stylesheet" href="/studio.css">
+<script src="/studio.js"></script>
 
 <style>
 /* The number, in the same metal as the wordmark and the game's title. */
@@ -51,7 +52,9 @@
     <!-- Stills cut from the August build's own footage. -->
     <div class="banner-art" aria-hidden="true">
       <img src="/media/banner-dsp-wall.jpg" alt="" width="410" height="285">
+      <img src="/media/banner-dsp-nave.jpg" alt="" width="410" height="285">
       <img src="/media/banner-dsp-hall.jpg" alt="" width="410" height="285">
+      <img src="/media/banner-dsp-painting.jpg" alt="" width="410" height="285">
       <img src="/media/banner-dsp-floor.jpg" alt="" width="410" height="285">
     </div>
     <div class="banner-head">
@@ -94,6 +97,13 @@
   <!-- ── STATUS BAR ─────────────────────────────────────── -->
   <div class="statusbar">
     <span><a href="/">Jhorro Productions</a> &gt; <b>404 Not Found</b></span>
+    <span class="sb-spacer"></span>
+    <span class="textsize" role="group" aria-label="Text size">
+      <span>Text size</span>
+      <button type="button" data-ts="1" aria-label="Normal text size">A</button>
+      <button type="button" data-ts="2" aria-label="Large text size">A</button>
+      <button type="button" data-ts="3" aria-label="Largest text size">A</button>
+    </span>
   </div>
 
   <nav class="mainnav" aria-label="Main">
@@ -103,37 +113,120 @@
     <a href="/jhonnatan/">Portfolio</a>
   </nav>
 
-  <main id="main">
+  <div class="cols">
 
-    <section class="panel">
-      <h1 class="panel-title"><span>Not Found</span><span class="aside">Error 404</span></h1>
-      <div class="panel-body">
-        <!-- Decoration: the heading and its aside already say it. -->
-        <div class="big404" aria-hidden="true">404</div>
-        <p class="lede">The requested URL <span class="req" id="req"></span> was not found on this server.</p>
-        <p>
-          The site was reorganized in October 2026 and some pages moved. The studio is now on the front
-          page, and Jhonnatan Barbosa's portfolio is at jhorro.com/jhonnatan.
-        </p>
+    <!-- ── LEFT RAIL ────────────────────────────────────── -->
+    <!-- Both rails are repeated in every studio page, like the banner and the
+         footer. The four accounts in the last box are also in the footer, in
+         sameAs in the home's head, and in the twitter:site tags. -->
+    <aside class="rail rail-l" aria-label="Site">
 
-        <table class="meta">
-          <tbody>
-            <tr><th scope="row">Studio</th><td><a href="/">Studio home</a></td></tr>
-            <tr><th scope="row">Game</th><td><a href="/dead-saints-parade">Dead Saints Parade</a></td></tr>
-            <tr><th scope="row">Released</th><td><a href="/#released">Idle Kingdom Builder and Idle Cyberpunk City Clicker</a></td></tr>
-            <tr><th scope="row">Portfolio</th><td><a href="/jhonnatan/">Jhonnatan Barbosa, game designer</a></td></tr>
-            <tr><th scope="row">Legal</th><td><a href="/privacy-policy">Privacy policy</a></td></tr>
-          </tbody>
-        </table>
+      <nav class="box box-nav" aria-labelledby="bx-nav">
+        <div class="box-title" id="bx-nav">Navigate</div>
+        <ul class="linklist">
+          <li><a href="/">Studio Home</a></li>
+          <li><a href="/dead-saints-parade">Dead Saints Parade</a></li>
+          <li><a href="/#released">Released Titles</a></li>
+          <li><a href="/#studio">About</a></li>
+          <li><a href="/privacy-policy">Privacy Policy</a></li>
+        </ul>
+      </nav>
 
-        <p>
-          If a link on this site sent you here, write to
-          <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>.
-        </p>
-      </div>
-    </section>
+      <section class="box" aria-labelledby="bx-games">
+        <div class="box-title" id="bx-games">Games</div>
+        <ul class="linklist">
+          <li><a href="/dead-saints-parade">Dead Saints Parade</a><span class="tag is-live">In development</span></li>
+          <li><a href="/#released">Idle Cyberpunk City Clicker</a><span class="tag">Released 2025</span></li>
+          <li><a href="/#released">Idle Kingdom Builder</a><span class="tag">Released 2024</span></li>
+        </ul>
+      </section>
 
-  </main>
+      <section class="box" aria-labelledby="bx-follow">
+        <div class="box-title" id="bx-follow">Contact and follow</div>
+        <ul class="linklist">
+          <li><a href="mailto:contact@jhorro.com">Email</a></li>
+          <li><a href="https://www.youtube.com/@jhorro" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://www.linkedin.com/company/jhorro-productions/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://x.com/jhorroprod" target="_blank" rel="noopener">X (Twitter)</a></li>
+          <li><a href="https://www.instagram.com/jhorroproductions/" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </section>
+
+    </aside>
+
+    <main id="main">
+
+      <section class="panel">
+        <h1 class="panel-title"><span>Not Found</span><span class="aside">Error 404</span></h1>
+        <div class="panel-body">
+          <!-- Decoration: the heading and its aside already say it. -->
+          <div class="big404" aria-hidden="true">404</div>
+          <p class="lede">The requested URL <span class="req" id="req"></span> was not found on this server.</p>
+          <p>
+            The site was reorganized in October 2026 and some pages moved. The studio is now on the front
+            page, and Jhonnatan Barbosa's portfolio is at jhorro.com/jhonnatan.
+          </p>
+
+          <table class="meta">
+            <tbody>
+              <tr><th scope="row">Studio</th><td><a href="/">Studio home</a></td></tr>
+              <tr><th scope="row">Game</th><td><a href="/dead-saints-parade">Dead Saints Parade</a></td></tr>
+              <tr><th scope="row">Released</th><td><a href="/#released">Idle Kingdom Builder and Idle Cyberpunk City Clicker</a></td></tr>
+              <tr><th scope="row">Portfolio</th><td><a href="/jhonnatan/">Jhonnatan Barbosa, game designer</a></td></tr>
+              <tr><th scope="row">Legal</th><td><a href="/privacy-policy">Privacy policy</a></td></tr>
+            </tbody>
+          </table>
+
+          <p>
+            If a link on this site sent you here, write to
+            <a href="mailto:contact@jhorro.com">contact@jhorro.com</a>.
+          </p>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ── RIGHT RAIL ───────────────────────────────────── -->
+    <!-- The percentage is the one in the game page's status panel and in the
+         home card's lead paragraph. tools/check_site.py compares them. -->
+    <aside class="rail rail-r" aria-label="Dead Saints Parade">
+
+      <section class="box" aria-labelledby="bx-demo">
+        <div class="box-title" id="bx-demo">Demo progress</div>
+        <div class="box-body">
+          <div>
+            <div class="bar-label"><span>Complete</span><b>62%</b></div>
+            <div class="bar" role="progressbar" aria-label="Demo progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="62">
+              <div class="bar-fill" style="width:62%"></div>
+            </div>
+          </div>
+          <table class="meta">
+            <tbody>
+              <tr><th scope="row">Demo</th><td>February 2027</td></tr>
+              <tr><th scope="row">Release</th><td>Q2 2027</td></tr>
+            </tbody>
+          </table>
+          <a href="/dead-saints-parade#dsp-status">Development status</a>
+        </div>
+      </section>
+
+      <section class="box" aria-labelledby="bx-wish">
+        <div class="box-title" id="bx-wish">Wishlist</div>
+        <div class="box-body">
+          <!-- A still from the August build. The whole box is one link. -->
+          <a class="wishbox" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+            <span class="shot">
+              <img src="/media/wishlist-dsp.jpg" alt="" width="300" height="380">
+              <span class="wishbox-title">Dead Saints Parade</span>
+            </span>
+            <span class="btn is-primary">Wishlist on Steam</span>
+          </a>
+        </div>
+      </section>
+
+    </aside>
+
+  </div>
 
   <footer class="site-foot">
     <p>© Jhorro Productions. The Watcher, watching through the keyhole.</p>

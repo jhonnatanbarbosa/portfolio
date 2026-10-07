@@ -85,6 +85,7 @@
 </script>
 
 <link rel="stylesheet" href="studio.css">
+<script src="studio.js"></script>
 </head>
 <body>
 
@@ -102,7 +103,9 @@
     <!-- Stills cut from the August build's own footage. -->
     <div class="banner-art" aria-hidden="true">
       <img src="media/banner-dsp-wall.jpg" alt="" width="410" height="285">
+      <img src="media/banner-dsp-nave.jpg" alt="" width="410" height="285">
       <img src="media/banner-dsp-hall.jpg" alt="" width="410" height="285">
+      <img src="media/banner-dsp-painting.jpg" alt="" width="410" height="285">
       <img src="media/banner-dsp-floor.jpg" alt="" width="410" height="285">
     </div>
     <div class="banner-head">
@@ -148,6 +151,12 @@
     <span>Developer &amp; publisher of <b>Dead Saints Parade</b></span>
     <span class="sb-hide-sm">Games released: <b>2</b></span>
     <span class="sb-spacer"></span>
+    <span class="textsize" role="group" aria-label="Text size">
+      <span>Text size</span>
+      <button type="button" data-ts="1" aria-label="Normal text size">A</button>
+      <button type="button" data-ts="2" aria-label="Large text size">A</button>
+      <button type="button" data-ts="3" aria-label="Largest text size">A</button>
+    </span>
     <span class="sb-hide-sm"><b id="clock">&nbsp;</b></span>
   </div>
 
@@ -159,218 +168,289 @@
     <a class="is-cta"href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">Wishlist on Steam</a>
   </nav>
 
-  <main id="main">
+  <div class="cols">
 
-    <!-- ── INTRO ────────────────────────────────────────── -->
-    <section class="panel">
-      <h2 class="panel-title"><span>The Studio</span><span class="aside">Est. 2024, Brazil</span></h2>
-      <div class="panel-body">
-        <p class="lede">
-          Jhorro Productions is an independent game studio in Brazil. The current project is
-          <b>Dead Saints Parade</b>, a third-person stealth game for PC and Steam Deck. Two idle games
-          are out on Google Play: <a href="#released">Idle Kingdom Builder</a> and
-          <a href="#released">Idle Cyberpunk City Clicker</a>.
-        </p>
-        <div class="actions">
-          <a class="btn is-primary" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
-            <svg aria-hidden="true" focusable="false"><use href="#i-steam"/></svg>
-            Wishlist on Steam
-          </a>
-          <a class="btn" href="#released">Released Titles</a>
-        </div>
-        <!-- The same four accounts are in the footer of every studio page, in
-             sameAs in the head, and in the twitter:site tags. -->
-        <div>
-          <span class="sublabel">Contact and follow</span>
+    <!-- ── LEFT RAIL ────────────────────────────────────── -->
+    <!-- Both rails are repeated in every studio page, like the banner and the
+         footer. The four accounts in the last box are also in the footer, in
+         sameAs in the home's head, and in the twitter:site tags. -->
+    <aside class="rail rail-l" aria-label="Site">
+
+      <nav class="box box-nav" aria-labelledby="bx-nav">
+        <div class="box-title" id="bx-nav">Navigate</div>
+        <ul class="linklist">
+          <li><a href="/" aria-current="page">Studio Home</a></li>
+          <li><a href="/dead-saints-parade">Dead Saints Parade</a></li>
+          <li><a href="#released">Released Titles</a></li>
+          <li><a href="#studio">About</a></li>
+          <li><a href="/privacy-policy">Privacy Policy</a></li>
+        </ul>
+      </nav>
+
+      <section class="box" aria-labelledby="bx-games">
+        <div class="box-title" id="bx-games">Games</div>
+        <ul class="linklist">
+          <li><a href="/dead-saints-parade">Dead Saints Parade</a><span class="tag is-live">In development</span></li>
+          <li><a href="#released">Idle Cyberpunk City Clicker</a><span class="tag">Released 2025</span></li>
+          <li><a href="#released">Idle Kingdom Builder</a><span class="tag">Released 2024</span></li>
+        </ul>
+      </section>
+
+      <section class="box" aria-labelledby="bx-follow">
+        <div class="box-title" id="bx-follow">Contact and follow</div>
+        <ul class="linklist">
+          <li><a href="mailto:contact@jhorro.com">Email</a></li>
+          <li><a href="https://www.youtube.com/@jhorro" target="_blank" rel="noopener">YouTube</a></li>
+          <li><a href="https://www.linkedin.com/company/jhorro-productions/" target="_blank" rel="noopener">LinkedIn</a></li>
+          <li><a href="https://x.com/jhorroprod" target="_blank" rel="noopener">X (Twitter)</a></li>
+          <li><a href="https://www.instagram.com/jhorroproductions/" target="_blank" rel="noopener">Instagram</a></li>
+        </ul>
+      </section>
+
+    </aside>
+
+    <main id="main">
+
+      <!-- ── INTRO ────────────────────────────────────────── -->
+      <section class="panel">
+        <h2 class="panel-title"><span>The Studio</span><span class="aside">Est. 2024, Brazil</span></h2>
+        <div class="panel-body">
+          <p class="lede">
+            Jhorro Productions is an independent game studio in Brazil. The current project is
+            <b>Dead Saints Parade</b>, a third-person stealth game for PC and Steam Deck. Two idle games
+            are out on Google Play: <a href="#released">Idle Kingdom Builder</a> and
+            <a href="#released">Idle Cyberpunk City Clicker</a>.
+          </p>
           <div class="actions">
-            <a class="btn" href="mailto:contact@jhorro.com">Email</a>
-            <a class="btn" href="https://www.youtube.com/@jhorro" target="_blank" rel="noopener">YouTube</a>
-            <a class="btn" href="https://www.linkedin.com/company/jhorro-productions/" target="_blank" rel="noopener">LinkedIn</a>
-            <a class="btn" href="https://x.com/jhorroprod" target="_blank" rel="noopener">X (Twitter)</a>
-            <a class="btn" href="https://www.instagram.com/jhorroproductions/" target="_blank" rel="noopener">Instagram</a>
+            <a class="btn is-primary" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+              <svg aria-hidden="true" focusable="false"><use href="#i-steam"/></svg>
+              Wishlist on Steam
+            </a>
+            <a class="btn" href="#released">Released Titles</a>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ── DEAD SAINTS PARADE ───────────────────────────── -->
-    <section class="panel" id="dead-saints-parade">
-      <h2 class="panel-title"><span>Dead Saints Parade</span><span class="aside">01 | First PC Title</span></h2>
-      <div class="panel-body">
+      <!-- ── DEAD SAINTS PARADE ───────────────────────────── -->
+      <section class="panel" id="dead-saints-parade">
+        <h2 class="panel-title"><span>Dead Saints Parade</span><span class="aside">01 | First PC Title</span></h2>
+        <div class="panel-body">
 
-        <div class="lead">
-          <div class="shot">
-            <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Dead Saints Parade third-person stealth immersive sim gameplay">
-              <source src="media/dsp_updateAug.mp4" type="video/mp4">
-              <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
-            </video>
-            <div class="shot-cap">August build, pre-alpha footage</div>
-          </div>
-
-          <div class="lead-body">
-            <div>
-              <span class="status">In Development | Demo Feb 2027 | Release Q2 2027</span>
-              <div class="game-title">Dead Saints Parade</div>
-              <div class="game-genre">Third-Person Stealth Immersive Sim | PC &amp; Steam Deck | Unity 6</div>
+          <div class="lead">
+            <div class="shot">
+              <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Dead Saints Parade third-person stealth immersive sim gameplay">
+                <source src="media/dsp_updateAug.mp4" type="video/mp4">
+                <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+              </video>
+              <div class="shot-cap">August build, pre-alpha footage</div>
             </div>
 
-            <p>
-              You play a spy in a decaying Gothic-Victorian city. Information is your best weapon, and a
-              fight kills you about as fast as it kills a guard. Guards work together, and light and
-              sound give you away. Civilians repeat what they hear. The game takes after Thief,
-              Dishonored, Metal Gear Solid and Gloomwood.
-            </p>
+            <div class="lead-body">
+              <div>
+                <span class="status">In Development | Demo Feb 2027 | Release Q2 2027</span>
+                <div class="game-title">Dead Saints Parade</div>
+                <div class="game-genre">Third-Person Stealth Immersive Sim | PC &amp; Steam Deck | Unity 6</div>
+              </div>
 
-            <p>
-              The core systems are done and the demo is 62% complete. The cathedral levels, dagger and
-              pistol combat, and Steam Deck controls are being built now.
-            </p>
+              <p>
+                You play a spy in a decaying Gothic-Victorian city. Information is your best weapon, and a
+                fight kills you about as fast as it kills a guard. Guards work together, and light and
+                sound give you away. Civilians repeat what they hear. The game takes after Thief,
+                Dishonored, Metal Gear Solid and Gloomwood.
+              </p>
+
+              <p>
+                The core systems are done and the demo is 62% complete. The cathedral levels, dagger and
+                pistol combat, and Steam Deck controls are being built now.
+              </p>
+
+              <table class="meta">
+                <tbody>
+                  <tr><th scope="row">Genre</th><td>Third-person stealth immersive sim, single-player</td></tr>
+                  <tr><th scope="row">Platform</th><td>PC (Windows) and Steam Deck</td></tr>
+                  <tr><th scope="row">Engine</th><td>Unity 6.3</td></tr>
+                  <tr><th scope="row">Developer</th><td>Jhorro Productions</td></tr>
+                  <tr><th scope="row">Publisher</th><td>Jhorro Productions</td></tr>
+                  <tr><th scope="row">Release</th><td>Demo February 2027, full release Q2 2027</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="actions">
+            <a class="btn is-primary" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+              <svg aria-hidden="true" focusable="false"><use href="#i-steam"/></svg>
+              Wishlist on Steam
+            </a>
+            <a class="btn" href="/dead-saints-parade">Game page</a>
+            <a class="btn" href="/dead-saints-parade#dsp-status">Development status</a>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ── RELEASED TITLES ──────────────────────────────── -->
+      <section class="panel" id="released">
+        <h2 class="panel-title"><span>Released Titles</span><span class="aside">02-03 | Android | Google Play</span></h2>
+        <div class="panel-body">
+
+          <p>Both idle games are on Google Play. Together they have more than 1,600 downloads.</p>
+
+          <div class="releases">
+
+            <article class="release">
+              <div class="release-body">
+
+                <div class="shot">
+                  <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Cyberpunk City Clicker gameplay">
+                    <source src="media/idle-cyberpunk-city-clicker.mp4" type="video/mp4">
+                    <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+                  </video>
+                  <div class="shot-cap">Gameplay</div>
+                </div>
+
+                <div>
+                  <span class="shipped">Released June 2025</span>
+                  <div class="release-title">Idle Cyberpunk City Clicker</div>
+                  <div class="release-genre">Idle Clicker | Android | Unity 6</div>
+                </div>
+
+                <p>
+                  It is an idle clicker set in a dystopian cyberpunk city. You earn credits by tapping and
+                  from buildings that pay out on their own, then spend them to expand the city.
+                </p>
+
+                <table class="meta">
+                  <tbody>
+                    <tr><th scope="row">Platform</th><td>Android</td></tr>
+                    <tr><th scope="row">Released</th><td>June 2025</td></tr>
+                    <tr><th scope="row">Players</th><td>600+ downloads, rated 4.2/5</td></tr>
+                  </tbody>
+                </table>
+
+                <div class="actions">
+                  <a class="btn" href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener">Google Play</a>
+                </div>
+
+              </div>
+            </article>
+
+            <article class="release">
+              <div class="release-body">
+
+                <div class="shot">
+                  <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Kingdom Builder gameplay">
+                    <source src="media/idle-kingdom-builder.mp4" type="video/mp4">
+                    <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
+                  </video>
+                  <div class="shot-cap">Gameplay</div>
+                </div>
+
+                <div>
+                  <span class="shipped">Released September 2024</span>
+                  <div class="release-title">Idle Kingdom Builder</div>
+                  <div class="release-genre">Idle Clicker | Android | Unity 2022</div>
+                </div>
+
+                <p>
+                  It is a medieval kingdom-building idle game. You click for gold and build houses, farms,
+                  markets and more, and each building earns on its own. There are ten kinds of building
+                  and 75 achievements. A Royal Ascension restarts the kingdom with a permanent bonus.
+                </p>
+
+                <table class="meta">
+                  <tbody>
+                    <tr><th scope="row">Platform</th><td>Android</td></tr>
+                    <tr><th scope="row">Released</th><td>September 2024</td></tr>
+                    <tr><th scope="row">Players</th><td>1,000+ downloads</td></tr>
+                  </tbody>
+                </table>
+
+                <div class="actions">
+                  <a class="btn" href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener">Google Play</a>
+                </div>
+
+              </div>
+            </article>
+
           </div>
         </div>
+      </section>
 
-        <table class="meta">
-          <tbody>
-            <tr><th scope="row">Genre</th><td>Third-person stealth immersive sim, single-player</td></tr>
-            <tr><th scope="row">Platform</th><td>PC (Windows) and Steam Deck</td></tr>
-            <tr><th scope="row">Engine</th><td>Unity 6.3</td></tr>
-            <tr><th scope="row">Developer</th><td>Jhorro Productions</td></tr>
-            <tr><th scope="row">Publisher</th><td>Jhorro Productions</td></tr>
-            <tr><th scope="row">Release</th><td>Demo February 2027, full release Q2 2027</td></tr>
-          </tbody>
-        </table>
+      <!-- ── ABOUT ────────────────────────────────────────── -->
+      <!-- The id is "studio" because #about and #contact belong to the portfolio:
+           the script in the head forwards both of them to /jhonnatan/. -->
+      <section class="panel" id="studio">
+        <h2 class="panel-title"><span>About</span><span class="aside">Jhorro Productions</span></h2>
+        <div class="panel-body">
 
-        <div class="actions">
-          <a class="btn is-primary" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
-            <svg aria-hidden="true" focusable="false"><use href="#i-steam"/></svg>
-            Wishlist on Steam
+          <p>
+            Jhorro Productions is an independent game studio in São Paulo, Brazil, founded by game
+            designer Jhonnatan Barbosa. It makes stealth and immersive-sim games for PC and idle games
+            for mobile, and does its own design and programming.
+          </p>
+
+          <p>
+            The name has been in use since 2022. The first game came out in 2024, and the studio was
+            incorporated in 2026.
+          </p>
+
+          <table class="meta">
+            <tbody>
+              <tr><th scope="row">Based in</th><td>São Paulo, Brazil</td></tr>
+              <tr><th scope="row">Founded by</th><td><a href="/jhonnatan/">Jhonnatan Barbosa</a>, game designer</td></tr>
+              <tr><th scope="row">Games</th><td><a href="/dead-saints-parade">Dead Saints Parade</a> (in development), Idle Cyberpunk City Clicker (2025), Idle Kingdom Builder (2024)</td></tr>
+              <tr><th scope="row">Contact</th><td><a href="mailto:contact@jhorro.com">contact@jhorro.com</a></td></tr>
+              <tr><th scope="row">Support</th><td><a href="mailto:support@jhorro.com">support@jhorro.com</a>, for the Android games</td></tr>
+            </tbody>
+          </table>
+
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ── RIGHT RAIL ───────────────────────────────────── -->
+    <!-- The percentage is the one in the game page's status panel and in the
+         home card's lead paragraph. tools/check_site.py compares them. -->
+    <aside class="rail rail-r" aria-label="Dead Saints Parade">
+
+      <section class="box" aria-labelledby="bx-demo">
+        <div class="box-title" id="bx-demo">Demo progress</div>
+        <div class="box-body">
+          <div>
+            <div class="bar-label"><span>Complete</span><b>62%</b></div>
+            <div class="bar" role="progressbar" aria-label="Demo progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="62">
+              <div class="bar-fill" style="width:62%"></div>
+            </div>
+          </div>
+          <table class="meta">
+            <tbody>
+              <tr><th scope="row">Demo</th><td>February 2027</td></tr>
+              <tr><th scope="row">Release</th><td>Q2 2027</td></tr>
+            </tbody>
+          </table>
+          <a href="/dead-saints-parade#dsp-status">Development status</a>
+        </div>
+      </section>
+
+      <section class="box" aria-labelledby="bx-wish">
+        <div class="box-title" id="bx-wish">Wishlist</div>
+        <div class="box-body">
+          <!-- A still from the August build. The whole box is one link. -->
+          <a class="wishbox" href="https://store.steampowered.com/app/4635010/Dead_Saints_Parade/" target="_blank" rel="noopener">
+            <span class="shot">
+              <img src="media/wishlist-dsp.jpg" alt="" width="300" height="380">
+              <span class="wishbox-title">Dead Saints Parade</span>
+            </span>
+            <span class="btn is-primary">Wishlist on Steam</span>
           </a>
-          <a class="btn" href="/dead-saints-parade">Game page</a>
-          <a class="btn" href="/dead-saints-parade#dsp-status">Development status</a>
         </div>
+      </section>
 
-      </div>
-    </section>
+    </aside>
 
-    <!-- ── RELEASED TITLES ──────────────────────────────── -->
-    <section class="panel" id="released">
-      <h2 class="panel-title"><span>Released Titles</span><span class="aside">02-03 | Android | Google Play</span></h2>
-      <div class="panel-body">
-
-        <p>Both idle games are on Google Play. Together they have more than 1,600 downloads.</p>
-
-        <div class="releases">
-
-          <article class="release">
-            <div class="release-body">
-
-              <div class="shot">
-                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Cyberpunk City Clicker gameplay">
-                  <source src="media/idle-cyberpunk-city-clicker.mp4" type="video/mp4">
-                  <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
-                </video>
-                <div class="shot-cap">Gameplay</div>
-              </div>
-
-              <div>
-                <span class="shipped">Released June 2025</span>
-                <div class="release-title">Idle Cyberpunk City Clicker</div>
-                <div class="release-genre">Idle Clicker | Android | Unity 6</div>
-              </div>
-
-              <p>
-                It is an idle clicker set in a dystopian cyberpunk city. You earn credits by tapping and
-                from buildings that pay out on their own, then spend them to expand the city.
-              </p>
-
-              <table class="meta">
-                <tbody>
-                  <tr><th scope="row">Platform</th><td>Android</td></tr>
-                  <tr><th scope="row">Released</th><td>June 2025</td></tr>
-                  <tr><th scope="row">Players</th><td>600+ downloads, rated 4.2/5</td></tr>
-                </tbody>
-              </table>
-
-              <div class="actions">
-                <a class="btn" href="https://play.google.com/store/apps/details?id=com.lhprentertainment.idlecyberpunkcityclicker" target="_blank" rel="noopener">Google Play</a>
-              </div>
-
-            </div>
-          </article>
-
-          <article class="release">
-            <div class="release-body">
-
-              <div class="shot">
-                <video muted loop playsinline preload="metadata" data-lazyvideo aria-label="Idle Kingdom Builder gameplay">
-                  <source src="media/idle-kingdom-builder.mp4" type="video/mp4">
-                  <track kind="captions" src="data:text/vtt,WEBVTT" srclang="en" label="English" default>
-                </video>
-                <div class="shot-cap">Gameplay</div>
-              </div>
-
-              <div>
-                <span class="shipped">Released September 2024</span>
-                <div class="release-title">Idle Kingdom Builder</div>
-                <div class="release-genre">Idle Clicker | Android | Unity 2022</div>
-              </div>
-
-              <p>
-                It is a medieval kingdom-building idle game. You click for gold and build houses, farms,
-                markets and more, and each building earns on its own. There are ten kinds of building
-                and 75 achievements. A Royal Ascension restarts the kingdom with a permanent bonus.
-              </p>
-
-              <table class="meta">
-                <tbody>
-                  <tr><th scope="row">Platform</th><td>Android</td></tr>
-                  <tr><th scope="row">Released</th><td>September 2024</td></tr>
-                  <tr><th scope="row">Players</th><td>1,000+ downloads</td></tr>
-                </tbody>
-              </table>
-
-              <div class="actions">
-                <a class="btn" href="https://play.google.com/store/apps/details?id=com.jhorro.idlekingdombuilder" target="_blank" rel="noopener">Google Play</a>
-              </div>
-
-            </div>
-          </article>
-
-        </div>
-      </div>
-    </section>
-
-    <!-- ── ABOUT ────────────────────────────────────────── -->
-    <!-- The id is "studio" because #about and #contact belong to the portfolio:
-         the script in the head forwards both of them to /jhonnatan/. -->
-    <section class="panel" id="studio">
-      <h2 class="panel-title"><span>About</span><span class="aside">Jhorro Productions</span></h2>
-      <div class="panel-body">
-
-        <p>
-          Jhorro Productions is an independent game studio in São Paulo, Brazil, founded by game
-          designer Jhonnatan Barbosa. It makes stealth and immersive-sim games for PC and idle games
-          for mobile, and does its own design and programming.
-        </p>
-
-        <p>
-          The name has been in use since 2022. The first game came out in 2024, and the studio was
-          incorporated in 2026.
-        </p>
-
-        <table class="meta">
-          <tbody>
-            <tr><th scope="row">Based in</th><td>São Paulo, Brazil</td></tr>
-            <tr><th scope="row">Founded by</th><td><a href="/jhonnatan/">Jhonnatan Barbosa</a>, game designer</td></tr>
-            <tr><th scope="row">Games</th><td><a href="/dead-saints-parade">Dead Saints Parade</a> (in development), Idle Cyberpunk City Clicker (2025), Idle Kingdom Builder (2024)</td></tr>
-            <tr><th scope="row">Contact</th><td><a href="mailto:contact@jhorro.com">contact@jhorro.com</a></td></tr>
-            <tr><th scope="row">Support</th><td><a href="mailto:support@jhorro.com">support@jhorro.com</a>, for the Android games</td></tr>
-          </tbody>
-        </table>
-
-      </div>
-    </section>
-
-  </main>
+  </div>
 
   <footer class="site-foot">
     <p>© Jhorro Productions. The Watcher, watching through the keyhole.</p>
@@ -407,7 +487,5 @@
   setInterval(tick, 30000);
 })();
 </script>
-<script src="studio.js"></script>
-
 </body>
 </html>

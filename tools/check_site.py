@@ -1,4 +1,5 @@
-"""Check site/ for broken local links and translation keys that drifted.
+"""Check site/ for broken local links, translation keys that drifted and a
+demo percentage that differs between the studio pages.
 
     python tools/check_site.py
 
@@ -9,7 +10,11 @@ page it points at. Links written as https://www.jhorro.com/... are checked
 too, which covers canonical tags, Open Graph images and sitemap.xml.
 
 The en/pt/ja dictionaries in i18n-data.js have to carry the same keys, and
-every data-i18n key in the portfolio markup has to exist. Exits 1 on a miss.
+every data-i18n key in the portfolio markup has to exist.
+
+The demo's progress is written into every studio page: the box in the right
+rail, the game page's status panel and the home card's lead paragraph. All of
+them have to give the same number. Exits 1 on a miss.
 """
 import io
 import posixpath
@@ -103,6 +108,16 @@ for page in sorted(SITE.rglob("*")):
     for ref in refs:
         check(page, ref)
     count += len(refs)
+
+# ── demo percentage ─────────────────────────────────────────
+DEMO = re.compile(r'aria-valuenow="(\d+)"|class="bar-fill" style="width:(\d+)%"|<b>(\d+)%</b>|demo is (\d+)% complete')
+demo = {}
+for name in ("index.html", "dead-saints-parade.html", "privacy-policy.html", "404.html"):
+    for found in DEMO.finditer(read(SITE / name)):
+        demo.setdefault(next(g for g in found.groups() if g), set()).add(name)
+if len(demo) > 1:
+    problems.append("demo percentage differs: " + "; ".join(
+        "%s%% in %s" % (value, ", ".join(sorted(demo[value]))) for value in sorted(demo)))
 
 # ── i18n ────────────────────────────────────────────────────
 keys, lang = {}, None

@@ -3,8 +3,8 @@
 
    The stylesheet of every studio page: the home, the game page,
    the privacy policy and the 404. Period chrome: a fixed centred
-   frame, a beveled wordmark plate, gradient title bars, Verdana,
-   hard 1px borders, underlined links. Palette is the studio's own
+   frame in three columns, a beveled wordmark plate, gradient title
+   bars, Verdana, hard 1px borders, underlined links. Palette is the studio's own
    grey/white/black rather than the portfolio's pink, so the two
    retro sites read as two sites by the same hand instead of one
    site twice.
@@ -72,8 +72,10 @@ a:hover, a:focus-visible { color: #fff; background: rgba(241,239,233,0.10); }
 .skip-link:focus { left: 8px; top: 8px; }
 
 /* ── FRAME ───────────────────────────────────────────────── */
+/* Built for a wider screen than the 800 the look comes from: 1260 is the
+   column that fills a 1366 laptop the way 760 filled 800. */
 .site {
-  max-width: 820px;
+  max-width: 1260px;
   margin: 0 auto;
   background: var(--frame);
   border: 1px solid var(--line);
@@ -136,6 +138,35 @@ a.lockup:hover, a.lockup:focus-visible { background: none; }
 .statusbar a { color: var(--mut); }
 .sb-spacer { flex: 1 1 auto; }
 
+/* Text size, three steps. The buttons do nothing without studio.js, so
+   they stay hidden until it has run. */
+.textsize { display: none; align-items: center; gap: 3px; }
+.js .textsize { display: inline-flex; }
+.textsize span { margin-right: 3px; }
+.textsize button {
+  min-width: 17px;
+  height: 16px;
+  padding: 0 3px;
+  font-family: var(--ui);
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--mut);
+  background: #111114;
+  border: 1px solid var(--line);
+  box-shadow: inset 1px 1px 0 var(--bevel-hi), inset -1px -1px 0 var(--bevel-lo);
+  cursor: pointer;
+}
+.textsize button:nth-of-type(2) { font-size: 11px; }
+.textsize button:nth-of-type(3) { font-size: 13px; }
+.textsize button:hover, .textsize button:focus-visible { color: #fff; }
+.textsize button[aria-pressed="true"] { color: var(--ink); background: linear-gradient(180deg, #3a3a42, #202025); border-color: #6e6c68; }
+
+/* The frame is scaled whole, chrome and all, so a bigger size keeps the
+   proportions the page was drawn with. */
+html[data-ts="2"] .site { zoom: 1.12; }
+html[data-ts="3"] .site { zoom: 1.25; }
+
 /* ── NAV ─────────────────────────────────────────────────── */
 .mainnav { display: flex; flex-wrap: wrap; background: #111114; border-bottom: 1px solid var(--line); }
 .mainnav a {
@@ -151,8 +182,82 @@ a.lockup:hover, a.lockup:focus-visible { background: none; }
 .mainnav a:hover, .mainnav a:focus-visible { color: #fff; background: linear-gradient(180deg, #2e2e34, #1b1b1f); }
 .mainnav a.is-cta { background: linear-gradient(180deg, #3a3a42, #202025); }
 
+/* ── COLUMNS ─────────────────────────────────────────────── */
+/* Under the nav the page is three columns: a rail of site links, the page
+   itself, and a rail of boxes for the game in development. The rails are a
+   fixed width, as a table cell with a width attribute was. */
+.cols {
+  display: grid;
+  grid-template-columns: 170px minmax(0, 1fr) 170px;
+  align-items: start;
+  gap: 10px;
+  padding: 10px;
+}
+.rail { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+main { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+
+/* ── RAIL BOXES ──────────────────────────────────────────── */
+/* The sidebar stack: small titled boxes, one job each. */
+.box {
+  background: var(--panel);
+  border: 1px solid var(--line);
+  box-shadow: inset 1px 1px 0 var(--bevel-hi), inset -1px -1px 0 var(--bevel-lo);
+}
+.box-title {
+  padding: 4px 8px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  text-shadow: 0 1px 0 #000;
+  background: linear-gradient(180deg, var(--bar-top), var(--bar-bot));
+  border-bottom: 1px solid var(--line);
+  box-shadow: inset 0 1px 0 rgba(241,239,233,0.12);
+}
+.box-body { padding: 8px; }
+.box-body > * + * { margin-top: 8px; }
+.box-body > a { display: block; font-size: 10px; }
+
+/* One link to a row, behind a square bullet drawn in CSS. */
+.linklist { list-style: none; }
+.linklist li + li { border-top: 1px solid var(--line-soft); }
+.linklist a { position: relative; display: block; padding: 5px 8px 5px 21px; font-size: 11px; font-weight: 700; line-height: 1.35; }
+.linklist a::before { content: ''; position: absolute; left: 9px; top: 10px; width: 5px; height: 5px; background: var(--dim); }
+.linklist a:hover, .linklist a:focus-visible { color: #fff; background: linear-gradient(180deg, #2e2e34, #1b1b1f); }
+.linklist a[aria-current] { color: #fff; background: rgba(241,239,233,0.05); }
+.linklist a[aria-current]::before { background: var(--accent, var(--ink)); }
+/* The line under a game's name: what state it is in. */
+.linklist .tag { display: block; margin-top: -3px; padding: 0 8px 5px 21px; font-size: 9px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--dim); }
+.linklist .tag.is-live { color: var(--accent, var(--ink)); }
+
+.box .bar-label { font-size: 9px; }
+.box .meta { font-size: 10px; }
+.box .meta th, .box .meta td { padding: 3px 5px; }
+.box .meta th { width: 1%; }
+
+/* The wishlist box is a house ad: a still from the build under the game's
+   name, and the whole of it is one link to the store page. */
+.wishbox { display: block; text-decoration: none; }
+.wishbox:hover, .wishbox:focus-visible { background: none; }
+.wishbox .shot { position: relative; display: block; }
+.wishbox img { width: 100%; height: auto; border: 1px solid #000; filter: saturate(0.85) contrast(1.08) brightness(1.4); }
+.wishbox-title {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  top: 12px;
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  color: var(--ink);
+  text-shadow: 1px 2px 0 #000;
+}
+.wishbox .btn { display: flex; justify-content: center; margin-top: 8px; }
+.wishbox:hover .btn.is-primary, .wishbox:focus-visible .btn.is-primary { color: #0b0b0d; background: linear-gradient(180deg, #fff, #d5d2cc); }
+
 /* ── PANELS ──────────────────────────────────────────────── */
-main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 
 .panel {
   background: var(--panel);
@@ -276,7 +381,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 /* ── DEAD SAINTS PARADE ──────────────────────────────────── */
 /* The lead clip is portrait, so it stands beside the write-up the way a
    box shot stood beside a review instead of running the full width. */
-.lead { display: grid; grid-template-columns: 250px 1fr; gap: 12px; align-items: start; }
+.lead { display: grid; grid-template-columns: 280px 1fr; gap: 12px; align-items: start; }
 .lead-body > * + * { margin-top: 10px; }
 .lead .shot video { aspect-ratio: 390 / 494; object-fit: cover; background: #000; }
 
@@ -358,6 +463,27 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 .site-foot .foot-nav a { margin: 0 5px; }
 
 /* ── RESPONSIVE / MOTION ─────────────────────────────────── */
+/* A screen too narrow for three columns gets two: the right rail's boxes
+   drop under the left rail's. */
+@media (max-width: 1339px) {
+  .site { max-width: 1080px; }
+  .cols { grid-template-columns: 170px minmax(0, 1fr); grid-template-rows: auto 1fr; }
+  .rail-l { grid-area: 1 / 1; }
+  .rail-r { grid-area: 2 / 1; }
+  main { grid-area: 1 / 2 / 3 / 3; }
+}
+
+/* Narrower still and the page comes first, with the boxes in rows after
+   it. The nav strip already holds what the Navigate box does. */
+@media (max-width: 899px) {
+  .cols { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+  .rail-l, .rail-r, main { grid-area: auto; }
+  main { order: -1; }
+  .rail { flex-direction: row; flex-wrap: wrap; }
+  .rail .box { flex: 1 1 170px; }
+  .rail .box-nav { display: none; }
+}
+
 @media (max-width: 620px) {
   body { padding: 0 0 24px; }
   .site { border-left: 0; border-right: 0; box-shadow: none; }
@@ -370,7 +496,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
   .sb-hide-sm { display: none; }
   .game-title { font-size: 19px; }
   .releases, .lead, .figpair, .board { grid-template-columns: 1fr; }
-  .lead .shot { width: 100%; max-width: 260px; justify-self: center; }
+  .lead .shot { width: 100%; max-width: 290px; justify-self: center; }
   /* Wrapped cells read better on a phone than a table that scrolls sideways. */
   .tbl { min-width: 0; }
 }
@@ -382,8 +508,9 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 
 @media print {
   body { background: #fff; color: #000; padding: 0; }
-  .site { border: 0; box-shadow: none; }
-  .statusbar, .mainnav { display: none; }
+  .site { border: 0; box-shadow: none; max-width: none; zoom: 1; }
+  .statusbar, .mainnav, .rail { display: none; }
+  .cols { display: block; padding: 0; }
   a { color: #000; }
 }
 
@@ -397,7 +524,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
    ═══════════════════════════════════════════════════════════ */
 
 /* ── TRIAL 1 · Banner art ────────────────────────────────── */
-/* Three stills from the August build run across the header, the way a
+/* Five stills from the August build run across the header, the way a
    2002 studio site ran its key art, with the wordmark laid over the top
    of them. The stills are cut from the game's own clips. */
 .banner {
@@ -407,7 +534,7 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
   overflow: hidden;
   background: #000;
 }
-.banner-art { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; }
+.banner-art { position: absolute; inset: 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; }
 /* The footage is a stealth game's: dark. It is lifted here so the rooms
    read at banner size. */
 .banner-art img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.85) contrast(1.08) brightness(1.4); }
@@ -425,6 +552,11 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 .banner-head { position: relative; padding: 18px 16px 0; text-align: center; }
 .banner-head .wordmark { width: 340px; max-width: 60vw; }
 .banner-head .banner-sub { color: rgba(241,239,233,0.72); }
+/* Five stills are slivers on a narrow screen, so it keeps three. */
+@media (max-width: 899px) {
+  .banner-art { grid-template-columns: repeat(3, 1fr); }
+  .banner-art img:nth-child(even) { display: none; }
+}
 @media (max-width: 620px) {
   .banner { height: 190px; padding: 0; }
   .banner-head { padding-top: 14px; }
@@ -445,7 +577,8 @@ main { padding: 10px; display: flex; flex-direction: column; gap: 10px; }
 .bar-fill { background: repeating-linear-gradient(90deg, var(--accent) 0 5px, transparent 5px 7px); }
 
 .btn.is-primary { color: #1a1206; background: linear-gradient(180deg, #f3c873, #c98a26); border-color: #ffe0a0; }
-.btn.is-primary:hover, .btn.is-primary:focus-visible { color: #1a1206; background: linear-gradient(180deg, #ffdc92, #dc9c34); }
+.btn.is-primary:hover, .btn.is-primary:focus-visible,
+.wishbox:hover .btn.is-primary, .wishbox:focus-visible .btn.is-primary { color: #1a1206; background: linear-gradient(180deg, #ffdc92, #dc9c34); }
 .mainnav a.is-cta { color: var(--accent); }
 a:hover, a:focus-visible { background: rgba(224,162,60,0.16); }
 .lockup:hover, .btn:hover { background-color: transparent; }
@@ -461,14 +594,19 @@ a:hover, a:focus-visible { background: rgba(224,162,60,0.16); }
 
 /* ── TRIAL 3 · Tile and frame ────────────────────────────── */
 /* A carbon-weave tile you can see, and a heavier edge on the frame, so
-   the page reads as a hard column sitting on wallpaper. */
+   the page reads as a hard column sitting on wallpaper. The weave is six
+   gradients on a 20px repeat, standing in for a tiled GIF. */
 body {
-  background-color: #070709;
+  background-color: #0b0b0d;
   background-image:
-    linear-gradient(45deg, rgba(241,239,233,0.030) 25%, transparent 25%, transparent 75%, rgba(241,239,233,0.030) 75%),
-    linear-gradient(45deg, rgba(241,239,233,0.030) 25%, transparent 25%, transparent 75%, rgba(241,239,233,0.030) 75%);
-  background-size: 6px 6px;
-  background-position: 0 0, 3px 3px;
+    linear-gradient(27deg, #111114 5px, transparent 5px),
+    linear-gradient(207deg, #111114 5px, transparent 5px),
+    linear-gradient(27deg, #1c1c21 5px, transparent 5px),
+    linear-gradient(207deg, #1c1c21 5px, transparent 5px),
+    linear-gradient(90deg, #151518 10px, transparent 10px),
+    linear-gradient(#18181c 25%, #141417 25%, #141417 50%, transparent 50%, transparent 75%, #1e1e23 75%, #1e1e23);
+  background-size: 20px 20px;
+  background-position: 0 5px, 10px 0, 0 10px, 10px 5px, 0 0, 0 0;
 }
 .site {
   box-shadow:

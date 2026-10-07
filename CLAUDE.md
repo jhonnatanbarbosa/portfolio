@@ -15,18 +15,18 @@ There is no build step, package manager or bundler. Files are served exactly as 
 
 - `site/` is the web root and the only folder the server can reach. Anything that should not be public stays out of it.
   - The studio has four pages, English only: `site/index.html` (the home), `site/dead-saints-parade.html` (the game), `site/privacy-policy.html` and `site/404.html`.
-  - `site/studio.css` is the stylesheet those four share, and `site/studio.js` is the lazy-video script for the two that play clips. Each page keeps its markup, and any script of its own, inline.
+  - `site/studio.css` is the stylesheet those four share. `site/studio.js` is their shared script, loaded in the head: it puts the saved text size on the page before anything paints, then runs the status bar's size buttons and the lazy video. Each page keeps its markup, and any script of its own, inline.
   - `site/media/` and `site/brand/` hold the studio's clips and logo files.
   - `site/jhonnatan/` is the whole portfolio as one self-contained folder (page, stylesheet, scripts, `media/`, `docs/`). It references its own files with relative paths.
 - `deploy/Caddyfile` is the server config.
-- `tools/check_site.py` checks links and translation keys. `tools/preview.py` is the local preview server.
+- `tools/check_site.py` checks links, translation keys and that the demo percentage is the same on every studio page. `tools/preview.py` is the local preview server.
 - `notes/` holds sources that are not pages: the CV and GDD in markdown, and `SKILL.md`.
 - `archive/` holds retired pages and about 750 MB of media no current page uses. Nothing in it is served or maintained, and paths inside the archived pages are broken. To use a file again, move it back under `site/`.
 
 ## Commands
 
 ```
-python tools/check_site.py                     # after any change to a link, path or translation key
+python tools/check_site.py                     # after any change to a link, path, translation key or the demo percentage
 python tools/preview.py                        # preview at http://localhost:8000
 ```
 
@@ -70,14 +70,14 @@ Only `site/jhonnatan/index.html` is translated. The studio pages and the case st
 
 The studio pages are for players, not a portfolio. Their copy is plain and short.
 
-The home runs in this order: the studio, the card for the game in development, the released games, and last the about panel. The game page runs: the same card, the development status, then how it plays. Overviews come before details, so a new write-up of how the game works goes at the bottom of the game page.
+The home's centre column runs in this order: the studio, the card for the game in development, the released games, and last the about panel. The game page runs: the same card, the development status, then how it plays. Overviews come before details, so a new write-up of how the game works goes at the bottom of the game page.
 
 - Say what a game is and how it plays, in the second person ("you take cover"). The studio itself is described in neutral sentences, with no "I" and no "we".
 - Leave out the portfolio's material: design rationale, what was cut and why, tuning values, engine or code names, analytics findings, and claims about growth or marketing.
 - After writing or rewriting visible copy on a studio page, run it through the humanizer skill. The owner asked for that in October 2026. On the privacy policy that pass may change wording, never what the policy states.
-- The "Contact and follow" row on the home's studio card holds the Email button (`contact@jhorro.com`) and the studio's YouTube, LinkedIn, X and Instagram accounts, as text buttons with no icons. The same four URLs are in the footer of every studio page, in `sameAs` in the home's structured data, and in the `twitter:site` tags of the home and the game page.
+- The "Contact and follow" box in the left rail of every studio page holds the Email link (`contact@jhorro.com`) and the studio's YouTube, LinkedIn, X and Instagram accounts, as text links with no icons. The same four URLs are in the footer of every studio page, in `sameAs` in the home's structured data, and in the `twitter:site` tags of the home and the game page.
 - `support@jhorro.com` is the address for the Android games and the one the privacy policy names.
-- The studio pages do not push the portfolio: it is linked from the nav and from the about panel, and has no button on the studio card and no footer link.
+- The studio pages do not push the portfolio: it is linked from the nav strip and from the about panel, and has no button on the studio card, no line in the rails and no footer link.
 - No decorative characters in the visible text of the studio pages: no arrows, middle dots, triangles, bullets or check marks. Separate items with a comma, a pipe or a plain word, and write `1024x768` and `-30` with keyboard characters. The degree sign and the copyright sign stay. Code comments are not affected.
 
 ## Dead Saints Parade is written up twice
@@ -87,7 +87,8 @@ The studio (the card on `site/index.html`, and the card, Development status and 
 - The portfolio has the long version, in first person and in three languages. The studio has a short plain version in English only, so the two are not word-for-word copies and the lists on the game page use simpler names.
 - The card (clip, blurb, facts table) is on both studio pages. A change to it on one goes into the other.
 - A status update goes into the game page's status panel, the home card's lead paragraph, and the portfolio markup plus `en`, `pt` and `ja`.
-- The demo percentage appears in the home card's lead paragraph and in the game page's status panel, where the bar's `width` and `aria-valuenow` carry it too. The game page's own lead paragraph leaves it out. The to-do and done counts are in that panel's two labels.
+- The demo percentage appears in the home card's lead paragraph, in the game page's status panel, and in the Demo progress box in the right rail of all four studio pages. Each bar carries it three times: the label, the fill's `width` and `aria-valuenow`. `tools/check_site.py` fails when they disagree. The game page's own lead paragraph leaves it out. The to-do and done counts are in the status panel's two labels.
+- The Demo progress box also repeats the demo and release dates from the card's facts table, on all four pages.
 
 ## Analytics dashboard
 
@@ -101,7 +102,10 @@ The studio (the card on `site/index.html`, and the card, Development status and 
 - The studio pages are an early-2000s fansite pastiche, and `notes/SKILL.md` is the design brief. Read it before changing a studio page. Its bans are the point of the skin: no `border-radius`, no blurred shadows, no modern icon sets, no hero sections, no reflow into a modern responsive stack.
 - All four take their chrome and components from `site/studio.css`. A page's own `<style>` holds only what that page alone needs, and comes after the stylesheet link.
 - The TRIAL blocks at the end of `studio.css` are experiments laid over the rules above them. Deleting a block puts that part of every studio page back. A rule a trial overrides has to stay above the trials in that file, not in a page's inline style.
-- The banner, nav and footer markup is repeated in each studio page, so a change to it is four edits. On the home the lockup is the `h1`; on the other three it is a link home and the page's own title is the `h1`.
+- The frame is 1260px wide in three columns under the nav: a 170px left rail (Navigate, Games, Contact and follow), the page, and a 170px right rail (Demo progress, Wishlist). Under 1340px the frame is 1080px and the right rail's boxes drop under the left rail's. Under 900px the page comes first, the boxes follow in rows, and the Navigate box is hidden because the nav strip covers it.
+- The banner, status bar, nav, both rails and footer are repeated in each studio page, so a change to one is four edits. The rails differ between pages only in which Navigate line has `aria-current`, in `#released` and `#studio` on the home against `/#released` and `/#studio` elsewhere, and in the 404's root-absolute paths. On the home the lockup is the `h1`; on the other three it is a link home and the page's own title is the `h1`.
+- The A A A buttons in the status bar scale the whole frame with `zoom` and keep the choice in the `studio-text-size` localStorage key.
+- Nothing in the rails is named "ad" (file, class or id): ad blockers hide those. The wishlist box is `.wishbox` and its image is `media/wishlist-dsp.jpg`.
 - `site/concept-jhorro-codex.html` is a noindex concept for a possible future studio skin, not a live page.
 
 ## Portfolio JS conventions

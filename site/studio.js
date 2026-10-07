@@ -1,6 +1,7 @@
 // Shared by every studio page, and loaded in the head: the saved text size
 // has to be on the page before anything is painted, or a returning visitor
-// sees it jump. Everything else waits for the document.
+// sees it jump. Everything else waits for the document: the size buttons,
+// the lazy video and the eye in the logo.
 (function () {
   var root = document.documentElement;
   var KEY = 'studio-text-size';
@@ -19,7 +20,7 @@
   // Shows the size buttons, which are no use without this script.
   root.className += ' js';
 
-  // The A A A in the status bar, the period's own accessibility control.
+  // The A A A in the strip at the top of the page.
   function textSize() {
     var btns = Array.prototype.slice.call(document.querySelectorAll('.textsize button'));
     function mark() {
@@ -67,8 +68,30 @@
     vids.forEach(function (v) { io.observe(v); });
   }
 
+  // The Watcher watches: the pupil in each logo turns toward the pointer.
+  // The logo files are not touched. A small drawing laid over each symbol
+  // (.eye) holds a pupil that can move, in the symbol's own 920-unit
+  // square. It travels further sideways than up and down, and stays put
+  // for anyone who asked for reduced motion.
+  function watcher() {
+    var eyes = Array.prototype.slice.call(document.querySelectorAll('.eye'));
+    if (!eyes.length || window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.addEventListener('pointermove', function (e) {
+      eyes.forEach(function (svg) {
+        var r = svg.getBoundingClientRect();
+        if (!r.width) return;
+        // The eye sits at the middle of the symbol's width, 360 of 920 down.
+        var dx = e.clientX - (r.left + r.width * 0.5), dy = e.clientY - (r.top + r.height * 0.3913);
+        var d = Math.sqrt(dx * dx + dy * dy) || 1, pull = Math.min(1, d / 320);
+        svg.querySelector('.pupil').setAttribute('transform',
+          'translate(' + (dx / d * 62 * pull).toFixed(1) + ' ' + (dy / d * 12 * pull).toFixed(1) + ')');
+      });
+    });
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     textSize();
     lazyVideos();
+    watcher();
   });
 })();

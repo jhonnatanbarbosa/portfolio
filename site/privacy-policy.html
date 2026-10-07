@@ -12,24 +12,18 @@
 <link rel="manifest" href="site.webmanifest">
 <meta name="theme-color" content="#0C0C0D">
 
-<link rel="stylesheet" href="studio.css">
+<link rel="preload" href="fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/michroma-400.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/archivo-expanded-black.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="watcher.css">
 <script src="studio.js"></script>
 
 <style>
-/* The policy's own rules. The chrome is studio.css. */
-.lede strong, .note strong { color: var(--ink); }
+/* The policy's own rules. The chrome is watcher.css. */
+.note strong { font-weight: 500; }
 
-/* The short version, set into the page like a screenshot mount. */
-.note { padding: 8px 10px; background: var(--sunken); border: 1px solid var(--line); box-shadow: inset 1px 1px 0 var(--bevel-lo); }
-
-/* The one studio page someone might print, so it prints as plain text. */
-@media print {
-  .site { background: #fff; }
-  .banner { display: none; }
-  .panel, .note { background: #fff; border-color: #999; box-shadow: none; }
-  .panel-title { background: none; text-shadow: none; }
-  .panel-title .aside, .panel-body p, .site-foot, .site-foot a { color: #000; }
-}
+/* The short version, set off by the thick rule from under the logo's name. */
+.note { max-width: 84ch; padding: 12px 14px; border: 1px solid var(--line); border-left: 5px solid var(--red); }
 </style>
 </head>
 <body>
@@ -38,64 +32,40 @@
 
 <div class="site">
 
-  <!-- ── BANNER ─────────────────────────────────────────── -->
-  <header class="banner">
-    <!-- Stills cut from the August build's own footage. -->
-    <div class="banner-art" aria-hidden="true">
-      <img src="media/banner-dsp-wall.jpg" alt="" width="410" height="285">
-      <img src="media/banner-dsp-nave.jpg" alt="" width="410" height="285">
-      <img src="media/banner-dsp-hall.jpg" alt="" width="410" height="285">
-      <img src="media/banner-dsp-painting.jpg" alt="" width="410" height="285">
-      <img src="media/banner-dsp-floor.jpg" alt="" width="410" height="285">
+  <!-- ── MASTHEAD ───────────────────────────────────────── -->
+  <header>
+    <div class="util">
+      <span>Independent Studio | Est. 2024 | Brazil</span>
+      <span class="sb-spacer"></span>
+      <span class="textsize" role="group" aria-label="Text size">
+        <span>Text size</span>
+        <button type="button" data-ts="1" aria-label="Normal text size">A</button>
+        <button type="button" data-ts="2" aria-label="Large text size">A</button>
+        <button type="button" data-ts="3" aria-label="Largest text size">A</button>
+      </span>
     </div>
-    <div class="banner-head">
-      <a class="lockup" href="/" aria-label="Jhorro Productions, studio home">
-        <!-- The Watcher: a figure with a keyhole cut out of it, inside a diamond. -->
-        <svg class="mark" viewBox="0 0 100 100" aria-hidden="true" focusable="false">
-          <polygon points="50,5 95,50 50,95 5,50" fill="none" stroke="#f1efe9" stroke-width="3" stroke-linejoin="miter"/>
-          <mask id="kh" maskUnits="userSpaceOnUse" x="0" y="0" width="100" height="100">
-            <rect x="0" y="0" width="100" height="100" fill="#fff"/>
-            <path d="M34 41 Q50 30 66 41 Q50 52 34 41 Z" fill="#000"/>
-            <ellipse cx="50" cy="41" rx="2.5" ry="4.6" fill="#fff"/>
-          </mask>
-          <g mask="url(#kh)">
-            <circle cx="50" cy="41" r="18" fill="#f1efe9"/>
-            <path d="M46 53 L40.5 78 L59.5 78 L54 53 Z" fill="#f1efe9"/>
-          </g>
-        </svg>
 
-        <svg class="wordmark" viewBox="0 0 420 44" aria-hidden="true" focusable="false">
-          <defs>
-            <linearGradient id="wm" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0"    stop-color="#ffffff"/>
-              <stop offset="0.48" stop-color="#f1efe9"/>
-              <stop offset="0.52" stop-color="#b6b3ad"/>
-              <stop offset="1"    stop-color="#6e6c68"/>
-            </linearGradient>
-          </defs>
-          <!-- Offset dark copy behind the fill is the whole emboss trick. -->
-          <text x="211" y="32" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
-                font-size="26" font-weight="700" letter-spacing="4" fill="#000">JHORRO PRODUCTIONS</text>
-          <text x="210" y="30" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
-                font-size="26" font-weight="700" letter-spacing="4" fill="url(#wm)">JHORRO PRODUCTIONS</text>
-        </svg>
+    <div class="ident">
+      <!-- The horizontal lockup from the brand kit, and the way back to the
+           studio home. The drawing after it is the eye studio.js moves. -->
+      <a class="lockup" href="/" aria-label="Jhorro Productions, studio home">
+        <span class="logo logo-h">
+          <img src="brand/01-logo/horizontal/svg/jhorro-horizontal-dark.svg" alt="" width="470" height="104">
+          <svg class="eye" viewBox="0 0 920 920" aria-hidden="true" focusable="false">
+            <clipPath id="lid-head"><path d="M330 360Q460 260 590 360Q460 460 330 360Z"/></clipPath>
+            <ellipse class="eye-fill" cx="460" cy="360" rx="29" ry="48"/>
+            <g clip-path="url(#lid-head)"><ellipse class="pupil" cx="460" cy="360" rx="24" ry="44"/></g>
+          </svg>
+        </span>
       </a>
 
-      <span class="banner-sub">Independent Studio | Est. 2024 | Brazil</span>
+      <div class="ident-side">
+        <p class="line"><a href="/">Jhorro Productions</a> &gt; Legal &gt; <b>Privacy Policy</b></p>
+      </div>
     </div>
-  </header>
 
-  <!-- ── STATUS BAR ─────────────────────────────────────── -->
-  <div class="statusbar">
-    <span><a href="/">Jhorro Productions</a> &gt; Legal &gt; <b>Privacy Policy</b></span>
-    <span class="sb-spacer"></span>
-    <span class="textsize" role="group" aria-label="Text size">
-      <span>Text size</span>
-      <button type="button" data-ts="1" aria-label="Normal text size">A</button>
-      <button type="button" data-ts="2" aria-label="Large text size">A</button>
-      <button type="button" data-ts="3" aria-label="Largest text size">A</button>
-    </span>
-  </div>
+    <div class="bars" aria-hidden="true"></div>
+  </header>
 
   <nav class="mainnav" aria-label="Main">
     <a href="/">Studio Home</a>
@@ -107,8 +77,8 @@
   <div class="cols">
 
     <!-- ── LEFT RAIL ────────────────────────────────────── -->
-    <!-- Both rails are repeated in every studio page, like the banner and the
-         footer. The four accounts in the last box are also in the footer, in
+    <!-- Both rails are repeated in every studio page, like the masthead and
+         the footer. The four accounts in the last box are also in the footer, in
          sameAs in the home's head, and in the twitter:site tags. -->
     <aside class="rail rail-l" aria-label="Site">
 
@@ -276,14 +246,30 @@
   </div>
 
   <footer class="site-foot">
-    <p>© Jhorro Productions. The Watcher, watching through the keyhole.</p>
-    <p class="foot-nav">
-      <a href="mailto:support@jhorro.com">support@jhorro.com</a>|<a href="/">Studio Home</a>
-    </p>
-    <p class="foot-nav">
-      <a href="https://www.youtube.com/@jhorro" target="_blank" rel="noopener">YouTube</a>|<a href="https://www.linkedin.com/company/jhorro-productions/" target="_blank" rel="noopener">LinkedIn</a>|<a href="https://x.com/jhorroprod" target="_blank" rel="noopener">X (Twitter)</a>|<a href="https://www.instagram.com/jhorroproductions/" target="_blank" rel="noopener">Instagram</a>
-    </p>
-    <p>Best viewed at 1024x768.</p>
+    <div class="foot-in">
+      <p>© Jhorro Productions. The Watcher, watching through the keyhole.</p>
+      <p class="foot-nav">
+        <a href="mailto:support@jhorro.com">support@jhorro.com</a>|<a href="/">Studio Home</a>
+      </p>
+      <p class="foot-nav">
+        <a href="https://www.youtube.com/@jhorro" target="_blank" rel="noopener">YouTube</a>|<a href="https://www.linkedin.com/company/jhorro-productions/" target="_blank" rel="noopener">LinkedIn</a>|<a href="https://x.com/jhorroprod" target="_blank" rel="noopener">X (Twitter)</a>|<a href="https://www.instagram.com/jhorroproductions/" target="_blank" rel="noopener">Instagram</a>
+      </p>
+    </div>
+    <div class="signoff">
+      <span class="logo logo-v">
+        <img src="brand/01-logo/stacked/svg/jhorro-stacked-dark.svg" alt="Jhorro Productions" width="180" height="130" loading="lazy">
+        <svg class="eye" viewBox="0 0 920 920" aria-hidden="true" focusable="false">
+          <clipPath id="lid-foot"><path d="M330 360Q460 260 590 360Q460 460 330 360Z"/></clipPath>
+          <ellipse class="eye-fill" cx="460" cy="360" rx="29" ry="48"/>
+          <g clip-path="url(#lid-foot)"><ellipse class="pupil" cx="460" cy="360" rx="24" ry="44"/></g>
+        </svg>
+      </span>
+      <p class="slogan">Your attention is appreciated.</p>
+    </div>
+    <div class="foot-base">
+      <span>Est. 2024</span>
+      <span>São Paulo, Brazil</span>
+    </div>
   </footer>
 
 </div>

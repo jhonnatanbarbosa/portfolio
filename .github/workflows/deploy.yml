@@ -50,10 +50,23 @@ jobs:
           chmod 600 ~/.ssh/deploy_key
           printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
 
+      # The connection from GitHub's runners to the VPS sometimes drops
+      # before it reaches the server. ssh exits 255 when it cannot connect,
+      # so that is retried, up to three tries 20 seconds apart. Any other
+      # exit is the deploy script's own and fails at once. Running the
+      # script twice is harmless: it only resets to origin/main.
       - name: Deploy
         run: |
-          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
-            deploy-jhorro@72.62.83.137 deploy
+          for try in 1 2 3; do
+            status=0
+            ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+              -o ConnectTimeout=20 -o ServerAliveInterval=10 -o ServerAliveCountMax=3 \
+              deploy-jhorro@72.62.83.137 deploy || status=$?
+            [ "$status" -ne 255 ] && exit "$status"
+            echo "::warning::could not reach the server (try $try of 3)"
+            [ "$try" -lt 3 ] && sleep 20
+          done
+          exit 255
 
       - name: Confirm the live site answers
         run: |

@@ -55,8 +55,13 @@ Or open the Actions tab on GitHub and click the run.
 - **The "check" job failed.** The site checker found a problem: a broken
   link, a missing translation key or a demo percentage that disagrees. The
   site is unchanged. Fix it, commit and push again.
-- **The "Deploy" step failed.** The server could not be reached or refused
-  the key. The site is unchanged. This needs the server admin.
+- **The "Deploy" step failed with "Connection timed out".** The server could
+  not be reached, even after the step's three tries. The site is unchanged.
+  Re-run the failed job from the run's page (**Re-run failed jobs**). If it
+  fails again, tell the server admin.
+- **The "Deploy" step failed otherwise.** The server refused the key or did
+  not match the pinned host key. The site is unchanged. This needs the server
+  admin.
 - **"Confirm the live site answers" failed.** The new version is live but a
   page is not answering, or `/.git` is reachable. Look at the site, then fix
   or roll back (below).

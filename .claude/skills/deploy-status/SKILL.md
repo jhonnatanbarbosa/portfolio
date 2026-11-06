@@ -24,9 +24,14 @@ description: Check whether the latest change on www.jhorro.com is live, explain 
    - **`check` job failed.** `tools/check_site.py` found a problem. The site
      did not change. Run the checker locally, fix what it reports, then
      publish again (`publish` skill).
-   - **`Deploy` step failed** (`Permission denied`, `Host key verification
-     failed`, a timeout). The site did not change. The server or its key needs
-     the server admin: the secrets are `DEPLOY_SSH_KEY` and
+   - **`Deploy` step failed with `Connection timed out`** after three
+     "could not reach the server" warnings. The site did not change. The
+     step already retries one-off network drops, so re-run the failed job
+     once (`gh run rerun <id> --failed`). If it times out again, the server
+     admin should check the VPS and Hostinger's firewall.
+   - **`Deploy` step failed otherwise** (`Permission denied`, `Host key
+     verification failed`). The site did not change. The server or its key
+     needs the server admin: the secrets are `DEPLOY_SSH_KEY` and
      `DEPLOY_KNOWN_HOSTS`. Do not create, replace or print keys or secrets.
      Do not touch the server.
    - **`Confirm the live site answers` failed.** The new version is live but

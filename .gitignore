@@ -1,0 +1,3 @@
+# Personal Claude Code settings. The shared skills in .claude/skills/ are
+# committed.
+.claude/settings.local.json

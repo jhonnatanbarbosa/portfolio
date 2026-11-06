@@ -13,8 +13,9 @@ The en/pt/ja dictionaries in i18n-data.js have to carry the same keys, and
 every data-i18n key in the portfolio markup has to exist.
 
 The demo's progress is written into every studio page: the box in the right
-rail, the game page's status panel and the home card's lead paragraph. All of
-them have to give the same number. Exits 1 on a miss.
+rail, the game page's status panel and the home card's lead paragraph, and
+into the portfolio's Currently Working On board. All of them have to give the
+same number. Exits 1 on a miss.
 """
 import io
 import posixpath
@@ -110,9 +111,10 @@ for page in sorted(SITE.rglob("*")):
     count += len(refs)
 
 # ── demo percentage ─────────────────────────────────────────
-DEMO = re.compile(r'aria-valuenow="(\d+)"|class="bar-fill" style="width:(\d+)%"|<b>(\d+)%</b>|demo is (\d+)% complete')
+DEMO = re.compile(r'aria-valuenow="(\d+)"|class="bar-fill" style="width:(\d+)%"|<b>(\d+)%</b>|demo is (\d+)% complete'
+                  r'|class="pct">(\d+)%|class="wip-progress-fill" style="width:(\d+)%')
 demo = {}
-for name in ("index.html", "dead-saints-parade.html", "privacy-policy.html", "404.html"):
+for name in ("index.html", "dead-saints-parade.html", "privacy-policy.html", "404.html", "jhonnatan/index.html"):
     for found in DEMO.finditer(read(SITE / name)):
         demo.setdefault(next(g for g in found.groups() if g), set()).add(name)
 if len(demo) > 1:

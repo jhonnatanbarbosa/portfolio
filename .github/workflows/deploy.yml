@@ -1,0 +1,67 @@
+# Checks the site, then puts main live on www.jhorro.com.
+#
+# The SSH key in DEPLOY_SSH_KEY belongs to the deploy-jhorro user on the VPS
+# and is locked to one forced command, /usr/local/bin/deploy-jhorro, which
+# fetches origin/main into /var/www/jhorro and resets to it. The key cannot
+# run anything else, open a shell or forward ports, so the command sent below
+# is ignored by the server. Caddy config is never touched by this workflow.
+#
+# Secrets (Settings > Secrets and variables > Actions):
+#   DEPLOY_SSH_KEY      private half of the deploy key
+#   DEPLOY_KNOWN_HOSTS  the VPS host key line, so the runner refuses any
+#                       other machine answering on that address
+
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check links, translation keys and demo percentage
+        run: python3 tools/check_site.py
+
+  deploy:
+    needs: check
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: https://www.jhorro.com/
+    steps:
+      - name: Install deploy key
+        env:
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          DEPLOY_KNOWN_HOSTS: ${{ secrets.DEPLOY_KNOWN_HOSTS }}
+        run: |
+          install -d -m 700 ~/.ssh
+          printf '%s\n' "$DEPLOY_SSH_KEY" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          printf '%s\n' "$DEPLOY_KNOWN_HOSTS" > ~/.ssh/known_hosts
+
+      - name: Deploy
+        run: |
+          ssh -i ~/.ssh/deploy_key -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes \
+            deploy-jhorro@72.62.83.137 deploy
+
+      - name: Confirm the live site answers
+        run: |
+          for path in / /dead-saints-parade /jhonnatan/ /privacy-policy; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "https://www.jhorro.com$path")
+            echo "$code $path"
+            [ "$code" = 200 ] || exit 1
+          done
+          code=$(curl -s -o /dev/null -w '%{http_code}' https://www.jhorro.com/.git/config)
+          echo "$code /.git/config"
+          [ "$code" = 404 ] || { echo "the checkout's .git is reachable"; exit 1; }

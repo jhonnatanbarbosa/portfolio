@@ -39,7 +39,9 @@ python tools/preview.py                        # preview at http://localhost:800
 
 ## Deploying
 
-The server's `/var/www/jhorro` is a git checkout of `main`, and Caddy serves `/var/www/jhorro/site`. A content change goes live with `git pull` on the server. `/etc/caddy/Caddyfile` is a copy of `deploy/Caddyfile`, so a routing change also needs the copy and a reload; the commands are at the top of that file.
+The server's `/var/www/jhorro` is a git checkout of `main`, owned by the `deploy-jhorro` user, and Caddy serves `/var/www/jhorro/site`. A push to `main` goes live on its own: `.github/workflows/deploy.yml` runs `tools/check_site.py`, and if it passes, connects over SSH as `deploy-jhorro`, whose key can only run `/usr/local/bin/deploy-jhorro` (fetch `origin/main` and reset to it). A failing check stops the deploy. To redeploy without a commit, run the workflow from the Actions tab.
+
+The server is shared with other sites, and `/etc/caddy/Caddyfile` holds all of them. `deploy/Caddyfile` is only the jhorro part of it, so never copy it over the server's file. A routing change is done by hand, as root: edit the matching block in `/etc/caddy/Caddyfile`, run `caddy validate --config /etc/caddy/Caddyfile`, then `systemctl reload caddy`. The workflow does not touch Caddy.
 
 ## Routing
 

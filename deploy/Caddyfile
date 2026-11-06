@@ -1,6 +1,8 @@
 # Caddy config for www.jhorro.com.
-# The server runs a copy of this at /etc/caddy/Caddyfile. After changing it:
-#   sudo cp /var/www/jhorro/deploy/Caddyfile /etc/caddy/Caddyfile
+# These blocks are part of the server's /etc/caddy/Caddyfile, which also
+# serves other, unrelated sites. Never copy this file over it. After changing
+# a block here, make the same change in that file by hand, then:
+#   sudo caddy validate --config /etc/caddy/Caddyfile
 #   sudo systemctl reload caddy
 {
 	email jhocbarbosa@gmail.com
